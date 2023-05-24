@@ -95,7 +95,7 @@ const $670ec1178fdfe965$export$6c89ab77d30923e4 = {
                             name: "Align Right",
                             value: "right",
                             icon: "align_horizontal_right"
-                        }, 
+                        }
                     ],
                     iconFromValue: true
                 },

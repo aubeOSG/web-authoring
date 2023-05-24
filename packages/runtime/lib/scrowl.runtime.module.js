@@ -13,7 +13,13 @@ $parcel$defineInteropFlag($defce2f29876acb7$exports);
 
 $parcel$export($defce2f29876acb7$exports, "service", () => $defce2f29876acb7$export$6ed414b8d8bead88);
 $parcel$export($defce2f29876acb7$exports, "default", () => $defce2f29876acb7$export$2e2bcd8739ae039);
-const $704b14303ded74fd$export$6ed414b8d8bead88 = {
+/*
+  SCORM API REF
+  https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/
+*/ /*
+  SCORM API REF
+  https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/
+*/ const $704b14303ded74fd$export$6ed414b8d8bead88 = {
     version: "2004v3",
     init: false,
     finished: false,
@@ -372,7 +378,10 @@ var $704b14303ded74fd$export$2e2bcd8739ae039 = {
 };
 
 
-const $0f0d20ec2fcb698f$export$6ed414b8d8bead88 = {
+/*
+  SCORM API REF
+  https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/
+*/ const $0f0d20ec2fcb698f$export$6ed414b8d8bead88 = {
     version: "1.2",
     init: false,
     finished: false,

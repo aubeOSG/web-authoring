@@ -1,5 +1,5 @@
 import engine from 'handlebars';
-import { ApiResult, JsonResult } from '../requester';
+import { rq } from '../../../server/services';
 
 engine.registerHelper('raw', options => {
   return options.fn();
@@ -7,8 +7,8 @@ engine.registerHelper('raw', options => {
 
 export const compile = (
   contents: string,
-  data: JsonResult
-): ApiResult => {
+  data: rq.JsonResult
+): rq.ApiResult => {
   try {
     return {
       error: false,

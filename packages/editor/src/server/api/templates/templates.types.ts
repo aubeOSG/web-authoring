@@ -1,11 +1,6 @@
 
 import type { RegisterEndpoint } from '../../services/requester/requester.types';
 
-export type {
-  TemplatesEndpoints,
-  TemplateReqLoad
-} from '../../../main/models/templates/templates.types';
-
 export interface TemplatesApiGet extends RegisterEndpoint {
   name: '/templates/get';
 };

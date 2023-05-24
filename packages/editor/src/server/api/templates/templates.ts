@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-import { TemplatesApi, TemplateReqLoad } from './templates.types';
+import { TemplatesApi } from './templates.types';
 import { list as templateList } from '../../../main/models/templates/default-templates';
 import * as templater from '../../../main/services/templater';
 import { fs, rq } from '../../services';
@@ -20,7 +20,7 @@ export const get: express.Handler = (req, res) => {
 };
 
 export const load: express.Handler = (req, res) => {
-  const payload = req.body as unknown as TemplateReqLoad;
+  const payload = req.body;
   const cacheBreaker = new Date().valueOf();
   const templateName = payload.template.meta.filename;
   const templateComponent = payload.template.meta.component;

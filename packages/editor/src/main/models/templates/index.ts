@@ -1,3 +1,2 @@
-export * from './templates.types';
 export * from './default-templates';
-export * from './templates';
+export * from './templates.types';
