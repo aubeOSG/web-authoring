@@ -1,25 +1,21 @@
-import express from 'express';
-import {
-  TemplatesApiGet as MainTemplatesApiGet,
-  TemplatesApiLoad as MainTemplatesApiLoad,
-} from '../../../main/models/templates/templates.types';
-import { rq } from '../../services';
+
+import type { RegisterEndpoint } from '../../services/requester/requester.types';
 
 export type {
   TemplatesEndpoints,
   TemplateReqLoad
 } from '../../../main/models/templates/templates.types';
 
-export interface TemplatesApiGet extends Omit<MainTemplatesApiGet, 'fn'> {
-  fn: express.Handler;
+export interface TemplatesApiGet extends RegisterEndpoint {
+  name: '/templates/get';
 };
 
-export interface TemplatesApiLoad extends Omit<MainTemplatesApiLoad, 'fn'> {
-  fn: express.Handler;
+export interface TemplatesApiLoad extends RegisterEndpoint {
+  name: '/templates/load';
   method: 'POST';
 };
 
-export interface TemplatesApiViewer extends Omit<rq.RegisterEndpoint, 'name'> {
+export interface TemplatesApiViewer extends RegisterEndpoint {
   name: '/templates/viewer/*'
 }
 

@@ -8,5 +8,5 @@
     "declarationMap": false
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "./types/*.d.ts"],
-  "exclude": ["./scripts/**/*.js"]
+  "exclude": ["./scripts/**/*.js", "./src/main/**/*.ts", "./src/main/**/*.*.ts"]
 }

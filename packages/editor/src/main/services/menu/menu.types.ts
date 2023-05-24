@@ -1,4 +1,3 @@
-import { MenuItemConstructorOptions, Menu } from 'electron';
 import { rq } from '../';
 
 export interface MenuApiContextMenu
@@ -20,15 +19,15 @@ export type MenuEndpoints = {
   toggleMenu: MenuApiToggleMenu['name'];
 };
 
-export type ContextMenuItem = MenuItemConstructorOptions;
+export type ContextMenuItem = any;
 
 export type ContextMenuPosition = [number, number];
 
 export type MenuItemProps = {
   API?: rq.RegisterEndpoints;
   register?: () => void;
-  create?: (isMac: boolean, isRebuild: boolean) => MenuItemConstructorOptions;
-  asyncInit?: (menu: Menu) => Promise<rq.ApiResult>;
+  create?: (isMac: boolean, isRebuild: boolean) => any;
+  asyncInit?: (menu: any) => Promise<rq.ApiResult>;
   [key: string]: any;
 };
 

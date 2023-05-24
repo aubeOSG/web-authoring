@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { FileDataResult, FileExistsResult } from '../../../main/services/file-system/fs.types';
+import { FileDataResult, FileExistsResult } from './file-system.types';
 import { rq } from '../';
 
 // below causing an error, as parcel tries to load electron apis

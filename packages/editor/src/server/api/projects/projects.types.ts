@@ -1,52 +1,39 @@
-import express from 'express';
-import {
-  ProjectsApiCreate as MainProjectsApiCreate,
-  ProjectsApiUpload as MainProjectsApiUpload,
-  ProjectsApiUploadProgress as MainProjectsApiUploadProgress,
-  ProjectsApiSave as MainProjectsApiSave,
-  ProjectsApiPublish as MainProjectsApiPublish,
-  ProjectsApiList as MainProjectsApiList,
-  ProjectsApiOpen as MainProjectsApiOpen,
-  ProjectsApiPreviewAsset as MainProjectsApiPreviewAsset,
-  ProjectsApiPreview as MainProjectsApiPreview
-} from '../../../main/models/projects/projects.types';
+import type { RegisterEndpoint } from '../../services/requester/requester.types';
 
-export type {
-  ProjectsEndpoints
-} from '../../../main/models/projects/projects.types';
-
-export interface ProjectsApiCreate extends Omit<MainProjectsApiCreate, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiCreate extends RegisterEndpoint {
+  name: '/projects/create';
 };
 
-export interface ProjectsApiUpload extends Omit<MainProjectsApiUpload, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiUpload extends RegisterEndpoint {
+  name: '/projects/upload';
 };
 
-export interface ProjectsApiUploadProgress extends Omit<MainProjectsApiUploadProgress, 'fn'> {};
-
-export interface ProjectsApiSave extends Omit<MainProjectsApiSave, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiUploadProgress extends RegisterEndpoint {
+  name: '/projects/upload/progress';
 };
 
-export interface ProjectsApiPublish extends Omit<MainProjectsApiPublish, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiSave extends RegisterEndpoint {
+  name: '/projects/save';
 };
 
-export interface ProjectsApiList extends Omit<MainProjectsApiList, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiPublish extends RegisterEndpoint {
+  name: '/projects/publish';
 };
 
-export interface ProjectsApiOpen extends Omit<MainProjectsApiOpen, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiList extends RegisterEndpoint {
+  name: '/projects/list';
 };
 
-export interface ProjectsApiPreviewAsset extends Omit<MainProjectsApiPreviewAsset, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiOpen extends RegisterEndpoint {
+  name: '/projects/open';
 };
 
-export interface ProjectsApiPreview extends Omit<MainProjectsApiPreview, 'fn'> {
-  fn: express.Handler;
+export interface ProjectsApiPreviewAsset extends RegisterEndpoint {
+  name: '/projects/preview-asset';
+};
+
+export interface ProjectsApiPreview extends RegisterEndpoint {
+  name: '/projects/preview';
 };
 
 export type ProjectsApi = {

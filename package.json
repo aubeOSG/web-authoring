@@ -5,18 +5,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "lint": "",
     "update": "lerna run build --include-dependencies && yarn workspace @scrowl/editor run copy:assets",
-    "prestart:update": "yarn run update",
-    "start:update": "yarn workspace @scrowl/editor run start",
-    "start": "yarn workspace @scrowl/editor run start",
-    "start:web": "yarn workspace @scrowl/editor run start:web",
-    "serve:web:dev": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env up --build -V && docker-compose logs -f -t server",
-    "seed:web:dev": "docker exec containers-authoring-editor-server-1 yarn workspace @scrowl/editor run seed:web",
-    "stop:web:dev": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env down && docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env rm",
-    "prepackage": "yarn run update",
-    "package": "yarn workspace @scrowl/editor run package",
-    "package:test": "yarn workspace @scrowl/editor run package:test",
+    "start:update": "yarn run update && yarn run start",
+    "start": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env up --build -V && docker-compose logs -f -t server",
+    "serve": "yarn workspace @scrowl/editor run start",
+    "seed": "docker exec containers-authoring-editor-server-1 yarn workspace @scrowl/editor run seed",
+    "stop": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env down && docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env rm",
     "version": "lerna version --conventional-commits --no-git-tag-version"
   },
   "workspaces": [

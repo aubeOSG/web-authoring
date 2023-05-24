@@ -1,23 +1,39 @@
 import express from 'express';
-import {
-  RegisterEndpoint as MainRegisterEndpoint,
-} from '../../../main/services/requester/requester.types';
-
-export type {
-  ApiResult,
-  ApiResultError,
-  RegisterEndpointType,
-} from '../../../main/services/requester/requester.types';
 
 export type {
   JSON_DATA,
 } from '../../../main/utils/json/json.types';
 
-export interface RegisterEndpoint extends Omit<MainRegisterEndpoint, 'fn'> {
-  fn?: express.Handler;
-  method?: 'GET' | 'POST';
+export type JsonArray = Array<any | JsonResult | JsonArray>;
+
+export type JsonResult = {
+  [key: string]: any | JsonResult | JsonArray;
 };
+
+export type EventCallback = (event: any, ...args: any[]) => any;
+
+export type RegisterEndpointType = 'send' | 'invoke' | 'on';
+
+export interface RegisterEndpoint {
+  name: string;
+  type: RegisterEndpointType;
+  method?: 'GET' | 'POST';
+  fn?: express.Handler;
+}
 
 export interface RegisterEndpoints {
   [key: string]: RegisterEndpoint;
 }
+
+export interface ApiResultError extends JsonResult {
+  error: true;
+  message: string;
+}
+
+export interface ApiResultSuccess extends JsonResult {
+  error: false;
+  message?: string;
+  data: JsonResult;
+}
+
+export type ApiResult = ApiResultError | ApiResultSuccess;

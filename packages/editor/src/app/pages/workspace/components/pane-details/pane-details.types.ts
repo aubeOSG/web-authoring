@@ -1,4 +1,4 @@
-import { MenuItemConstructorOptions } from 'electron';
+// import { MenuItemConstructorOptions } from 'electron';
 import { Projects } from '../../../../models';
 
 export interface NewResourceItem extends Omit<Projects.ProjectResource, 'type'> {
@@ -29,5 +29,5 @@ export type ContextMenuResult = {
     item: ResourceItem | GlossaryItem;
   };
   position: [number, number];
-  item: MenuItemConstructorOptions;
+  item: any;
 };

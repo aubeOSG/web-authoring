@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { } from './settings.types';
 import { stateManager, menu } from '../../services';
 import { API, state } from './';
 

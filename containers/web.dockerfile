@@ -34,4 +34,4 @@ RUN yarn install
 COPY ./packages/editor ./packages/editor
 COPY ./dev.env ./packages/editor/.env
 
-CMD ["yarn", "start:web"]
+CMD ["yarn", "serve"]

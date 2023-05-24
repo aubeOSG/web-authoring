@@ -1,18 +1,10 @@
-import {
-  ContextMenuItem,
-} from '../../../main/services/menu/menu.types';
 import { JSON_DATA } from '../requester';
 
-export type {
-  MenuEndpoints,
-  ContextMenuItem,
-  ContextMenuPosition,
-  MenuItemEndpointFile,
-  MenuItemEndpointPreview,
-  PreviewTypes,
-  MenuItemEndpointOutline,
-  MenuItemEndpointPublish
-} from '../../../main/services/menu/menu.types';
+export type ContextMenuItem = any;
+
+export type ContextMenuPosition = [number, number];
+
+export type PreviewTypes = 'slide' | 'lesson' | 'module' | 'project';
 
 export type ContextMenuPayload = {
   menuItems: Array<ContextMenuItem>;

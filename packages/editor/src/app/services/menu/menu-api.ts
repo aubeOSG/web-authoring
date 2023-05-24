@@ -1,35 +1,30 @@
 import {
-  MenuEndpoints,
   ContextMenuItem,
-  MenuItemEndpointFile,
-  MenuItemEndpointPreview,
   PreviewTypes,
-  MenuItemEndpointOutline,
-  MenuItemEndpointPublish,
   ContextMenuPayload
 } from './menu.types';
 import { rq } from '../../services';
 import { Elem, ELEM_ALIGNMENT } from '../../utils';
 import { ContextMenu } from '../../components';
 
-const ENDPOINTS: MenuEndpoints = {
+const ENDPOINTS = {
   contextMenu: '/context-menu',
   toggleMenu: '/toggle-menu',
 };
 
-const ENDPOINTS_FILE: MenuItemEndpointFile = {
+const ENDPOINTS_FILE = {
   create: '/file/create',
   save: '/file/save',
   open: '/file/open',
   close: '/file/close',
 };
 
-const ENDPOINTS_PREVIEW: MenuItemEndpointPreview = {
+const ENDPOINTS_PREVIEW = {
   open: '/preview/open',
   update: '/preview/update',
 };
 
-const ENDPOINTS_OUTLINE: MenuItemEndpointOutline = {
+const ENDPOINTS_OUTLINE = {
   addSlide: '/outline/slide/add',
   addLesson: '/outline/lesson/add',
   addModule: '/outline/module/add',
@@ -38,7 +33,7 @@ const ENDPOINTS_OUTLINE: MenuItemEndpointOutline = {
   removeSlide: '/outline/slide/remove',
 };
 
-const ENDPOINTS_PUBLISH: MenuItemEndpointPublish = {
+const ENDPOINTS_PUBLISH = {
   publish: '/publish',
   publishQuick: '/publish/quick',
 };

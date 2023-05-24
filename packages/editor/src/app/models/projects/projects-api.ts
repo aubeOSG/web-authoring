@@ -1,14 +1,12 @@
 import {
-  ProjectsEndpoints,
   ProjectsReqPreviewAsset,
-  WindowEndpoints,
   ProjectMeta,
   ProjectsReqPreviewProject,
   UnsavedReq
 } from './projects.types';
 import { rq } from '../../services';
 
-const ENDPOINTS: ProjectsEndpoints = {
+const ENDPOINTS = {
   create: '/projects/create',
   upload: '/projects/upload',
   uploadProgress: '/projects/upload/progress',
@@ -20,7 +18,7 @@ const ENDPOINTS: ProjectsEndpoints = {
   preview: '/projects/preview',
 };
 
-const WINDOW_ENDPOINTS: WindowEndpoints = {
+const WINDOW_ENDPOINTS = {
   unsaved: '/window/unsaved/send', // sent from main
   onUnsaved: '/window/unsaved/on', // send to main
 };

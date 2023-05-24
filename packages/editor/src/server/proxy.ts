@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { rq } from './services';
 import { EndpointsApiGet } from './api/endpoints/endpoints.types';
-import { MenuEndpoints } from '../app/services/menu/menu.types';
 
 type Listener = (...args: unknown[]) => void;
 type UpdateResolver = (value: rq.ApiResult | PromiseLike<rq.ApiResult>) => void;
@@ -29,7 +28,7 @@ interface RequestInterceptorsError extends Omit<rq.ApiResultError, 'data'> {
   };
 };
 type RequestInterceptors = {
-  [key in MenuEndpoints['contextMenu']]: RequestInterceptorsError;
+  '/context-menu': RequestInterceptorsError;
 };
 
 axios.interceptors.request.use(
