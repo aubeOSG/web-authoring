@@ -1,8 +1,7 @@
 import React from 'react';
 import { Projects } from '../../../../../models';
-import { AssetType } from '../../../../../../main/services/file-system/fs.types';
 
-export type { AssetType } from '../../../../../../main/services/file-system/fs.types';
+export type AssetType = 'image' | 'document' | 'video' | 'audio' | 'json';
 
 export type AssetProps = Projects.ProjectAsset;
 

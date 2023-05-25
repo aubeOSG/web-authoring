@@ -1,7 +1,6 @@
-import { SettingsEndpoints } from './settings.types';
 import { rq } from '../../services';
 
-const ENDPOINTS: SettingsEndpoints = {
+const ENDPOINTS = {
   get: '/settings/get',
   set: '/settings/set',
   has: '/settings/has',

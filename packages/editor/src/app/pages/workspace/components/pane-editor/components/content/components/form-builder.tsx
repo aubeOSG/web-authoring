@@ -1,10 +1,10 @@
 import React from 'react';
-import { TemplateSchema } from '@scrowl/template-core';
+import { TemplateSchemaContent } from '@scrowl/template-core';
 import { InputProps } from '../../../pane-editor.types';
 import { InputFactory } from './input-factory';
 
 export interface FormBuilderCommons {
-  content: TemplateSchema;
+  content: TemplateSchemaContent;
   revertErrors: boolean;
   onChange: (field, value) => void;
   onValidate: (field, value) => void;
@@ -15,7 +15,7 @@ export interface FormBuilderCommons {
 export type FormBuilderProps = FormBuilderCommons &
   Omit<
     React.AllHTMLAttributes<HTMLFormElement>,
-    'onChange' | 'onValidate' | 'onFocus' | 'onBlur'
+    'onChange' | 'onValidate' | 'onFocus' | 'onBlur' | 'content'
   >;
 
 export const FormBuilder = ({
@@ -42,23 +42,23 @@ export const FormBuilder = ({
     <form className={classes} {...props}>
       {fields
         ? fields.map((field, idx) => {
-            const fieldContent: InputProps = content[field];
+            const fieldContent = content[field];
 
             let disableFlag;
-
-            if (
-              content &&
-              content.videoAsset &&
-              content.videoAsset.content.webUrl.value
-            ) {
-              disableFlag = 'assetUrl';
-            } else if (
-              content &&
-              content.videoAsset &&
-              content.videoAsset.content.assetUrl.value
-            ) {
-              disableFlag = 'webUrl';
-            }
+            console.log('fieldContent', fieldContent);
+            // if (
+            //   content &&
+            //   content.videoAsset &&
+            //   content.videoAsset.content.webUrl.value
+            // ) {
+            //   disableFlag = 'assetUrl';
+            // } else if (
+            //   content &&
+            //   content.videoAsset &&
+            //   content.videoAsset.content.assetUrl.value
+            // ) {
+            //   disableFlag = 'webUrl';
+            // }
 
             switch (fieldContent.type) {
               case 'Fieldset':

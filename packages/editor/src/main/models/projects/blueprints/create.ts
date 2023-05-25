@@ -1,4 +1,4 @@
-import { ProjectData } from '../projects.types';
+import { ProjectData } from '../../../../app/models/projects/projects.types';
 import { TemplateNames, get as getTemplate } from './templates';
 
 export const slide = <T>(

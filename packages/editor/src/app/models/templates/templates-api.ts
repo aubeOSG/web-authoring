@@ -1,7 +1,6 @@
-import { TemplatesEndpoints } from './templates.types';
 import { rq } from '../../services';
 
-const ENDPOINTS: TemplatesEndpoints = {
+const ENDPOINTS = {
   load: '/templates/load',
   get: '/templates/get',
 };

@@ -64,7 +64,11 @@ export const CanvasFrame = () => {
     switch (ev.data.type) {
       case 'connection':
         setConnection(true);
-        sendMessage({ type: 'update', data: data.template.content });
+        sendMessage({
+          type: 'update',
+          content: data.template.content,
+          controlOptions: data.template.controlOptions,
+        });
         break;
       case 'update':
         console.log('update complete');
@@ -107,7 +111,11 @@ export const CanvasFrame = () => {
 
         if (isConnected && frameRef.current) {
           frameRef.current.contentWindow?.postMessage(
-            { type: 'update', data: data.template },
+            {
+              type: 'update',
+              content: data.template.content,
+              controlOptions: data.template.controlOptions,
+            },
             '*',
             [channel.port2]
           );

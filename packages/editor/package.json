@@ -18,82 +18,37 @@
   },
   "homepage": "https://github.com/scrowl-io/authoring/packages/editor#readme",
   "scripts": {
-    "clean": "rimraf dist && rimraf release/build && rimraf release/app",
     "copy:assets": "node ./scripts/copy-assets.mjs",
-    "start:frontend": "parcel serve --target frontend --port 5003 --no-cache",
-    "start:preload": "parcel build --target preload --no-cache",
-    "reload:preload": "nodemon --watch src/main/preload.ts --exec parcel build --target preload --no-cache",
-    "start:backend": "parcel watch --target backend --port 5002 --no-cache",
-    "reload:backend": "wait-on dist/preload.js dist/main.js http://localhost:5003 && nodemon --watch dist/main.js --watch dist/preload.js --exec electron ./dist/main.js",
-    "prestart": "yarn clean && node ./scripts/reset-dev-env.mjs",
-    "start": "cross-env NODE_ENV=development PORT=5003 concurrently \"yarn start:frontend\" \"yarn start:preload\" \"yarn reload:preload\" \"yarn start:backend\" \"yarn reload:backend\"",
-    "start:frontend:web": "parcel watch --target frontend:web --no-cache",
-    "start:proxy:web": "nodemon --watch src/server/proxy.ts --exec webpack",
-    "start:backend:web": "wait-on ./web/app.html && parcel watch --target backend:web --no-cache",
-    "reload:backend:web": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",
-    "prestart:web": "rimraf web",
-    "start:web": "cross-env NODE_ENV=development concurrently \"yarn start:proxy:web\" \"yarn start:frontend:web\" \"yarn start:backend:web\" \"yarn reload:backend:web\"",
-    "preseed:web": "parcel build --target seed:web --no-cache",
-    "seed:web": "node ./web/seed-db.js",
-    "package:frontend": "parcel build --no-cache --no-source-maps --public-url ../dist --target frontend",
-    "package:backend": "parcel build --no-cache --no-source-maps --public-url ../dist --target backend --target preload",
-    "prepackage": "yarn run clean",
-    "package": "yarn run package:backend && yarn run package:frontend",
-    "postpackage": "electron-builder build",
-    "package:local": "yarn run package:backend && yarn run package:frontend",
-    "postpackage:local": "cross-env NODE_ENV=development electron-builder build",
-    "package:test": "npx electron-builder build --dir",
-    "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
-    "package:local:mac": "yarn run package && open release/build/mac",
-    "lint": "",
-    "postinstall": "yarn electron-builder install-app-deps"
+    "prestart": "rimraf web",
+    "start": "cross-env NODE_ENV=development concurrently \"yarn start:proxy\" \"yarn start:app\" \"yarn start:server\" \"yarn reload:server\"",
+    "start:proxy": "nodemon --watch src/server/proxy.ts --exec webpack",
+    "start:app": "parcel watch --target app --no-cache",
+    "start:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
+    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",
+    "preseed": "parcel build --target seed --no-cache",
+    "seed": "node ./web/seed-db.js"
   },
-  "main": "./dist/main.js",
-  "backend": "./dist/main.js",
-  "preload": "./dist/preload.js",
-  "frontend": "./dist/app.html",
-  "backend:web": "./web/server.js",
-  "frontend:web": "./web/app.html",
-  "seed:web": "./web/seed-db.js",
+  "app": "./web/app.html",
+  "server": "./web/server.js",
+  "seed": "./web/seed-db.js",
   "targets": {
     "main": false,
-    "backend": {
-      "context": "electron-main",
-      "source": "./src/main/index.ts",
-      "engines": {
-        "node": "16.15.1"
-      }
-    },
-    "preload": {
-      "context": "electron-main",
-      "source": "./src/main/preload.ts",
-      "engines": {
-        "node": "16.15.1"
-      }
-    },
-    "frontend": {
-      "context": "browser",
-      "source": "./src/app/index-desktop.html",
-      "engines": {
-        "browsers": "Chrome 104"
-      }
-    },
-    "backend:web": {
+    "server": {
       "context": "node",
       "source": "./src/server/index.ts",
       "engines": {
         "node": "16.15.1"
       }
     },
-    "frontend:web": {
+    "app": {
       "context": "browser",
       "isLibrary": false,
       "includeNodeModules": true,
-      "source": "./src/app/index-web.html",
+      "source": "./src/app/index.html",
       "distDir": "./web",
       "publicUrl": "/public"
     },
-    "seed:web": {
+    "seed": {
       "context": "node",
       "source": "./src/server/seed-db.ts",
       "engines": {
@@ -111,53 +66,13 @@
       "scss/at-extend-no-missing-placeholder": null
     }
   },
-  "build": {
-    "appId": "io.scrowl.app",
-    "productName": "Scrowl",
-    "copyright": "Occupational Safety Group Inc.",
-    "files": [
-      "dist/*",
-      "./package.json"
-    ],
-    "extraFiles": [
-      "./src/main/assets/**"
-    ],
-    "extraResources": [
-      "./assets/**"
-    ],
-    "directories": {
-      "output": "release/build",
-      "buildResources": "assets"
-    },
-    "publish": null,
-    "mac": {
-      "category": "public.app-category.productivity",
-      "entitlements": "release/entitlements.mac.plist",
-      "entitlementsInherit": "release/entitlements.mac.plist"
-    },
-    "dmg": {
-      "contents": [
-        {
-          "x": 110,
-          "y": 150
-        },
-        {
-          "x": 240,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "afterSign": "scripts/notarize.js"
-  },
   "devDependencies": {
-    "@parcel/core": "^2.7.0",
-    "@parcel/packager-ts": "^2.7.0",
-    "@parcel/reporter-dev-server": "^2.7.0",
-    "@parcel/runtime-react-refresh": "^2.7.0",
-    "@parcel/transformer-sass": "^2.7.0",
-    "@parcel/transformer-typescript-types": "^2.7.0",
+    "@parcel/core": "2.8.3",
+    "@parcel/packager-ts": "2.8.3",
+    "@parcel/reporter-dev-server": "2.8.3",
+    "@parcel/runtime-react-refresh": "2.8.3",
+    "@parcel/transformer-sass": "2.8.3",
+    "@parcel/transformer-typescript-types": "2.8.3",
     "@scrowl/config": "^0.0.100",
     "@types/adm-zip": "^0.5.0",
     "@types/cors": "^2.8.13",
@@ -169,19 +84,15 @@
     "@types/react-redux": "^7.1.24",
     "@types/sharp": "^0.31.0",
     "@types/uuid": "^8.3.4",
-    "asar": "^3.2.0",
     "body-parser": "^1.20.1",
     "concurrently": "^7.4.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
-    "electron": "20.3.0",
-    "electron-builder": "^23.6.0",
-    "electron-notarize": "^1.2.2",
     "eslint": "^8.25.0",
     "express": "^4.18.2",
     "nodemon": "^2.0.20",
-    "parcel": "^2.7.0",
+    "parcel": "2.8.3",
     "postcss": "^8.4.17",
     "postcss-import": "^14.1.0",
     "postcss-modules": "^4.3.1",
@@ -207,11 +118,6 @@
     "adm-zip": "^0.5.9",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.2",
-    "electron-context-menu": "^3.5.0",
-    "electron-devtools-installer": "^3.2.0",
-    "electron-log": "^4.4.8",
-    "electron-settings": "^4.0.2",
-    "electron-squirrel-startup": "^1.0.0",
     "framer-motion": "^7.5.3",
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.7",

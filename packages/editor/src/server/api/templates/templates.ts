@@ -1,6 +1,6 @@
 import path from 'path';
 import express from 'express';
-import { TemplatesApi, TemplateReqLoad } from './templates.types';
+import { TemplatesApi } from './templates.types';
 import { list as templateList } from '../../../main/models/templates/default-templates';
 import * as templater from '../../../main/services/templater';
 import { fs, rq } from '../../services';
@@ -20,11 +20,13 @@ export const get: express.Handler = (req, res) => {
 };
 
 export const load: express.Handler = (req, res) => {
-  const payload = req.body as unknown as TemplateReqLoad;
+  const payload = req.body;
   const cacheBreaker = new Date().valueOf();
   const templateName = payload.template.meta.filename;
   const templateComponent = payload.template.meta.component;
-  const url = `http://localhost:${port}/api/templates/viewer/index.html?ver=${cacheBreaker}&template=${templateName}&component=${templateComponent}`;
+  const templateContent = Buffer.from(JSON.stringify(payload.template.content)).toString('base64');
+  const templateControls = Buffer.from(JSON.stringify(payload.template.controlOptions)).toString('base64');
+  const url = `http://localhost:${port}/api/templates/viewer/index.html?ver=${cacheBreaker}&template=${templateName}&component=${templateComponent}&content=${templateContent}&controls=${templateControls}`;
 
   res.send({
     error: false,
@@ -35,11 +37,22 @@ export const load: express.Handler = (req, res) => {
   });
 };
 
+const getTemplateData = (query) => {
+  return {
+    template: query.template,
+    component: query.component,
+    content: query.content,
+    contentData: Buffer.from(query.content, 'base64').toString('utf-8'),
+    controls: query.controls,
+    controlsData: Buffer.from(query.controls, 'base64').toString('utf-8'),
+  }
+};
+
 export const viewer: express.Handler = (req, res) => {
   const filename = path.basename(req.path);
   const ext = path.extname(req.path).replace('.', '');
   const cacheBreaker = new Date().valueOf();
-  let templateComponent = '';
+  let templateData;
 
   switch (ext) {
     case 'html':
@@ -56,12 +69,11 @@ export const viewer: express.Handler = (req, res) => {
         return;
       }
 
-      const templateName = req.query.template;
-      templateComponent = req.query.component as string;
+      templateData = getTemplateData(req.query);
       const compileResHtml = templater.compile(readHtml.data.contents, {
-        templateJs: `./scrowl.template-${templateName}.js?ver=${cacheBreaker}`,
-        templateCss: `./scrowl.template-${templateName}.css?ver=${cacheBreaker}`,
-        canvasJs: `./index.js?ver=${cacheBreaker}&component=${templateComponent}`,
+        templateJs: `./scrowl.template-${templateData.template}.js?ver=${cacheBreaker}`,
+        templateCss: `./scrowl.template-${templateData.template}.css?ver=${cacheBreaker}`,
+        canvasJs: `./index.js?ver=${cacheBreaker}&component=${templateData.component}&content=${templateData.content}&controls=${templateData.controls}`,
       });
 
       if (compileResHtml.error) {
@@ -83,9 +95,8 @@ export const viewer: express.Handler = (req, res) => {
       }
 
       if (isTemplateJs) {
-        const templateFolder = filename.replace('scrowl.template-', '').replace('.js', '');;
+        const templateFolder = filename.replace('scrowl.template-', '').replace('.component', '').replace('.js', '');;
         const templatePath = path.join(templatesPath, templateFolder, filename);
-
         res.sendFile(templatePath);
         return;
       }
@@ -98,11 +109,15 @@ export const viewer: express.Handler = (req, res) => {
         return;
       }
 
-      templateComponent = req.query.component as string;
-      const compileResJs = templater.compile(readJs.data.contents, {
-        templateComponent,
-        templateContent: JSON.stringify({}),
-      });
+      templateData = getTemplateData(req.query);
+
+      const compileData = {
+        templateComponent: templateData.component,
+        templateContent: templateData.contentData,
+        templateControls: templateData.controlsData,
+      };
+      
+      const compileResJs = templater.compile(readJs.data.contents, compileData);
 
       if (compileResJs.error) {
         console.error(compileResJs);

@@ -1,6 +1,3 @@
-import {
-  FileFilter,
-} from 'electron';
 import { rq } from '..';
 import {
   ApiResultSuccess,
@@ -10,33 +7,27 @@ import {
 
 export { Dirent } from 'fs-extra';
 
-export type {
-  MessageBoxOptions as SystemMessageDialogOptions,
-  SaveDialogOptions as SystemSaveDialogOptions,
-  OpenDialogOptions as SystemOpenDialogOptions,
-} from 'electron';
-
-export interface AssetTypeImage extends Omit<FileFilter, 'name' | 'extensions' > {
+export interface AssetTypeImage {
   name: 'image';
   extensions: ['jpg', 'jpeg', 'png', 'gif'];
 }
 
-export interface AssetTypeDocument extends Omit<FileFilter, 'name' | 'extensions' > {
+export interface AssetTypeDocument {
   name: 'document';
   extensions: ['txt', 'doc', 'docx', 'pdf', 'zip'];
 }
 
-export interface AssetTypeVideo extends Omit<FileFilter, 'name' | 'extensions' > {
+export interface AssetTypeVideo {
   name: 'video';
   extensions: ['mp4', 'mkv', 'avi'];
 }
 
-export interface AssetTypeAudio extends Omit<FileFilter, 'name' | 'extensions' > {
+export interface AssetTypeAudio {
   name: 'audio';
   extensions: ['mp3', 'mp4'];
 }
 
-export interface AssetTypeJson extends Omit<FileFilter, 'name' | 'extensions' > {
+export interface AssetTypeJson {
   name: 'json';
   extensions: ['json'];
 }

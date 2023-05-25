@@ -1,4 +1,1 @@
-export type {
-  TemplatesEndpoints,
-  TemplateSchema
-} from '../../../main/models/templates/templates.types';
+export type { TemplateSchema } from '@scrowl/template-core';
