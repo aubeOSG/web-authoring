@@ -40,7 +40,7 @@ class App extends React.Component {
 
     switch (ev.data.type) {
       case 'update':
-        setSchema(ev.data.data);
+        setSchema(ev.data);
         break;
       case 'focus':
         setFocusElement(ev.data.field);
@@ -73,6 +73,7 @@ class App extends React.Component {
       },
       null
     );
+
     const Lesson = e('div', { className: 'lesson' }, Template);
 
     return e('main', { className: 'lesson-wrapper' }, Lesson);

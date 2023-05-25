@@ -183,10 +183,10 @@ const scrowlProxy: ScrowlProxy = {
     console.warn(`Unable to send ${endpoint}: method not ready`);
   },
   removeListener: (endpoint: string, listener: Listener) => {
-    console.warn(`Unable to remove listener for ${endpoint}: method not ready`);
+    // console.warn(`Unable to remove listener for ${endpoint}: method not ready`);
   },
   removeListenerAll: (endpoint: string) => {
-    console.warn(`Unable to remove listeners: method not ready`);
+    // console.warn(`Unable to remove listeners: method not ready`);
   },
 };
 
