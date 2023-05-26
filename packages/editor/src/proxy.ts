@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { rq } from './services';
-import { EndpointsApiGet } from './api/endpoints/endpoints.types';
+import axios, { AxiosRequestConfig } from 'axios';
+import { rq } from './server/services';
+import { EndpointsApiGet } from './server/api/endpoints/endpoints.types';
 
 type Listener = (...args: unknown[]) => void;
 type UpdateResolver = (value: rq.ApiResult | PromiseLike<rq.ApiResult>) => void;
@@ -27,9 +27,20 @@ interface RequestInterceptorsError extends Omit<rq.ApiResultError, 'data'> {
     action: string;
   };
 };
+
 type RequestInterceptors = {
   '/context-menu': RequestInterceptorsError;
 };
+
+interface EndpointRequestConfig extends Omit<
+  AxiosRequestConfig,
+  'url' |
+  'method' |
+  'data' |
+  'params' |
+  'timeout' |
+  'cancelToken'
+> {};
 
 axios.interceptors.request.use(
   (config) => {
@@ -59,7 +70,7 @@ const requestInterceptors:RequestInterceptors = {
   },
 };
 
-const GET = (endpoint, params?: rq.JSON_DATA) => {
+const GET = (endpoint, params?: rq.JSON_DATA, options?: EndpointRequestConfig) => {
   return new Promise<rq.ApiResult>(async (resolve, reject) => {
     try {
       const CancelToken = axios.CancelToken;
@@ -70,6 +81,7 @@ const GET = (endpoint, params?: rq.JSON_DATA) => {
         params,
         timeout: (scrowlProxy.timeout * 10),
         cancelToken: source.token,
+        ...options,
       });
       
       resolve(data);
@@ -79,20 +91,23 @@ const GET = (endpoint, params?: rq.JSON_DATA) => {
   });
 };
 
-const POST = (endpoint, payload?: rq.JSON_DATA) => {
+const POST = (endpoint, payload?: rq.JSON_DATA, options?: EndpointRequestConfig) => {
   return new Promise<rq.ApiResult>(async (resolve, reject) => {
     try {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
-      const { data } = await axios({
+      const query = {
         url: `http://localhost:8000/api${endpoint}`,
         method: 'POST',
         data: payload,
         timeout: (scrowlProxy.timeout * 10),
         cancelToken: source.token,
-      });
-      
-      resolve(data);
+        ...options,
+      };
+      console.log('POST::query', query);
+      const res = await axios(query);
+      console.log('POST::res', res);
+      resolve(res.data);
     } catch (e) {
       reject(e);
     }
@@ -117,7 +132,7 @@ const scrowlProxy: ScrowlProxy = {
   timeout: 1000,
   inProgress: true,
   ENDPOINTS: [],
-  invoke: (endpoint: string, params?: rq.JSON_DATA, type = 'GET') => {
+  invoke: (endpoint: string, params?: rq.JSON_DATA, type = 'GET', options?: EndpointRequestConfig) => {
     return new Promise<rq.ApiResult>((resolve) => {
       const method = 'invoke';
 
@@ -164,14 +179,14 @@ const scrowlProxy: ScrowlProxy = {
             },
           });
       };
-
+      console.log('invoking', type);
       switch (type) {
         case 'POST':
-          POST(endpoint, params).then(resolve).catch(handleRejection);
+          POST(endpoint, params, options).then(resolve).catch(handleRejection);
           break;
         case 'GET':
         default:
-          GET(endpoint, params).then(resolve).catch(handleRejection);
+          GET(endpoint, params, options).then(resolve).catch(handleRejection);
           break;
       }
     });
