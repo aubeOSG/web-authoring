@@ -13,6 +13,7 @@ import {
   closePublishProgress,
   useActiveSlide,
 } from '../../page-workspace-hooks';
+import { Stream } from 'stream';
 
 export const Header = () => {
   const projectData = Projects.useData();
@@ -213,41 +214,65 @@ export const Header = () => {
       scorm: formData,
     };
 
-    Projects.save({ data: submittedData, assets }).then((saveRes) => {
-      if (saveRes.error) {
-        closePublishProgress();
+    Projects.publish(submittedData).then((pubRes) => {
+      closePublishProgress();
+
+      if (pubRes.error) {
         sys.messageDialog({
-          message: saveRes.message,
+          message: pubRes.message,
         });
         return;
       }
 
-      Projects.publish(saveRes.data.project).then((pubRes) => {
-        if (pubRes.error) {
-          closePublishProgress();
-          sys.messageDialog({
-            message: pubRes.message,
-          });
-          return;
-        }
+      setIsOpenPublish(false);
+      const data = pubRes as unknown as ArrayBuffer;
+      const url = window.URL.createObjectURL(
+        new Blob([data], { type: 'application/zip' })
+      );
+      const link = document.createElement('a');
 
-        Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-        setIsOpenPublish(false);
-        closePublishProgress();
-
-        if (pubRes.data.canceled) {
-          return;
-        }
-
-        if (hasPublished) {
-          return;
-        }
-
-        setTimeout(() => {
-          setIsOpenConfirmation(true);
-        }, 1);
-      });
+      link.href = url;
+      link.setAttribute('download', `${submittedData.scorm.name}.zip`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
     });
+
+    // Projects.save({ data: submittedData, assets }).then((saveRes) => {
+    //   if (saveRes.error) {
+    //     closePublishProgress();
+    //     sys.messageDialog({
+    //       message: saveRes.message,
+    //     });
+    //     return;
+    //   }
+
+    //   Projects.publish(saveRes.data.project).then((pubRes) => {
+    //     if (pubRes.error) {
+    //       closePublishProgress();
+    //       sys.messageDialog({
+    //         message: pubRes.message,
+    //       });
+    //       return;
+    //     }
+
+    //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
+    //     setIsOpenPublish(false);
+    //     closePublishProgress();
+
+    //     if (pubRes.data.canceled) {
+    //       return;
+    //     }
+
+    //     if (hasPublished) {
+    //       return;
+    //     }
+
+    //     setTimeout(() => {
+    //       setIsOpenConfirmation(true);
+    //     }, 1);
+    //   });
+    // });
   };
 
   const handleCloseConfirmation = () => {
