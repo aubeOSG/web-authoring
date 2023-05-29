@@ -1,13 +1,18 @@
 import path from 'path';
+import os from 'node:os';
 import fs from 'fs-extra';
 import { rq } from '../';
 
-const basePath = process.env.PWD;
-
+export const basePath = process.env.PWD;
 export const rootPath = path.join(basePath || '', 'src', 'server');
+export const tempPath = os.tmpdir();
 
 export const normalize = (pathname: string) => {
   return path.normalize(pathname);
+};
+
+export const join = (...paths: Array<string>) => {
+  return path.normalize(path.join.apply(null, paths));
 };
 
 export const isJSON = (name: string) => {
@@ -38,7 +43,9 @@ export const exists = (pathname: string): rq.ApiResult => {
 export default {
   basePath,
   rootPath,
+  tempPath,
   normalize,
   exists,
   isJSON,
+  join,
 };

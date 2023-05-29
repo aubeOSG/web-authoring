@@ -1,5 +1,7 @@
+import type { CopyOptionsSync } from 'fs-extra';
 import { rq } from '..';
 import {
+  ApiResult,
   ApiResultSuccess,
   ApiResultError,
   JsonResult,
@@ -50,6 +52,10 @@ export interface DirectoryTempResultSuccess
     pathname: string;
   };
 }
+
+export type FileResult = ApiResult;
+
+export type CopyOptions = CopyOptionsSync;
 
 export type DirectoryTempResult = DirectoryTempResultSuccess | ApiResultError;
 
