@@ -7,6 +7,8 @@ export const Page = ({ slides, templates, slideId, ...props }: PageProps) => {
   const Scrowl = window['Scrowl'];
   const [hasStartedCourse, setHasStartedCourse] = useState(true);
 
+  console.log('templates: ', templates);
+
   if (
     Scrowl &&
     Scrowl.runtime &&
@@ -222,11 +224,13 @@ export const Page = ({ slides, templates, slideId, ...props }: PageProps) => {
       />
     );
   } else {
+    console.log('slides: ', slides);
     return (
       <>
         {slides.map((slide, idx) => {
           const id = `${props.id}--slide-${slide.id}`;
           const component = slide.template.meta.component;
+          console.log('hmm ', templates[component]);
 
           if (!templates.hasOwnProperty(component)) {
             return <Error msg={`Unabled to find template: ${component}`} />;

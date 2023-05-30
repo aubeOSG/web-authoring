@@ -72,6 +72,8 @@ export const create = (
   const controller = new Scrowl.core.scroll.Controller();
   const data: Array<PageDefinition> = [];
 
+  console.log('template list: ', templateList);
+
   project.outlineConfig.forEach((module, mIdx) => {
     module.lessons.forEach((page, lIdx) => {
       const id = `module-${mIdx}--lesson-${page.lesson.id}`;
