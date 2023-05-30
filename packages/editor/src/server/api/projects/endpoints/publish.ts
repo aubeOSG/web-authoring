@@ -221,6 +221,7 @@ export const publish: ProjectsApiPublish = {
 
     if (generationRes.error) {
       res.send(generationRes);
+      cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
 
@@ -228,6 +229,7 @@ export const publish: ProjectsApiPublish = {
 
     if (packageRes.error) {
       res.send(packageRes);
+      cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
 
@@ -250,6 +252,8 @@ export const publish: ProjectsApiPublish = {
         },
       });
     }
+
+    cleanupTempDir(generationRes.data.tmpDirId);
   },
 };
 
