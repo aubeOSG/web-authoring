@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig } from 'axios';
+
 export type { JSON_DATA } from '../../../main/utils/json/json.types';
 
 export type JsonArray = Array<any | JsonResult | JsonArray>;
@@ -20,3 +22,13 @@ export interface ApiResultSuccess extends JsonResult {
 export type ApiResult = ApiResultError | ApiResultSuccess;
 
 export type Listener = (...args: any[]) => void;
+
+export interface EndpointRequestConfig extends Omit<
+  AxiosRequestConfig,
+  'url' |
+  'method' |
+  'data' |
+  'params' |
+  'timeout' |
+  'cancelToken'
+> {};

@@ -4,7 +4,7 @@ const common = require('@scrowl/config/webpack');
 
 module.exports = merge(common, {
   entry: {
-    [`proxy-web`]: './src/server/proxy',
+    [`proxy-web`]: './src/proxy',
   },
   output: {
     libraryTarget: "umd",

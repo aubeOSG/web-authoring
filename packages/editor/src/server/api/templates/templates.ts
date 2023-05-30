@@ -6,9 +6,9 @@ import * as templater from '../../../main/services/templater';
 import { fs, rq } from '../../services';
 import { port } from '../../config';
 
-const assetsPath = path.join(fs.rootPath, '../', 'main', 'assets');
-const projectPath = path.join(assetsPath, 'project');
-const templatesPath = path.join(assetsPath, 'templates');
+export const assetsPath = path.join(fs.utils.rootPath, '../', 'main', 'assets');
+export const projectPath = path.join(assetsPath, 'project');
+export const templatesPath = path.join(assetsPath, 'templates');
 
 export const get: express.Handler = (req, res) => {
   res.send({
@@ -61,7 +61,7 @@ export const viewer: express.Handler = (req, res) => {
         return;
       }
       
-      const readHtml = fs.fileReadSync(path.join(projectPath, 'canvas.html.hbs'));
+      const readHtml = fs.readSync(path.join(projectPath, 'canvas.html.hbs'));
 
       if (readHtml.error) {
         console.error(readHtml);
@@ -101,7 +101,7 @@ export const viewer: express.Handler = (req, res) => {
         return;
       }
 
-      const readJs = fs.fileReadSync(path.join(projectPath, 'canvas.js.hbs'));
+      const readJs = fs.readSync(path.join(projectPath, 'canvas.js.hbs'));
 
       if (readJs.error) {
         console.error(readJs);
@@ -172,6 +172,9 @@ export const API: TemplatesApi = {
 };
 
 export default {
+  assetsPath,
+  projectPath,
+  templatesPath,
   API,
   get,
   load,

@@ -8,7 +8,7 @@ import { Projects } from '../../models';
 import { Workspace } from '../../pages';
 import { sys, events } from '../../services';
 import { ProjectSearch } from './';
-import { List, Elem } from '../../utils';
+import { List, Elem } from '../../../utils';
 
 const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
   const sortList = () => {
     let sortedList: Array<FormattedProjectFile> = projects.slice();
 
-    List.sortBy(sortedList, sortField, sortOrder === 'desc');
+    List.sortBy(sortedList, [sortField], sortOrder === 'desc');
 
     return sortedList;
   };

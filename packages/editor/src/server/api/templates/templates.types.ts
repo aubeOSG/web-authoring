@@ -19,3 +19,15 @@ export type TemplatesApi = {
   load: TemplatesApiLoad;
   viewer: TemplatesApiViewer;
 };
+
+export type TemplateInfo = {
+  component: string;
+  js: string;
+  css: string;
+}
+
+export type TemplateList = Array<TemplateInfo>;
+
+export type TemplateMap = {
+  [key: string]: TemplateInfo;
+};

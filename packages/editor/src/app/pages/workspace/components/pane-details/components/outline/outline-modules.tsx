@@ -8,7 +8,7 @@ import { resetActiveSlide, useActiveSlide } from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys, events } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../utils';
+import { ELEM_ALIGNMENT } from '../../../../../../../utils';
 
 export const OutlineModuleItem = ({
   module,

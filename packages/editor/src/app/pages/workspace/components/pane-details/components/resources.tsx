@@ -7,7 +7,7 @@ import {
   ContextMenuResult,
 } from '../pane-details.types';
 import { Projects } from '../../../../../models';
-import { List } from '../../../../../utils';
+import { List } from '../../../../../../utils';
 import { menu, sys } from '../../../../../services';
 import { AssetIcon } from '../../../../../components';
 import { ResourceOverlay } from '../../overlay';
@@ -31,7 +31,7 @@ export const Resources = () => {
     useState<ResourceItem>(newResource);
   const resources = Projects.useResources();
   const projectMeta = Projects.useMeta();
-  const sortedResources = List.sortBy(resources.slice(), 'title');
+  const sortedResources = List.sortBy(resources.slice(), ['title']);
   const resourceMenu: Array<menu.ContextMenuItem> = [
     {
       label: 'Edit Resource',
