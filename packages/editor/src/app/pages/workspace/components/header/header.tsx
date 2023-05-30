@@ -3,7 +3,7 @@ import { ButtonGroup, Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
-import { Elem } from '../../../../../utils';
+import { Elem, Str } from '../../../../../utils';
 import { Projects, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { Logo } from '../../../../components';
@@ -13,7 +13,6 @@ import {
   closePublishProgress,
   useActiveSlide,
 } from '../../page-workspace-hooks';
-import { Stream } from 'stream';
 
 export const Header = () => {
   const projectData = Projects.useData();
@@ -232,7 +231,10 @@ export const Header = () => {
       const link = document.createElement('a');
 
       link.href = url;
-      link.setAttribute('download', `${submittedData.scorm.name}.zip`);
+      link.setAttribute(
+        'download',
+        `${Str.toKebabCase(submittedData.scorm.name)}.zip`
+      );
       document.body.appendChild(link);
       link.click();
       link.parentNode?.removeChild(link);

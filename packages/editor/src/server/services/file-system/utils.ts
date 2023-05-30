@@ -19,6 +19,10 @@ export const isJSON = (name: string) => {
   return /.json$/.test(name) || /.project$/.test(name);
 };
 
+export const getFilename = (pathname: string, ext?: string) => {
+  return path.basename(pathname, ext);
+};
+
 export const exists = (pathname: string): rq.ApiResult => {
   try {
     return {
@@ -45,6 +49,7 @@ export default {
   rootPath,
   tempPath,
   normalize,
+  getFilename,
   exists,
   isJSON,
   join,

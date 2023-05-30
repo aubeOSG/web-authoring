@@ -203,14 +203,10 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
               packagerOpts.package.version
             }_${today}.zip`
           );
+    const projectFilename = fs.utils.join(packagerOpts.package.outputFolder, `${Str.toKebabCase(config.name || '')}-${projectVersion}.zip`);
 
     packager(packagerOpts, (message: string) => {
-      resolve({
-        error: false,
-        data: {
-          packageFilename,
-        }
-      });
+      resolve(fs.renameSync(packageFilename, projectFilename));
     });
   });
 };
@@ -221,13 +217,6 @@ export const publish: ProjectsApiPublish = {
   method: 'POST',
   fn: async (req, res) => {
     const projectData = req.body as ProjectData;
-    const zip = new ADM();
-
-    zip.addFile('project.json', Buffer.from(JSON.stringify(projectData), 'utf8'));
-
-    const fileData = zip.toBuffer();
-    const fileName = `${projectData.scorm.name}.zip`;
-    const fileType = 'application/zip';
     const generationRes = generateProjectFiles(projectData);
 
     if (generationRes.error) {
@@ -242,10 +231,25 @@ export const publish: ProjectsApiPublish = {
       return;
     }
 
-    res.set('Content-Type', fileType);
-    res.set('Content-Disposition', `attachment; filename=${fileName}`);
-    res.set('Content-Length', `${fileData.length}`);
-    res.send(fileData);
+    try {
+      const zip = new ADM(packageRes.data.filename);
+      const fileData = zip.toBuffer();
+      const fileName = fs.utils.getFilename(packageRes.data.filename);
+      const fileType = 'application/zip';
+
+      res.set('Content-Type', fileType);
+      res.set('Content-Disposition', `attachment; filename=${fileName}`);
+      res.set('Content-Length', `${fileData.length}`);
+      res.send(fileData);
+    } catch (err) {
+      res.send({
+        error: true,
+        message: 'unable to publish: unexpected error',
+        data: {
+          trace: err,
+        },
+      });
+    }
   },
 };
 
