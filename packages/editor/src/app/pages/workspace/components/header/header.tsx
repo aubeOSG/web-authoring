@@ -3,7 +3,7 @@ import { ButtonGroup, Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
-import { Elem } from '../../../../utils';
+import { Elem, Str } from '../../../../../utils';
 import { Projects, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { Logo } from '../../../../components';
@@ -213,41 +213,68 @@ export const Header = () => {
       scorm: formData,
     };
 
-    Projects.save({ data: submittedData, assets }).then((saveRes) => {
-      if (saveRes.error) {
-        closePublishProgress();
+    Projects.publish(submittedData).then((pubRes) => {
+      closePublishProgress();
+
+      if (pubRes.error) {
         sys.messageDialog({
-          message: saveRes.message,
+          message: pubRes.message,
         });
         return;
       }
 
-      Projects.publish(saveRes.data.project).then((pubRes) => {
-        if (pubRes.error) {
-          closePublishProgress();
-          sys.messageDialog({
-            message: pubRes.message,
-          });
-          return;
-        }
+      setIsOpenPublish(false);
+      const data = pubRes as unknown as ArrayBuffer;
+      const url = window.URL.createObjectURL(
+        new Blob([data], { type: 'application/zip' })
+      );
+      const link = document.createElement('a');
 
-        Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-        setIsOpenPublish(false);
-        closePublishProgress();
-
-        if (pubRes.data.canceled) {
-          return;
-        }
-
-        if (hasPublished) {
-          return;
-        }
-
-        setTimeout(() => {
-          setIsOpenConfirmation(true);
-        }, 1);
-      });
+      link.href = url;
+      link.setAttribute(
+        'download',
+        `${Str.toKebabCase(submittedData.scorm.name)}.zip`
+      );
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode?.removeChild(link);
     });
+
+    // Projects.save({ data: submittedData, assets }).then((saveRes) => {
+    //   if (saveRes.error) {
+    //     closePublishProgress();
+    //     sys.messageDialog({
+    //       message: saveRes.message,
+    //     });
+    //     return;
+    //   }
+
+    //   Projects.publish(saveRes.data.project).then((pubRes) => {
+    //     if (pubRes.error) {
+    //       closePublishProgress();
+    //       sys.messageDialog({
+    //         message: pubRes.message,
+    //       });
+    //       return;
+    //     }
+
+    //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
+    //     setIsOpenPublish(false);
+    //     closePublishProgress();
+
+    //     if (pubRes.data.canceled) {
+    //       return;
+    //     }
+
+    //     if (hasPublished) {
+    //       return;
+    //     }
+
+    //     setTimeout(() => {
+    //       setIsOpenConfirmation(true);
+    //     }, 1);
+    //   });
+    // });
   };
 
   const handleCloseConfirmation = () => {

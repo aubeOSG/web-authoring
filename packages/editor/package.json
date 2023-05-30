@@ -19,9 +19,9 @@
   "homepage": "https://github.com/scrowl-io/authoring/packages/editor#readme",
   "scripts": {
     "copy:assets": "node ./scripts/copy-assets.mjs",
-    "prestart": "rimraf web",
+    "prestart": "rimraf web && webpack",
     "start": "cross-env NODE_ENV=development concurrently \"yarn start:proxy\" \"yarn start:app\" \"yarn start:server\" \"yarn reload:server\"",
-    "start:proxy": "nodemon --watch src/server/proxy.ts --exec webpack",
+    "start:proxy": "nodemon --watch src/proxy.ts --exec webpack",
     "start:app": "parcel watch --target app --no-cache",
     "start:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
     "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",

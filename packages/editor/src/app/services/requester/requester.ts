@@ -1,7 +1,8 @@
-import { Listener, JSON_DATA } from './requester.types';
+import { Listener, JSON_DATA, EndpointRequestConfig } from './requester.types';
 
-export const invoke = (endpoint: string, params?: JSON_DATA, type?: 'GET' | 'POST') => {
-  return window.scrowlProxy.invoke(endpoint, params, type);
+export const invoke = (endpoint: string, params?: JSON_DATA, type?: 'GET' | 'POST', options?: EndpointRequestConfig) => {
+  console.log('invoking', endpoint, params, type, options);
+  return window.scrowlProxy.invoke(endpoint, params, type, options);
 };
 
 export const on = (endpoint: string, listener: Listener) => {

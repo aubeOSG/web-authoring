@@ -22,3 +22,9 @@ export type ELEM_ALIGNMENT =
   | 'right-top'
   | 'right-center'
   | 'right-bottom';
+
+  export type AsyncForEachResult<T> = {
+    error: boolean;
+    data: T;
+    result: unknown;
+  }

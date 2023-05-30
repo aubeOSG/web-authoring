@@ -46,4 +46,5 @@ export default {
   getDateStamp,
   getDateStampLocal,
   addLeadZero,
+  readableFromValue,
 };

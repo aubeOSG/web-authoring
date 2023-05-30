@@ -12,7 +12,7 @@ import {
 } from './projects.types';
 import { stateManager, rq } from '../../services';
 import { API, state } from './';
-import { List } from '../../utils';
+import { List } from '../../../utils';
 
 const processor: stateManager.StateProcessor = {};
 
@@ -243,7 +243,7 @@ export const useSlides = (moduleId?: number, lessonId?: number, slideId?: number
 
 export const useLatestSlide = () => {
   return useSelector((data: stateManager.RootState) => {
-    return List.sortBy(data.projects.data.slides.slice(), 'id', true)[0];
+    return List.sortBy(data.projects.data.slides.slice(), ['id'], true)[0];
   });
 };
 

@@ -4,7 +4,7 @@ import * as css from './_prompt-project-name.scss';
 import { Modal } from '../../../../../components';
 import { Projects } from '../../../../../models';
 import { sys, events } from '../../../../../services';
-import { Elem } from '../../../../../utils';
+import { Elem } from '../../../../../../utils';
 import {
   usePromptProjectName,
   closePromptProjectName,

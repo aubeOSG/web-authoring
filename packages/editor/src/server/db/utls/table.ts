@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import { Schema, Config } from '../db.types';
-import { list } from '../../utils';
+import { List } from '../../../utils';
 
 export const drop = (
   db: Knex,
@@ -106,7 +106,7 @@ export const insert = (
     return db(table).returning('id').insert(entry);
   };
 
-  return list.asyncForEach(data, addEntry);
+  return List.asyncForEach(data, addEntry);
 };
 
 export default {

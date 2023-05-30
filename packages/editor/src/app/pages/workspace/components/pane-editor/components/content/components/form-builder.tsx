@@ -45,20 +45,22 @@ export const FormBuilder = ({
             const fieldContent = content[field];
 
             let disableFlag;
-            console.log('fieldContent', fieldContent);
-            // if (
-            //   content &&
-            //   content.videoAsset &&
-            //   content.videoAsset.content.webUrl.value
-            // ) {
-            //   disableFlag = 'assetUrl';
-            // } else if (
-            //   content &&
-            //   content.videoAsset &&
-            //   content.videoAsset.content.assetUrl.value
-            // ) {
-            //   disableFlag = 'webUrl';
-            // }
+            // TODO FIXME - TYPE ERRORs
+            if (
+              content &&
+              content.videoAsset &&
+              //@ts-ignore
+              content.videoAsset.content.webUrl.value
+            ) {
+              disableFlag = 'assetUrl';
+            } else if (
+              content &&
+              content.videoAsset &&
+              //@ts-ignore
+              content.videoAsset.content.assetUrl.value
+            ) {
+              disableFlag = 'webUrl';
+            }
 
             switch (fieldContent.type) {
               case 'Fieldset':
