@@ -11,7 +11,7 @@ import {
 } from '../../../../';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../utils';
+import { ELEM_ALIGNMENT } from '../../../../../../../utils';
 
 export const OutlineSlideItem = ({
   slide,

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import * as utils from '../../utils';
+import * as utils from '../../../utils';
 import { stateManager } from '../../services'
 
 export enum ASPECT_RATIO {

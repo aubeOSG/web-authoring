@@ -3,6 +3,7 @@ import readSync from './read-sync';
 import writeSync from './write-sync';
 import removeSync from './remove-sync';
 import copySync from './copy-sync';
+import renameSync from './rename-sync';
 
 export * from './file-system.types';
 
@@ -12,6 +13,7 @@ export {
   writeSync,
   removeSync,
   copySync,
+  renameSync,
 };
 
 export default {
@@ -20,4 +22,5 @@ export default {
   writeSync,
   removeSync,
   copySync,
+  renameSync,
 };

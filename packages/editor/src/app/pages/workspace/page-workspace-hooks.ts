@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 import { stateManager } from '../../services';
-import { hasProp } from '../../utils';
+import { hasProp } from '../../../utils';
 import { state } from './';
 
 const processor: stateManager.StateProcessor = {};

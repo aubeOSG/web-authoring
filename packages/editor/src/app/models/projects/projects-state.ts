@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { stateManager } from '../../services';
-import { updateObj, List } from '../../utils';
+import { updateObj, List } from '../../../utils';
 
 export const initialState = {
   isDirty: false, // true if the user has made any change

@@ -4,7 +4,7 @@ import { ui, IconType } from '@scrowl/ui';
 import { Backdrop, Drawer } from '../../../../../components';
 import { Projects, Settings } from '../../../../../models';
 import { menu, sys } from '../../../../../services';
-import { List, Elem } from '../../../../../utils';
+import { List, Elem } from '../../../../../../utils';
 import '../_overlay.scss';
 import {
   AssetSearch,
@@ -67,7 +67,7 @@ export const AssetDrawerElement = (
   const sortAssetList = () => {
     let sortedList: Array<Projects.ProjectAsset> = assets.slice();
 
-    List.sortBy(sortedList, sortField, sortOrder === 'desc');
+    List.sortBy(sortedList, [sortField], sortOrder === 'desc');
 
     return sortedList;
   };

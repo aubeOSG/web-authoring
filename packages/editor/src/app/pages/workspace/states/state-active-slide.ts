@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { stateManager } from '../../../services'
-import { updateObj, setObjField } from '../../../utils';
+import { updateObj, setObjField } from '../../../../utils';
 import { Projects } from '../../../models';
-import { hasProp } from '../../../utils';
+import { hasProp } from '../../../../utils';
 
 export const initialState = {
   moduleId: -1,
