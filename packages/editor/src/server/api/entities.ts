@@ -1,12 +1,14 @@
-import * as ProjectFolders from './project-folders';
+import * as Workspaces from './workspaces';
 import * as Projects from './projects';
 import * as Assets from './assets';
+import * as Users from './users';
 
 export * from './projects/projects.types';
+export * from './users/users.types';
 
-export const projectFolders = {
-  schema: ProjectFolders.schema,
-  seed: ProjectFolders.seed,
+export const workspaces = {
+  schema: Workspaces.schema,
+  seed: Workspaces.seed,
 };
 
 export const projects = {
@@ -19,8 +21,14 @@ export const assets = {
   seed: Assets.seed,
 };
 
+export const users = {
+  schema: Users.schema,
+  seed: Users.seed,
+};
+
 export default {
-  projectFolders,
+  workspaces,
   projects,
   assets,
+  users,
 };

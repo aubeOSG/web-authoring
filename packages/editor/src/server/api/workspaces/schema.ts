@@ -1,6 +1,7 @@
 import { Schema } from '../../db';
+import { table as userTable } from '../users';
 
-export const table: string = 'projects-folder';
+export const table: string = 'workspaces';
 
 export const schema: Schema = [
   {
@@ -11,32 +12,33 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'created_at',
+      name: 'createdAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'deleted_at',
+      name: 'userId',
+      type: 'foreign',
+      table: userTable,
+    },
+  },
+  {
+    column: {
+      name: 'deletedAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'opened_at',
+      name: 'openedAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'updated_at',
+      name: 'updatedAt',
       type: 'datetime',
-    }
-  },
-  {
-    column: {
-      name: 'assets',
-      type: 'json',
     }
   },
   {
@@ -47,8 +49,8 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'last_published_filename',
-      type: 'string',
+      name: 'publishing',
+      type: 'json',
     }
   },
 ];

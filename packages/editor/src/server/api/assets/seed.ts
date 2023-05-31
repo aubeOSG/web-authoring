@@ -1,5 +1,5 @@
 import { db, utils } from '../../db';
-import { table, schema } from './project-schema';
+import { table, schema } from './schema';
 
 export const seed = () => {
   return new Promise(async(resolve, reject) => {

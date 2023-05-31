@@ -1,5 +1,5 @@
 import { Schema } from '../../db';
-import { table as projectTable } from '../projects';
+import { table as workspaceTable } from '../workspaces';
 
 export const table: string = 'assets';
 
@@ -12,20 +12,20 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'project_id',
+      name: 'workspaceId',
       type: 'foreign',
-      table: projectTable,
+      table: workspaceTable,
     }
   },
   {
     column: {
-      name: 'created_at',
+      name: 'createdAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'deleted_at',
+      name: 'deletedAt',
       type: 'datetime',
     }
   },
@@ -34,6 +34,18 @@ export const schema: Schema = [
       name: 'title',
       type: 'string',
     }
+  },
+  {
+    column: {
+      name: 'isResource',
+      type: 'boolean',
+    },
+  },
+  {
+    column: {
+      name: 'description',
+      type: 'string',
+    },
   },
   {
     column: {
@@ -57,12 +69,6 @@ export const schema: Schema = [
     column: {
       name: 'size',
       type: 'integer',
-    }
-  },
-  {
-    column: {
-      name: 'isDeleted',
-      type: 'boolean',
     }
   },
   {

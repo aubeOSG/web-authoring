@@ -1,4 +1,4 @@
 export * from './projects.types';
-export * from './project-schema';
-export * from './projects';
-export * from './project-seed';
+export * from './schema';
+export * from './api';
+export * from './seed';
