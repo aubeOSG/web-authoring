@@ -2,6 +2,7 @@ import React from 'react';
 import {
   TemplateSchemaMeta,
   TemplateCommons,
+  TemplateControlOptions,
   InputTextboxProps,
   InputFieldsetProps,
   InputSelectProps,
@@ -42,6 +43,7 @@ export interface SimpleVideoSchemaProps extends TemplateSchema {
     videoAsset: VideoAsset;
     options: SimpleVideoContentOptions;
   };
+  controlOptions: TemplateControlOptions;
 };
 
 export interface SimpleVideoCommons extends TemplateCommons {

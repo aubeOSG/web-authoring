@@ -365,7 +365,7 @@ export const Page = ({
   }, []);
 
   const handleCourseStart = useCallback((_ev) => {
-    setHasStartedCourse(true);
+    // setHasStartedCourse(true);
   }, []);
 
   const handleSubmitQuizAnswer = useCallback((_ev) => {
