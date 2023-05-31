@@ -1,2 +1,2 @@
 export * from './schema';
-export * from './assets-seed';
+export * from './seed';
