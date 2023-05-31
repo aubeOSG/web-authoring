@@ -23,6 +23,10 @@ export const getFilename = (pathname: string, ext?: string) => {
   return path.basename(pathname, ext);
 };
 
+export const getExt = (pathname: string) => {
+  return path.extname(pathname);
+};
+
 export const exists = (pathname: string): rq.ApiResult => {
   try {
     return {
@@ -50,6 +54,7 @@ export default {
   tempPath,
   normalize,
   getFilename,
+  getExt,
   exists,
   isJSON,
   join,
