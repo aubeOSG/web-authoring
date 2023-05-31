@@ -1,6 +1,6 @@
 import { db } from './db';
 import {
-  projectFolders,
+  workspaces,
   projects,
   assets
 } from './api/entities';
@@ -14,7 +14,7 @@ export const generate = async () => {
     console.log('adding uuid support');
     await connection.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
     console.log('seeding project folders');
-    await projectFolders.seed();
+    await workspaces.seed();
     console.log('seeding projects');
     await projects.seed();
     console.log('seeding assets');
