@@ -59,7 +59,7 @@ export const ModuleEditor = () => {
         modules: modules,
       };
 
-      console.log('new threshold: ', project.modules);
+      console.log('new threshold: ', newProj, project);
       // Projects.setData(newProj);
       closeModuleEditor();
     }

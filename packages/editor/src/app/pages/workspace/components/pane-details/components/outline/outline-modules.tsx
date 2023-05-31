@@ -214,6 +214,7 @@ export const OutlineModules = ({
   const handleAddModule = () => {
     Projects.addModule({
       id: -1,
+      passingThreshold: 75,
     });
   };
 

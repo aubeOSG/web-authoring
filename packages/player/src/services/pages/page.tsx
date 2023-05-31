@@ -3,7 +3,13 @@ import { PageProps } from './pages.types';
 import { TemplateComponent } from '../../root/root.types';
 import { Error } from '../../components';
 
-export const Page = ({ slides, templates, slideId, ...props }: PageProps) => {
+export const Page = ({
+  slides,
+  templates,
+  slideId,
+  passingThreshold,
+  ...props
+}: PageProps) => {
   const Scrowl = window['Scrowl'];
   const [hasStartedCourse, setHasStartedCourse] = useState(true);
 
@@ -224,7 +230,6 @@ export const Page = ({ slides, templates, slideId, ...props }: PageProps) => {
       />
     );
   } else {
-    console.log('slides: ', slides);
     return (
       <>
         {slides.map((slide, idx) => {
@@ -237,6 +242,19 @@ export const Page = ({ slides, templates, slideId, ...props }: PageProps) => {
           }
 
           const Template = templates[component] as TemplateComponent;
+
+          if (component === 'Quiz') {
+            return (
+              <Template
+                key={idx}
+                id={id}
+                schema={slide.template}
+                controller={controller}
+                slides={slides}
+                passingThreshold={passingThreshold}
+              />
+            );
+          }
 
           return (
             <Template
