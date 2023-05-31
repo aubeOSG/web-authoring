@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { PageProps } from './pages.types';
-import { TemplateComponent } from '../../root/root.types';
+import { LessonAttempt, TemplateComponent } from '../../root/root.types';
 import { Error } from '../../components';
 
 export const Page = ({
   slides,
   templates,
   slideId,
+  lesson,
   passingThreshold,
   ...props
 }: PageProps) => {
   const Scrowl = window['Scrowl'];
   const [hasStartedCourse, setHasStartedCourse] = useState(true);
-
-  console.log('templates: ', templates);
+  const [randomSlides, setRandomSlides] = useState([]);
+  const attempt = useRef(0);
+  const targets = useRef(['']);
 
   if (
     Scrowl &&
@@ -36,14 +38,101 @@ export const Page = ({
     }
   }
 
+  const timeStamp = new Date();
+  timeStamp.toLocaleString();
+  timeStamp.toLocaleDateString();
+  timeStamp.toLocaleTimeString();
+
+  const attempts: Array<LessonAttempt> = [
+    {
+      started_at: timeStamp,
+      finished_at: '',
+      questions: [],
+    },
+  ];
+
+  const questions: Array<any> = [];
+
+  slides.forEach((slide) => {
+    if (slide.template.meta.component === 'Quiz') {
+      const question: any = {};
+      const answers: Array<string> = [];
+      Object.keys(slide.template.content).forEach((key) => {
+        if (key.includes('answer')) {
+          //@ts-ignore
+          answers.push(slide.template.content[key].content.answerText.value);
+        }
+      });
+
+      question.id = `${props.id}--slide-${slide.id}-${slide.template.meta.filename}`;
+      question.correct = false;
+      question.question =
+        // @ts-ignore
+        slide.template.content.question.content.question.value;
+      question.answers = answers;
+
+      questions.push(question);
+    }
+  });
+
+  if (lesson.attempts && lesson.attempts?.length > 0) {
+    lesson.attempts[attempt.current].questions = questions;
+  } else {
+    attempts[attempt.current].questions = questions;
+    lesson.attempts = attempts;
+  }
+
   const controller = new Scrowl.core.scroll.Controller();
 
   let currentSlide = `module-${slides[0].moduleId}--lesson-${slides[0].lessonId}--slide-${slides[0].id}-${slides[0].template.meta.filename}`;
   let currentIndex = 0;
 
-  const targets = slides?.map((slide) => {
-    return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
-  });
+  if (randomSlides.length < 1) {
+    targets.current = slides?.map((slide) => {
+      return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
+    });
+  } else {
+    targets.current = randomSlides?.map((slide) => {
+      //@ts-ignore
+      return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
+    });
+  }
+
+  const randomize = (slides) => {
+    const intro = slides.shift();
+    const outro = slides.pop();
+
+    const newArray = [...slides];
+    const length = newArray.length;
+
+    for (let start = 0; start < length; start++) {
+      const randomPosition = Math.floor(
+        (newArray.length - start) * Math.random()
+      );
+      const randomItem = newArray.splice(randomPosition, 1);
+
+      newArray.push(...randomItem);
+    }
+
+    slides.unshift(intro);
+    slides.push(outro);
+
+    newArray.unshift(intro);
+    newArray.push(outro);
+
+    const setIsLoading = new CustomEvent('setIsLoading', {
+      detail: newArray,
+    });
+    document.dispatchEvent(setIsLoading);
+
+    const target = document.querySelector(`#${targets.current[0]}`);
+
+    setTimeout(() => {
+      // @ts-ignore
+      setRandomSlides(newArray);
+      target?.scrollIntoView(false);
+    }, 600);
+  };
 
   const handleArrowKeys = (ev) => {
     if (Scrowl && Scrowl.runtime) {
@@ -62,16 +151,16 @@ export const Page = ({
 
     let matchingId;
 
-    if (targets && currentSlide !== 'owlui-last') {
-      matchingId = targets.find((t) => {
+    if (targets.current && currentSlide !== 'owlui-last') {
+      matchingId = targets.current.find((t) => {
         return t === currentSlide;
       });
     } else {
-      currentIndex = targets.length;
+      currentIndex = targets.current.length;
     }
 
     if (matchingId) {
-      currentIndex = targets?.indexOf(matchingId);
+      currentIndex = targets.current?.indexOf(matchingId);
     }
 
     let targetID;
@@ -79,36 +168,104 @@ export const Page = ({
 
     switch (ev.key) {
       case 'ArrowLeft':
+        if (currentIndex === 0) {
+          return;
+        }
         if (currentIndex === 1) {
-          targetID = targets[0];
+          targetID = targets.current[0];
           targetElement = document.querySelector(`#${targetID}`);
           currentIndex = 0;
           currentSlide = `module-${slides[0].moduleId}--lesson-${slides[0].lessonId}--slide-${slides[0].id}-${slides[0].template.meta.filename}`;
           setTimeout(() => {
-            targetElement?.scrollIntoView(false);
+            targetElement?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'start',
+            });
           }, 0);
         } else {
-          targetID = targets[currentIndex - 1];
+          targetID = targets.current[currentIndex - 1];
           targetElement = document.querySelector(`#${targetID}`);
-          setTimeout(() => {
-            targetElement?.scrollIntoView(false);
-          }, 0);
+
+          if (
+            slides[currentIndex - 1].template.controlOptions.disableAnimations
+              .value === true
+          ) {
+            setTimeout(() => {
+              targetElement?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+              });
+            }, 0);
+          } else {
+            setTimeout(() => {
+              targetElement?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+              });
+            }, 0);
+          }
         }
         break;
       case 'ArrowRight':
-        if (currentIndex + 1 === targets.length) {
+        if (currentIndex === targets.current.length) {
+          return;
+        }
+        if (currentIndex + 1 === targets.current.length) {
           targetElement = document.querySelector('.owlui-last');
           setTimeout(() => {
-            targetElement?.scrollIntoView(true);
+            targetElement?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'start',
+            });
           }, 0);
           currentSlide = 'owlui-last';
         } else {
-          targetID = targets[currentIndex + 1];
+          targetID = targets.current[currentIndex + 1];
           targetElement = document.querySelector(`#${targetID}`);
+          const currentSlideElement = document.querySelector(
+            `#${targets[currentIndex]}`
+          );
 
-          setTimeout(() => {
-            targetElement?.scrollIntoView(true);
-          }, 0);
+          let scrollMagicPin;
+
+          if (
+            slides[currentIndex].template.controlOptions.disableAnimations
+              .value === false
+          ) {
+            scrollMagicPin = currentSlideElement?.parentElement?.parentElement;
+          }
+
+          if (
+            slides[currentIndex + 1].template.controlOptions.disableAnimations
+              .value === true &&
+            slides[currentIndex].template.controlOptions.disableAnimations
+              .value === false
+          ) {
+            const pinHeight = scrollMagicPin.style.minHeight;
+            const adjustedMargin = Math.abs(parseInt(pinHeight) / 2) * -1;
+
+            scrollMagicPin.style.marginBottom = `${adjustedMargin.toString()}px`;
+
+            setTimeout(() => {
+              targetElement?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+              });
+            }, 0);
+          } else {
+            setTimeout(() => {
+              targetElement?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+              });
+            }, 0);
+          }
         }
         break;
     }
@@ -181,7 +338,7 @@ export const Page = ({
     let targetElements;
 
     setTimeout(() => {
-      targetElements = targets.map((target) => {
+      targetElements = targets.current.map((target) => {
         return document.querySelector(`#${target}`);
       });
 
@@ -205,14 +362,88 @@ export const Page = ({
     return () => {
       controller.destroy(true);
     };
-  });
+  }, []);
+
+  const handleCourseStart = useCallback((_ev) => {
+    setHasStartedCourse(true);
+  }, []);
+
+  const handleSubmitQuizAnswer = useCallback((_ev) => {
+    const updateOutro = new CustomEvent('updateOutro', {
+      detail: _ev.detail,
+    });
+    document.dispatchEvent(updateOutro);
+
+    if (_ev.detail.correct) {
+      const currentIndex = targets.current.indexOf(currentSlide);
+      const nextSlide = document.querySelector(
+        `#${targets.current[currentIndex + 1]}`
+      );
+
+      nextSlide?.scrollIntoView();
+    }
+  }, []);
+
+  const handleResetQuiz = useCallback((_ev) => {
+    const resetQuestions: Array<any> = [];
+    const timeStamp = new Date();
+    timeStamp.toLocaleString();
+    timeStamp.toLocaleDateString();
+    timeStamp.toLocaleTimeString();
+
+    if (lesson.attempts) {
+      lesson.attempts[attempt.current].questions = _ev.detail.lessonQuestions;
+    }
+
+    const newAttempt = {
+      started_at: timeStamp,
+      finished_at: '',
+      questions: [] as any,
+    };
+    if (lesson.attempts) {
+      lesson.attempts[attempt.current].finished_at = timeStamp;
+    }
+
+    slides.forEach((slide) => {
+      if (slide.template.meta.component === 'Quiz') {
+        const question: any = {};
+        const answers: Array<string> = [];
+        //@ts-ignore
+        slide.template.content.answers.content.forEach((answer) => {
+          answers.push(answer.value);
+        });
+        question.id = `${props.id}--slide-${slide.id}-${slide.template.meta.filename}`;
+        question.correct = false;
+        question.question =
+          // @ts-ignore
+          slide.template.content.question.content.question.value;
+        question.answers = answers;
+        resetQuestions.push(question);
+        newAttempt.questions = resetQuestions;
+      }
+    });
+
+    var ele: any = document.querySelectorAll('input[type=radio]');
+    ele.forEach((el) => {
+      el.checked = false;
+    });
+
+    lesson.attempts?.push(newAttempt);
+    attempt.current++;
+
+    randomize(_ev.detail.slides);
+  }, []);
 
   useEffect(() => {
-    const handleCourseStart = (_ev) => {
-      setHasStartedCourse(true);
-    };
-
+    document.addEventListener('quizCompleted', handleSubmitQuizAnswer);
     document.addEventListener('startCourse', handleCourseStart);
+    document.addEventListener('resetQuiz', handleResetQuiz);
+
+    return () => {
+      document.removeEventListener('quizCompleted', handleSubmitQuizAnswer);
+      document.removeEventListener('startCourse', handleCourseStart);
+      document.removeEventListener('resetQuiz', handleResetQuiz);
+    };
   }, []);
 
   if (!hasStartedCourse) {
@@ -229,13 +460,15 @@ export const Page = ({
         slides={slides[0]}
       />
     );
-  } else {
+  } else if (randomSlides.length > 0) {
     return (
       <>
-        {slides.map((slide, idx) => {
+        {/* @ts-ignore */}
+        {randomSlides.map((slide, idx) => {
+          //@ts-ignore
           const id = `${props.id}--slide-${slide.id}`;
+          //@ts-ignore
           const component = slide.template.meta.component;
-          console.log('hmm ', templates[component]);
 
           if (!templates.hasOwnProperty(component)) {
             return <Error msg={`Unabled to find template: ${component}`} />;
@@ -243,7 +476,49 @@ export const Page = ({
 
           const Template = templates[component] as TemplateComponent;
 
-          if (component === 'Quiz') {
+          if (component === 'Quiz' || component === 'LessonOutro') {
+            return (
+              <Template
+                key={idx}
+                id={id}
+                //@ts-ignore
+                schema={slide.template}
+                controller={controller}
+                slides={randomSlides}
+                lesson={lesson}
+                attempt={attempt}
+                passingThreshold={passingThreshold}
+              />
+            );
+          }
+
+          return (
+            <Template
+              key={idx}
+              id={id}
+              //@ts-ignore
+              schema={slide.template}
+              controller={controller}
+              slides={slides}
+            />
+          );
+        })}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {slides.map((slide, idx) => {
+          const id = `${props.id}--slide-${slide.id}`;
+          const component = slide.template.meta.component;
+
+          if (!templates.hasOwnProperty(component)) {
+            return <Error msg={`Unabled to find template: ${component}`} />;
+          }
+
+          const Template = templates[component] as TemplateComponent;
+
+          if (component === 'Quiz' || component === 'LessonOutro') {
             return (
               <Template
                 key={idx}
@@ -251,6 +526,8 @@ export const Page = ({
                 schema={slide.template}
                 controller={controller}
                 slides={slides}
+                lesson={lesson}
+                attempt={attempt}
                 passingThreshold={passingThreshold}
               />
             );

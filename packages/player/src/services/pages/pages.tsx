@@ -115,6 +115,7 @@ export const create = (
                     slides={page.slides}
                     templates={templateList}
                     slideId={slideId}
+                    lesson={page.lesson}
                     passingThreshold={passingThreshold}
                   />
                 </Suspense>
