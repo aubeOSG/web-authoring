@@ -4,7 +4,11 @@ import { Collapse } from 'react-bootstrap';
 import { OutlineModulesProps, OutlineModuleItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { OutlineLessons } from './outline-lessons';
-import { resetActiveSlide, useActiveSlide } from '../../../../';
+import {
+  openModuleEditor,
+  resetActiveSlide,
+  useActiveSlide,
+} from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys, events } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
@@ -55,6 +59,12 @@ export const OutlineModuleItem = ({
       label: 'Rename',
       click: () => {
         setIsEdit(true);
+      },
+    },
+    {
+      label: 'Edit',
+      click: () => {
+        openModuleEditor();
       },
     },
     { type: 'separator' },
