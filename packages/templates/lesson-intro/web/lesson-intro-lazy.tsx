@@ -1,11 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
-const LessonIntroLazy = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "template-lesson-intro" */ '../src/lesson-intro'
-    )
-);
+const LessonIntroLazy = lazy(() => import('../src/lesson-intro'));
 
 const LessonIntro = (props) => {
   return (

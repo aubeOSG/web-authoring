@@ -1,11 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
-const SimpleVideoLazy = lazy(
-  () =>
-    import(
-      /* webpackChunkName: "template-simple-video" */ '../src/simple-video'
-    )
-);
+const SimpleVideoLazy = lazy(() => import('../src/simple-video'));
 
 const SimpleVideo = (props) => {
   return (
