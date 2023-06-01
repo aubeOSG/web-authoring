@@ -32,6 +32,6 @@ module.exports = merge(common, {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     asyncChunks: true,
-    chunkFilename: 'scrowl.[name].component.js',
+    chunkFilename: 'scrowl.template-two-column.[name].component.js',
   },
 });

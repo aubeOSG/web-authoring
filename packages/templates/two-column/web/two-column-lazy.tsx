@@ -1,9 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
-const TwoColumnLazy = lazy(
-  () =>
-    import(/* webpackChunkName: "template-two-column" */ '../src/two-column')
-);
+const TwoColumnLazy = lazy(() => import('../src/two-column'));
 
 const TwoColumn = (props) => {
   return (
