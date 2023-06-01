@@ -63,7 +63,7 @@ export const viewer: TemplatesApiViewer = {
         }
 
         if (isTemplateJs) {
-          const templateFolder = filename.replace('scrowl.template-', '').replace('.component', '').replace('.js', '');;
+          const templateFolder = filename.replace('scrowl.template-', '').replace(/.(\d)+/g, '').replace('.component', '').replace('.js', '');
           const templatePath = fs.utils.join(templatesPath, templateFolder, filename);
           res.sendFile(templatePath);
           return;
