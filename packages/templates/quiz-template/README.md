@@ -1,1 +1,0 @@
-# Scrowl Template Block Text
