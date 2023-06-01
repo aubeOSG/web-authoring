@@ -109,6 +109,7 @@ export interface InputTextboxProps extends BaseInputProps {
 
 export interface InputFieldsetProps extends BaseInputProps {
   type: 'Fieldset';
+  disableFlag?: string;
   content: {
     [key: string]:
       | InputAssetProps

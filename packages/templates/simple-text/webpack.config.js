@@ -31,6 +31,6 @@ module.exports = merge(common, {
     libraryTarget: 'umd',
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    chunkFilename: 'scrowl.[name].component.js',
+    chunkFilename: 'scrowl.template-simple-text.[name].component.js',
   },
 });

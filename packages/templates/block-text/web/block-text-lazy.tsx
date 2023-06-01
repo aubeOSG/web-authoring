@@ -1,9 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 
-const BlockTextLazy = lazy(
-  () =>
-    import(/* webpackChunkName: "template-block-text" */ '../src/block-text')
-);
+const BlockTextLazy = lazy(() => import('../src/block-text'));
 
 const BlockText = (props) => {
   return (

@@ -68,7 +68,7 @@ export const viewer: express.Handler = (req, res) => {
         res.sendStatus(rq.status.codes.internal);
         return;
       }
-
+      
       templateData = getTemplateData(req.query);
       const compileResHtml = templater.compile(readHtml.data.contents, {
         templateJs: `./scrowl.template-${templateData.template}.js?ver=${cacheBreaker}`,
@@ -95,7 +95,7 @@ export const viewer: express.Handler = (req, res) => {
       }
 
       if (isTemplateJs) {
-        const templateFolder = filename.replace('scrowl.template-', '').replace('.component', '').replace('.js', '');;
+        const templateFolder = filename.replace('scrowl.template-', '').replace(/.(\d)+/g, '').replace('.component', '').replace('.js', '');
         const templatePath = path.join(templatesPath, templateFolder, filename);
         res.sendFile(templatePath);
         return;
