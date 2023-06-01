@@ -1,8 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 
-const QuizLazy = lazy(
-  () => import(/* webpackChunkName: "template-quiz" */ '../src/quiz')
-);
+const QuizLazy = lazy(() => import('../src/quiz'));
+//   () => import(/* webpackChunkName: "template-quiz" */ '../src/quiz')
+// );
 
 const Quiz = (props) => {
   return (
