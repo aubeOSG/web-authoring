@@ -9,7 +9,6 @@
     "start:update": "yarn run update && yarn run start",
     "start": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env up --build -V && docker-compose logs -f -t server",
     "serve": "yarn workspace @scrowl/editor run start",
-    "seed": "docker exec containers-authoring-editor-server-1 yarn workspace @scrowl/editor run seed",
     "stop": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env down && docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env rm",
     "version": "lerna version --conventional-commits --no-git-tag-version"
   },

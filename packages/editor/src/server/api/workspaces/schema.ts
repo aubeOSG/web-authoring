@@ -3,7 +3,7 @@ import { table as userTable } from '../users';
 
 export const table: string = 'workspaces';
 
-export const schema: Schema = [
+export const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -57,5 +57,5 @@ export const schema: Schema = [
 
 export default {
   table,
-  schema,
+  definition,
 };

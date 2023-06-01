@@ -1,9 +1,9 @@
 import { Schema } from '../../db';
 import { table as workspaceTable } from '../workspaces';
 
-export const table: string = 'assets';
+const table: string = 'assets';
 
-export const schema: Schema = [
+const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -85,7 +85,14 @@ export const schema: Schema = [
   },
 ];
 
-export default {
+const schema = {
   table,
-  schema,
+  definition,
 };
+
+export {
+  table,
+  definition,
+};
+
+export default schema;

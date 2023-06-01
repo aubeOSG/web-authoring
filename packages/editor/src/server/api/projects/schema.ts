@@ -3,7 +3,7 @@ import { table as workspaceTable } from '../workspaces';
 
 export const table: string = 'projects';
 
-export const schema: Schema = [
+export const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -75,5 +75,5 @@ export const schema: Schema = [
 
 export default {
   table,
-  schema,
+  definition,
 };

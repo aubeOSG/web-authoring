@@ -1,9 +1,7 @@
 import get from './get';
 
-export const API = {
+export const api = {
   get,
 };
 
-export default {
-  get,
-}
+export default api;

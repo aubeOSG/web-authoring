@@ -9,9 +9,9 @@ export const Route = '/api';
 export const init = (app: express.Application) => {
   const router = express.Router();
   
-  rq.register.addAll(router, endpoints.API);
-  rq.register.addAll(router, projects.API);
-  rq.register.addAll(router, templates.API);
+  rq.register.addAll(router, endpoints.api);
+  rq.register.addAll(router, projects.api);
+  rq.register.addAll(router, templates.api);
   app.use(Route, router);
 };
 

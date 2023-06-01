@@ -15,7 +15,7 @@ export const config: Config = {
 
 export const get = () => {
   return knex({
-    client: 'postgress',
+    client: 'pg',
     connection: {
       host: config.host,
       user: config.user,

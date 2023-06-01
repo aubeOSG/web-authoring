@@ -1,13 +1,12 @@
-import { db, utils } from '../../db';
-import { table, schema } from './schema';
+import { Knex } from 'knex';
+import { connection, utils } from '../../db';
+import { table, definition } from './schema';
 
-export const seed = () => {
+export const seed = (db: Knex) => {
   return new Promise(async(resolve, reject) => {
     try {
-      const connection = db.get();
-
-      await utils.table.drop(connection, table);
-      await utils.table.create(connection, table, schema, db.config);
+      await utils.table.drop(db, table);
+      await utils.table.create(db, table, definition, connection.config);
       resolve(true);
     } catch (e) {
       reject(e);
@@ -15,6 +14,4 @@ export const seed = () => {
   });
 };
 
-export default {
-  seed,
-};
+export default seed;

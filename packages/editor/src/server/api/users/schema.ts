@@ -2,7 +2,7 @@ import { Schema } from '../../db';
 
 export const table: string = 'users';
 
-export const schema: Schema = [
+export const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -37,5 +37,5 @@ export const schema: Schema = [
 
 export default {
   table,
-  schema,
+  definition,
 };

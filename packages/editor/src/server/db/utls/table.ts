@@ -7,7 +7,7 @@ export const drop = (
   table: string,
 ) => {
   console.log(`dropping table ${table}`);
-  return db.schema.dropTableIfExists(table);
+  return db.raw(`DROP TABLE IF EXISTS ${table} CASCADE`);
 };
 
 const uuid = (
