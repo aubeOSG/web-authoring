@@ -44,6 +44,7 @@ export interface BlockTextSchemaProps extends TemplateSchema {
     bgImage: BlockTextContentBgImage;
     options: BlockTextContentOptions;
   };
+  controlOptions: TemplateControlOptions;
 };
 
 export interface BlockTextCommons extends TemplateCommons {

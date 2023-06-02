@@ -43,7 +43,7 @@ export const SimpleVideoSchema: SimpleVideoSchemaProps = {
           //   'https://www.ted.com/talks/pia_mancini_how_to_upgrade_democracy_for_the_internet_era',
           // value: 'https://www.dailymotion.com/video/x873541',
           // value: 'https://vimeo.com/253989945',
-          // value: 'https://www.youtube.com/watch?v=Z_ppk0iQnsA',
+          value: 'https://www.youtube.com/watch?v=Z_ppk0iQnsA',
         },
       },
     },
@@ -88,7 +88,7 @@ export const SimpleVideoSchema: SimpleVideoSchemaProps = {
     disableAnimations: {
       type: 'Checkbox',
       label: 'Disable Animations',
-      value: true,
+      value: false,
     },
   },
 };

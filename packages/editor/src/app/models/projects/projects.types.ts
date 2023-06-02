@@ -5,6 +5,7 @@ import type { PreviewTypes } from '../../services/menu';
 export type ProjectModule = {
   id: number;
   name: string;
+  passingThreshold: number;
 };
 
 export type ProjectLesson = {

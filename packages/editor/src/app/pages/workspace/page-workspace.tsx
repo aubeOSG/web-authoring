@@ -15,6 +15,7 @@ import {
   TemplateBrowser,
   PromptProjectName,
   PublishProgress,
+  ModuleEditor,
 } from './components';
 import { Projects, Settings, Workspaces } from '../../models';
 import { menu, sys, events } from '../../services';
@@ -283,6 +284,7 @@ export const Page = () => {
         <PaneEditor />
       </div>
       <TemplateBrowser />
+      <ModuleEditor />
       <PromptProjectName />
       <PublishProgress />
     </>
