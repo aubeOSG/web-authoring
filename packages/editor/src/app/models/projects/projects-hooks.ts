@@ -439,6 +439,23 @@ export const create = (data: {
   });
 };
 
+export const get = (data: {
+  projectId?: string;
+  workspaceId?: string;
+}): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    API.get(data).then((res) => {
+      if (res.error) {
+        console.error(res);
+      } else {
+        setData(res.data);
+      }
+
+      resolve(res);
+    });
+  })
+};
+
 export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
     API.upload(req).then((res) => {
@@ -582,6 +599,7 @@ export default {
   setAsset,
   removeAsset,
   create,
+  get,
   upload,
   save,
   publish,

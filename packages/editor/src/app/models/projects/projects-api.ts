@@ -16,6 +16,7 @@ const ENDPOINTS = {
   open: '/projects/open',
   previewAsset: '/projects/preview-asset',
   preview: '/projects/preview',
+  get: '/projects',
 };
 
 const WINDOW_ENDPOINTS = {
@@ -28,6 +29,13 @@ export const create = (data: {
   blueprint?: string
 }): Promise<rq.ApiResult> => {
   return rq.invoke(ENDPOINTS.create, data, 'POST');
+};
+
+export const get = (data: {
+  projectId?: string,
+  workspaceId?: string,
+}): Promise<rq.ApiResult> => {
+  return rq.invoke(ENDPOINTS.get, data);
 };
 
 export const upload = (data?): Promise<rq.ApiResult> => {

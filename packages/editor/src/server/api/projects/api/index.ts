@@ -7,6 +7,7 @@ import { publish } from './publish';
 import save from './save';
 import upload from './upload';
 import uploadProgress from './upload-progress';
+import get from './get';
 
 export const api = {
   create,
@@ -18,6 +19,7 @@ export const api = {
   save,
   upload,
   uploadProgress,
+  get,
 };
 
 export default api;

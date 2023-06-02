@@ -49,21 +49,27 @@ export const Page = () => {
   const [inProgress, setProgress] = useState(false);
   const isListening = useRef(false);
   const pageParams = useParams();
-  const workspaceLoading = useRef(false);
+  const projectLoading = useRef(false);
 
   useEffect(() => {
+    if (projectData.id) {
+      return;
+    }
+
     if (!pageParams.id) {
       return;
     }
 
-    if (workspaceLoading.current) {
+    if (projectLoading.current) {
       return;
     }
 
-    workspaceLoading.current = true;
-    Workspaces.get(pageParams.id).then((res) => {
-      workspaceLoading.current = false;
-      console.log('workspace get', res);
+    projectLoading.current = true;
+    Projects.get({
+      workspaceId: pageParams.id,
+    }).then((res) => {
+      projectLoading.current = false;
+      console.log('project get', res);
     });
   }, [pageParams]);
 
