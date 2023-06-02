@@ -133,10 +133,7 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
 
           switch (res.data.response) {
             case 0:
-              Projects.save({
-                data: projectData,
-                assets,
-              }).then((saveRes) => {
+              Projects.save(projectData).then((saveRes) => {
                 if (saveRes.data && saveRes.data.action) {
                   switch (saveRes.data.action) {
                     case 'prompt-project-name':

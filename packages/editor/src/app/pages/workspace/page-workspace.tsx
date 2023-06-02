@@ -35,7 +35,7 @@ export const openProject = (project: Projects.ProjectMeta) => {
 
     setTimeout(() => {
       Projects.setAssets(res.data.file.assets);
-      Projects.setData(res.data.project);
+      Projects.setData(res.data);
     }, 1);
   });
 };
@@ -68,10 +68,7 @@ export const Page = () => {
 
           switch (res.data.response) {
             case 0:
-              Projects.save({
-                data: projectData,
-                assets,
-              }).then((saveRes) => {
+              Projects.save(projectData).then((saveRes) => {
                 if (saveRes.data && saveRes.data.action) {
                   switch (saveRes.data.action) {
                     case 'prompt-project-name':
@@ -99,7 +96,7 @@ export const Page = () => {
     };
 
     const saveListener = () => {
-      Projects.save({ data: projectData, assets }).then((res) => {
+      Projects.save(projectData).then((res) => {
         if (!isListening.current) {
           return;
         }
@@ -205,10 +202,7 @@ export const Page = () => {
 
             switch (res.data.response) {
               case 0:
-                Projects.save({
-                  data: projectData,
-                  assets,
-                }).then((saveRes) => {
+                Projects.save(projectData).then((saveRes) => {
                   if (saveRes.data && saveRes.data.action) {
                     switch (saveRes.data.action) {
                       case 'prompt-project-name':

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { ButtonGroup, Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
@@ -281,6 +281,12 @@ export const Header = () => {
     setIsOpenConfirmation(false);
   };
 
+  const handleSave = () => {
+    Projects.save(projectData).then((res) => {
+      console.log('saveRes', res);
+    });
+  };
+
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
       let newWidth = projectNameRef.current.offsetWidth + 6;
@@ -394,6 +400,17 @@ export const Header = () => {
                   opsz={20}
                 />
                 Publish
+              </ui.Button>
+            </Nav.Item>
+            <Nav.Item>
+              <ui.Button
+                className={`ms-3 ${css.projectActionsBtn}`}
+                variant="primary"
+                size="sm"
+                onClick={handleSave}
+              >
+                <ui.Icon icon="save" filled display="sharp" opsz={20} />
+                Save
               </ui.Button>
             </Nav.Item>
           </Nav>

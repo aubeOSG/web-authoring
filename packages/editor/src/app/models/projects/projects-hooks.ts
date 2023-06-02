@@ -429,6 +429,7 @@ export const create = (data: {
       if (res.error) {
         console.error(res)
       } else {
+        console.log('created', res);
         setData(res.data);
         // setAssets(res.data.assets);
       }
@@ -450,7 +451,7 @@ export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
   });
 };
 
-export const save = (req: ProjectsReqSave): Promise<rq.ApiResult> => {
+export const save = (req: ProjectData): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
     API.save(req).then((res) => {
       if (processor.dispatch) {
@@ -461,7 +462,7 @@ export const save = (req: ProjectsReqSave): Promise<rq.ApiResult> => {
       if (res.error) {
         console.error(res);
       } else {
-        setData(res.data.project);
+        setData(res.data);
       }
 
       resolve(res);
