@@ -63,6 +63,7 @@ export const InputFactory = ({
           onValidate={onValidate}
           onBlur={onBlur}
           onFocus={onFocus}
+          //@ts-ignore
           disableFlag={disableFlag}
         />
       );

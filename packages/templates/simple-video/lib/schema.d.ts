@@ -1,5 +1,5 @@
 import React from "react";
-import { TemplateSchemaMeta, TemplateCommons, InputTextboxProps, InputFieldsetProps, InputSelectProps, InputCheckboxProps, InputAssetProps, TemplateSchema } from "@scrowl/template-core";
+import { TemplateSchemaMeta, TemplateCommons, TemplateControlOptions, InputTextboxProps, InputFieldsetProps, InputSelectProps, InputCheckboxProps, InputAssetProps, TemplateSchema } from "@scrowl/template-core";
 export { TemplateSchemaMeta, TemplateCommons, InputTextboxProps, InputFieldsetProps, InputSelectProps, InputCheckboxProps, InputAssetProps };
 export interface VideoAsset extends InputFieldsetProps {
     content: {
@@ -21,6 +21,7 @@ export interface SimpleVideoSchemaProps extends TemplateSchema {
         videoAsset: VideoAsset;
         options: SimpleVideoContentOptions;
     };
+    controlOptions: TemplateControlOptions;
 }
 export interface SimpleVideoCommons extends TemplateCommons {
     schema: SimpleVideoSchemaProps;

@@ -20,6 +20,7 @@ const SimpleText = ({ id, schema, ...props }: SimpleTextProps) => {
   };
   const textAnimiationDuration = 120;
   const disableAnimations = schema.controlOptions.disableAnimations?.value;
+  const stopUserAdvancement = schema.controlOptions.stopUserAdvancement.value;
   const animations = schema.content.animateLists.value;
   const bgUrl = schema.content.bgImage.content.url.value;
   const bgLabel = schema.content.bgImage.content.alt.value || '';
@@ -120,6 +121,7 @@ const SimpleText = ({ id, schema, ...props }: SimpleTextProps) => {
       className={classes}
       onProgress={handleSlideProgress}
       notScene={disableAnimations ? true : false}
+      stopUserAdvancement={stopUserAdvancement}
       {...props}
     >
       <div id={contentId} className="owlui-container">

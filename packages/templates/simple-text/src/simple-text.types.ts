@@ -2,6 +2,7 @@ import React from 'react';
 import {
   TemplateSchemaMeta,
   TemplateCommons,
+  TemplateControlOptions,
   InputTextboxProps,
   InputFieldsetProps,
   InputSelectProps,
@@ -30,6 +31,7 @@ export interface SimpleTextSchemaProps extends TemplateSchema {
     options: SimpleTextContentOptions;
     animateLists?: any;
   };
+  controlOptions: TemplateControlOptions;
 };
 
 export interface SimpleTextCommons extends TemplateCommons {

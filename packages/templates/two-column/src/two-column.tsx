@@ -61,6 +61,7 @@ const TwoColumn = ({ id, schema, ...props }: TwoColumnProps) => {
   const secondColumn = schema.content.secondColumn.content;
   const thirdColumn = schema.content.thirdColumn.content;
   const disableAnimation = schema.controlOptions.disableAnimations?.value;
+  const stopUserAdvancement = schema.controlOptions.stopUserAdvancement?.value;
 
   if (stackOnMobile) {
     switch (numberOfColumns) {
@@ -85,6 +86,7 @@ const TwoColumn = ({ id, schema, ...props }: TwoColumnProps) => {
       id={`slide-${contentId}`}
       className={classes}
       notScene={disableAnimation ? true : false}
+      stopUserAdvancement={stopUserAdvancement}
       {...props}
     >
       <div id={contentId}>

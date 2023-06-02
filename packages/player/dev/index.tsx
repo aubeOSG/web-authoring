@@ -4,6 +4,7 @@ import { ui } from '@scrowl/ui';
 import { core } from '@scrowl/template-core';
 import BlockText from '@scrowl/template-block-text/src/block-text';
 import LessonIntro from '@scrowl/template-lesson-intro/src/lesson-intro';
+import Quiz from '@scrowl/template-quiz/src/quiz';
 import SimpleText from '@scrowl/template-simple-text/src/simple-text';
 import SimpleVideo from '@scrowl/template-simple-video/src/simple-video';
 import TwoColumn from '@scrowl/template-two-column/src/two-column';
@@ -26,6 +27,7 @@ const App = () => {
     SimpleText: SimpleText,
     TwoColumn: TwoColumn,
     SimpleVideo: SimpleVideo,
+    Quiz: Quiz,
   };
   // @ts-ignore
   return <player.Root project={project} templateList={templateList} />;

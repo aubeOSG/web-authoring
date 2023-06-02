@@ -16,6 +16,7 @@ export const Template = ({
   onLeave,
   children,
   notScene,
+  stopUserAdvancement,
   ...props
 }: TemplateProps) => {
   let classes = `${css.slide}`;
@@ -34,6 +35,8 @@ export const Template = ({
   });
   // @ts-ignore
   const [scroll, setScroll] = useState(false);
+  // @ts-ignore
+  const [userIsStopped, setUserIsStopped] = useState(stopUserAdvancement);
 
   const Scrowl = window['Scrowl'];
 
@@ -355,6 +358,14 @@ export const Template = ({
   }, [windowSize, duration, isReady.current, triggerRef.current, isNotScene]);
 
   useEffect(() => {
+    const handleVideoSlideEnter = (_ev) => {
+      console.log('inside core handler');
+    };
+
+    const handleQuizCompleted = (_ev) => {
+      setUserIsStopped(false);
+    };
+
     const handleStart = (ev) => {
       if (Scrowl.runtime) {
         Scrowl.runtime.setCourseStart();
@@ -372,17 +383,15 @@ export const Template = ({
         const targetIndex = domSlides[index + 1];
         const nextTarget = document.querySelector(`#${targetIndex}`);
 
-        nextTarget?.scrollIntoView();
+        nextTarget?.scrollIntoView({
+          behavior: 'auto',
+          block: 'center',
+          inline: 'start',
+        });
       }, 250);
     };
-    document.addEventListener('startCourse', handleStart);
-  }, []);
-
-  useEffect(() => {
-    const handleVideoSlideEnter = (_ev) => {
-      console.log('inside core handler');
-    };
     document.addEventListener('videoEnded', handleVideoSlideEnter);
+    document.addEventListener('startCourse', handleStart);
   }, []);
 
   return (

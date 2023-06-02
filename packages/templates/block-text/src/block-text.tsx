@@ -24,6 +24,8 @@ const BlockText = ({ id, schema, ...props }: BlockTextProps) => {
   const alignment = schema.content.options.content.alignment.value;
   const alignmentCss = alignment === 'right' ? 'right' : 'left';
   const disableAnimations = schema.controlOptions.disableAnimations?.value;
+  //@ts-ignore
+  const stopUserAdvancement = schema.controlOptions.stopUserAdvacement?.value;
   const showProgressBar = schema.content.options.content.showProgress.value;
   const showProgressRef = useRef(showProgressBar);
   const slideProgress = useRef(0);
@@ -92,6 +94,7 @@ const BlockText = ({ id, schema, ...props }: BlockTextProps) => {
       onProgress={handleSlideProgress}
       onEnd={handleSlideEnd}
       notScene={disableAnimations ? true : false}
+      stopUserAdvancement={stopUserAdvancement}
       {...props}
     >
       <div id={contentId} className="owlui-container">
