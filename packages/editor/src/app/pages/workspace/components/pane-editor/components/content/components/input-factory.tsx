@@ -17,7 +17,6 @@ export const InputFactory = ({
   onValidate,
   onBlur,
   onFocus,
-  //@ts-ignore
   disableFlag,
 }: InputFactoryProps) => {
   switch (content.type) {
@@ -30,7 +29,6 @@ export const InputFactory = ({
           onValidate={onValidate}
           onBlur={onBlur}
           onFocus={onFocus}
-          //@ts-ignore
           disabled={disableFlag === 'assetUrl' ? true : false}
         />
       );
@@ -100,7 +98,6 @@ export const InputFactory = ({
           onValidate={onValidate}
           onBlur={onBlur}
           onFocus={onFocus}
-          //@ts-ignore
           disabled={
             disableFlag === 'webUrl' && content.label === 'Embed URL'
               ? true

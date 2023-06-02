@@ -15,7 +15,6 @@ export const Fieldset = ({
   onFocus,
   onBlur,
   content,
-  //@ts-ignore
   disableFlag,
   ...props
 }: InputFieldsetProps) => {
@@ -60,7 +59,6 @@ export const Fieldset = ({
               onValidate={handleFieldOnValidate}
               onBlur={handleFieldOnBlur}
               onFocus={handleFieldOnFocus}
-                  //@ts-ignore
               disableFlag={disableFlag}
             />
           );
