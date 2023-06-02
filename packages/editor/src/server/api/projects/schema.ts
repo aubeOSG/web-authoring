@@ -1,9 +1,9 @@
 import { Schema } from '../../db';
-import { table as folderTable } from '../project-folders';
+import { table as workspaceTable } from '../workspaces';
 
 export const table: string = 'projects';
 
-export const schema: Schema = [
+export const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -12,21 +12,21 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'created_at',
+      name: 'createdAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'deleted_at',
+      name: 'deletedAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'folder_id',
+      name: 'workspaceId',
       type: 'foreign',
-      table: folderTable,
+      table: workspaceTable,
     }
   },
   {
@@ -75,5 +75,5 @@ export const schema: Schema = [
 
 export default {
   table,
-  schema,
+  definition,
 };

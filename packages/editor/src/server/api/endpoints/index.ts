@@ -1,1 +1,9 @@
-export * from './endpoints';
+import api from './api';
+
+export {
+  api,
+};
+
+export default {
+  api,
+};

@@ -420,19 +420,40 @@ export const removeAsset = (data) => {
   processor.dispatch(state.removeAssetItem(data));
 };
 
-export const create = (blueprint?: string): Promise<rq.ApiResult> => {
+export const create = (data: {
+  workspaceId: string,
+  blueprint?: string
+}): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
-    API.create(blueprint).then((res) => {
+    API.create(data).then((res) => {
       if (res.error) {
         console.error(res)
       } else {
-        setData(res.data.project);
-        setAssets(res.data.assets);
+        console.log('created', res);
+        setData(res.data);
+        // setAssets(res.data.assets);
       }
 
       resolve(res);
     });
   });
+};
+
+export const get = (data: {
+  projectId?: string;
+  workspaceId?: string;
+}): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    API.get(data).then((res) => {
+      if (res.error) {
+        console.error(res);
+      } else {
+        setData(res.data);
+      }
+
+      resolve(res);
+    });
+  })
 };
 
 export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
@@ -447,7 +468,7 @@ export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
   });
 };
 
-export const save = (req: ProjectsReqSave): Promise<rq.ApiResult> => {
+export const save = (req: ProjectData): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
     API.save(req).then((res) => {
       if (processor.dispatch) {
@@ -458,7 +479,7 @@ export const save = (req: ProjectsReqSave): Promise<rq.ApiResult> => {
       if (res.error) {
         console.error(res);
       } else {
-        setData(res.data.project);
+        setData(res.data);
       }
 
       resolve(res);
@@ -578,6 +599,7 @@ export default {
   setAsset,
   removeAsset,
   create,
+  get,
   upload,
   save,
   publish,

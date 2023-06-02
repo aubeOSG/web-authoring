@@ -21,6 +21,7 @@ export const Content = () => {
     setActiveTemplateContent({ field, value, prop });
     isDirty.current = true;
     isUncommitted.current = true;
+    processCommit.current = true;
   };
 
   const handleContentValidate = (field, value) => {};

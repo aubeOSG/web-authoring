@@ -19,15 +19,10 @@ export const slide = <T>(
 };
 
 export const project = (): ProjectData => {
-  const now = new Date().toISOString();
-
   return {
     meta: {
-      id: '',
       name: 'Untitled Project',
       filename: '',
-      createdAt: now,
-      updatedAt: now,
       tags: [],
     },
     scorm: {

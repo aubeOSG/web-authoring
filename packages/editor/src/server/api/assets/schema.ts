@@ -1,9 +1,9 @@
 import { Schema } from '../../db';
-import { table as projectTable } from '../projects';
+import { table as workspaceTable } from '../workspaces';
 
-export const table: string = 'assets';
+const table: string = 'assets';
 
-export const schema: Schema = [
+const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -12,20 +12,20 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'project_id',
+      name: 'workspaceId',
       type: 'foreign',
-      table: projectTable,
+      table: workspaceTable,
     }
   },
   {
     column: {
-      name: 'created_at',
+      name: 'createdAt',
       type: 'datetime',
     }
   },
   {
     column: {
-      name: 'deleted_at',
+      name: 'deletedAt',
       type: 'datetime',
     }
   },
@@ -34,6 +34,18 @@ export const schema: Schema = [
       name: 'title',
       type: 'string',
     }
+  },
+  {
+    column: {
+      name: 'isResource',
+      type: 'boolean',
+    },
+  },
+  {
+    column: {
+      name: 'description',
+      type: 'string',
+    },
   },
   {
     column: {
@@ -61,12 +73,6 @@ export const schema: Schema = [
   },
   {
     column: {
-      name: 'isDeleted',
-      type: 'boolean',
-    }
-  },
-  {
-    column: {
       name: 'sourceExt',
       type: 'string',
     }
@@ -79,7 +85,14 @@ export const schema: Schema = [
   },
 ];
 
-export default {
+const schema = {
   table,
-  schema,
+  definition,
 };
+
+export {
+  table,
+  definition,
+};
+
+export default schema;

@@ -46,7 +46,7 @@ const PromptProjectNameElement = ({ isOpen, ...props }, ref) => {
   const handleSubmit = (ev: React.FormEvent) => {
     Elem.stopEvent(ev);
 
-    Projects.save({ data: projectData, assets }).then((res) => {
+    Projects.save(projectData).then((res) => {
       if (res.error) {
         if (!res.data.action) {
           sys.messageDialog({

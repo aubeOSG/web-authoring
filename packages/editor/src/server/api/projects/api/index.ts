@@ -7,8 +7,9 @@ import { publish } from './publish';
 import save from './save';
 import upload from './upload';
 import uploadProgress from './upload-progress';
+import get from './get';
 
-export {
+export const api = {
   create,
   list,
   open,
@@ -18,16 +19,7 @@ export {
   save,
   upload,
   uploadProgress,
+  get,
 };
 
-export default {
-  create,
-  list,
-  open,
-  preview,
-  previewAsset,
-  publish,
-  save,
-  upload,
-  uploadProgress,
-};
+export default api;

@@ -43,21 +43,21 @@ export const Page = () => {
       if (inProgress) {
         return;
       }
+      //FIXME::electron-web-bug
+      // setProgress(true);
 
-      setProgress(true);
+      // Projects.create().then((result) => {
+      //   if (result.error) {
+      //     setProgress(false);
+      //     console.error(result);
+      //     return;
+      //   }
 
-      Projects.create().then((result) => {
-        if (result.error) {
-          setProgress(false);
-          console.error(result);
-          return;
-        }
-
-        menu.API.enableProjectActions().then(() => {
-          setProgress(false);
-          navigate('/workspace');
-        });
-      });
+      //   menu.API.enableProjectActions().then(() => {
+      //     setProgress(false);
+      //     navigate('/workspace');
+      //   });
+      // });
     };
 
     menu.API.onProjectCreate(createListener);

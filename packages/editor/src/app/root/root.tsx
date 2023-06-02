@@ -69,10 +69,7 @@ const PageRoutes = () => {
 
             switch (res.data.response) {
               case 0:
-                models.Projects.save({
-                  data: projectData,
-                  assets,
-                }).then((saveRes) => {
+                models.Projects.save(projectData).then((saveRes) => {
                   if (saveRes.data && saveRes.data.action) {
                     switch (saveRes.data.action) {
                       case 'prompt-project-name':
@@ -154,6 +151,8 @@ export const Root = () => {
 
   models.Settings.useProcessor();
   models.Projects.useProcessor();
+  models.Users.useProcessor();
+  models.Workspaces.useProcessor();
 
   useEffect(() => {
     if (isReady) {

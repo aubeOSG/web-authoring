@@ -4,6 +4,10 @@ export interface ProjectsApiCreate extends RegisterEndpoint {
   name: '/projects/create';
 };
 
+export interface ProjectsApiGet extends RegisterEndpoint {
+  name: '/projects';
+};
+
 export interface ProjectsApiUpload extends RegisterEndpoint {
   name: '/projects/upload';
 };

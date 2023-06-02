@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as css from './page-welcome.scss';
 import { animations } from '../../components';
-import { Projects } from '../../models';
+import { Projects, Users, Workspaces } from '../../models';
 import { menu } from '../../services';
 
 export const Path = '/welcome';
@@ -20,15 +20,33 @@ export const Page = () => {
     }
 
     setProgress(true);
-    Projects.create().then((result) => {
-      if (result.error) {
-        console.error(result);
+    Users.create().then((userRes) => {
+      console.log('userRes', userRes);
+      if (userRes.error) {
         return;
       }
 
-      menu.API.enableProjectActions().then(() => {
-        setProgress(false);
-        navigator('/workspace');
+      Users.setData(userRes.data);
+      Workspaces.create(userRes.data.id).then((workspaceRes) => {
+        if (workspaceRes.error) {
+          return;
+        }
+
+        Workspaces.setData(workspaceRes.data);
+        console.log('workspaceRes', workspaceRes.data.id);
+        Projects.create({
+          workspaceId: workspaceRes.data.id,
+        }).then((projectRes) => {
+          if (projectRes.error) {
+            console.error(projectRes);
+            return;
+          }
+
+          menu.API.enableProjectActions().then(() => {
+            setProgress(false);
+            navigator(`/workspace/${workspaceRes.data.id}`);
+          });
+        });
       });
     });
   };

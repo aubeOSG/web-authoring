@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
 import {
   openPromptProjectName,
@@ -16,10 +17,10 @@ import {
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects, Settings } from '../../models';
+import { Projects, Settings, Workspaces } from '../../models';
 import { menu, sys, events } from '../../services';
 
-export const Path = '/workspace';
+export const Path = '/workspace/:id';
 
 export const openProject = (project: Projects.ProjectMeta) => {
   Projects.open(project).then((res) => {
@@ -36,7 +37,7 @@ export const openProject = (project: Projects.ProjectMeta) => {
 
     setTimeout(() => {
       Projects.setAssets(res.data.file.assets);
-      Projects.setData(res.data.project);
+      Projects.setData(res.data);
     }, 1);
   });
 };
@@ -48,6 +49,30 @@ export const Page = () => {
   const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(false);
   const isListening = useRef(false);
+  const pageParams = useParams();
+  const projectLoading = useRef(false);
+
+  useEffect(() => {
+    if (projectData.id) {
+      return;
+    }
+
+    if (!pageParams.id) {
+      return;
+    }
+
+    if (projectLoading.current) {
+      return;
+    }
+
+    projectLoading.current = true;
+    Projects.get({
+      workspaceId: pageParams.id,
+    }).then((res) => {
+      projectLoading.current = false;
+      console.log('project get', res);
+    });
+  }, [pageParams]);
 
   useEffect(() => {
     isListening.current = true;
@@ -69,10 +94,7 @@ export const Page = () => {
 
           switch (res.data.response) {
             case 0:
-              Projects.save({
-                data: projectData,
-                assets,
-              }).then((saveRes) => {
+              Projects.save(projectData).then((saveRes) => {
                 if (saveRes.data && saveRes.data.action) {
                   switch (saveRes.data.action) {
                     case 'prompt-project-name':
@@ -100,7 +122,7 @@ export const Page = () => {
     };
 
     const saveListener = () => {
-      Projects.save({ data: projectData, assets }).then((res) => {
+      Projects.save(projectData).then((res) => {
         if (!isListening.current) {
           return;
         }
@@ -123,9 +145,10 @@ export const Page = () => {
 
     const openListener = (ev, project?: Projects.ProjectMeta) => {
       if (project) {
-        if (project.id === projectData.meta.id) {
-          return;
-        }
+        // FIXME::electron-web-bug
+        // if (project.id === projectData.id) {
+        //   return;
+        // }
         if (projectInteractions.isUncommitted) {
           promptDiscardProject(project);
           return;
@@ -178,14 +201,14 @@ export const Page = () => {
         Projects.resetState();
         resetWorkspace();
         resetActiveSlide();
-
-        Projects.create().then((result) => {
-          setProgress(false);
-          if (result.error) {
-            console.error(result);
-            return;
-          }
-        });
+        // FIXME::electron-web-bug
+        // Projects.create().then((result) => {
+        //   setProgress(false);
+        //   if (result.error) {
+        //     console.error(result);
+        //     return;
+        //   }
+        // });
       };
 
       const promptDiscardProject = () => {
@@ -205,10 +228,7 @@ export const Page = () => {
 
             switch (res.data.response) {
               case 0:
-                Projects.save({
-                  data: projectData,
-                  assets,
-                }).then((saveRes) => {
+                Projects.save(projectData).then((saveRes) => {
                   if (saveRes.data && saveRes.data.action) {
                     switch (saveRes.data.action) {
                       case 'prompt-project-name':

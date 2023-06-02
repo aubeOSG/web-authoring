@@ -133,10 +133,7 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
 
           switch (res.data.response) {
             case 0:
-              Projects.save({
-                data: projectData,
-                assets,
-              }).then((saveRes) => {
+              Projects.save(projectData).then((saveRes) => {
                 if (saveRes.data && saveRes.data.action) {
                   switch (saveRes.data.action) {
                     case 'prompt-project-name':
@@ -169,10 +166,11 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
 
     const project = selectedProject.project.versions[0];
 
-    if (projectData.meta.id && projectData.meta.id === project.id) {
-      handleClose();
-      return;
-    }
+    // FIXME::electron-web-bug
+    // if (projectData.id && projectData.id === project.id) {
+    //   handleClose();
+    //   return;
+    // }
 
     if (location.pathname === Workspace.Path && saveStatus.isUncommitted) {
       promptDiscardProject();

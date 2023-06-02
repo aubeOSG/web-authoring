@@ -87,24 +87,24 @@ export const asyncForEach = <T extends unknown>(
 ): Promise<Array<AsyncForEachResult<T>>> => {
   return new Promise(async function (resolve) {
     const promises: Array<AsyncForEachResult<T>> = [];
-    let result;
-
+    const results: Array<AsyncForEachResult<T>> = [];
+    
     for (let i = 0, ii = list.length; i < ii; i++) {
-      try {
-        result = await fn(list[i], i, list);
-        promises.push({
-          error: false,
-          data: list[i],
-          result,
-        });
-      } catch (e) {
-        promises.push({
-          error: false,
-          data: list[i],
-          result: e,
-        });
-      }
+      promises.push(fn(list[i], i, list));
     }
+
+    const addValues = (res) => {
+      if (res.status !== 'fulfilled') {
+        return;
+      }
+
+      results.push(res.value);
+    }
+
+    Promise.allSettled(promises).then((promiseRes) => {
+      promiseRes.forEach(addValues);
+      resolve(results);
+    });
   });
 };
 

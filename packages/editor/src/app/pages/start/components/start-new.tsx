@@ -17,19 +17,19 @@ export const StartNew = ({ hasProjects, ...props }: StartNewProps) => {
     if (inProgress.current) {
       return;
     }
+    //FIXME::electron-web-bug
+    // inProgress.current = true;
+    // Projects.create().then((result) => {
+    //   if (result.error) {
+    //     console.error(result);
+    //     return;
+    //   }
 
-    inProgress.current = true;
-    Projects.create().then((result) => {
-      if (result.error) {
-        console.error(result);
-        return;
-      }
-
-      menu.API.enableProjectActions().then(() => {
-        inProgress.current = false;
-        navigator(Workspace.Path);
-      });
-    });
+    //   menu.API.enableProjectActions().then(() => {
+    //     inProgress.current = false;
+    //     navigator(Workspace.Path);
+    //   });
+    // });
   };
 
   useEffect(() => {

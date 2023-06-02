@@ -24,13 +24,10 @@
     "start:proxy": "nodemon --watch src/proxy.ts --exec webpack",
     "start:app": "parcel watch --target app --no-cache",
     "start:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
-    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",
-    "preseed": "parcel build --target seed --no-cache",
-    "seed": "node ./web/seed-db.js"
+    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js"
   },
   "app": "./web/app.html",
   "server": "./web/server.js",
-  "seed": "./web/seed-db.js",
   "targets": {
     "main": false,
     "server": {
@@ -47,13 +44,6 @@
       "source": "./src/app/index.html",
       "distDir": "./web",
       "publicUrl": "/public"
-    },
-    "seed": {
-      "context": "node",
-      "source": "./src/server/seed-db.ts",
-      "engines": {
-        "node": "16.15.1"
-      }
     }
   },
   "eslintConfig": {
@@ -79,6 +69,7 @@
     "@types/express": "^4.17.15",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.8.4",
+    "@types/pg": "^8.10.1",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@types/react-redux": "^7.1.24",
@@ -126,6 +117,7 @@
     "knex": "^2.4.2",
     "lottie-web": "^5.9.6",
     "md5": "^2.3.0",
+    "pg": "^8.11.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
