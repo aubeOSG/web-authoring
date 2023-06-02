@@ -46,10 +46,23 @@ export const create = (userId: string): Promise<rq.ApiResult> => {
   });
 };
 
+export const get = (workspaceId: string): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    API.get(workspaceId).then((res) => {
+      if (res.error) {
+        console.error(res);
+      }
+
+      resolve(res);
+    });
+  });
+};
+
 export default {
   useProcessor,
   resetState,
   useData,
   setData,
   create,
+  get,
 };

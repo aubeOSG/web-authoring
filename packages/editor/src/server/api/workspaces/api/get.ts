@@ -6,9 +6,9 @@ export const get: WorkspacesApiGet = {
   name: '/workspaces',
   type: 'invoke',
   fn: async (req, res) => {
-    const { id } = req.query;
+    const { workspaceId } = req.query;
 
-    if (!id) {
+    if (!workspaceId) {
       res.send({
         error: true,
         message: 'unable to get workspace: id required',
@@ -19,7 +19,7 @@ export const get: WorkspacesApiGet = {
     const db = connection.get();
 
     try {
-      const [data] = await await db.select().from(table).where(`${table}.id`, id);
+      const [data] = await await db.select().from(table).where(`${table}.id`, workspaceId);
 
       res.send({
         error: false,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
 import {
   openPromptProjectName,
@@ -15,7 +16,7 @@ import {
   PromptProjectName,
   PublishProgress,
 } from './components';
-import { Projects, Settings } from '../../models';
+import { Projects, Settings, Workspaces } from '../../models';
 import { menu, sys, events } from '../../services';
 
 export const Path = '/workspace/:id';
@@ -47,6 +48,24 @@ export const Page = () => {
   const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(false);
   const isListening = useRef(false);
+  const pageParams = useParams();
+  const workspaceLoading = useRef(false);
+
+  useEffect(() => {
+    if (!pageParams.id) {
+      return;
+    }
+
+    if (workspaceLoading.current) {
+      return;
+    }
+
+    workspaceLoading.current = true;
+    Workspaces.get(pageParams.id).then((res) => {
+      workspaceLoading.current = false;
+      console.log('workspace get', res);
+    });
+  }, [pageParams]);
 
   useEffect(() => {
     isListening.current = true;
