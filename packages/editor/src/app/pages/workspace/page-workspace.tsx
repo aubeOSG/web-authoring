@@ -18,7 +18,7 @@ import {
 import { Projects, Settings } from '../../models';
 import { menu, sys, events } from '../../services';
 
-export const Path = '/workspace';
+export const Path = '/workspace/:id';
 
 export const openProject = (project: Projects.ProjectMeta) => {
   Projects.open(project).then((res) => {

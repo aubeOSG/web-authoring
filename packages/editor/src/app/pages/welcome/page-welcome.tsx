@@ -41,10 +41,10 @@ export const Page = () => {
             console.error(projectRes);
             return;
           }
-          console.log('projectRes', projectRes);
+
           menu.API.enableProjectActions().then(() => {
             setProgress(false);
-            navigator('/workspace');
+            navigator(`/workspace/${workspaceRes.data.id}`);
           });
         });
       });
