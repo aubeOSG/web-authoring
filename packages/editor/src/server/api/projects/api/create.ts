@@ -1,18 +1,57 @@
 import type { ProjectsApiCreate } from '../projects.types';
-import { blueprints } from '../../../../main/models/projects/blueprints'
+import { blueprints } from '../../../../main/models/projects/blueprints';
+import { table } from '../schema';
+import { utils as dbUtils, connection } from '../../../db';
 
 export const create: ProjectsApiCreate = {
   name: '/projects/create',
   type: 'invoke',
-  fn: (req, res) => {
+  method: 'POST',
+  fn: async (req, res) => {
+    const payload = req.body;
+
+    if (!payload.workspaceId) {
+      res.send({
+        error: true,
+        message: 'unable to create project: workspace id required',
+        data: payload,
+      });
+      return;
+    }
+
+    const db = connection.get();
     const project = blueprints.get('default');
 
-    res.send({
-      error: false,
-      data: {
-        project,
-      },
-    });
+    project.workspaceId = payload.workspaceId;
+    //@ts-ignore
+    project.modules = JSON.stringify(project.modules);
+    //@ts-ignore
+    project.lessons = JSON.stringify(project.lessons);
+    //@ts-ignore
+    project.slides = JSON.stringify(project.slides);
+    //@ts-ignore
+    project.glossary = JSON.stringify(project.glossary);
+    //@ts-ignore
+    project.resources = JSON.stringify(project.resources);
+
+    try {
+      const insertRes = await dbUtils.table.insert(db, table, [project]);
+      const projectId = insertRes[0][0].id;
+      const [data] = await db.select().from(table).where(`${table}.id`, projectId);
+
+      res.send({
+        error: false,
+        data: data,
+      });
+    } catch (e) {
+      res.send({
+        error: true,
+        message: 'unexpected error while creating project',
+        data: {
+          trace: e,
+        },
+      });
+    }
   },
 };
 

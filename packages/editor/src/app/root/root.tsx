@@ -154,6 +154,8 @@ export const Root = () => {
 
   models.Settings.useProcessor();
   models.Projects.useProcessor();
+  models.Users.useProcessor();
+  models.Workspaces.useProcessor();
 
   useEffect(() => {
     if (isReady) {

@@ -26,17 +26,22 @@ export const Page = () => {
         return;
       }
 
+      Users.setData(userRes.data);
       Workspaces.create(userRes.data.id).then((workspaceRes) => {
         if (workspaceRes.error) {
           return;
         }
 
-        Projects.create().then((projectRes) => {
+        Workspaces.setData(workspaceRes.data);
+        console.log('workspaceRes', workspaceRes.data.id);
+        Projects.create({
+          workspaceId: workspaceRes.data.id,
+        }).then((projectRes) => {
           if (projectRes.error) {
             console.error(projectRes);
             return;
           }
-
+          console.log('projectRes', projectRes);
           menu.API.enableProjectActions().then(() => {
             setProgress(false);
             navigator('/workspace');

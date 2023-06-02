@@ -122,9 +122,10 @@ export const Page = () => {
 
     const openListener = (ev, project?: Projects.ProjectMeta) => {
       if (project) {
-        if (project.id === projectData.meta.id) {
-          return;
-        }
+        // FIXME::electron-web-bug
+        // if (project.id === projectData.id) {
+        //   return;
+        // }
         if (projectInteractions.isUncommitted) {
           promptDiscardProject(project);
           return;
@@ -177,14 +178,14 @@ export const Page = () => {
         Projects.resetState();
         resetWorkspace();
         resetActiveSlide();
-
-        Projects.create().then((result) => {
-          setProgress(false);
-          if (result.error) {
-            console.error(result);
-            return;
-          }
-        });
+        // FIXME::electron-web-bug
+        // Projects.create().then((result) => {
+        //   setProgress(false);
+        //   if (result.error) {
+        //     console.error(result);
+        //     return;
+        //   }
+        // });
       };
 
       const promptDiscardProject = () => {

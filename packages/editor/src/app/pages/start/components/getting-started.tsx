@@ -18,18 +18,19 @@ export const GettingStarted = ({ hasProjects, ...props }: StartNewProps) => {
       return;
     }
 
-    inProgress.current = true;
-    Projects.create(blueprint).then((result) => {
-      if (result.error) {
-        console.error(result);
-        return;
-      }
+    //FIXME::electron-web-bug
+    // inProgress.current = true;
+    // Projects.create(blueprint).then((result) => {
+    //   if (result.error) {
+    //     console.error(result);
+    //     return;
+    //   }
 
-      menu.API.enableProjectActions().then(() => {
-        inProgress.current = false;
-        navigator(Workspace.Path);
-      });
-    });
+    //   menu.API.enableProjectActions().then(() => {
+    //     inProgress.current = false;
+    //     navigator(Workspace.Path);
+    //   });
+    // });
   };
 
   useEffect(() => {

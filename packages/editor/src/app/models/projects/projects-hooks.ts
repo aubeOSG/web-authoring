@@ -420,14 +420,17 @@ export const removeAsset = (data) => {
   processor.dispatch(state.removeAssetItem(data));
 };
 
-export const create = (blueprint?: string): Promise<rq.ApiResult> => {
+export const create = (data: {
+  workspaceId: string,
+  blueprint?: string
+}): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
-    API.create(blueprint).then((res) => {
+    API.create(data).then((res) => {
       if (res.error) {
         console.error(res)
       } else {
-        setData(res.data.project);
-        setAssets(res.data.assets);
+        setData(res.data);
+        // setAssets(res.data.assets);
       }
 
       resolve(res);

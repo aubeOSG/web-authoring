@@ -28,15 +28,12 @@ export type ProjectGlossaryItem = {
 };
 
 export type ProjectMeta = {
-  id: string;
   name: string;
   filename: string;
-  createdAt: string;
   updatedAt: string;
   publishedAt: string;
   tags: Array<string>;
   blueprint?: string;
-  createdBy?: string;
 };
 
 export type ProjectScorm = {
@@ -71,6 +68,10 @@ export interface ProjectResource extends ProjectAsset {
 }
 
 export type ProjectData = {
+  id?: string;
+  workspaceId?: string;
+  createdAt?: string;
+  deletedAt?: string;
   meta: Partial<ProjectMeta>;
   scorm: Partial<ProjectScorm>;
   modules?: Array<ProjectModule>;
