@@ -97,13 +97,13 @@ export const setPreviewMode = (type: menu.PreviewTypes) => {
     console.warn('settings processor not ready');
     return;
   }
-
-  processor.dispatch(state.setPreviewMode(type));
-  API.set('previewMode', type).then((res) => {
-    if (res.error) {
-      console.error(res);
-    }
-  });
+  //FIXME::electron-web-bug
+  // processor.dispatch(state.setPreviewMode(type));
+  // API.set('previewMode', type).then((res) => {
+  //   if (res.error) {
+  //     console.error(res);
+  //   }
+  // });
 };
 
 export const init = () => {

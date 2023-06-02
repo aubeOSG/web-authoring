@@ -40,6 +40,10 @@ export interface ProjectsApiPreview extends RegisterEndpoint {
   name: '/projects/preview';
 };
 
+export interface ProjectsApiPreviewViewer extends RegisterEndpoint {
+  name: '/projects/preview/viewer/*';
+};
+
 export type ProjectsApi = {
   create: ProjectsApiCreate;
   upload: ProjectsApiUpload;

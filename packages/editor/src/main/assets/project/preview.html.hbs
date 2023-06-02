@@ -3,26 +3,26 @@
 <head>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <title>Scrowl Canvas Preview</title>
-  <link rel="stylesheet" href="./scrowl.ui.css">
-  <link rel="stylesheet" href="./scrowl.player.css">
-  <link rel="stylesheet" href="./scrowl.template-core.css">
+  <link rel="stylesheet" href="./scrowl.ui.css?source={{{data.tmpDirId}}}">
+  <link rel="stylesheet" href="./scrowl.player.css?source={{{data.tmpDirId}}}">
+  <link rel="stylesheet" href="./scrowl.template-core.css?source={{{data.tmpDirId}}}">
   {{#each data.templates as | temp |}}
-  <link rel="stylesheet" href="{{temp.css}}">
+  <link rel="stylesheet" href="{{temp.css}}?source={{{data.tmpDirId}}}">
   {{/each}}
-  <script type="text/javascript" src="./react.production.min.js"></script>
-  <script type="text/javascript" src="./react-dom.production.min.js"></script>
-  <script type="text/javascript" src="./react-bootstrap.min.js"></script>
-  <script type="text/javascript" src="./scorm-again.min.js"></script>
+  <script type="text/javascript" src="./react.production.min.js?source={{{data.tmpDirId}}}"></script>
+  <script type="text/javascript" src="./react-dom.production.min.js?source={{{data.tmpDirId}}}"></script>
+  <script type="text/javascript" src="./react-bootstrap.min.js?source={{{data.tmpDirId}}}"></script>
+  <script type="text/javascript" src="./scorm-again.min.js?source={{{data.tmpDirId}}}"></script>
 </head>
 <body class="owlui-theme--default">
   <div id="app"></div>
-  <script type="text/javascript" src="./scrowl.ui.js"></script>
-  <script type="text/javascript" src="./scrowl.template-core.js"></script>
-  <script type="text/javascript" src="./scrowl.player.js"></script>
+  <script type="text/javascript" src="./scrowl.ui.js?source={{{data.tmpDirId}}}"></script>
+  <script type="text/javascript" src="./scrowl.template-core.js?source={{{data.tmpDirId}}}"></script>
+  <script type="text/javascript" src="./scrowl.player.js?source={{{data.tmpDirId}}}"></script>
   {{#each data.templates as | temp |}}
-  <script type="text/javascript" src="{{temp.js}}"></script>
+  <script type="text/javascript" src="{{temp.js}}?source={{{data.tmpDirId}}}"></script>
   {{/each}}
-  <script src="./index.js"></script>
+  <script src="./index.js?source={{{data.tmpDirId}}}"></script>
 </body>
 </html>
 {{/with}}

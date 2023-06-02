@@ -102,9 +102,8 @@ export type ProjectsReqPreviewAsset = {
 
 export type ProjectsReqPreviewProject = {
   project: ProjectData;
-  assets: Array<ProjectAsset>;
   type: PreviewTypes;
-  id?: number;
+  entityId?: number;
 };
 
 export type ProjectsReqUpload = {

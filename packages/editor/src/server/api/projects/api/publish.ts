@@ -95,6 +95,7 @@ export const renderScormEntries = (
     project: JSON.stringify(project),
     templates: opts.templates,
     scorm: JSON.stringify(scorm),
+    tmpDirId: opts.tmpDirId,
   };
   const htmlRes = renderEntry(entryPathHTML, entryDestHTML, renderData);
   const jsRes = renderEntry(entryPathJS, entryDestJS, renderData);
@@ -112,7 +113,7 @@ export const renderScormEntries = (
   }
 
   if (jsRes.error) {
-    htmlRes.data.meta = renderMeta;
+    jsRes.data.meta = renderMeta;
     return jsRes;
   }
 
@@ -125,7 +126,10 @@ export const renderScormEntries = (
   };
 };
 
-export const generateProjectFiles = (projectData: ProjectData) => {
+export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
+  entrySrcHTML?: string;
+  entrySrcJS?: string;
+}) => {
   const id = uuid();
   const osRootPath = getPathRootOS();
   const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, id, 'package');
@@ -149,7 +153,7 @@ export const generateProjectFiles = (projectData: ProjectData) => {
     projectTemplatePaths.forEach(copyAsset);
   }
 
-  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: projectTemplatesList });
+  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: projectTemplatesList, ...renderParams });
 
   renderRes.data.tmpDirId = id;
   return renderRes;

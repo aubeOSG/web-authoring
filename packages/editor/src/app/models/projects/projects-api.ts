@@ -71,7 +71,7 @@ export const previewAsset = (data: ProjectsReqPreviewAsset) => {
 };
 
 export const preview = (payload: ProjectsReqPreviewProject) => {
-  return rq.invoke(ENDPOINTS.preview, payload as unknown as rq.JSON_DATA);
+  return rq.invoke(ENDPOINTS.preview, payload as unknown as rq.JSON_DATA, 'POST');
 };
 
 export const onUnsavedCheck = (listener: rq.Listener) => {

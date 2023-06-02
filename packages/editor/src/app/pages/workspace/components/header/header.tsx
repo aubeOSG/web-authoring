@@ -85,14 +85,15 @@ export const Header = () => {
   ) => {
     Settings.setPreviewMode(payload.type);
 
-    menu.API.updatePreviewMenu(payload.type).then((res) => {
-      if (res.error) {
-        sys.messageDialog({
-          message: res.message,
-        });
-        return;
-      }
-    });
+    // FIXME::electron-web-bug
+    // menu.API.updatePreviewMenu(payload.type).then((res) => {
+    //   if (res.error) {
+    //     sys.messageDialog({
+    //       message: res.message,
+    //     });
+    //     return;
+    //   }
+    // });
 
     Projects.preview(payload).then((res) => {
       if (res.error) {
@@ -103,6 +104,11 @@ export const Header = () => {
       }
 
       console.log('preview result', res);
+      const url = res.data.url;
+
+      if (url) {
+        window.open(url, '_blank')?.focus();
+      }
     });
   };
 
@@ -110,18 +116,17 @@ export const Header = () => {
     const payload: Projects.ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
-      assets,
     };
 
     switch (payload.type) {
       case 'slide':
-        payload.id = activeSlide.id;
+        payload.entityId = activeSlide.id;
         break;
       case 'lesson':
-        payload.id = activeSlide.lessonId;
+        payload.entityId = activeSlide.lessonId;
         break;
       case 'module':
-        payload.id = activeSlide.moduleId;
+        payload.entityId = activeSlide.moduleId;
         break;
     }
 
@@ -137,8 +142,7 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'slide',
           project: projectData,
-          assets,
-          id: activeSlide.id,
+          entityId: activeSlide.id,
         };
 
         handleProjectPreview(payload);
@@ -152,8 +156,7 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
-          assets,
-          id: activeSlide.lessonId,
+          entityId: activeSlide.lessonId,
         };
 
         handleProjectPreview(payload);
@@ -167,8 +170,7 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
-          assets,
-          id: activeSlide.moduleId,
+          entityId: activeSlide.moduleId,
         };
 
         handleProjectPreview(payload);
@@ -182,7 +184,6 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
-          assets,
         };
 
         handleProjectPreview(payload);
