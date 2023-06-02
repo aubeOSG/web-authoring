@@ -13,13 +13,13 @@ export const create: UsersApiCreate = {
     };
 
     try {
-      const userIds = dbUtils.table.insert(db, table, [user]);
+      const insertRes = await dbUtils.table.insert(db, table, [user]);
+      const userId = insertRes[0][0].id;
+      const data = await db.select().from(table).where(`${table}.id`, userId)[0];
 
       res.send({
         error: false,
-        data: {
-          userId: userIds[0],
-        },
+        data: data,
       });
     } catch (e) {
       res.send({

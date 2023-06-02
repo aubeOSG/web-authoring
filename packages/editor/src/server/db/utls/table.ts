@@ -65,7 +65,7 @@ export const create = (
             uuid(db, data, col);
             break;
           case 'string':
-            data.string(col);
+            data.string(col).defaultTo('');
             break;
           case 'integer':
             data.integer(col);
