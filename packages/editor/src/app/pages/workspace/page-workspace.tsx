@@ -165,18 +165,17 @@ export const Page = () => {
       const payload: Projects.ProjectsReqPreviewProject = {
         type,
         project: projectData,
-        assets,
       };
 
       switch (type) {
         case 'slide':
-          payload.id = activeSlide.id;
+          payload.entityId = activeSlide.id;
           break;
         case 'lesson':
-          payload.id = activeSlide.lessonId;
+          payload.entityId = activeSlide.lessonId;
           break;
         case 'module':
-          payload.id = activeSlide.moduleId;
+          payload.entityId = activeSlide.moduleId;
           break;
       }
 
