@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as css from './page-welcome.scss';
 import { animations } from '../../components';
-import { Projects, Users } from '../../models';
+import { Projects, Users, Workspaces } from '../../models';
 import { menu } from '../../services';
 
 export const Path = '/welcome';
@@ -26,15 +26,21 @@ export const Page = () => {
         return;
       }
 
-      Projects.create().then((projectRes) => {
-        if (projectRes.error) {
-          console.error(projectRes);
+      Workspaces.create(userRes.data.id).then((workspaceRes) => {
+        if (workspaceRes.error) {
           return;
         }
 
-        menu.API.enableProjectActions().then(() => {
-          setProgress(false);
-          navigator('/workspace');
+        Projects.create().then((projectRes) => {
+          if (projectRes.error) {
+            console.error(projectRes);
+            return;
+          }
+
+          menu.API.enableProjectActions().then(() => {
+            setProgress(false);
+            navigator('/workspace');
+          });
         });
       });
     });

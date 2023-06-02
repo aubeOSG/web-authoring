@@ -7,6 +7,7 @@ export const create: UsersApiCreate = {
   type: 'invoke',
   method: 'POST',
   fn: async (req, res) => {
+    // const payload = req.body;
     const db = connection.get();
     const user = {
       name: 'test user'
@@ -15,7 +16,7 @@ export const create: UsersApiCreate = {
     try {
       const insertRes = await dbUtils.table.insert(db, table, [user]);
       const userId = insertRes[0][0].id;
-      const data = await db.select().from(table).where(`${table}.id`, userId)[0];
+      const [data] = await db.select().from(table).where(`${table}.id`, userId);
 
       res.send({
         error: false,
