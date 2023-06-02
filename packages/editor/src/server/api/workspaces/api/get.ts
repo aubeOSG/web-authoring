@@ -19,7 +19,7 @@ export const get: WorkspacesApiGet = {
     const db = connection.get();
 
     try {
-      const [data] = await await db.select().from(table).where(`${table}.id`, workspaceId);
+      const [data] = await db.select().from(table).where(`${table}.id`, workspaceId);
 
       res.send({
         error: false,
