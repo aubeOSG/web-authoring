@@ -1,3 +1,9 @@
+import type { RegisterEndpoint } from '../../services/requester/requester.types';
+
+export interface UsersApiCreate extends RegisterEndpoint {
+  name: '/users/create';
+};
+
 export type User = {
   id: string;
   createdAt: string;
