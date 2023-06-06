@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
     "directory": "packages/template/simple-text"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/scrowl-io/authoring/packages/template/simple-text#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/template/simple-text#readme",
   "source": "./index.html"
 }

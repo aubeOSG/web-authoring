@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
     "directory": "packages/player"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/scrowl-io/authoring/packages/player#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/player#readme",
   "scripts": {
     "clean": "rimraf ../../../.parcel-cache",
     "prestart": "yarn run clean && rimraf dev/dist",

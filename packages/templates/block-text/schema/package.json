@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
     "directory": "packages/template/block-text"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/scrowl-io/authoring/packages/template/block-text#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/template/block-text#readme",
   "source": "./index.ts",
   "main": "../lib/schema.js",
   "module": "../lib/schema.module.js",
