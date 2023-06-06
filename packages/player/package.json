@@ -13,7 +13,7 @@
     "directory": "packages/player"
   },
   "bugs": {
-    "url": "https://github.com/scrowl-io/scrowl/issues"
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/player#readme",
   "scripts": {
@@ -69,6 +69,7 @@
     "@scrowl/template-two-column": "^1.0.99",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.24",
     "eslint": "^8.25.0",
     "parcel": "2.8.3",
     "postcss": "^8.4.17",
@@ -82,14 +83,17 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.6",
     "@scrowl/template-core": "^1.0.99",
     "@scrowl/ui": "^0.0.40",
+    "@scrowl/utils": "^0.0.0",
     "bootstrap": "^5.2.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
     "react-keywords": "^0.0.5",
     "react-lazyload": "github:twobin/react-lazyload",
+    "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2"
   }
 }

@@ -4,7 +4,7 @@ import {
   ContextMenuPayload
 } from './menu.types';
 import { rq } from '../../services';
-import { Elem, ELEM_ALIGNMENT } from '../../../utils';
+import { Elem, ELEM_ALIGNMENT } from '@scrowl/utils';
 import { ContextMenu } from '../../components';
 
 const ENDPOINTS = {

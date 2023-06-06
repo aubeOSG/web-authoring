@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Elem } from '../../../../../../utils';
+import { Elem } from '@scrowl/utils';
 
 export interface AssetSearchProps
   extends Omit<React.AllHTMLAttributes<HTMLInputElement>, 'onSubmit'> {

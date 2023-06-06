@@ -1,0 +1,19 @@
+{
+  "extends": "@scrowl/config/tsconfig",
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM"],
+    "typeRoots": ["./types"],
+    "types": ["@scrowl/config/src/typings"],
+    "outDir": "dist",
+    "noEmit": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./types/*.d.ts",
+    "./web/**/*.ts",
+    "./web/**/*.tsx"
+  ]
+}

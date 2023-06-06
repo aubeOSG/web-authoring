@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  MemoryRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -101,7 +101,7 @@ export const Root = ({
     try {
       [locationError, location] = Scrowl.runtime.getLocation();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (!locationError && location && location.cur) {
@@ -121,6 +121,9 @@ export const Root = ({
     subtitle
   );
   const pages = Pages.create(config, templateList, slideId);
+
+  console.log('config', config);
+  console.log('pages', pages);
 
   useEffect(() => {
     const handleSlideEnter = (ev) => {

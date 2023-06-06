@@ -18,7 +18,7 @@
     "directory": "packages/template/simple-video"
   },
   "bugs": {
-    "url": "https://github.com/scrowl-io/scrowl/issues"
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/template/simple-video#readme",
   "scripts": {

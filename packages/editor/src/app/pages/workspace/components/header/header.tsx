@@ -3,7 +3,7 @@ import { ButtonGroup, Dropdown, Navbar, Nav } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
-import { Elem, Str } from '../../../../../utils';
+import { Elem, Str } from '@scrowl/utils';
 import { Projects, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { Logo } from '../../../../components';

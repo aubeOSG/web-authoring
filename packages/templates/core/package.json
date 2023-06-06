@@ -13,7 +13,7 @@
     "directory": "packages/template/core"
   },
   "bugs": {
-    "url": "https://github.com/scrowl-io/scrowl/issues"
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/template/core#readme",
   "scripts": {

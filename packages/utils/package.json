@@ -1,6 +1,6 @@
 {
-  "name": "@scrowl/runtime",
-  "version": "0.0.100",
+  "name": "@scrowl/utils",
+  "version": "0.0.0",
   "description": "",
   "license": "MIT",
   "keywords": [],
@@ -10,30 +10,28 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scrowl-io/web-authoring.git",
-    "directory": "packages/runtime"
+    "directory": "packages/utils"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
-  "homepage": "https://github.com/scrowl-io/web-authoring/packages/runtime#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/utils#readme",
   "scripts": {
-    "clean": "rimraf ../.parcel-cache",
+    "clean": "rimraf ../../../.parcel-cache",
     "prebuild": "yarn run clean && rimraf dist && rimraf lib",
-    "build": "parcel build --no-cache",
-    "postbuild": "webpack --config webpack.config.js --stats-error-details"
+    "build": "parcel build --no-cache"
   },
   "source": "./src/index.ts",
-  "main": "./lib/scrowl.runtime.js",
-  "module": "./lib/scrowl.runtime.module.js",
-  "types": "./lib/scrowl.runtime.d.ts",
+  "main": "./lib/scrowl.utils.js",
+  "module": "./lib/scrowl.utils.module.js",
+  "types": "./lib/scrowl.utils.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/scrowl.runtime.js",
-      "default": "./lib/scrowl.runtime.js",
-      "import": "./lib/scrowl.runtime.module.js"
+      "require": "./lib/scrowl.utils.js",
+      "import": "./lib/scrowl.utils.module.js",
+      "default": "./lib/scrowl.utils.js"
     },
-    "./src": "./src/index.ts",
-    "./web": "./dist/scrowl.runtime.js"
+    "./src": "./src/index.ts"
   },
   "eslintConfig": {
     "extends": "@scrowl/config"
@@ -46,7 +44,7 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "src/",
+    "lib/",
     "package.json"
   ],
   "devDependencies": {
@@ -60,14 +58,10 @@
     "@scrowl/config": "^0.0.100",
     "eslint": "^8.25.0",
     "parcel": "2.8.3",
-    "postcss": "^8.4.17",
-    "postcss-import": "^14.1.0",
-    "postcss-modules": "^4.3.1",
-    "postcss-url": "^10.1.3",
     "prettier": "^2.7.1",
-    "process": "^0.11.10",
     "rimraf": "^3.0.2",
     "stylelint": "^14.13.0",
     "typescript": "4.7.4"
-  }
+  },
+  "dependencies": {}
 }

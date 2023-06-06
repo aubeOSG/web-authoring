@@ -7,7 +7,7 @@ import { AssetBrowser } from './asset-browser';
 import { Backdrop, Drawer } from '../../../../components';
 import { Settings } from '../../../../models';
 import { menu } from '../../../../services';
-import { hasProp, Elem } from '../../../../../utils';
+import { hasProp, Elem } from '@scrowl/utils';
 
 export interface ResourceFormProps
   extends Omit<React.AllHTMLAttributes<HTMLDivElement>, 'onSubmit'> {

@@ -7,7 +7,7 @@ import {
   ContextMenuResult,
 } from '../pane-details.types';
 import { Projects } from '../../../../../models';
-import { List } from '../../../../../../utils';
+import { List } from '../../../../../../../../utils';
 import { menu, sys } from '../../../../../services';
 import { AssetIcon } from '../../../../../components';
 import { ResourceOverlay } from '../../overlay';
