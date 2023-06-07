@@ -168,9 +168,6 @@ export const Page = () => {
       };
 
       switch (type) {
-        case 'slide':
-          payload.entityId = activeSlide.id;
-          break;
         case 'lesson':
           payload.entityId = activeSlide.lessonId;
           break;

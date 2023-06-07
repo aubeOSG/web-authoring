@@ -4,7 +4,7 @@ export type ContextMenuItem = any;
 
 export type ContextMenuPosition = [number, number];
 
-export type PreviewTypes = 'slide' | 'lesson' | 'module' | 'project';
+export type PreviewTypes = 'lesson' | 'module' | 'project';
 
 export type ContextMenuPayload = {
   menuItems: Array<ContextMenuItem>;

@@ -16,7 +16,7 @@ export const initialState = {
   aspect: ASPECT_RATIO.Fit,
   reducedAnimations: false,
   animationDelay: 0,
-  previewMode: 'slide',
+  previewMode: 'lesson',
 };
 
 export const config: stateManager.StateConfig = {
