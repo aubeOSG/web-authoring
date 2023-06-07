@@ -7,6 +7,7 @@ export const TwoColumnSchema: TwoColumnSchemaProps = {
     component: 'TwoColumn',
     filename: 'two-column',
     icon: 'view_week',
+    category: 'text',
     tags: ['text', 'columns'],
   },
   content: {
