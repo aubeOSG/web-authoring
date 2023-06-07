@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { ui } from '@scrowl/ui';
 import { core } from '@scrowl/template-core';
 import BlockText from '@scrowl/template-block-text/src/block-text';
+import InlineText from '@scrowl/template-inline-text/src/inline-text';
 import LessonIntro from '@scrowl/template-lesson-intro/src/lesson-intro';
 import Quiz from '@scrowl/template-quiz/src/quiz';
 import SimpleText from '@scrowl/template-simple-text/src/simple-text';
@@ -23,6 +24,7 @@ const App = () => {
   const project = create();
   const templateList = {
     BlockText: BlockText,
+    InlineText: InlineText,
     LessonIntro: LessonIntro,
     SimpleText: SimpleText,
     TwoColumn: TwoColumn,
