@@ -15,6 +15,7 @@ import { Pages } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
 import { stateStore } from '../state';
+import { eventHooks } from '../hooks';
 
 export const Root = ({
   project,
@@ -22,6 +23,7 @@ export const Root = ({
   scorm,
   ...props
 }: PlayerRootProps) => {
+  eventHooks.useEvents();
   const Scrowl = window['Scrowl'];
   let apiPreference;
 
