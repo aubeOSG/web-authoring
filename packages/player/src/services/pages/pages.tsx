@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { PageDefinition } from './pages.types';
 import { PlayerTemplateList } from '../../root/root.types';
 import utils from '../../utils';
+// @ts-ignore
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
 import { Page } from './page';

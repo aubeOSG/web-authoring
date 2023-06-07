@@ -14,6 +14,7 @@ import { Preview as PreviewPanel } from '../components/preview';
 import { Pages } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
+import { stateStore } from '../state';
 
 export const Root = ({
   project,
@@ -281,34 +282,38 @@ export const Root = ({
   }
 
   return (
-    <Router>
-      <div id="scrowl-player" {...props}>
-        <main className="owlui-lesson-wrapper">
-          <ErrorModal />
-          <ScrollHint />
-          {window['API_1484_11'] !== undefined && showPanel ? (
-            <PreviewPanel />
-          ) : null}
-          <Routes>
-            {pages.map((page, idx) => {
-              return (
-                <Route key={idx} path={page.url} element={<page.Element />} />
-              );
-            })}
-            <Route
-              path="*"
-              element={
-                <Navigate
-                  to={
-                    targetUrl && targetUrl.length > 1 ? targetUrl : pages[0].url
-                  }
-                />
-              }
-            />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <stateStore.StateProvider>
+      <Router>
+        <div id="scrowl-player" {...props}>
+          <main className="owlui-lesson-wrapper">
+            <ErrorModal />
+            <ScrollHint />
+            {window['API_1484_11'] !== undefined && showPanel ? (
+              <PreviewPanel />
+            ) : null}
+            <Routes>
+              {pages.map((page, idx) => {
+                return (
+                  <Route key={idx} path={page.url} element={<page.Element />} />
+                );
+              })}
+              <Route
+                path="*"
+                element={
+                  <Navigate
+                    to={
+                      targetUrl && targetUrl.length > 1
+                        ? targetUrl
+                        : pages[0].url
+                    }
+                  />
+                }
+              />
+            </Routes>
+          </main>
+        </div>
+      </Router>
+    </stateStore.StateProvider>
   );
 };
 

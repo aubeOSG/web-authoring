@@ -1,17 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { StateConfig } from '../store.types';
+import { updateObj } from '@scrowl/utils';
 
-const initialState = {
-  hasStarted: false,
+export const initialState = {
+  hasStarted: true,
 };
 
-const config: StateConfig = {
+export const slice = createSlice({
   name: 'course',
   initialState,
   reducers: {
     set: (state, action: PayloadAction<typeof initialState>) => {
-      
+      updateObj(state, action.payload);
+    },
+    reset: (state) => {
+      updateObj(state, initialState);
+    },
+    toggleStarted: (state, action: PayloadAction<boolean | undefined>) => {
+      state.hasStarted = action.payload ? action.payload : !state.hasStarted;
     },
   },
+});
+export const reducer = slice.reducer;
+
+export const {
+  set,
+  reset,
+  toggleStarted,
+} = slice.actions;
+
+export default {
+  initialState,
+  slice,
+  reducer,
+  set,
+  reset,
+  toggleStarted,
 };

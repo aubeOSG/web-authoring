@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { PageProps } from './pages.types';
 import { LessonAttempt, TemplateComponent } from '../../root/root.types';
 import { Error } from '../../components';
+import { stateHooks } from '../../state';
 
 export const Page = ({
   slides,
@@ -12,7 +13,8 @@ export const Page = ({
   ...props
 }: PageProps) => {
   const Scrowl = window['Scrowl'];
-  const [hasStartedCourse, setHasStartedCourse] = useState(true);
+  const hasStarted = stateHooks.Course.useHasStarted();
+  const toggleStarted = stateHooks.Course.useToggleStarted();
   const [randomSlides, setRandomSlides] = useState([]);
   const attempt = useRef(0);
   const targets = useRef(['']);
@@ -21,7 +23,7 @@ export const Page = ({
     Scrowl &&
     Scrowl.runtime &&
     Scrowl.runtime.API !== null &&
-    hasStartedCourse !== false
+    hasStarted !== false
   ) {
     const [_courseStartError, suspendData] = Scrowl.runtime.getSuspendData();
 
@@ -34,7 +36,7 @@ export const Page = ({
         parsedData.courseStarted &&
         parsedData.courseStarted !== true)
     ) {
-      setHasStartedCourse(false);
+      toggleStarted();
     }
   }
 
@@ -348,7 +350,7 @@ export const Page = ({
         }
       });
     }, 500);
-  }, [slides, hasStartedCourse]);
+  }, [slides, hasStarted]);
 
   useEffect(() => {
     if (slideId && slideId?.length > 0) {
@@ -365,7 +367,7 @@ export const Page = ({
   }, []);
 
   const handleCourseStart = useCallback((_ev) => {
-    // setHasStartedCourse(true);
+    // toggleStarted(true);
   }, []);
 
   const handleSubmitQuizAnswer = useCallback((_ev) => {
@@ -446,7 +448,7 @@ export const Page = ({
     };
   }, []);
 
-  if (!hasStartedCourse) {
+  if (!hasStarted) {
     const id = `${props.id}--slide-${slides[0].id}`;
     const component = slides[0].template.meta.component;
     const Template = templates[component] as TemplateComponent;

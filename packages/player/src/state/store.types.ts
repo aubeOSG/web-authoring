@@ -29,8 +29,6 @@ export type SliceConfig = {
 
 export type StoreConfig = ConfigureStoreOptions;
 
-export type RootState = StateValue;
-
 export type StateSelector = any | ReturnType<typeof useSelector>;
 
 export type Dispatch = any | ReturnType<typeof useDispatch>;
@@ -44,3 +42,6 @@ export type StateProcessor = {
     (delta: number): void;
   };
 };
+
+export type StateProviderProps = React.AllHTMLAttributes<HTMLDivElement>;
+export type DispatchProviderProps = React.AllHTMLAttributes<HTMLDivElement>;
