@@ -5,7 +5,6 @@ import { InlineTextProps } from './inline-text.types';
 const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
   const Scrowl = window['Scrowl'];
   let classes = 'template-inline-text';
-  const Markdown = Scrowl.core.Markdown;
   const editMode = props.editMode ? true : false;
   const focusElement = editMode ? props.focusElement : null;
   const contentId = `${id}-inline-text`;
@@ -24,9 +23,8 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
   const [progressBarStyles, setProgressBarStyles] = useState({
     width: showProgressBar ? '0%' : '100%',
   });
-  //@ts-ignore
+  const [isEditMode, setIsEditMode] = useState(false);
   const Editor = Scrowl.core.components.Editor;
-  //@ts-ignore
   const EditorTextParser = Scrowl.core.components.EditorTextParser;
 
   const INITIAL_DATA = {
@@ -46,7 +44,7 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
       },
     ],
   };
-  const [isEditMode, setIsEditMode] = useState(false);
+
   const [data, setData] = useState(INITIAL_DATA);
 
   const toggleEditMode = () => {
@@ -62,24 +60,6 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
   if (showProgressBar) {
     classes += ' show-progress';
   }
-
-  const handleFocusText = () => {
-    if (editMode) {
-      Scrowl.core.host.sendMessage({
-        type: 'focus',
-        field: 'text',
-      });
-    }
-  };
-
-  const handleFocusBg = () => {
-    if (editMode) {
-      Scrowl.core.host.sendMessage({
-        type: 'focus',
-        field: 'bgImage.url',
-      });
-    }
-  };
 
   const handleSlideProgress = (ev) => {
     slideProgress.current = ev.progress;
@@ -132,10 +112,7 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
               <div className="progress-indictor">
                 <div className="progress-bar" style={progressBarStyles}></div>
               </div>
-              <div
-                className={`text__value can-focus ${textFocusCss}`}
-                onMouseDown={handleFocusText}
-              >
+              <div className={`text__value can-focus ${textFocusCss}`}>
                 <button id="toggle-edit-btn" onClick={toggleEditMode}>
                   Toggle Edit Mode
                 </button>
@@ -152,19 +129,6 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
           </div>
         </div>
       </div>
-      {/* {(bgUrl || editMode) && (
-        <div
-          ref={bgRef}
-          className={`img__wrapper ${alignmentCss} can-focus ${bgFocusCss} ${
-            bg ? 'as-bg' : 'as-side'
-          }`}
-          onMouseDown={handleFocusBg}
-        >
-          <LazyLoad>
-            <img className="img__container" aria-label={bgLabel} src={bgUrl} />
-          </LazyLoad>
-        </div>
-      )} */}
     </Scrowl.core.Template>
   );
 };
