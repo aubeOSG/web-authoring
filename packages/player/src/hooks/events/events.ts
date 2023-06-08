@@ -19,16 +19,18 @@ export const useEvents = () => {
     document.addEventListener('startCourse', handlerCourseStart);
     document.addEventListener('resetQuiz', handleResetQuiz);
     document.addEventListener('keydown', handleKeyboardNav);
-    document.addEventListener('slider.enter', handlerSlideEnter);
+    document.addEventListener('slide.enter', handlerSlideEnter);
     document.addEventListener('CurrentSlideNavUpdate', handlerSlideUpdate);
+    document.addEventListener('CurrentSlidePageUpdate', handlerSlideUpdate);
 
     return () => {
       document.removeEventListener('quizCompleted', handleSubmitAnswer);
       document.removeEventListener('startCourse', handlerCourseStart);
       document.removeEventListener('resetQuiz', handleResetQuiz);
       document.removeEventListener('keydown', handleKeyboardNav);
-      document.removeEventListener('slider.enter', handlerSlideEnter);
+      document.removeEventListener('slide.enter', handlerSlideEnter);
       document.removeEventListener('CurrentSlideNavUpdate', handlerSlideUpdate);
+      document.removeEventListener('CurrentSlidePageUpdate', handlerSlideUpdate);
     };
   }, []);
 };

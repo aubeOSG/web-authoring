@@ -17,13 +17,17 @@ import { ScrollHint } from '../components/scrollHint';
 import { stateStore } from '../state';
 import { eventHooks } from '../hooks';
 
+const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
+  eventHooks.useEvents();
+  return <>{children}</>;
+};
+
 export const Root = ({
   project,
   templateList,
   scorm,
   ...props
 }: PlayerRootProps) => {
-  eventHooks.useEvents();
   const Scrowl = window['Scrowl'];
   let apiPreference;
 
@@ -203,29 +207,11 @@ export const Root = ({
         Scrowl.runtime?.updateLocation(locationObj, id);
       }
     };
-    const handleSlideStart = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideEnd = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideLeave = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
 
     document.addEventListener('slide.enter', handleSlideEnter);
-    document.addEventListener('slide.start', handleSlideStart);
-    document.addEventListener('slide.end', handleSlideEnd);
-    document.addEventListener('slide.leave', handleSlideLeave);
 
     return () => {
       document.removeEventListener('slide.enter', handleSlideEnter);
-      document.removeEventListener('slide.start', handleSlideStart);
-      document.removeEventListener('slide.end', handleSlideEnd);
-      document.removeEventListener('slide.leave', handleSlideLeave);
     };
   }, [project]);
 
@@ -285,36 +271,42 @@ export const Root = ({
 
   return (
     <stateStore.StateProvider>
-      <Router>
-        <div id="scrowl-player" {...props}>
-          <main className="owlui-lesson-wrapper">
-            <ErrorModal />
-            <ScrollHint />
-            {window['API_1484_11'] !== undefined && showPanel ? (
-              <PreviewPanel />
-            ) : null}
-            <Routes>
-              {pages.map((page, idx) => {
-                return (
-                  <Route key={idx} path={page.url} element={<page.Element />} />
-                );
-              })}
-              <Route
-                path="*"
-                element={
-                  <Navigate
-                    to={
-                      targetUrl && targetUrl.length > 1
-                        ? targetUrl
-                        : pages[0].url
-                    }
-                  />
-                }
-              />
-            </Routes>
-          </main>
-        </div>
-      </Router>
+      <RootEvents>
+        <Router>
+          <div id="scrowl-player" {...props}>
+            <main className="owlui-lesson-wrapper">
+              <ErrorModal />
+              <ScrollHint />
+              {window['API_1484_11'] !== undefined && showPanel ? (
+                <PreviewPanel />
+              ) : null}
+              <Routes>
+                {pages.map((page, idx) => {
+                  return (
+                    <Route
+                      key={idx}
+                      path={page.url}
+                      element={<page.Element />}
+                    />
+                  );
+                })}
+                <Route
+                  path="*"
+                  element={
+                    <Navigate
+                      to={
+                        targetUrl && targetUrl.length > 1
+                          ? targetUrl
+                          : pages[0].url
+                      }
+                    />
+                  }
+                />
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </RootEvents>
     </stateStore.StateProvider>
   );
 };

@@ -19,6 +19,15 @@ export const useHasStarted = () => {
   });
 };
 
+export const useCurrentSlide = () => {
+  return useAppSelector((state: RootState) => {
+    return {
+      id: state.course.currentSlideId,
+      index: state.course.currentSlideIndex,
+    };
+  });
+};
+
 /** 
  * Here begins hooks to actions
 */
@@ -47,12 +56,22 @@ export const useToggleStarted = () => {
   };
 };
 
+export const useUpdateCurrentSlide = () => {
+  const dispatch = useContext(useAppDispatch);
+
+  return (currentSlide: { id: string; index: number }) => {
+    dispatch(Course.updateCurrentSlide(currentSlide));
+  };
+};
+
 export default {
   // state
   useCourseData,
   useHasStarted,
+  useCurrentSlide,
   // actions
   useSetCourse,
   useResetCourse,
   useToggleStarted,
+  useUpdateCurrentSlide,
 };

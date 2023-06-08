@@ -9,3 +9,7 @@ export default useHandlerSlideUpdate;
 // const handleUpdateSlideEvent = (ev) => {
 //   currentSlide = ev.detail.currentSlide;
 // };
+
+// const handleUpdateSlideEvent = (ev) => {
+//   currentSlide = ev.detail.currentSlide;
+// };

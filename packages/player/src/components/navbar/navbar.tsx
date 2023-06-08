@@ -122,15 +122,6 @@ export const NavBar = ({ pageId, project, slides }) => {
   };
 
   useEffect(() => {
-    const handleSlideEvent = (ev) => {
-      currentSlide = ev.detail.currentTarget.id;
-    };
-    const handleUpdateSlideEvent = (ev) => {
-      currentSlide = ev.detail.currentSlide;
-    };
-    document.addEventListener('CurrentSlidePageUpdate', handleUpdateSlideEvent);
-    document.addEventListener('slide.enter', handleSlideEvent);
-
     let options = {
       root: null,
       rootMargin: '0px',

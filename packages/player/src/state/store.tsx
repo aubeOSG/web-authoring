@@ -45,7 +45,7 @@ export const useAppDispatch = createContext<AppDispatch | null>(
 
 const DispatchProvider = ({ children }: DispatchProviderProps) => {
   const dispatch = useDispatch();
-
+  console.log('dispatch provider', dispatch);
   return (
     <useAppDispatch.Provider value={dispatch}>
       {children}

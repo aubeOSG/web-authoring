@@ -1,16 +1,20 @@
 import React from 'react';
-import { TemplateSchema } from '@scrowl/template-core';
-import { BlockTextProps } from '@scrowl/template-block-text';
-import { LessonIntroProps } from '@scrowl/template-lesson-intro';
-import { SimpleTextProps } from '@scrowl/template-simple-text';
-import { TwoColumnProps } from '@scrowl/template-two-column';
+import type { TemplateSchema } from '@scrowl/template-core';
+import type { BlockTextProps, BlockTextSchemaProps } from '@scrowl/template-block-text';
+import type { LessonIntroProps, LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
+import type { SimpleTextProps, SimpleTextSchemaProps } from '@scrowl/template-simple-text';
+import type { TwoColumnProps, TwoColumnSchemaProps } from '@scrowl/template-two-column';
+import type { SimpleVideoProps, SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
+import type { QuizProps, QuizSchemaProps } from '@scrowl/template-quiz';
 
 export type {
   TemplateSchema,
   BlockTextProps,
   LessonIntroProps,
   SimpleTextProps,
-  TwoColumnProps
+  TwoColumnProps,
+  SimpleVideoProps,
+  QuizProps
 }
 
 export type TemplateElementProps = BlockTextProps | LessonIntroProps | SimpleTextProps | TwoColumnProps;
@@ -58,7 +62,13 @@ export type ProjectSlide = {
   moduleId: number;
   lessonId: number;
   id: number;
-  template: TemplateSchema;
+  template: |
+    BlockTextSchemaProps |
+    LessonIntroSchemaProps |
+    SimpleTextSchemaProps |
+    TwoColumnSchemaProps |
+    SimpleVideoSchemaProps |
+    QuizSchemaProps;
 };
 
 export type ProjectGlossaryItem = {

@@ -41,10 +41,17 @@ export const readableFromValue = (datetime) => {
   return `${stampYear}/${stampMonth}/${stampDate}`;
 };
 
+export const localTime = (datetime?: Date | string | number) => {
+  const d = datetime ? new Date(datetime) : new Date();
+
+  return d.toLocaleTimeString();
+};
+
 export default {
   getTimestamp,
   getDateStamp,
   getDateStampLocal,
   addLeadZero,
   readableFromValue,
+  localTime,
 };

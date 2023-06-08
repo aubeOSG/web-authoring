@@ -1,16 +1,28 @@
 import { player } from '../src';
 import { RUNTIME_SERVICE } from '../../runtime/src/runtime.types';
-import { CORE_PROPS } from '@scrowl/template-core';
+import type {
+  CORE_PROPS,
+  TemplateEventEnter,
+  TemplateEventStart,
+  TemplateEventProgress,
+  TemplateEventEnd,
+  TemplateEventLeave
+} from '@scrowl/template-core';
 import { UI_PROPS } from '@scrowl/ui';
 
-interface CustomEventMap {
+export interface CustomEventMap {
   "updateOutro": CustomEvent;
   "nextSlide": CustomEvent;
   "quizCompleted": CustomEvent;
   "startCourse": CustomEvent;
   "resetQuiz": CustomEvent;
   "CurrentSlideNavUpdate": CustomEvent;
-  "slider.enter": CustomEvent;
+  "CurrentSlidePageUpdate": CustomEvent;
+  "slide.enter": CustomEvent<TemplateEventEnter>;
+  "slide.start": CustomEvent<TemplateEventStart>;
+  "slide.progress": CustomEvent<TemplateEventProgress>;
+  "slide.end": CustomEvent<TemplateEventEnd>;
+  "slide.leave": CustomEvent<TemplateEventLeave>;
 };
 
 declare global {

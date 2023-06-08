@@ -1,8 +1,29 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { PageProps } from './pages.types';
+import React, { useState, useEffect, useRef } from 'react';
+import { PageProps, SlideProps, SlideTypesMap } from './pages.types';
 import { LessonAttempt, TemplateComponent } from '../../root/root.types';
 import { Error } from '../../components';
 import { stateHooks } from '../../state';
+import { Datetime } from '@scrowl/utils';
+import { QuizSchemaProps } from '@scrowl/template-quiz';
+import { BlockTextSchemaProps } from '@scrowl/template-block-text';
+import { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
+import { SimpleTextSchemaProps } from '@scrowl/template-simple-text';
+import { SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
+import { TwoColumnSchemaProps } from '@scrowl/template-two-column';
+import { ProjectSlide } from '@scrowl/template-core';
+
+const getSlideComponent = <K extends keyof SlideTypesMap>({
+  slide,
+  templates,
+  ...props
+}: SlideProps<K>) => {
+  const component = slide.template.meta.component;
+  const Template = templates[component] as TemplateComponent;
+
+  return () => {
+    return <Template {...props} />;
+  };
+};
 
 export const Page = ({
   slides,
@@ -40,11 +61,7 @@ export const Page = ({
     }
   }
 
-  const timeStamp = new Date();
-  timeStamp.toLocaleString();
-  timeStamp.toLocaleDateString();
-  timeStamp.toLocaleTimeString();
-
+  const timeStamp = Datetime.localTime();
   const attempts: Array<LessonAttempt> = [
     {
       started_at: timeStamp,
@@ -86,9 +103,6 @@ export const Page = ({
 
   const controller = new Scrowl.core.scroll.Controller();
 
-  let currentSlide = `module-${slides[0].moduleId}--lesson-${slides[0].lessonId}--slide-${slides[0].id}-${slides[0].template.meta.filename}`;
-  let currentIndex = 0;
-
   if (randomSlides.length < 1) {
     targets.current = slides?.map((slide) => {
       return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
@@ -99,59 +113,6 @@ export const Page = ({
       return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
     });
   }
-
-  useEffect(() => {
-    let options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.8,
-    };
-
-    const slidesObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          currentSlide = entry.target.id;
-
-          const currentSlideObj = {
-            currentIndex: currentIndex,
-            currentSlide: currentSlide,
-          };
-
-          const currentSlideEvent = new CustomEvent('CurrentSlidePageUpdate', {
-            detail: currentSlideObj,
-          });
-          document.dispatchEvent(currentSlideEvent);
-        }
-      });
-    });
-
-    const finalSlideObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting === true) {
-          currentSlide = 'owlui-last';
-        }
-      });
-    }, options);
-
-    let lastSlide = document.querySelector('.owlui-last');
-    if (lastSlide) {
-      finalSlideObserver.observe(lastSlide);
-    }
-
-    let targetElements;
-
-    setTimeout(() => {
-      targetElements = targets.current.map((target) => {
-        return document.querySelector(`#${target}`);
-      });
-
-      targetElements.forEach((element) => {
-        if (element) {
-          slidesObserver.observe(element);
-        }
-      });
-    }, 500);
-  }, [slides]);
 
   useEffect(() => {
     if (slideId && slideId?.length > 0) {
@@ -167,20 +128,87 @@ export const Page = ({
     };
   }, []);
 
-  if (!hasStarted) {
-    const id = `${props.id}--slide-${slides[0].id}`;
-    const component = slides[0].template.meta.component;
-    const Template = templates[component] as TemplateComponent;
+  const getSlide = (_slide: ProjectSlide, idx = 0) => {
+    let Slide, schema;
+    const id = `${props.id}--slide-${_slide.id}`;
 
-    return (
-      <Template
-        key={1}
-        id={id}
-        schema={slides[0].template}
-        controller={controller}
-        slides={slides[0]}
-      />
-    );
+    switch (_slide.template.meta.component) {
+      case 'BlockText':
+        schema = _slide.template as BlockTextSchemaProps;
+        Slide = getSlideComponent<'blockText'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+        });
+        break;
+      case 'LessonIntro':
+        schema = _slide.template as LessonIntroSchemaProps;
+        Slide = getSlideComponent<'lessonIntro'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+        });
+        break;
+      case 'Quiz':
+        schema = _slide.template as QuizSchemaProps;
+        Slide = getSlideComponent<'quiz'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+          passingThreshold,
+          lesson,
+        });
+        break;
+      case 'SimpleText':
+        schema = _slide.template as SimpleTextSchemaProps;
+        Slide = getSlideComponent<'simpleText'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+        });
+        break;
+      case 'SimpleVideo':
+        schema = _slide.template as SimpleVideoSchemaProps;
+        Slide = getSlideComponent<'simpleVideo'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+        });
+        break;
+      case 'TwoColumn':
+        schema = _slide.template as TwoColumnSchemaProps;
+        Slide = getSlideComponent<'textColumns'>({
+          id,
+          idx,
+          slide: _slide,
+          templates: templates,
+          schema: schema,
+          controller,
+        });
+        break;
+    }
+
+    return Slide;
+  };
+
+  if (!hasStarted) {
+    const SlideComp = getSlide(slides[0]);
+    return <SlideComp />;
   } else if (randomSlides.length > 0) {
     return (
       <>
@@ -202,7 +230,6 @@ export const Page = ({
               <Template
                 key={idx}
                 id={id}
-                //@ts-ignore
                 schema={slide.template}
                 controller={controller}
                 slides={randomSlides}
@@ -217,7 +244,6 @@ export const Page = ({
             <Template
               key={idx}
               id={id}
-              //@ts-ignore
               schema={slide.template}
               controller={controller}
               slides={slides}
