@@ -7,6 +7,7 @@ export const SimpleVideoSchema: SimpleVideoSchemaProps = {
     component: 'SimpleVideo',
     filename: 'simple-video',
     icon: 'view_week',
+    category: 'media',
     tags: ['text', 'video'],
   },
   content: {

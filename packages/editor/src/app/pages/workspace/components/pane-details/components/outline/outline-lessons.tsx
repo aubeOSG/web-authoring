@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
-import { Collapse } from 'react-bootstrap';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { OutlineSlides } from './outline-slides';
-import { resetActiveSlide, useActiveSlide } from '../../../../';
+import { resetActiveSlide, setActiveSlide, useActiveSlide } from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys, events } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import { ELEM_ALIGNMENT } from '@scrowl/utils';
+import { useData } from '../../../../../../models/projects';
 
 export const OutlineLessonItem = ({
   lesson,
@@ -17,6 +16,7 @@ export const OutlineLessonItem = ({
   className,
   ...props
 }: OutlineLessonItemProps) => {
+  const project = useData();
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const [isOpen, setOpen] = useState(true);
@@ -92,7 +92,12 @@ export const OutlineLessonItem = ({
 
   const handleToggleOpen = (ev: React.MouseEvent) => {
     ev.preventDefault();
-    setOpen(!isOpen);
+    if (project && project.slides) {
+      const targetSlides = project.slides.filter((slide) => {
+        return slide.lessonId === lesson.id;
+      });
+      setActiveSlide(targetSlides[0]);
+    }
   };
 
   const handleOpenLessonMenu = (
@@ -154,14 +159,6 @@ export const OutlineLessonItem = ({
           variant="link"
         >
           <div className={css.lessonIcons}>
-            <span className={css.outlineItemIconHandle}>
-              <ui.Icon
-                icon="arrow_drop_down"
-                display="outlined"
-                filled
-                style={{ fontSize: '1.375rem' }}
-              />
-            </span>
             <span className={css.outlineItemIconDetail}>
               <ui.Icon
                 icon="interests"
@@ -193,17 +190,6 @@ export const OutlineLessonItem = ({
           <ui.Icon display="rounded" icon="more_vert" opsz={20} filled />
         </ui.Button>
       </div>
-      <Collapse in={isOpen}>
-        <div>
-          <OutlineSlides
-            id={menuId}
-            moduleId={lesson.moduleId}
-            moduleIdx={moduleIdx}
-            lessonId={lesson.id}
-            lessonIdx={idx}
-          />
-        </div>
-      </Collapse>
     </div>
   );
 };

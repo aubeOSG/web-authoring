@@ -6,6 +6,7 @@ export const SimpleTextSchema: SimpleTextSchemaProps = {
     label: 'Simple Text',
     component: 'SimpleText',
     filename: 'simple-text',
+    category: 'text',
     tags: ['text'],
     icon: 'notes',
   },

@@ -100,6 +100,7 @@
     "@scrowl/player": "^0.0.100",
     "@scrowl/runtime": "^0.0.100",
     "@scrowl/template-block-text": "^1.0.99",
+    "@scrowl/template-inline-text": "^1.0.99",
     "@scrowl/template-core": "^1.0.99",
     "@scrowl/template-lesson-intro": "^1.0.99",
     "@scrowl/template-quiz": "^1.0.99",

@@ -71,6 +71,20 @@ const config = {
       overwrite: true,
     },
   },
+  'node_modules/@scrowl/template-inline-text/dist': {
+    dest: './src/main/assets/templates/inline-text',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
+  'node_modules/@scrowl/template-quiz/dist': {
+    dest: './src/main/assets/templates/quiz',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
   'node_modules/@scrowl/template-two-column/dist': {
     dest: './src/main/assets/templates/two-column',
     includePaths: ['../../'],

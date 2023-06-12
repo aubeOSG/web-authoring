@@ -9,6 +9,7 @@ COPY ./packages/templates/core/package.json ./packages/templates/core/package.js
 COPY ./packages/templates/block-text/package.json ./packages/templates/block-text/package.json
 COPY ./packages/templates/lesson-intro/package.json ./packages/templates/lesson-intro/package.json
 COPY ./packages/templates/simple-text/package.json ./packages/templates/simple-text/package.json
+COPY ./packages/templates/inline-text/package.json ./packages/templates/inline-text/package.json
 COPY ./packages/templates/simple-video/package.json ./packages/templates/simple-video/package.json
 COPY ./packages/templates/two-column/package.json ./packages/templates/two-column/package.json
 COPY ./packages/templates/quiz-template/package.json ./packages/templates/quiz-template/package.json
@@ -25,6 +26,7 @@ COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/templates/block-text ./packages/templates/block-text
 COPY ./packages/templates/lesson-intro ./packages/templates/lesson-intro
 COPY ./packages/templates/simple-text ./packages/templates/simple-text
+COPY ./packages/templates/inline-text ./packages/templates/inline-text
 COPY ./packages/templates/simple-video ./packages/templates/simple-video
 COPY ./packages/templates/two-column ./packages/templates/two-column
 COPY ./packages/templates/quiz-template ./packages/templates/quiz-template

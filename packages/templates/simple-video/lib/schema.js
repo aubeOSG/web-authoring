@@ -36,6 +36,7 @@ const $670ec1178fdfe965$export$6c89ab77d30923e4 = {
         component: "SimpleVideo",
         filename: "simple-video",
         icon: "view_week",
+        category: "media",
         tags: [
             "text",
             "video"

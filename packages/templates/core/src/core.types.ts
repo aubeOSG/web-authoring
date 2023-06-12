@@ -2,12 +2,18 @@ import { AnimeParams, AnimeInstance } from 'animejs';
 import ScrollMagic from 'scrollmagic';
 import { TemplateProps, HostProps } from './';
 
+export type ComponentsProps = {
+  Editor: ({ data, setData }: { data: any; setData: any }) => React.JSX.Element;
+  EditorTextParser: ({ data }: { data: any }) => React.JSX.Element;
+};
+
 export type CORE_PROPS = {
   Template: (props: TemplateProps) => JSX.Element;
   Markdown: (props: any) => JSX.Element;
   host: HostProps;
   anime: (AnimeParams) => AnimeInstance;
   scroll: typeof ScrollMagic;
+  components: ComponentsProps;
 };
 
 export type LAYOUT_INPUT_TYPE =

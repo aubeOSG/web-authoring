@@ -6,6 +6,7 @@ export const QuizSchema: QuizSchemaProps = {
     label: 'Quiz',
     component: 'Quiz',
     filename: 'quiz',
+    category: 'quiz',
     tags: ['text', 'image'],
     icon: 'vertical_split',
   },

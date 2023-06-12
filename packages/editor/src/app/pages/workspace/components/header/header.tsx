@@ -119,9 +119,6 @@ export const Header = () => {
     };
 
     switch (payload.type) {
-      case 'slide':
-        payload.entityId = activeSlide.id;
-        break;
       case 'lesson':
         payload.entityId = activeSlide.lessonId;
         break;
@@ -134,20 +131,6 @@ export const Header = () => {
   };
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
-    {
-      label: 'Current Slide',
-      type: 'radio',
-      checked: previewMode === 'slide',
-      click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
-          type: 'slide',
-          project: projectData,
-          entityId: activeSlide.id,
-        };
-
-        handleProjectPreview(payload);
-      },
-    },
     {
       label: 'Current Lesson',
       type: 'radio',

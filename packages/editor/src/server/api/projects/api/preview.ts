@@ -60,41 +60,6 @@ export const preview: ProjectsApiPreview = {
     };
 
     switch (type) {
-      case 'slide':
-        if (!project.slides) {
-          previewError.message = 'unable to preview: project has no slides';
-          res.send(previewError);
-          return;
-        }
-
-        if (entityId === -1) {
-          previewError.message = 'unable to preview: slide id required';
-          res.send(previewError);
-          return;
-        }
-
-        const slides = project.slides as unknown as Array<JSON_DATA>;
-        const slideIdx = List.indexBy(slides, 'id', entityId);
-
-        if (slideIdx === -1) {
-          previewError.message = 'unable to preview: slide not found';
-          res.send(previewError);
-          return;
-        }
-
-        const slide = project.slides[slideIdx];
-
-        previewData = {
-          ...project,
-          modules: project.modules?.filter((m) => {
-            return m.id === slide.moduleId;
-          }),
-          lessons: project.lessons?.filter((l) => {
-            return l.moduleId === slide.moduleId && l.id === slide.lessonId;
-          }),
-          slides: [slide],
-        };
-        break;
       case 'lesson':
         if (!project.lessons) {
           previewError.message = 'unable to preview: project has no lessons';

@@ -17,6 +17,7 @@ export type TemplateSchemaMeta = {
   version: string;
   component: string;
   filename: string;
+  category?: 'text' | 'media' | 'quiz' | 'intro' | 'outro';
   tags?: Array<string>;
   icon?: string;
 };

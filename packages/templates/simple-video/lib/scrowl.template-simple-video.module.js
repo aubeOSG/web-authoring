@@ -20,6 +20,7 @@ const $4960b871548bfe62$export$6c89ab77d30923e4 = {
         component: "SimpleVideo",
         filename: "simple-video",
         icon: "view_week",
+        category: "media",
         tags: [
             "text",
             "video"

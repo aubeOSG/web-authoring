@@ -6,6 +6,7 @@ export const BlockTextSchema: BlockTextSchemaProps = {
     label: 'Text Block',
     component: 'BlockText',
     filename: 'block-text',
+    category: 'text',
     tags: ['text', 'image'],
     icon: 'vertical_split',
   },
