@@ -6,6 +6,7 @@ export const LessonIntroSchema: LessonIntroSchemaProps = {
     label: 'Lesson Intro',
     component: 'LessonIntro',
     filename: 'lesson-intro',
+    category: 'intro',
     tags: ['text', 'introduction'],
     icon: 'article',
   },

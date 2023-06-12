@@ -62,6 +62,7 @@
     "@scrowl/config": "^0.0.100",
     "@scrowl/postcss-prefixer": "^0.0.40",
     "@scrowl/template-block-text": "^1.0.99",
+    "@scrowl/template-inline-text": "^1.0.99",
     "@scrowl/template-lesson-intro": "^1.0.99",
     "@scrowl/template-quiz": "^1.0.99",
     "@scrowl/template-simple-text": "^1.0.99",

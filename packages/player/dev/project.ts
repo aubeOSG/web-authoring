@@ -1,6 +1,7 @@
 import { ProjectData } from '../src';
 import { TemplateSchema } from '@scrowl/template-core';
 import { BlockTextSchema } from '@scrowl/template-block-text/schema';
+import { InlineTextSchema } from '@scrowl/template-inline-text/schema';
 import { LessonIntroSchema } from '@scrowl/template-lesson-intro/schema';
 import { SimpleTextSchema } from '@scrowl/template-simple-text/schema';
 import { TwoColumnSchema } from '@scrowl/template-two-column/schema';
@@ -9,6 +10,7 @@ import { QuizSchema } from '@scrowl/template-quiz/schema';
 
 const TEMPLATES = {
   blockText: JSON.stringify(BlockTextSchema),
+  inlineText: JSON.stringify(InlineTextSchema),
   lessonIntro: JSON.stringify(LessonIntroSchema),
   simpleText: JSON.stringify(SimpleTextSchema),
   twoColumn: JSON.stringify(TwoColumnSchema),
@@ -114,7 +116,7 @@ export const create = () => {
         true,
         'https://www.youtube.com/watch?v=Z_ppk0iQnsA'
       ),
-      createSlide('Slide 1.3', 0, 0, 2, 'quiz'),
+      createSlide('Slide 1.3', 0, 0, 2, 'inlineText'),
       createSlide('Slide 1.4', 0, 0, 3, 'blockText', true, './osg-logo.png'),
 
       createSlide('Slide 2.1', 0, 1, 4, 'twoColumn'),

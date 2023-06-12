@@ -1,4 +1,8 @@
 import { BlockTextSchema, BlockTextSchemaProps } from '@scrowl/template-block-text/schema';
+import {
+  InlineTextSchema,
+  InlineTextSchemaProps,
+} from '@scrowl/template-inline-text/schema';
 import { LessonIntroSchema, LessonIntroSchemaProps } from '@scrowl/template-lesson-intro/schema';
 import { SimpleTextSchema, SimpleTextSchemaProps } from '@scrowl/template-simple-text/schema';
 import { TwoColumnSchema, TwoColumnSchemaProps } from '@scrowl/template-two-column/schema';
@@ -10,6 +14,7 @@ import { QuizSchema, QuizSchemaProps } from '@scrowl/template-quiz/schema';
 
 export const TEMPLATES = {
   blockText: JSON.stringify(BlockTextSchema),
+  inlineText: JSON.stringify(InlineTextSchema),
   lessonIntro: JSON.stringify(LessonIntroSchema),
   simpleText: JSON.stringify(SimpleTextSchema),
   twoColumn: JSON.stringify(TwoColumnSchema),
@@ -21,6 +26,7 @@ export type TemplateNames = keyof typeof TEMPLATES;
 
 export type TemplateSchemas = {
   blockText: BlockTextSchemaProps;
+  inlineText: InlineTextSchemaProps;
   lessonIntro: LessonIntroSchemaProps;
   simpleText: SimpleTextSchemaProps;
   twoColumn: TwoColumnSchemaProps;
