@@ -33,6 +33,7 @@ export type ProjectAsset = {
 export type ProjectModule = {
   id: number;
   name: string;
+  passingThreshold?: number;
 };
 
 export type LessonQuestion = {
@@ -114,10 +115,20 @@ export interface PlayerRootCommons {
 export type PlayerRootProps = PlayerRootCommons &
   React.AllHTMLAttributes<HTMLDivElement>;
 
+export type PlayerRootLesson = {
+  lesson: ProjectLesson;
+  slides: Array<ProjectSlide>;
+};
+
 export type PlayerRootConfig = {
   module: ProjectModule;
-  lessons: Array<{
-    lesson: ProjectLesson;
-    slides: Array<ProjectSlide>;
-  }>;
+  lessons: Array<PlayerRootLesson>;
+};
+
+export type ProjectConfig = {
+  name: string;
+  subtitle: string;
+  outlineConfig: Array<PlayerRootConfig>;
+  resources?: Array<ProjectResource>;
+  glossary?: Array<ProjectGlossaryItem>;
 };
