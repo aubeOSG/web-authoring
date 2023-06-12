@@ -49,6 +49,8 @@ export interface InlineTextSchemaProps extends TemplateSchema {
 
 export interface InlineTextCommons extends TemplateCommons {
   schema: InlineTextSchemaProps;
+  editMode?: boolean;
+  focusElement?: string;
 }
 
 export type InlineTextProps = InlineTextCommons &

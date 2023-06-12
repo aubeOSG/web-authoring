@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './_index.scss';
 import { InlineTextProps } from './inline-text.types';
 
-const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
+const InlineText = ({ id, schema, editMode, ...props }: InlineTextProps) => {
   const Scrowl = window['Scrowl'];
   let classes = 'template-inline-text';
-  const editMode = props.editMode ? true : false;
   const focusElement = editMode ? props.focusElement : null;
   const contentId = `${id}-inline-text`;
   const text = schema.content.text.value;
@@ -23,7 +22,7 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
   const [progressBarStyles, setProgressBarStyles] = useState({
     width: showProgressBar ? '0%' : '100%',
   });
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(editMode);
   const Editor = Scrowl.core.components.Editor;
   const EditorTextParser = Scrowl.core.components.EditorTextParser;
 
@@ -92,6 +91,10 @@ const InlineText = ({ id, schema, ...props }: InlineTextProps) => {
       width: showProgressBar ? `${slideProgress.current}%` : `100%`,
     });
   }, [showProgressBar]);
+
+  useEffect(() => {
+    setIsEditMode(editMode);
+  }, [editMode]);
 
   return (
     <Scrowl.core.Template
