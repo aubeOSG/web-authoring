@@ -1,14 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { PageProps, SlideProps, SlideTypesMap } from './pages.types';
 import {
-  LessonAttempt,
   TemplateComponent,
   PlayerTemplateList,
   ProjectLesson,
 } from '../../root/root.types';
 import { Error } from '../../components';
 import { stateHooks } from '../../state';
-import { Datetime } from '@scrowl/utils';
 import { QuizSchemaProps } from '@scrowl/template-quiz';
 import { BlockTextSchemaProps } from '@scrowl/template-block-text';
 import { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
@@ -162,7 +160,6 @@ export const Page = ({
   const toggleStarted = stateHooks.Course.useToggleStarted();
   const lastSlideNodeRef = useRef<HTMLDivElement>(null);
   const lastSlideIdx = slides.length - 1;
-  const attempt = useRef(0);
 
   if (
     Scrowl &&
@@ -184,47 +181,6 @@ export const Page = ({
       toggleStarted();
     }
   }
-
-  // TODO :: move to pages makePageDefinition fn
-  // const timeStamp = Datetime.localTime();
-  // const attempts: Array<LessonAttempt> = [
-  //   {
-  //     started_at: timeStamp,
-  //     finished_at: '',
-  //     questions: [],
-  //   },
-  // ];
-
-  // const questions: Array<any> = [];
-
-  // slides.forEach((slide) => {
-  //   if (slide.template.meta.component === 'Quiz') {
-  //     const question: any = {};
-  //     const answers: Array<string> = [];
-  //     Object.keys(slide.template.content).forEach((key) => {
-  //       if (key.includes('answer')) {
-  //         //@ts-ignore
-  //         answers.push(slide.template.content[key].content.answerText.value);
-  //       }
-  //     });
-
-  //     question.id = `${props.id}--slide-${slide.id}-${slide.template.meta.filename}`;
-  //     question.correct = false;
-  //     question.question =
-  //       // @ts-ignore
-  //       slide.template.content.question.content.question.value;
-  //     question.answers = answers;
-
-  //     questions.push(question);
-  //   }
-  // });
-
-  // if (lesson.attempts && lesson.attempts?.length > 0) {
-  //   lesson.attempts[attempt.current].questions = questions;
-  // } else {
-  //   attempts[attempt.current].questions = questions;
-  //   lesson.attempts = attempts;
-  // }
 
   useEffect(() => {
     if (lastSlideNodeRef.current) {

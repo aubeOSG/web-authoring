@@ -1,8 +1,10 @@
 import React, { Suspense, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { hasProp } from '@scrowl/utils';
+import { Datetime, hasProp } from '@scrowl/utils';
 import { PageDefinition } from './pages.types';
 import {
+  LessonAttempt,
+  LessonQuestion,
   PlayerRootConfig,
   PlayerRootLesson,
   PlayerTemplateList,
@@ -13,6 +15,7 @@ import utils from '../../utils';
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
 import { Page } from './page';
+import { QuizSchemaProps } from '@scrowl/template-quiz';
 
 const css = utils.css.removeMapPrefix(_css);
 
@@ -52,6 +55,46 @@ const getNextPageLink = (
   };
 };
 
+const createQuizAttempts = (id: string, page: PlayerRootLesson) => {
+  const attempt: LessonAttempt = {
+    started_at: Datetime.localTime(),
+    finished_at: '',
+    questions: [],
+  };
+  let schema: QuizSchemaProps;
+  let question: LessonQuestion = {
+    id: '',
+    correct: false,
+    question: '',
+    answers: [],
+  };
+  let contentKeys: Array<string> = [];
+
+  page.slides.forEach((slide) => {
+    if (slide.template.meta.component !== 'Quiz') {
+      return;
+    }
+
+    schema = slide.template as QuizSchemaProps;
+    question.id = `${id}--slide-${slide.id}-${schema.meta.filename}`;
+    question.question = schema.content.question.content.question.value || '';
+    contentKeys = Object.keys(schema.content);
+    question.answers = [];
+
+    contentKeys.forEach((key) => {
+      if (key.indexOf('answer') === -1) {
+        return;
+      }
+
+      question.answers?.push(schema.content[key].content.answerText.value);
+    });
+
+    attempt.questions.push(question);
+  });
+
+  return attempt;
+};
+
 const makePageDefinition = ({
   id,
   url,
@@ -84,6 +127,13 @@ const makePageDefinition = ({
     mIdx,
     lIdx
   );
+  const quizAttempt = createQuizAttempts(id, page);
+
+  if (!page.lesson.attempts) {
+    page.lesson.attempts = [];
+  }
+
+  page.lesson.attempts.splice(0, 0, quizAttempt);
 
   const updateCourseProgress = useCallback(() => {
     let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];

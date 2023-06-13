@@ -40,7 +40,7 @@ export type LessonQuestion = {
   id: string;
   correct: boolean;
   question: string;
-  answer: string;
+  answers: Array<string>;
   started_at?: string;
   submitted_at?: string;
 };
