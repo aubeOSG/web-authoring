@@ -7,13 +7,13 @@ import {
 } from '../../root/root.types';
 import { Error } from '../../components';
 import { stateHooks } from '../../hooks';
-import { QuizSchemaProps } from '@scrowl/template-quiz';
-import { BlockTextSchemaProps } from '@scrowl/template-block-text';
-import { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
-import { SimpleTextSchemaProps } from '@scrowl/template-simple-text';
-import { SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
-import { TwoColumnSchemaProps } from '@scrowl/template-two-column';
-import { ProjectSlide, Controller } from '@scrowl/template-core';
+import type { QuizSchemaProps } from '@scrowl/template-quiz';
+import type { BlockTextSchemaProps } from '@scrowl/template-block-text';
+import type { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
+import type { SimpleTextSchemaProps } from '@scrowl/template-simple-text';
+import type { SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
+import type { TwoColumnSchemaProps } from '@scrowl/template-two-column';
+import type { ProjectSlide, Controller } from '@scrowl/template-core';
 
 const TemplateError = ({ name, msg }: { name: string; msg?: string }) => {
   msg = !msg ? `Unable to find template: ${name}` : msg;
