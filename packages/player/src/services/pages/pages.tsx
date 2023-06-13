@@ -7,8 +7,6 @@ import {
   PlayerRootLesson,
   PlayerTemplateList,
   ProjectConfig,
-  ProjectLesson,
-  ProjectModule,
 } from '../../root/root.types';
 import utils from '../../utils';
 // @ts-ignore
@@ -18,25 +16,13 @@ import { Page } from './page';
 
 const css = utils.css.removeMapPrefix(_css);
 
-const finishCourse = () => {
-  const Scrowl = window['Scrowl'];
-
-  if (Scrowl.runtime) {
-    Scrowl.runtime.finish();
-  }
-
-  if (window['API_1484_11']) {
-    window['API_1484_11'].SetValue('cmi.score.raw', 90);
-    window['API_1484_11'].SetValue('cmi.score.min', 70);
-    window['API_1484_11'].SetValue('cmi.score.max', 100);
-    window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
-    window['API_1484_11'].SetValue('cmi.success_status', 'passed');
-    window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
-    window['API_1484_11'].SetValue('cmi.progress_measure', 1);
-  }
-};
-
-const getNextPageLink = () => {
+const getNextPageLink = (
+  module: PlayerRootConfig,
+  page: PlayerRootLesson,
+  project: ProjectConfig,
+  mIdx: number,
+  lIdx: number
+) => {
   let nextLessonUrl;
   let nextLessonId;
   let nextLessonText;
@@ -87,9 +73,19 @@ const makePageDefinition = ({
   templateList: PlayerTemplateList;
   project: ProjectConfig;
 }) => {
+  const Scrowl = window['Scrowl'];
+  const runtime = hasProp(Scrowl, 'runtime') ? Scrowl.runtime : undefined;
+  const passingThreshold = module.module.passingThreshold || 0;
+  const controller = new Scrowl.core.scroll.Controller();
+  const { nextLessonId, nextLessonUrl, nextLessonText } = getNextPageLink(
+    module,
+    page,
+    project,
+    mIdx,
+    lIdx
+  );
+
   const updateCourseProgress = useCallback(() => {
-    const Scrowl = window['Scrowl'];
-    const runtime = hasProp(Scrowl, 'runtime') ? Scrowl.runtime : undefined;
     let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];
     let counter = 1;
     const currentLesson = lessonsArray.find((lesson) => {
@@ -98,8 +94,6 @@ const makePageDefinition = ({
     const currentLessonIndex = currentLesson?.index;
     const totalLessons = lessonsArray.length;
     let percentageCompleted;
-    const passingThreshold = module.module.passingThreshold;
-    const controller = new Scrowl.core.scroll.Controller();
 
     if (currentLessonIndex) {
       percentageCompleted = currentLessonIndex / totalLessons;
@@ -129,6 +123,22 @@ const makePageDefinition = ({
     }
   }, [project, id]);
 
+  const finishCourse = useCallback(() => {
+    if (runtime) {
+      runtime.finish();
+    }
+
+    if (window['API_1484_11']) {
+      window['API_1484_11'].SetValue('cmi.score.raw', 90);
+      window['API_1484_11'].SetValue('cmi.score.min', 70);
+      window['API_1484_11'].SetValue('cmi.score.max', 100);
+      window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
+      window['API_1484_11'].SetValue('cmi.success_status', 'passed');
+      window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
+      window['API_1484_11'].SetValue('cmi.progress_measure', 1);
+    }
+  }, []);
+
   return () => {
     return (
       <>
@@ -142,6 +152,7 @@ const makePageDefinition = ({
               slideId={slideId}
               lesson={page.lesson}
               passingThreshold={passingThreshold}
+              controller={controller}
             />
           </Suspense>
 

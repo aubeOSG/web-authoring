@@ -154,12 +154,12 @@ export const Page = ({
   slideId,
   lesson,
   passingThreshold,
+  controller,
   ...props
 }: PageProps) => {
   const Scrowl = window['Scrowl'];
   const hasStarted = stateHooks.Course.useHasStarted();
   const toggleStarted = stateHooks.Course.useToggleStarted();
-  const controller = new Scrowl.core.scroll.Controller();
   const lastSlideNodeRef = useRef<HTMLDivElement>(null);
   const lastSlideIdx = slides.length - 1;
   const attempt = useRef(0);

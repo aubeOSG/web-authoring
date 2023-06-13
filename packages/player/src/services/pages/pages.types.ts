@@ -1,5 +1,5 @@
 
-import type { TemplateProps } from '@scrowl/template-core';
+import type { TemplateProps, Controller } from '@scrowl/template-core';
 import type { BlockTextProps, BlockTextSchemaProps } from '@scrowl/template-block-text';
 import type { LessonIntroProps, LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
 import type { QuizProps, QuizSchemaProps } from '@scrowl/template-quiz';
@@ -19,6 +19,7 @@ export interface PageCommons {
   slideId?: string;
   lesson: ProjectLesson;
   passingThreshold: number;
+  controller: Controller;
 };
 
 export type PageProps = PageCommons & React.HTMLAttributes<HTMLDivElement>;
