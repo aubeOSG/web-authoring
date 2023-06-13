@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import type { RootState } from '../store';
-import { useAppDispatch, useAppSelector } from '../store';
-import { Course } from '../slices';
+import type { RootState } from '../../state/store';
+import { useAppDispatch, useAppSelector } from '../../state/store';
+import { Course } from '../../state/slices';
 
 /** 
  * Here begins hooks to state

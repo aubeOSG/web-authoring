@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback } from 'react';
+import React, { Suspense, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Datetime, hasProp } from '@scrowl/utils';
 import { PageDefinition } from './pages.types';
@@ -119,7 +119,6 @@ const makePageDefinition = ({
   const Scrowl = window['Scrowl'];
   const runtime = hasProp(Scrowl, 'runtime') ? Scrowl.runtime : undefined;
   const passingThreshold = module.module.passingThreshold || 0;
-  const controller = new Scrowl.core.scroll.Controller();
   const { nextLessonId, nextLessonUrl, nextLessonText } = getNextPageLink(
     module,
     page,
@@ -135,61 +134,69 @@ const makePageDefinition = ({
 
   page.lesson.attempts.splice(0, 0, quizAttempt);
 
-  const updateCourseProgress = useCallback(() => {
-    let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];
-    let counter = 1;
-    const currentLesson = lessonsArray.find((lesson) => {
-      return lesson.targetId === id;
-    });
-    const currentLessonIndex = currentLesson?.index;
-    const totalLessons = lessonsArray.length;
-    let percentageCompleted;
-
-    if (currentLessonIndex) {
-      percentageCompleted = currentLessonIndex / totalLessons;
-
-      if (runtime) {
-        runtime.updateProgress(percentageCompleted);
-      }
-    }
-
-    project.outlineConfig.forEach((module, mIdx) => {
-      module.lessons.forEach((lesson, lIdx) => {
-        const lessonObj = {
-          index: counter,
-          targetId: `module-${mIdx}--lesson-${lIdx}`,
-          lesson: lesson,
-        };
-        counter++;
-        lessonsArray.push(lessonObj);
-      });
-    });
-
-    if (window['API_1484_11']) {
-      window['API_1484_11'].SetValue(
-        'cmi.progress_measure',
-        percentageCompleted
-      );
-    }
-  }, [project, id]);
-
-  const finishCourse = useCallback(() => {
-    if (runtime) {
-      runtime.finish();
-    }
-
-    if (window['API_1484_11']) {
-      window['API_1484_11'].SetValue('cmi.score.raw', 90);
-      window['API_1484_11'].SetValue('cmi.score.min', 70);
-      window['API_1484_11'].SetValue('cmi.score.max', 100);
-      window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
-      window['API_1484_11'].SetValue('cmi.success_status', 'passed');
-      window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
-      window['API_1484_11'].SetValue('cmi.progress_measure', 1);
-    }
-  }, []);
-
   return () => {
+    const controller = new Scrowl.core.scroll.Controller();
+
+    const updateCourseProgress = useCallback(() => {
+      let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];
+      let counter = 1;
+      const currentLesson = lessonsArray.find((lesson) => {
+        return lesson.targetId === id;
+      });
+      const currentLessonIndex = currentLesson?.index;
+      const totalLessons = lessonsArray.length;
+      let percentageCompleted;
+
+      if (currentLessonIndex) {
+        percentageCompleted = currentLessonIndex / totalLessons;
+
+        if (runtime) {
+          runtime.updateProgress(percentageCompleted);
+        }
+      }
+
+      project.outlineConfig.forEach((module, mIdx) => {
+        module.lessons.forEach((lesson, lIdx) => {
+          const lessonObj = {
+            index: counter,
+            targetId: `module-${mIdx}--lesson-${lIdx}`,
+            lesson: lesson,
+          };
+          counter++;
+          lessonsArray.push(lessonObj);
+        });
+      });
+
+      if (window['API_1484_11']) {
+        window['API_1484_11'].SetValue(
+          'cmi.progress_measure',
+          percentageCompleted
+        );
+      }
+    }, [project, id]);
+
+    const finishCourse = useCallback(() => {
+      if (runtime) {
+        runtime.finish();
+      }
+
+      if (window['API_1484_11']) {
+        window['API_1484_11'].SetValue('cmi.score.raw', 90);
+        window['API_1484_11'].SetValue('cmi.score.min', 70);
+        window['API_1484_11'].SetValue('cmi.score.max', 100);
+        window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
+        window['API_1484_11'].SetValue('cmi.success_status', 'passed');
+        window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
+        window['API_1484_11'].SetValue('cmi.progress_measure', 1);
+      }
+    }, []);
+
+    useEffect(() => {
+      return () => {
+        controller.destroy(true);
+      };
+    }, []);
+
     return (
       <>
         <NavBar slides={page.slides} pageId={id} project={project} />

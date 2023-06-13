@@ -14,7 +14,7 @@ import { Preview as PreviewPanel } from '../components/preview';
 import { Pages } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
-import { stateStore } from '../state';
+import { store } from '../state';
 import { eventHooks } from '../hooks';
 
 const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
@@ -270,7 +270,7 @@ export const Root = ({
   }
 
   return (
-    <stateStore.StateProvider>
+    <store.StateProvider>
       <RootEvents>
         <Router>
           <div id="scrowl-player" {...props}>
@@ -307,7 +307,7 @@ export const Root = ({
           </div>
         </Router>
       </RootEvents>
-    </stateStore.StateProvider>
+    </store.StateProvider>
   );
 };
 

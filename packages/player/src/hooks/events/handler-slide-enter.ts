@@ -1,5 +1,5 @@
 import { CustomEventMap } from '../../../types/globals';
-import { stateHooks } from '../../state';
+import { stateHooks } from '../../hooks';
 
 export const useHandlerSlideEnter = () => {
   const updateCurrentSlide = stateHooks.Course.useUpdateCurrentSlide();

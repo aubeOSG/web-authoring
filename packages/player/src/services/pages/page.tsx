@@ -6,7 +6,7 @@ import {
   ProjectLesson,
 } from '../../root/root.types';
 import { Error } from '../../components';
-import { stateHooks } from '../../state';
+import { stateHooks } from '../../hooks';
 import { QuizSchemaProps } from '@scrowl/template-quiz';
 import { BlockTextSchemaProps } from '@scrowl/template-block-text';
 import { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
@@ -187,12 +187,6 @@ export const Page = ({
       lastSlideNodeRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [lastSlideNodeRef.current]);
-
-  useEffect(() => {
-    return () => {
-      controller.destroy(true);
-    };
-  }, []);
 
   if (!hasStarted) {
     const SlideComp = getSlide({

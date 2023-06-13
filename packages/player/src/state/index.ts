@@ -1,14 +1,11 @@
-import stateHooks from './hooks';
-import stateStore from './store';
+import store from './store';
 
 export * from './store.types';
 
 export {
-  stateHooks,
-  stateStore,
+  store,
 };
 
 export default {
-  stateHooks,
-  stateStore,
+  store,
 };
