@@ -18,8 +18,9 @@ export interface BlockEditorCommons extends Omit<EditorConfig, 'data'> {
   factory: BlockEditorFactory;
   holder?: string;
   value?: EditorConfig['data'];
-  defaultVlaue?: EditorConfig['data'];
+  defaultValue?: EditorConfig['data'];
   onInit?: (editor: BlockEditorClass) => void;
+  children: React.ReactElement;
 };
 
-export type BlockEditorProps = Omit<BlockEditorCommons, 'factory'> & React.AllHTMLAttributes<HTMLDivElement>;
+export type BlockEditorProps = Omit<BlockEditorCommons, 'factory'>;
