@@ -9,6 +9,9 @@ export default defineConfig({
       name: 'content-block-editor-react',
       fileName: 'content-block-editor-react',
     },
+    rollupOptions: {
+      external: ['react'],
+    },
   },
   plugins: [dts()],
 });
