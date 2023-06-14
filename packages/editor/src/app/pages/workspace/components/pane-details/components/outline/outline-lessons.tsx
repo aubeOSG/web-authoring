@@ -31,16 +31,6 @@ export const OutlineLessonItem = ({
   };
   const lessonMenuItems: Array<menu.ContextMenuItem> = [
     {
-      label: 'Add Slide',
-      click: () => {
-        Projects.addSlide({
-          id: -1,
-          lessonId: lesson.id,
-          moduleId: lesson.moduleId,
-        });
-      },
-    },
-    {
       label: 'Duplicate Lesson',
       click: () => {
         Projects.duplicateLesson(lesson);

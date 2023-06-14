@@ -277,7 +277,7 @@ export const Page = () => {
         <Header />
         <PaneDetails />
         <Canvas />
-        <PaneEditor />
+        {/* <PaneEditor /> */}
       </div>
       <TemplateBrowser />
       <ModuleEditor />
