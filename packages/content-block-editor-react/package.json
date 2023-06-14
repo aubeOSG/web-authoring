@@ -55,5 +55,8 @@
   },
   "peerDependencies": {
     "react": "^18.2.0"
+  },
+  "dependencies": {
+    "@scrowl/content-block-editor": "^2.27.0"
   }
 }
