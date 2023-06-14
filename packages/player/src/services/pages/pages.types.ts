@@ -1,11 +1,12 @@
 
-import type { TemplateProps, Controller } from '@scrowl/template-core';
-import type { BlockTextProps, BlockTextSchemaProps } from '@scrowl/template-block-text';
-import type { LessonIntroProps, LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
-import type { QuizProps, QuizSchemaProps } from '@scrowl/template-quiz';
-import type { SimpleTextProps, SimpleTextSchemaProps } from '@scrowl/template-simple-text';
-import type { SimpleVideoProps, SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
-import type { TwoColumnProps, TwoColumnSchemaProps } from '@scrowl/template-two-column';
+import type { Controller } from '@scrowl/template-core';
+import type { BlockTextProps } from '@scrowl/template-block-text';
+import type { LessonIntroProps } from '@scrowl/template-lesson-intro';
+import type { QuizProps } from '@scrowl/template-quiz';
+import type { SimpleTextProps } from '@scrowl/template-simple-text';
+import type { SimpleVideoProps } from '@scrowl/template-simple-video';
+import type { TwoColumnProps } from '@scrowl/template-two-column';
+import type { InlineTextProps } from '@scrowl/template-inline-text';
 import {
   PlayerTemplateList,
   ProjectModule,
@@ -41,6 +42,7 @@ export interface SlideTypesMap {
     lesson: ProjectLesson;
     passingThreshold: number;
   };
+  'inlineText': InlineTextProps;
 }
 
 export interface SlideCommons {

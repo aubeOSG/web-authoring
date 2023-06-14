@@ -12,6 +12,7 @@ import type { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
 import type { SimpleTextSchemaProps } from '@scrowl/template-simple-text';
 import type { SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
 import type { TwoColumnSchemaProps } from '@scrowl/template-two-column';
+import type { InlineTextSchemaProps } from '@scrowl/template-inline-text';
 import type { ProjectSlide, Controller } from '@scrowl/template-core';
 
 const TemplateError = ({ name, msg }: { name: string; msg?: string }) => {
@@ -71,7 +72,7 @@ const getSlide = ({
         id,
         idx,
         slide,
-        templates: templates,
+        templates,
         schema: schema,
         controller,
       });
@@ -81,8 +82,8 @@ const getSlide = ({
       Slide = getSlideComponent<'lessonIntro'>({
         id,
         idx,
-        slide: slide,
-        templates: templates,
+        slide,
+        templates,
         schema: schema,
         controller,
       });
@@ -103,8 +104,8 @@ const getSlide = ({
       Slide = getSlideComponent<'quiz'>({
         id,
         idx,
-        slide: slide,
-        templates: templates,
+        slide,
+        templates,
         schema: schema,
         controller,
         passingThreshold: passingThreshold || 1,
@@ -116,8 +117,8 @@ const getSlide = ({
       Slide = getSlideComponent<'simpleText'>({
         id,
         idx,
-        slide: slide,
-        templates: templates,
+        slide,
+        templates,
         schema: schema,
         controller,
       });
@@ -127,8 +128,8 @@ const getSlide = ({
       Slide = getSlideComponent<'simpleVideo'>({
         id,
         idx,
-        slide: slide,
-        templates: templates,
+        slide,
+        templates,
         schema: schema,
         controller,
       });
@@ -138,11 +139,27 @@ const getSlide = ({
       Slide = getSlideComponent<'textColumns'>({
         id,
         idx,
-        slide: slide,
-        templates: templates,
+        slide,
+        templates,
         schema: schema,
         controller,
       });
+      break;
+    case 'InlineText':
+      schema = slide.template as InlineTextSchemaProps;
+      Slide = getSlideComponent<'inlineText'>({
+        id,
+        idx,
+        slide,
+        templates,
+        schema,
+        controller,
+      });
+      break;
+    default:
+      console.error(
+        `unable to get slide component: ${slide.template.meta.component} is not supported`
+      );
       break;
   }
 
