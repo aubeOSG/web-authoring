@@ -1,0 +1,59 @@
+{
+  "name": "@scrowl/custom-block-one",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "author": {
+    "name": "OSG"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "directory": "packages/content-block-editor-react"
+  },
+  "bugs": {
+    "url": "https://github.com/scrowl-io/scrowl/issues"
+  },
+  "homepage": "https://github.com/scrowl-io/authoring/packages/runtime#readme",
+  "scripts": {
+    "build": "vite build"
+  },
+  "type": "module",
+  "main": "./dist/custom-block-one.umd.cjs",
+  "module": "./dist/custom-block-one.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/custom-block-one.umd.cjs",
+      "default": "./dist/custom-block-one.umd.cjs",
+      "import": "./dist/custom-block-one.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "eslintConfig": {
+    "extends": "@scrowl/config"
+  },
+  "prettier": "@scrowl/config/prettier",
+  "stylelint": {
+    "extends": "@scrowl/config/stylelint"
+  },
+  "devDependencies": {
+    "@scrowl/config": "^0.0.100",
+    "@types/node": "^20.3.1",
+    "@types/react": "^18.0.21",
+    "eslint": "^8.25.0",
+    "prettier": "^2.7.1",
+    "process": "^0.11.10",
+    "rimraf": "^3.0.2",
+    "stylelint": "^14.13.0",
+    "typescript": "4.7.4",
+    "vite": "^4.2.1",
+    "vite-plugin-dts": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}
