@@ -1,7 +1,7 @@
 import React, { Suspense, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Datetime, hasProp } from '@scrowl/utils';
-import { PageDefinition } from './pages.types';
+import { PageDefinition } from './page-definition.types';
 import {
   LessonAttempt,
   LessonQuestion,
@@ -15,8 +15,7 @@ import utils from '../../utils';
 // @ts-ignore
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
-import { BoundaryError } from '../../components';
-import { Page } from './page';
+import { BoundaryError, Page } from '../../components';
 import { QuizSchemaProps } from '@scrowl/template-quiz';
 import { ProjectSlide } from '@scrowl/template-core';
 

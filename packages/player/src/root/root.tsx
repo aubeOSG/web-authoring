@@ -6,12 +6,11 @@ import {
   Navigate,
 } from 'react-router-dom';
 import './_root.scss';
-import { PlayerRootProps } from './root.types';
 import Config from './config';
 import { Error as ErrorComponent } from '../components';
 import { ErrorModal } from '../components/modal';
 import { Preview as PreviewPanel } from '../components/preview';
-import { Pages } from '../services';
+import { PageDefinition } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
 import { store } from '../state';
@@ -122,7 +121,7 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
     name,
     subtitle
   );
-  const pages = Pages.create(config, templateList, slideId);
+  const pages = PageDefinition.create(config, templateList, slideId);
 
   console.log('config', config);
   console.log('pages', pages);

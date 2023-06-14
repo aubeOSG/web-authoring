@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { PageProps, SlideProps, SlideTypesMap } from './pages.types';
-import {
+import React from 'react';
+import { PageSlideProps, TemplateTypesMap } from './page.types';
+import type {
   TemplateComponent,
   PlayerTemplateList,
   ProjectLesson,
-} from '../../root/root.types';
-import { Error, BoundaryError } from '../../components';
+} from '../../root';
 import type { QuizSchemaProps } from '@scrowl/template-quiz';
 import type { BlockTextSchemaProps } from '@scrowl/template-block-text';
 import type { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
@@ -14,6 +13,7 @@ import type { SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
 import type { TwoColumnSchemaProps } from '@scrowl/template-two-column';
 import type { InlineTextSchemaProps } from '@scrowl/template-inline-text';
 import type { ProjectSlide, Controller } from '@scrowl/template-core';
+import { Error, BoundaryError } from '..';
 
 const TemplateError = ({ name, msg }: { name: string; msg?: string }) => {
   msg = !msg ? `Unable to find template: ${name}` : msg;
@@ -21,11 +21,11 @@ const TemplateError = ({ name, msg }: { name: string; msg?: string }) => {
   return <Error msg={msg} />;
 };
 
-const getSlideComponent = <K extends keyof SlideTypesMap>({
+const TemplateWrapper = <K extends keyof TemplateTypesMap>({
   slide,
   templates,
   ...props
-}: SlideProps<K>) => {
+}: PageSlideProps<K>): (() => React.JSX.Element) => {
   const component = slide.template.meta.component;
 
   if (!templates.hasOwnProperty(component)) {
@@ -45,7 +45,7 @@ const getSlideComponent = <K extends keyof SlideTypesMap>({
   };
 };
 
-const getSlide = ({
+export const getSlide = ({
   slide,
   parentId,
   idx,
@@ -62,13 +62,13 @@ const getSlide = ({
   passingThreshold?: number;
   lesson?: ProjectLesson;
 }) => {
-  let Slide, schema;
+  let Wrapper, schema;
   const id = `${parentId}--slide-${slide.id}`;
 
   switch (slide.template.meta.component) {
     case 'BlockText':
       schema = slide.template as BlockTextSchemaProps;
-      Slide = getSlideComponent<'blockText'>({
+      Wrapper = TemplateWrapper<'blockText'>({
         id,
         idx,
         slide,
@@ -79,7 +79,7 @@ const getSlide = ({
       break;
     case 'LessonIntro':
       schema = slide.template as LessonIntroSchemaProps;
-      Slide = getSlideComponent<'lessonIntro'>({
+      Wrapper = TemplateWrapper<'lessonIntro'>({
         id,
         idx,
         slide,
@@ -101,7 +101,7 @@ const getSlide = ({
       }
 
       schema = slide.template as QuizSchemaProps;
-      Slide = getSlideComponent<'quiz'>({
+      Wrapper = TemplateWrapper<'quiz'>({
         id,
         idx,
         slide,
@@ -114,7 +114,7 @@ const getSlide = ({
       break;
     case 'SimpleText':
       schema = slide.template as SimpleTextSchemaProps;
-      Slide = getSlideComponent<'simpleText'>({
+      Wrapper = TemplateWrapper<'simpleText'>({
         id,
         idx,
         slide,
@@ -125,7 +125,7 @@ const getSlide = ({
       break;
     case 'SimpleVideo':
       schema = slide.template as SimpleVideoSchemaProps;
-      Slide = getSlideComponent<'simpleVideo'>({
+      Wrapper = TemplateWrapper<'simpleVideo'>({
         id,
         idx,
         slide,
@@ -136,7 +136,7 @@ const getSlide = ({
       break;
     case 'TwoColumn':
       schema = slide.template as TwoColumnSchemaProps;
-      Slide = getSlideComponent<'textColumns'>({
+      Wrapper = TemplateWrapper<'textColumns'>({
         id,
         idx,
         slide,
@@ -147,7 +147,7 @@ const getSlide = ({
       break;
     case 'InlineText':
       schema = slide.template as InlineTextSchemaProps;
-      Slide = getSlideComponent<'inlineText'>({
+      Wrapper = TemplateWrapper<'inlineText'>({
         id,
         idx,
         slide,
@@ -163,58 +163,7 @@ const getSlide = ({
       break;
   }
 
-  return Slide;
+  return Wrapper;
 };
 
-export const Page = ({
-  slides,
-  templates,
-  slideId,
-  lesson,
-  passingThreshold,
-  controller,
-  ...props
-}: PageProps) => {
-  const lastSlideNodeRef = useRef<HTMLDivElement>(null);
-  const lastSlideIdx = slides.length - 1;
-
-  useEffect(() => {
-    if (lastSlideNodeRef.current) {
-      lastSlideNodeRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [lastSlideNodeRef.current]);
-
-  return (
-    <BoundaryError>
-      {slides.map((slide, idx) => {
-        const SlideComp = getSlide({
-          slide,
-          parentId: props.id || '',
-          idx,
-          templates,
-          controller,
-          lesson,
-          passingThreshold,
-        });
-
-        if (lastSlideIdx === idx) {
-          return (
-            <div key={idx} ref={lastSlideNodeRef}>
-              <SlideComp />
-            </div>
-          );
-        }
-
-        return (
-          <div key={idx}>
-            <SlideComp />
-          </div>
-        );
-      })}
-    </BoundaryError>
-  );
-};
-
-export default {
-  Page,
-};
+export default getSlide;

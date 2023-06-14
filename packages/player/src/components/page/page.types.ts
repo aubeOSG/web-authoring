@@ -9,7 +9,6 @@ import type { TwoColumnProps } from '@scrowl/template-two-column';
 import type { InlineTextProps } from '@scrowl/template-inline-text';
 import {
   PlayerTemplateList,
-  ProjectModule,
   ProjectLesson,
   ProjectSlide
 } from '../../root';
@@ -25,14 +24,7 @@ export interface PageCommons {
 
 export type PageProps = PageCommons & React.HTMLAttributes<HTMLDivElement>;
 
-export interface PageDefinition {
-  module: ProjectModule,
-  lesson: ProjectLesson,
-  url: string;
-  Element: () => JSX.Element;
-};
-
-export interface SlideTypesMap {
+export interface TemplateTypesMap {
   "blockText": BlockTextProps;
   "lessonIntro": LessonIntroProps;
   "simpleText": SimpleTextProps;
@@ -43,12 +35,12 @@ export interface SlideTypesMap {
     passingThreshold: number;
   };
   'inlineText': InlineTextProps;
-}
+};
 
-export interface SlideCommons {
+export interface PageSlideCommons {
   idx: number;
   slide: ProjectSlide;
   templates: PlayerTemplateList;
 };
 
-export type SlideProps<K extends keyof SlideTypesMap> = SlideTypesMap[K] & SlideCommons;
+export type PageSlideProps<K extends keyof TemplateTypesMap> = TemplateTypesMap[K] & PageSlideCommons;
