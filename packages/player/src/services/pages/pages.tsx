@@ -10,12 +10,15 @@ import {
   PlayerTemplateList,
   ProjectConfig,
 } from '../../root/root.types';
+import { stateHooks } from '../../hooks';
 import utils from '../../utils';
 // @ts-ignore
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
+import { BoundaryError } from '../../components';
 import { Page } from './page';
 import { QuizSchemaProps } from '@scrowl/template-quiz';
+import { ProjectSlide } from '@scrowl/template-core';
 
 const css = utils.css.removeMapPrefix(_css);
 
@@ -95,7 +98,7 @@ const createQuizAttempts = (id: string, page: PlayerRootLesson) => {
   return attempt;
 };
 
-const makePageDefinition = ({
+const PageContainer = ({
   id,
   url,
   module,
@@ -105,6 +108,7 @@ const makePageDefinition = ({
   slideId,
   templateList,
   project,
+  children,
 }: {
   id: string;
   url: string;
@@ -115,7 +119,7 @@ const makePageDefinition = ({
   slideId: string;
   templateList: PlayerTemplateList;
   project: ProjectConfig;
-}) => {
+} & React.HTMLAttributes<HTMLDivElement>) => {
   const Scrowl = window['Scrowl'];
   const runtime = hasProp(Scrowl, 'runtime') ? Scrowl.runtime : undefined;
   const passingThreshold = module.module.passingThreshold || 0;
@@ -134,107 +138,145 @@ const makePageDefinition = ({
 
   page.lesson.attempts.splice(0, 0, quizAttempt);
 
-  return () => {
-    const controller = new Scrowl.core.scroll.Controller();
+  const controller = new Scrowl.core.scroll.Controller();
+  const hasStarted = stateHooks.Course.useHasStarted();
+  const toggleStarted = stateHooks.Course.useToggleStarted();
+  let pageSlides: Array<ProjectSlide> = [];
 
-    const updateCourseProgress = useCallback(() => {
-      let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];
-      let counter = 1;
-      const currentLesson = lessonsArray.find((lesson) => {
-        return lesson.targetId === id;
-      });
-      const currentLessonIndex = currentLesson?.index;
-      const totalLessons = lessonsArray.length;
-      let percentageCompleted;
+  if (!hasStarted && runtime) {
+    const [_courseStartError, suspendData] = runtime.getSuspendData();
+    const parsedData = JSON.parse(suspendData);
 
-      if (currentLessonIndex) {
-        percentageCompleted = currentLessonIndex / totalLessons;
+    if (parsedData) {
+      const parsedKeys = Object.keys(parsedData);
 
-        if (runtime) {
-          runtime.updateProgress(percentageCompleted);
-        }
+      if (parsedKeys.length) {
+        toggleStarted(parsedData.courseStarted || false);
       }
+    }
+  }
 
-      project.outlineConfig.forEach((module, mIdx) => {
-        module.lessons.forEach((lesson, lIdx) => {
-          const lessonObj = {
-            index: counter,
-            targetId: `module-${mIdx}--lesson-${lIdx}`,
-            lesson: lesson,
-          };
-          counter++;
-          lessonsArray.push(lessonObj);
-        });
-      });
+  if (!hasStarted) {
+    pageSlides = [page.slides[0]];
+  } else {
+    pageSlides = page.slides.slice();
+  }
 
-      if (window['API_1484_11']) {
-        window['API_1484_11'].SetValue(
-          'cmi.progress_measure',
-          percentageCompleted
-        );
-      }
-    }, [project, id]);
+  const updateCourseProgress = useCallback(() => {
+    let lessonsArray: { index: number; targetId: string; lesson: any }[] = [];
+    let counter = 1;
+    const currentLesson = lessonsArray.find((lesson) => {
+      return lesson.targetId === id;
+    });
+    const currentLessonIndex = currentLesson?.index;
+    const totalLessons = lessonsArray.length;
+    let percentageCompleted;
 
-    const finishCourse = useCallback(() => {
+    if (currentLessonIndex) {
+      percentageCompleted = currentLessonIndex / totalLessons;
+
       if (runtime) {
-        runtime.finish();
+        runtime.updateProgress(percentageCompleted);
       }
+    }
 
-      if (window['API_1484_11']) {
-        window['API_1484_11'].SetValue('cmi.score.raw', 90);
-        window['API_1484_11'].SetValue('cmi.score.min', 70);
-        window['API_1484_11'].SetValue('cmi.score.max', 100);
-        window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
-        window['API_1484_11'].SetValue('cmi.success_status', 'passed');
-        window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
-        window['API_1484_11'].SetValue('cmi.progress_measure', 1);
-      }
-    }, []);
+    project.outlineConfig.forEach((module, mIdx) => {
+      module.lessons.forEach((lesson, lIdx) => {
+        const lessonObj = {
+          index: counter,
+          targetId: `module-${mIdx}--lesson-${lIdx}`,
+          lesson: lesson,
+        };
+        counter++;
+        lessonsArray.push(lessonObj);
+      });
+    });
 
-    useEffect(() => {
-      return () => {
-        controller.destroy(true);
-      };
-    }, []);
+    if (window['API_1484_11']) {
+      window['API_1484_11'].SetValue(
+        'cmi.progress_measure',
+        percentageCompleted
+      );
+    }
+  }, [project, id]);
 
-    return (
-      <>
-        <NavBar slides={page.slides} pageId={id} project={project} />
-        <div className="owlui-lesson">
-          <Suspense fallback={<div>Loading...</div>}>
-            <Page
-              id={id}
-              slides={page.slides}
-              templates={templateList}
-              slideId={slideId}
-              lesson={page.lesson}
-              passingThreshold={passingThreshold}
-              controller={controller}
-            />
-          </Suspense>
+  const finishCourse = useCallback(() => {
+    if (runtime) {
+      runtime.finish();
+    }
 
-          <Scrowl.core.Template
-            className="owlui-last"
-            id={`slide-end-${id}`}
+    if (window['API_1484_11']) {
+      window['API_1484_11'].SetValue('cmi.score.raw', 90);
+      window['API_1484_11'].SetValue('cmi.score.min', 70);
+      window['API_1484_11'].SetValue('cmi.score.max', 100);
+      window['API_1484_11'].SetValue('cmi.score.scaled', 90 / 100);
+      window['API_1484_11'].SetValue('cmi.success_status', 'passed');
+      window['API_1484_11'].SetValue('cmi.completion_status', 'completed');
+      window['API_1484_11'].SetValue('cmi.progress_measure', 1);
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      controller.destroy(true);
+    };
+  }, []);
+
+  return (
+    <BoundaryError>
+      <NavBar slides={page.slides} pageId={id} project={project} />
+      <div className="owlui-lesson">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Page
+            id={id}
+            slides={pageSlides}
+            templates={templateList}
+            slideId={slideId}
+            lesson={page.lesson}
+            passingThreshold={passingThreshold}
             controller={controller}
-            notScene={true}
-          >
-            <div className={css.nextLessonContainer}>
-              {lIdx < module.lessons.length - 1 ||
-              mIdx < project.outlineConfig.length - 1 ? (
-                <Link to={nextLessonUrl} onClick={updateCourseProgress}>
-                  {nextLessonText}
-                </Link>
-              ) : (
-                <Scrowl.ui.Button onClick={finishCourse}>
-                  Finish Course
-                </Scrowl.ui.Button>
-              )}
-            </div>
-          </Scrowl.core.Template>
-        </div>
-      </>
-    );
+          />
+        </Suspense>
+
+        <Scrowl.core.Template
+          className="owlui-last"
+          id={`slide-end-${id}`}
+          controller={controller}
+          notScene={true}
+        >
+          <div className={css.nextLessonContainer}>
+            {lIdx < module.lessons.length - 1 ||
+            mIdx < project.outlineConfig.length - 1 ? (
+              <Link to={nextLessonUrl} onClick={updateCourseProgress}>
+                {nextLessonText}
+              </Link>
+            ) : (
+              <Scrowl.ui.Button onClick={finishCourse}>
+                Finish Course
+              </Scrowl.ui.Button>
+            )}
+          </div>
+        </Scrowl.core.Template>
+      </div>
+    </BoundaryError>
+  );
+};
+
+const makePageDefinition = ({
+  ...props
+}: {
+  id: string;
+  url: string;
+  module: PlayerRootConfig;
+  mIdx: number;
+  page: PlayerRootLesson;
+  lIdx: number;
+  slideId: string;
+  templateList: PlayerTemplateList;
+  project: ProjectConfig;
+}) => {
+  return () => {
+    return <PageContainer {...props} />;
   };
 };
 

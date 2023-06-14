@@ -22,12 +22,7 @@ const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
   return <>{children}</>;
 };
 
-export const Root = ({
-  project,
-  templateList,
-  scorm,
-  ...props
-}: PlayerRootProps) => {
+export const Root = ({ project, templateList, scorm, ...props }) => {
   const Scrowl = window['Scrowl'];
   let apiPreference;
 

@@ -5,8 +5,7 @@ import {
   PlayerTemplateList,
   ProjectLesson,
 } from '../../root/root.types';
-import { Error } from '../../components';
-import { stateHooks } from '../../hooks';
+import { Error, BoundaryError } from '../../components';
 import type { QuizSchemaProps } from '@scrowl/template-quiz';
 import type { BlockTextSchemaProps } from '@scrowl/template-block-text';
 import type { LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
@@ -37,7 +36,11 @@ const getSlideComponent = <K extends keyof SlideTypesMap>({
   const Template = templates[component] as TemplateComponent;
 
   return () => {
-    return <Template {...props} />;
+    return (
+      <BoundaryError>
+        <Template {...props} />
+      </BoundaryError>
+    );
   };
 };
 
@@ -155,32 +158,8 @@ export const Page = ({
   controller,
   ...props
 }: PageProps) => {
-  const Scrowl = window['Scrowl'];
-  const hasStarted = stateHooks.Course.useHasStarted();
-  const toggleStarted = stateHooks.Course.useToggleStarted();
   const lastSlideNodeRef = useRef<HTMLDivElement>(null);
   const lastSlideIdx = slides.length - 1;
-
-  if (
-    Scrowl &&
-    Scrowl.runtime &&
-    Scrowl.runtime.API !== null &&
-    hasStarted !== false
-  ) {
-    const [_courseStartError, suspendData] = Scrowl.runtime.getSuspendData();
-
-    const parsedData = JSON.parse(suspendData);
-
-    if (
-      // @ts-ignore
-      !Object.entries(parsedData).length > 0 ||
-      (parsedData &&
-        parsedData.courseStarted &&
-        parsedData.courseStarted !== true)
-    ) {
-      toggleStarted();
-    }
-  }
 
   useEffect(() => {
     if (lastSlideNodeRef.current) {
@@ -188,20 +167,8 @@ export const Page = ({
     }
   }, [lastSlideNodeRef.current]);
 
-  if (!hasStarted) {
-    const SlideComp = getSlide({
-      slide: slides[0],
-      parentId: props.id || '',
-      idx: 0,
-      templates,
-      controller,
-    });
-
-    return <SlideComp />;
-  }
-
   return (
-    <>
+    <BoundaryError>
       {slides.map((slide, idx) => {
         const SlideComp = getSlide({
           slide,
@@ -214,12 +181,20 @@ export const Page = ({
         });
 
         if (lastSlideIdx === idx) {
-          return <SlideComp ref={lastSlideNodeRef} />;
+          return (
+            <div key={idx} ref={lastSlideNodeRef}>
+              <SlideComp />
+            </div>
+          );
         }
 
-        return <SlideComp />;
+        return (
+          <div key={idx}>
+            <SlideComp />
+          </div>
+        );
       })}
-    </>
+    </BoundaryError>
   );
 };
 
