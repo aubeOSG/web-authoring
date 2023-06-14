@@ -25,6 +25,8 @@ const BlockEditor = ({
   useEffect(() => {
     editorJS.current = factory({
       holder: holderRef.current,
+      ...(defaultValue && { data: defaultValue }),
+      ...props,
     });
 
     if (onInit) {
@@ -32,9 +34,23 @@ const BlockEditor = ({
     }
 
     return () => {
-      editorJS.current?.destroy;
+      if (editorJS.current) {
+        editorJS.current.destroy();
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (!value) {
+      return;
+    }
+
+    if (!editorJS.current) {
+      return;
+    }
+
+    editorJS.current.render(value);
+  }, [value]);
 
   return children || <div id={holderRef.current} />;
 };

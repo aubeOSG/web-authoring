@@ -1,1 +1,5 @@
-export { default as BlockEditor } from './component';
+import BlockEditor from "./component";
+
+export {
+  BlockEditor,
+};
