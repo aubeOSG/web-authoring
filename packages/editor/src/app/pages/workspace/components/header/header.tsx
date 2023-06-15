@@ -252,11 +252,12 @@ export const Header = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
+    console.log('saving', projectData);
     Projects.save(projectData).then((res) => {
       console.log('saveRes', res);
     });
-  };
+  }, [projectData]);
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
