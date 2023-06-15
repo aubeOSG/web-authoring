@@ -3,23 +3,24 @@ import { v4 as uuid } from 'uuid';
 import packager from 'simple-scorm-packager';
 import type { ProjectData, ProjectFile } from '../../../../app/models/projects';
 import type { ProjectsApiPublish } from '../projects.types';
-import type { TemplateList, TemplateMap } from '../../templates';
+import type { TemplateList } from '../../templates';
 import type { ApiResult } from '../../../services/requester';
 import { fs, tmpr } from '../../../services';
-import { templatesPath, projectPath } from '../../templates';
+import { projectPath } from '../../templates';
 import { Datetime, Str } from '../../../../utils';
 
-export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
-  const templates = new Set<string>();
-  const templateList: TemplateList = [];
-  const templateMap: TemplateMap = {};
+//FIXME::slide-removal
+// export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
+//   const templates = new Set<string>();
+//   const templateList: TemplateList = [];
+//   const templateMap: TemplateMap = {};
 
-  for (const [key, template] of Object.entries(templateMap)) {
-    templateList.push(template);
-  }
+//   for (const [key, template] of Object.entries(templateMap)) {
+//     templateList.push(template);
+//   }
 
-  return [templates, templateList];
-};
+//   return [templates, templateList];
+// };
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -125,13 +126,13 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
     },
   });
 
-  const [projectTemplatePaths, projectTemplatesList] = getProjectTemplates(projectData);
+  // const [projectTemplatePaths, projectTemplatesList] = getProjectTemplates(projectData);
 
-  if (projectTemplatePaths) {
-    projectTemplatePaths.forEach(copyAsset);
-  }
+  // if (projectTemplatePaths) {
+  //   projectTemplatePaths.forEach(copyAsset);
+  // }
 
-  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: projectTemplatesList, ...renderParams });
+  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: [], ...renderParams });
 
   renderRes.data.tmpDirId = id;
   return renderRes;
@@ -240,7 +241,6 @@ export const publish: ProjectsApiPublish = {
 };
 
 export default {
-  getProjectTemplates,
   renderScormEntries,
   generateProjectFiles,
   cleanupTempDir,

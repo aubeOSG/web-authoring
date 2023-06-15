@@ -99,6 +99,13 @@ const config = {
       overwrite: true,
     },
   },
+  'node_modules/@scrowl/content-block-editor-react/dist/content-block-editor-react.umd.cjs': {
+    dest: './src/main/assets/project/content-block-editor-react.umd.js',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
 };
 
 const findPath = (source, includePaths) => {
