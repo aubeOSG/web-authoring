@@ -63,7 +63,7 @@ export class BlockEditor implements BlockEditorClass {
   }
 
   public async render (data: BlockEditorOutputData) {
-    await this._editor.render(data);
+    await this._editor.blocks.render(data);
   }
 
   public async destroy () {

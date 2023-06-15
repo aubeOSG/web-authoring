@@ -1,8 +1,9 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect, useState } from 'react';
 import { BlockEditor } from '@scrowl/content-block-editor-react';
 import type {
   BlockEditorAPI,
   BlockEditorMutationEvent,
+  BlockEditorClass,
 } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
 import { Error } from '../../../../../components';
@@ -14,13 +15,28 @@ import { Projects } from '../../../../../models';
 
 export const CanvasFrame = () => {
   const activeLesson = useActiveLesson();
-  const [isLoading, setIsLoading] = useState(true);
+  const [content, setContent] = useState();
+  const isLoading = useRef(true);
+  const editorInstance = useRef<BlockEditorClass | null>(null);
+  const onInit = useCallback(
+    (api) => {
+      editorInstance.current = api;
+
+      if (activeLesson.content) {
+        if (!content) {
+          editorInstance.current.render(activeLesson.content);
+        }
+
+        setContent(activeLesson.content);
+      }
+    },
+    [activeLesson, content]
+  );
   const onChange = useCallback(
     (
       api: BlockEditorAPI,
       ev: BlockEditorMutationEvent | BlockEditorMutationEvent[]
     ) => {
-      console.log('change', activeLesson);
       if (!activeLesson) {
         return;
       }
@@ -31,7 +47,6 @@ export const CanvasFrame = () => {
           content: data,
           ...lesson,
         };
-        console.log('lessonUpdate', lessonUpdate);
         setActiveLesson(lessonUpdate);
         Projects.setLesson(lessonUpdate);
       });
@@ -40,20 +55,29 @@ export const CanvasFrame = () => {
   );
 
   useEffect(() => {
-    if (activeLesson) {
-      setIsLoading(false);
-      console.log('activeLesson', activeLesson);
+    if (!activeLesson) {
+      return;
     }
+
+    isLoading.current = false;
   }, [activeLesson]);
 
-  if (isLoading) {
+  if (isLoading.current) {
     return <div>...Loading</div>;
   }
 
   return (
     <div className={css.canvasFrame}>
       <Error>
-        <BlockEditor onChange={onChange} />
+        {!content ? (
+          <BlockEditor onChange={onChange} onInit={onInit} />
+        ) : (
+          <BlockEditor
+            onChange={onChange}
+            onInit={onInit}
+            defaultValue={content}
+          />
+        )}
       </Error>
     </div>
   );

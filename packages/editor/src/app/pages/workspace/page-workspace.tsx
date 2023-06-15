@@ -261,7 +261,9 @@ export const Page = () => {
   }, [projectData, assets, projectInteractions, inProgress]);
 
   useEffect(() => {
-    if (projectData.lessons) {
+    console.log('reloading project data', projectData);
+    if (projectData.lessons && projectData.lessons.length) {
+      console.log('setting active lesson');
       setActiveLesson(projectData.lessons[0]);
     }
   }, [projectData]);

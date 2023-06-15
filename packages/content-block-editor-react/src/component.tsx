@@ -94,7 +94,7 @@ const BlockEditor = ({
       ...(defaultValue && { data: defaultValue }),
       ...props,
     });
-  }, [holderRef.current, editorJS.current]);
+  }, [holderRef.current, editorJS.current, defaultValue]);
 
   useEffect(() => {
     if (!value) {
