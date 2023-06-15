@@ -28,8 +28,6 @@ export const create: ProjectsApiCreate = {
     //@ts-ignore
     project.lessons = JSON.stringify(project.lessons);
     //@ts-ignore
-    project.slides = JSON.stringify(project.slides);
-    //@ts-ignore
     project.glossary = JSON.stringify(project.glossary);
     //@ts-ignore
     project.resources = JSON.stringify(project.resources);

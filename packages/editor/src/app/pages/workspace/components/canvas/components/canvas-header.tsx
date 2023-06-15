@@ -2,16 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from '../_canvas.scss';
-import { useActiveSlide, setActiveSlide } from '../../../';
-import { Settings, Projects } from '../../../../../models';
+import { Settings } from '../../../../../models';
 import { menu } from '../../../../../services';
 
 export const CanvasHeader = () => {
-  const name = useActiveSlide('name');
-  const slideId = useActiveSlide('id');
   const isDirty = useRef(false);
   const prevName = useRef(name);
-  const prevslideId = useRef(slideId);
   const nameRef = useRef<HTMLSpanElement>(null);
   const [nameWidth, setNameWidth] = useState(0);
   const animationSettings = Settings.useAnimation();
@@ -41,20 +37,12 @@ export const CanvasHeader = () => {
     width: nameWidth,
   };
 
-  const handleNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    const val = ev.currentTarget.value;
-
-    setActiveSlide({ name: val });
-    isDirty.current = true;
-  };
-
   const handleNameInput = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     switch (ev.key) {
       case 'Enter':
         ev.currentTarget.blur();
         break;
       case 'Escape':
-        setActiveSlide({ name: prevName.current });
         isDirty.current = false;
         ev.currentTarget.blur();
         break;
@@ -64,13 +52,7 @@ export const CanvasHeader = () => {
   const handleNameUpdate = (ev: React.FocusEvent<HTMLInputElement>) => {
     const val = ev.currentTarget.value;
 
-    prevName.current = val;
-
     if (isDirty.current) {
-      Projects.setSlide({
-        id: slideId,
-        name: val,
-      });
       isDirty.current = false;
     }
   };
@@ -84,32 +66,22 @@ export const CanvasHeader = () => {
   };
 
   useEffect(() => {
-    if (!isDirty.current || prevslideId.current !== slideId) {
-      prevName.current = name;
-    }
-
-    return () => {
-      prevslideId.current = slideId;
-    };
-  }, [name, isDirty]);
-
-  useEffect(() => {
     if (!nameRef.current) {
       return;
     }
 
     let newWidth = nameRef.current.offsetWidth;
-
-    if (slideId === -1) {
-      newWidth = 150;
-    } else if (nameWidth === newWidth) {
-      return;
-    } else {
-      newWidth += 32;
-    }
+    //FIXME::slide-removal
+    // if (slideId === -1) {
+    //   newWidth = 150;
+    // } else if (nameWidth === newWidth) {
+    //   return;
+    // } else {
+    //   newWidth += 32;
+    // }
 
     setNameWidth(newWidth);
-  }, [name, nameRef]);
+  }, [nameRef]);
 
   return (
     <motion.div
@@ -118,7 +90,7 @@ export const CanvasHeader = () => {
       animate={animationOpts.animate}
       transition={animationOpts.transition}
     >
-      <h1 className="visually-hidden">{name}</h1>
+      <h1 className="visually-hidden"></h1>
       <ui.Icon
         icon="rectangle"
         display="outlined"
@@ -127,16 +99,14 @@ export const CanvasHeader = () => {
         pxScale="H3"
       />
       <div className={css.canvasHeaderSlideName}>
-        <span ref={nameRef}>{name}</span>
+        <span ref={nameRef}></span>
         <input
           name="slideName"
           id="slideNameInput"
           style={inputStyles}
           className="owlui-form-control"
-          value={name}
           placeholder="Untitled Slide"
           onKeyDown={handleNameInput}
-          onChange={handleNameChange}
           onBlur={handleNameUpdate}
         />
       </div>

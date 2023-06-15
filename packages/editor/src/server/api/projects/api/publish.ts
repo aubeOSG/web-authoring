@@ -10,31 +10,9 @@ import { templatesPath, projectPath } from '../../templates';
 import { Datetime, Str } from '../../../../utils';
 
 export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
-  let templatePath;
   const templates = new Set<string>();
   const templateList: TemplateList = [];
   const templateMap: TemplateMap = {};
-
-  if (!project.slides) {
-    return [false, templateList];
-  }
-
-  project.slides.forEach((slide) => {
-    templatePath = fs.utils.join(templatesPath, slide.template.meta.filename);
-    const templateExists = fs.utils.exists(templatePath);
-
-    if (!templateExists.error && templateExists.data.exists) {
-      templates.add(templatePath);
-
-      if (!templateMap[slide.template.meta.component]) {
-        templateMap[slide.template.meta.component] = {
-          component: slide.template.meta.component,
-          js: `./scrowl.template-${slide.template.meta.filename}.js`,
-          css: `./scrowl.template-${slide.template.meta.filename}.css`,
-        };
-      }
-    }
-  });
 
   for (const [key, template] of Object.entries(templateMap)) {
     templateList.push(template);

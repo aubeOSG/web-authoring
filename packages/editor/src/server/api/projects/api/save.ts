@@ -21,11 +21,10 @@ export const update = async (payload: ProjectData) => {
   }
 
   const db = connection.get();
-  const { modules, lessons, slides, glossary, resources, ...projectData } = payload;
+  const { modules, lessons, glossary, resources, ...projectData } = payload;
   const project = {
     modules: JSON.stringify(modules),
     lessons: JSON.stringify(lessons),
-    slides: JSON.stringify(slides),
     glossary: JSON.stringify(glossary),
     resources: JSON.stringify(resources),
     ...projectData,

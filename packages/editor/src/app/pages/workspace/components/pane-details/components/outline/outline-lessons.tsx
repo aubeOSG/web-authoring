@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
-import { Collapse } from 'react-bootstrap';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { resetActiveSlide, setActiveSlide, useActiveSlide } from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys, events } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
@@ -17,11 +15,9 @@ export const OutlineLessonItem = ({
   className,
   ...props
 }: OutlineLessonItemProps) => {
-  const project = useData();
   let classes = `${css.outlineHeader} outline-item__lesson`;
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
-  const [isOpen, setOpen] = useState(true);
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
+  const [isOpen, setIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const inputContainerProps = {
     draggable: true,
@@ -30,16 +26,6 @@ export const OutlineLessonItem = ({
     'data-module-id': lesson.moduleId,
   };
   const lessonMenuItems: Array<menu.ContextMenuItem> = [
-    {
-      label: 'Add Slide',
-      click: () => {
-        Projects.addSlide({
-          id: -1,
-          lessonId: lesson.id,
-          moduleId: lesson.moduleId,
-        });
-      },
-    },
     {
       label: 'Duplicate Lesson',
       click: () => {
@@ -79,7 +65,6 @@ export const OutlineLessonItem = ({
             }
 
             if (res.data.response === 0) {
-              resetActiveSlide();
               Projects.removeModule(lesson);
             }
           });
@@ -93,12 +78,6 @@ export const OutlineLessonItem = ({
 
   const handleToggleOpen = (ev: React.MouseEvent) => {
     ev.preventDefault();
-    if (project && project.slides) {
-      const targetSlides = project.slides.filter((slide) => {
-        return slide.lessonId === lesson.id;
-      });
-      setActiveSlide(targetSlides[0]);
-    }
   };
 
   const handleOpenLessonMenu = (
@@ -126,22 +105,6 @@ export const OutlineLessonItem = ({
   const handleNameClose = () => {
     setIsEdit(false);
   };
-
-  useEffect(() => {
-    const handleSlideFocus = (ev: CustomEvent) => {
-      if (activeSlide.lessonId !== lesson.id) {
-        return;
-      }
-
-      setOpen(true);
-    };
-
-    events.slide.onFocus(handleSlideFocus);
-
-    return () => {
-      events.slide.offFocus(handleSlideFocus);
-    };
-  }, [activeSlide.id]);
 
   return (
     <div

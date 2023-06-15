@@ -2,7 +2,6 @@ import React from "react";
 import { Projects } from '../../../../../../models';
 
 export interface OutlineSlideItemCommons {
-  slide:  Projects.ProjectSlide;
   moduleIdx: number;
   lessonIdx: number;
   idx: number;

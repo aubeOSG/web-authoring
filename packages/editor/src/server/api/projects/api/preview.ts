@@ -1,4 +1,4 @@
-import { ProjectData, ProjectLesson, ProjectModule, ProjectSlide } from '../../../../app/models/projects';
+import { ProjectData, ProjectLesson, ProjectModule } from '../../../../app/models/projects';
 import { PreviewTypes } from '../../../../app/services/menu';
 import type { ProjectsApiPreview } from '../projects.types';
 import { fs } from '../../../services';
@@ -90,9 +90,6 @@ export const preview: ProjectsApiPreview = {
             return m.id === lesson.moduleId;
           }),
           lessons: [lesson],
-          slides: project.slides?.filter((s) => {
-            return s.moduleId === lesson.moduleId && s.lessonId === lesson.id;
-          }),
         };
         break;
       case 'module':
@@ -124,9 +121,6 @@ export const preview: ProjectsApiPreview = {
           modules: [module],
           lessons: project.lessons?.filter((l) => {
             return l.moduleId === module.id;
-          }),
-          slides: project.slides?.filter((s) => {
-            return s.moduleId === module.id;
           }),
         };
         break;

@@ -11,13 +11,11 @@ import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
   closePublishProgress,
-  useActiveSlide,
 } from '../../page-workspace-hooks';
 
 export const Header = () => {
   const projectData = Projects.useData();
   const assets = Projects.useAssets();
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -113,21 +111,12 @@ export const Header = () => {
   };
 
   const handlePreviewDefault = () => {
-    const payload: Projects.ProjectsReqPreviewProject = {
-      type: previewMode,
-      project: projectData,
-    };
-
-    switch (payload.type) {
-      case 'lesson':
-        payload.entityId = activeSlide.lessonId;
-        break;
-      case 'module':
-        payload.entityId = activeSlide.moduleId;
-        break;
-    }
-
-    handleProjectPreview(payload);
+    //FIXME::slide-removal
+    // const payload: Projects.ProjectsReqPreviewProject = {
+    //   type: previewMode,
+    //   project: projectData,
+    // };
+    // handleProjectPreview(payload);
   };
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
@@ -136,13 +125,12 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'lesson',
       click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
-          type: 'lesson',
-          project: projectData,
-          entityId: activeSlide.lessonId,
-        };
-
-        handleProjectPreview(payload);
+        //FIXME::slide-removal
+        // const payload: Projects.ProjectsReqPreviewProject = {
+        //   type: 'lesson',
+        //   project: projectData,
+        // };
+        // handleProjectPreview(payload);
       },
     },
     {
@@ -150,13 +138,12 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'module',
       click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
-          type: 'module',
-          project: projectData,
-          entityId: activeSlide.moduleId,
-        };
-
-        handleProjectPreview(payload);
+        //FIXME::slide-removal
+        // const payload: Projects.ProjectsReqPreviewProject = {
+        //   type: 'module',
+        //   project: projectData,
+        // };
+        // handleProjectPreview(payload);
       },
     },
     {

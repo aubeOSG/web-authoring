@@ -1,18 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
-import {
-  openPromptProjectName,
-  resetWorkspace,
-  resetActiveSlide,
-  useActiveSlide,
-} from './page-workspace-hooks';
+import { openPromptProjectName, resetWorkspace } from './page-workspace-hooks';
 import {
   Header,
   PaneDetails,
   Canvas,
   PaneEditor,
-  TemplateBrowser,
   PromptProjectName,
   PublishProgress,
   ModuleEditor,
@@ -33,7 +27,6 @@ export const openProject = (project: Projects.ProjectMeta) => {
 
     Projects.resetState();
     resetWorkspace();
-    resetActiveSlide();
 
     setTimeout(() => {
       Projects.setAssets(res.data.file.assets);
@@ -45,7 +38,6 @@ export const openProject = (project: Projects.ProjectMeta) => {
 export const Page = () => {
   const projectData = Projects.useData();
   const assets = Projects.useAssets();
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(false);
   const isListening = useRef(false);
@@ -167,24 +159,16 @@ export const Page = () => {
         project: projectData,
       };
 
-      switch (type) {
-        case 'lesson':
-          payload.entityId = activeSlide.lessonId;
-          break;
-        case 'module':
-          payload.entityId = activeSlide.moduleId;
-          break;
-      }
-
-      Settings.setPreviewMode(type);
-      Projects.preview(payload).then((res) => {
-        if (res.error) {
-          sys.messageDialog({
-            message: res.message,
-          });
-          return;
-        }
-      });
+      // FIXME::slide-removal
+      // Settings.setPreviewMode(type);
+      // Projects.preview(payload).then((res) => {
+      //   if (res.error) {
+      //     sys.messageDialog({
+      //       message: res.message,
+      //     });
+      //     return;
+      //   }
+      // });
     };
 
     const createListener = () => {
@@ -196,7 +180,6 @@ export const Page = () => {
         setProgress(true);
         Projects.resetState();
         resetWorkspace();
-        resetActiveSlide();
         // FIXME::electron-web-bug
         // Projects.create().then((result) => {
         //   setProgress(false);
@@ -269,7 +252,7 @@ export const Page = () => {
       menu.API.offProjectOpen();
       menu.API.offPreviewOpen();
     };
-  }, [projectData, assets, activeSlide, projectInteractions, inProgress]);
+  }, [projectData, assets, projectInteractions, inProgress]);
 
   return (
     <>
@@ -277,9 +260,7 @@ export const Page = () => {
         <Header />
         <PaneDetails />
         <Canvas />
-        <PaneEditor />
       </div>
-      <TemplateBrowser />
       <ModuleEditor />
       <PromptProjectName />
       <PublishProgress />

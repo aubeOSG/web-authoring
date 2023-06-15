@@ -213,88 +213,6 @@ export const removeLesson = (data) => {
   }));
 };
 
-export const useSlides = (moduleId?: number, lessonId?: number, slideId?: number) => {
-  const hasModule = moduleId !== undefined && moduleId !== null && moduleId !== -1;
-  const hasLesson = lessonId !== undefined && lessonId !== null && lessonId !== -1;
-  const hasSlide = slideId !== undefined && slideId !== null && slideId !== -1;
-
-  return useSelector((data: stateManager.RootState) => {
-    if (!hasModule) {
-      return data.projects.data.slides;
-    }
-
-    if (!hasLesson) {
-      return data.projects.data.slides.filter((slide) => {
-        return slide.moduleId === moduleId;
-      });
-    }
-
-    if (!hasSlide) {
-      return data.projects.data.slides.filter((slide) => {
-        return slide.moduleId === moduleId && slide.lessonId === lessonId;
-      });
-    }
-
-    return data.projects.data.slides.filter((slide) => {
-      return slide.moduleId === moduleId && slide.lessonId === lessonId && slide.id === slideId;
-    });
-  });
-};
-
-export const useLatestSlide = () => {
-  return useSelector((data: stateManager.RootState) => {
-    return List.sortBy(data.projects.data.slides.slice(), ['id'], true)[0];
-  });
-};
-
-export const addSlide = (data) => {
-  if (!processor.dispatch) {
-    console.warn('projects processor not ready');
-    return;
-  }
-
-  processor.dispatch(state.addOutlineItem({
-    ...data,
-    type: 'slide',
-  }));
-};
-
-export const setSlide = (data) => {
-  if (!processor.dispatch) {
-    console.warn('projects processor not ready');
-    return;
-  }
-
-  processor.dispatch(state.setOutlineItem({
-    ...data,
-    type: 'slide',
-  }));
-};
-
-export const duplicateSlide = (data) => {
-  if (!processor.dispatch) {
-    console.warn('projects processor not ready');
-    return;
-  }
-
-  processor.dispatch(state.duplicateOutlineItem({
-    ...data,
-    type: 'slide',
-  }));
-};
-
-export const removeSlide = (data) => {
-  if (!processor.dispatch) {
-    console.warn('projects processor not ready');
-    return;
-  }
-
-  processor.dispatch(state.removeOutlineItem({
-    ...data,
-    type: 'slide'
-  }));
-};
-
 export const moveOutlineItem = (data) => {
   if (!processor.dispatch) {
     console.warn('projects processor not ready');
@@ -579,12 +497,6 @@ export default {
   setLesson,
   duplicateLesson,
   removeLesson,
-  useSlides,
-  useLatestSlide,
-  addSlide,
-  setSlide,
-  duplicateSlide,
-  removeSlide,
   moveOutlineItem,
   useGlossary,
   addGlossaryItem,

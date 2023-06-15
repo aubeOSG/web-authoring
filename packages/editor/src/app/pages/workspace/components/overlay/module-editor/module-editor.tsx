@@ -7,7 +7,6 @@ import { Projects } from '../../../../../models';
 import {
   useModuleEditor,
   closeModuleEditor,
-  useActiveSlide,
 } from '../../../page-workspace-hooks';
 
 export const ModuleEditor = () => {
@@ -15,13 +14,7 @@ export const ModuleEditor = () => {
   const isOpen = useModuleEditor();
   const [stateThreshold, setStateThreshold] = useState(0);
   let project = Projects.useData();
-  const activeSlide = useActiveSlide();
-
   let module;
-
-  if (project && project.modules) {
-    module = project.modules[activeSlide.moduleId];
-  }
 
   const handleInputChange = (ev) => {
     const target = ev.target as HTMLInputElement;
@@ -49,11 +42,7 @@ export const ModuleEditor = () => {
   const handleSubmit = () => {
     if (project.modules) {
       const newModule = { ...module, passingThreshold: stateThreshold };
-
       const modules = [...project.modules];
-
-      modules[activeSlide.moduleId] = newModule;
-
       const newProj = {
         ...project,
         modules: modules,
