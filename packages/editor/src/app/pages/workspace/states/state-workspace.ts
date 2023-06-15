@@ -13,6 +13,19 @@ export const initialState = {
   contentFocus: null,
   newLesson: false,
   newModule: false,
+  activeLesson: {},
+};
+
+const triggerNewContent = (state, action) => {
+  switch (action.payload.type) {
+    case 'lesson':
+      state.newLesson = true;
+      break;
+    case 'module':
+      state.newLesson = true;
+      state.newModule = true;
+      break;
+  }
 };
 
 export const config: stateManager.StateConfig = {
@@ -62,19 +75,16 @@ export const config: stateManager.StateConfig = {
     closePublishProgress: (state) => {
       state.isOpenPublishProgress = false;
     },
+    setActiveLesson: (state, action) => {
+      state.activeLesson = action.payload;
+    },
+    resetActiveLesson: (state, action) => {
+      state.activeLesson = {};
+    },
   },
   extraReducers: {
-    [Projects.state.addOutlineItem.type]: (state, action) => {
-      switch (action.payload.type) {
-        case 'lesson':
-          state.newLesson = true;
-          break;
-        case 'module':
-          state.newLesson = true;
-          state.newModule = true;
-          break;
-      }
-    },
+    [Projects.state.addOutlineItem.type]: triggerNewContent,
+    [Projects.state.duplicateOutlineItem.type]: triggerNewContent,
   },
 };
 
@@ -93,6 +103,8 @@ export const {
   resetPromptProjectNamePostEvent,
   openPublishProgress,
   closePublishProgress,
+  setActiveLesson,
+  resetActiveLesson,
 } = slice.actions;
 
 export const reducer = slice.reducer;

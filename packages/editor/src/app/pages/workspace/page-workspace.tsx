@@ -1,18 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
-import { openPromptProjectName, resetWorkspace } from './page-workspace-hooks';
+import {
+  openPromptProjectName,
+  resetWorkspace,
+  setActiveLesson,
+  useNewContent,
+  resetNewContent,
+} from './page-workspace-hooks';
 import {
   Header,
   PaneDetails,
   Canvas,
-  PaneEditor,
   PromptProjectName,
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects, Settings, Workspaces } from '../../models';
+import { Projects } from '../../models';
 import { menu, sys, events } from '../../services';
+import { List } from '../../../utils';
 
 export const Path = '/workspace/:id';
 
@@ -43,6 +49,7 @@ export const Page = () => {
   const isListening = useRef(false);
   const pageParams = useParams();
   const projectLoading = useRef(false);
+  const newContent = useNewContent();
 
   useEffect(() => {
     if (projectData.id) {
@@ -62,7 +69,6 @@ export const Page = () => {
       workspaceId: pageParams.id,
     }).then((res) => {
       projectLoading.current = false;
-      console.log('project get', res);
     });
   }, [pageParams]);
 
@@ -253,6 +259,27 @@ export const Page = () => {
       menu.API.offPreviewOpen();
     };
   }, [projectData, assets, projectInteractions, inProgress]);
+
+  useEffect(() => {
+    if (projectData.lessons) {
+      setActiveLesson(projectData.lessons[0]);
+    }
+  }, [projectData]);
+
+  useEffect(() => {
+    if (!projectData.lessons) {
+      return;
+    }
+
+    if (!newContent.newLesson) {
+      return;
+    }
+
+    const lessons = List.sortBy(projectData.lessons.slice(), ['id']).reverse();
+
+    setActiveLesson(lessons[0]);
+    resetNewContent();
+  }, [newContent, projectData]);
 
   return (
     <>

@@ -3,7 +3,6 @@ import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 import {
   AssetType,
   ProjectsReqUpload,
-  ProjectsReqSave,
   ProjectData,
   ProjectAsset,
   ProjectsReqPreviewAsset,
@@ -12,7 +11,6 @@ import {
 } from './projects.types';
 import { stateManager, rq } from '../../services';
 import { API, state } from './';
-import { List } from '../../../utils';
 
 const processor: stateManager.StateProcessor = {};
 

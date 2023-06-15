@@ -186,6 +186,32 @@ export const closePublishProgress = () => {
   processor.dispatch(fn());
 };
 
+export const useActiveLesson = () => {
+  return useSelector((data: stateManager.RootState) => {
+    return data.workspace.activeLesson;
+  });
+};
+
+export const setActiveLesson = (data) => {
+  if (!processor.dispatch) {
+    console.warn('workspace processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.workspace.setActiveLesson(data));
+};
+
+export const resetActiveLesson = () => {
+  if (!processor.dispatch) {
+    console.warn('workspace processor not ready');
+    return;
+  }
+
+  const fn = state.workspace
+    .resetActiveLesson as ActionCreatorWithoutPayload
+  processor.dispatch(fn());
+};
+
 export default {
   useProcessor,
   useWorkspace,
@@ -207,4 +233,7 @@ export default {
   usePublishProgress,
   openPublishProgress,
   closePublishProgress,
+  useActiveLesson,
+  setActiveLesson,
+  resetActiveLesson,
 };

@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { Projects } from '../../../../../../models';
-import { menu, sys, events } from '../../../../../../services';
+import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import { ELEM_ALIGNMENT } from '../../../../../../../utils';
-import { useData } from '../../../../../../models/projects';
+import {
+  useActiveLesson,
+  setActiveLesson,
+} from '../../../../page-workspace-hooks';
 
 export const OutlineLessonItem = ({
   lesson,
@@ -17,7 +20,7 @@ export const OutlineLessonItem = ({
 }: OutlineLessonItemProps) => {
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
-  const [isOpen, setIsOpen] = useState(false);
+  const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
   const inputContainerProps = {
     draggable: true,
@@ -76,10 +79,6 @@ export const OutlineLessonItem = ({
     classes += `${className} `;
   }
 
-  const handleToggleOpen = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-  };
-
   const handleOpenLessonMenu = (
     ev: React.MouseEvent,
     alignment?: ELEM_ALIGNMENT
@@ -106,6 +105,10 @@ export const OutlineLessonItem = ({
     setIsEdit(false);
   };
 
+  const handleLesonChange = useCallback(() => {
+    setActiveLesson(lesson);
+  }, [lesson]);
+
   return (
     <div
       className={css.outlineLesson}
@@ -115,10 +118,10 @@ export const OutlineLessonItem = ({
     >
       <div className={classes}>
         <ui.Button
-          aria-expanded={isOpen}
+          aria-expanded={activeLesson ? lesson.id === activeLesson.id : false}
           aria-controls={menuId}
           className={css.outlineItem}
-          onClick={handleToggleOpen}
+          onClick={handleLesonChange}
           onContextMenu={handleOpenLessonMenu}
           variant="link"
         >
@@ -127,7 +130,7 @@ export const OutlineLessonItem = ({
               <ui.Icon
                 icon="interests"
                 display="sharp"
-                filled={!isOpen}
+                filled={activeLesson ? lesson.id !== activeLesson.id : false}
                 grad={200}
                 opsz={20}
               />

@@ -6,18 +6,28 @@ import type {
 } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
 import { Error } from '../../../../../components';
+import {
+  useActiveLesson,
+  setActiveLesson,
+} from '../../../page-workspace-hooks';
 
 export const CanvasFrame = () => {
+  const activeLesson = useActiveLesson();
   const onChange = useCallback(
     (
       api: BlockEditorAPI,
       ev: BlockEditorMutationEvent | BlockEditorMutationEvent[]
     ) => {
       api.saver.save().then((data) => {
-        console.log('save data', data);
+        const { content, ...lesson } = activeLesson;
+
+        setActiveLesson({
+          content: data,
+          ...lesson,
+        });
       });
     },
-    []
+    [activeLesson]
   );
 
   return (
