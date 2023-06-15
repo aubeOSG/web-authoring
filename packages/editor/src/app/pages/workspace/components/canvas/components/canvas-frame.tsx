@@ -5,9 +5,11 @@ import { Error } from '../../../../../components';
 
 export const CanvasFrame = () => {
   return (
-    <Error>
-      <BlockEditor />
-    </Error>
+    <div className={css.canvasFrame}>
+      <Error>
+        <BlockEditor />
+      </Error>
+    </div>
   );
 };
 
