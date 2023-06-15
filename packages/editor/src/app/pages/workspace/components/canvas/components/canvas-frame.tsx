@@ -1,12 +1,13 @@
 import React from 'react';
 import { BlockEditor } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
+import { Error } from '../../../../../components';
 
 export const CanvasFrame = () => {
   return (
-    <div>
+    <Error>
       <BlockEditor />
-    </div>
+    </Error>
   );
 };
 
