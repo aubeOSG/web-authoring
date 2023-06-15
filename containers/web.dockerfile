@@ -5,6 +5,7 @@ WORKDIR /usr/authoring
 COPY ./config/package.json ./config/package.json
 COPY ./plugins/postcss-prefixer/package.json ./plugins/postcss-prefixer/package.json
 COPY ./packages/content-block-editor/package.json ./packages/content-block-editor/package.json
+COPY ./packages/content-block-editor-react/package.json ./packages/content-block-editor-react/package.json
 COPY ./packages/ui/package.json ./packages/ui/package.json
 COPY ./packages/templates/core/package.json ./packages/templates/core/package.json
 COPY ./packages/templates/block-text/package.json ./packages/templates/block-text/package.json
@@ -23,6 +24,7 @@ COPY ./yarn.lock ./yarn.lock
 COPY ./config ./config
 COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
+COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/templates/block-text ./packages/templates/block-text

@@ -16,11 +16,9 @@ export type BlockEditorFactory = (config: EditorConfig) => BlockEditorClass;
 
 export interface BlockEditorCommons extends Omit<EditorConfig, 'data'> {
   factory: BlockEditorFactory;
-  holder?: string;
   value?: EditorConfig['data'];
   defaultValue?: EditorConfig['data'];
   onInit?: (editor: BlockEditorClass) => void;
-  children: React.ReactElement;
 };
 
 export type BlockEditorProps = Omit<BlockEditorCommons, 'factory'>;
