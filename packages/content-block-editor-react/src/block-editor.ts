@@ -1,6 +1,6 @@
 import EditorJS from "@scrowl/content-block-editor";
 import Paragraph from '@editorjs/paragraph';
-import CustomParagraph from '@scrowl/custom-block-one';
+import CustomBlockOne from '@scrowl/custom-block-one';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -12,17 +12,21 @@ export class BlockEditor implements BlockEditorClass {
 
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools = {
-      customParagraph: {
-        class: CustomParagraph.CustomBlockOneFactory,
+      customBlockOne: {
+        class: CustomBlockOne.CustomBlockOneFactory,
+        inlineToolbar: true,
+      },
+      customBlockReact: {
+        class: CustomBlockOne.ReactFactory,
         inlineToolbar: true,
       },
       ...tools,
     };
 
-    console.log('Custom Paragraph: ', CustomParagraph);
+    console.log('Custom Paragraph: ', CustomBlockOne);
     console.log(
       'Custom Paragraph factory: ',
-      CustomParagraph.CustomBlockOneFactory
+      CustomBlockOne.CustomBlockOneFactory
     );
 
     console.log('Paragraph ', Paragraph);

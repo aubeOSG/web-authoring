@@ -86,6 +86,10 @@
     }
   }
 
+  .custom-block-one-container {
+    display: flex;
+  }
+
   &__body {
     --bs-heading-color: var(--bs-gray-900);
     --bs-body-color: var(--bs-gray-900);
