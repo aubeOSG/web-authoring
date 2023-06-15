@@ -1,3 +1,4 @@
 import CustomBlockOne from './component';
+import CustomBlockOneFactory from './factory';
 
-export { CustomBlockOne };
+export { CustomBlockOne, CustomBlockOneFactory };

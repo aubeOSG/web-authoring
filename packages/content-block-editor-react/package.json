@@ -57,6 +57,8 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@scrowl/content-block-editor": "^2.27.0"
+    "@editorjs/paragraph": "^2.9.0",
+    "@scrowl/content-block-editor": "^2.27.0",
+    "@scrowl/custom-block-one": "^0.0.1"
   }
 }
