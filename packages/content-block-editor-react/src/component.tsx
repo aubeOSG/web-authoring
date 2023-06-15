@@ -7,22 +7,22 @@ import {
 import BlockEditorFactory from './block-editor';
 
 const BlockEditor = ({
-  holder,
   defaultValue,
   value,
   onInit,
-  children,
   ...props
 }: BlockEditorProps) => {
   const factory = useCallback((config: BlockEditorConfig) => {
     return new BlockEditorFactory(config);
   }, []);
-  const holderRef = useRef(
-    holder || `content-block-editor-${Date.now().toString(16)}`
-  );
+  const holderRef = useRef<HTMLDivElement>(null);
   const editorJS = useRef<BlockEditorClass | null>(null);
 
   useEffect(() => {
+    if (!holderRef.current) {
+      return;
+    }
+
     editorJS.current = factory({
       holder: holderRef.current,
       ...(defaultValue && { data: defaultValue }),
@@ -38,7 +38,7 @@ const BlockEditor = ({
         editorJS.current.destroy();
       }
     };
-  }, []);
+  }, [holderRef.current]);
 
   useEffect(() => {
     if (!value) {
@@ -52,7 +52,7 @@ const BlockEditor = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return children || <div id={holderRef.current} />;
+  return <div ref={holderRef} />;
 };
 
 export { BlockEditor };
