@@ -11,10 +11,12 @@ import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
   closePublishProgress,
+  useActiveLesson,
 } from '../../page-workspace-hooks';
 
 export const Header = () => {
   const projectData = Projects.useData();
+  const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
@@ -111,12 +113,12 @@ export const Header = () => {
   };
 
   const handlePreviewDefault = () => {
-    //FIXME::slide-removal
-    // const payload: Projects.ProjectsReqPreviewProject = {
-    //   type: previewMode,
-    //   project: projectData,
-    // };
-    // handleProjectPreview(payload);
+    const payload: Projects.ProjectsReqPreviewProject = {
+      type: previewMode,
+      project: projectData,
+      entityId: activeLesson.id,
+    };
+    handleProjectPreview(payload);
   };
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
@@ -125,12 +127,12 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'lesson',
       click: () => {
-        //FIXME::slide-removal
-        // const payload: Projects.ProjectsReqPreviewProject = {
-        //   type: 'lesson',
-        //   project: projectData,
-        // };
-        // handleProjectPreview(payload);
+        const payload: Projects.ProjectsReqPreviewProject = {
+          type: 'lesson',
+          project: projectData,
+          entityId: activeLesson.id,
+        };
+        handleProjectPreview(payload);
       },
     },
     {
@@ -138,12 +140,12 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'module',
       click: () => {
-        //FIXME::slide-removal
-        // const payload: Projects.ProjectsReqPreviewProject = {
-        //   type: 'module',
-        //   project: projectData,
-        // };
-        // handleProjectPreview(payload);
+        const payload: Projects.ProjectsReqPreviewProject = {
+          type: 'module',
+          project: projectData,
+          entityId: activeLesson.moduleId,
+        };
+        handleProjectPreview(payload);
       },
     },
     {
