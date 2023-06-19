@@ -40,10 +40,12 @@ const useStyles = makeStyles((theme) => ({
   itemContainerTwo: {
     flexDirection: 'column',
     width: '50%',
+    marginRight: '1.5rem',
   },
   itemContainerThree: {
     flexDirection: 'column',
     width: '33%',
+    marginRight: '1rem',
   },
   timelinedot: {
     boxShadow: 'none',
@@ -57,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     fontSize: '2rem',
+    outline: 'none',
   },
   oppositeInButton: {
     flex: '0.14',
@@ -65,16 +68,20 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none',
     paddingLeft: '14px',
     paddingRight: '14px',
+    position: 'absolute',
+    right: '3em',
+    backgroundColor: '#007ABA',
   },
   description: {
     padding: '8px',
     fontSize: '1.5em',
     textOverflow: 'ellipsis',
     border: 'none',
+    outline: 'none',
+    resize: 'none',
   },
   addButtonText: {
     color: 'white',
-    backgroundColor: '#007ABA',
     fontSize: '1.3rem',
   },
 }));
@@ -132,7 +139,17 @@ const ColumnComponent = (props) => {
               }
               key={index}
             >
-              <TimelineOppositeContent className={classes.headingContainer}>
+              <div className={classes.headingContainer}>
+                <h2
+                  className={classes.heading}
+                  color="textSecondary"
+                  onBlur={onContentChange(index, 'heading')}
+                  contentEditable={!props.readOnly}
+                >
+                  {event.heading}
+                </h2>
+              </div>
+              {/* <TimelineOppositeContent className={classes.headingContainer}>
                 <Typography
                   className={classes.heading}
                   color="textSecondary"
@@ -142,7 +159,7 @@ const ColumnComponent = (props) => {
                 >
                   {event.heading}
                 </Typography>
-              </TimelineOppositeContent>
+              </TimelineOppositeContent> */}
               <textarea
                 name="body"
                 className={classes.description}
@@ -171,11 +188,7 @@ const ColumnComponent = (props) => {
             <TimelineItem>
               <TimelineOppositeContent className={classes.oppositeInButton} />
               <TimelineSeparator>
-                <TimelineDot
-                  color="primary"
-                  className={classes.addButton}
-                  onClick={onAddEvent}
-                >
+                <TimelineDot className={classes.addButton} onClick={onAddEvent}>
                   <Typography className={classes.addButtonText}> + </Typography>
                 </TimelineDot>
               </TimelineSeparator>
