@@ -5,11 +5,11 @@ import * as css from '../../_pane-details.scss';
 import { Projects } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../../utils';
 import {
   useActiveLesson,
   setActiveLesson,
 } from '../../../../page-workspace-hooks';
+import { ELEM_ALIGNMENT } from '@scrowl/utils';
 
 export const OutlineLessonItem = ({
   lesson,

@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
     "directory": "packages/player"
   },
   "bugs": {
-    "url": "https://github.com/scrowl-io/scrowl/issues"
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
-  "homepage": "https://github.com/scrowl-io/authoring/packages/player#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/player#readme",
   "source": "./index.html"
 }

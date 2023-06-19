@@ -8,7 +8,7 @@ import { openModuleEditor } from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../../utils';
+import { ELEM_ALIGNMENT } from '@scrowl/utils';
 
 export const OutlineModuleItem = ({
   module,

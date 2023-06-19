@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { stateManager } from '../../../services'
-import { updateObj } from '../../../../utils';
+import { updateObj } from '@scrowl/utils';
 import { Projects } from '../../../models';
 
 export const initialState = {

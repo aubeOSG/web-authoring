@@ -1,6 +1,11 @@
 import { AnimeParams, AnimeInstance } from 'animejs';
 import ScrollMagic from 'scrollmagic';
+import type { Controller } from 'scrollmagic';
 import { TemplateProps, HostProps } from './';
+
+export type {
+  Controller,
+};
 
 export type ComponentsProps = {
   Editor: ({ data, setData }: { data: any; setData: any }) => React.JSX.Element;

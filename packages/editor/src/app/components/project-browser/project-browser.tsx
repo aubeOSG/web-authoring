@@ -8,7 +8,7 @@ import { Projects } from '../../models';
 import { Workspace } from '../../pages';
 import { sys, events } from '../../services';
 import { ProjectSearch } from './';
-import { List, Elem } from '../../../utils';
+import { List, Elem } from '@scrowl/utils';
 
 const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
   const navigate = useNavigate();

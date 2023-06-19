@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scrowl-io/authoring.git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
     "directory": "packages/editor"
   },
   "bugs": {
-    "url": "https://github.com/scrowl-io/authoring/issues"
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
   },
-  "homepage": "https://github.com/scrowl-io/authoring/packages/editor#readme",
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/editor#readme",
   "scripts": {
     "copy:assets": "node ./scripts/copy-assets.mjs",
     "prestart": "rimraf web && webpack",
@@ -109,6 +109,7 @@
     "@scrowl/template-simple-video": "^1.0.99",
     "@scrowl/template-two-column": "^1.0.99",
     "@scrowl/ui": "^0.0.40",
+    "@scrowl/utils": "^0.0.0",
     "adm-zip": "^0.5.9",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.2",

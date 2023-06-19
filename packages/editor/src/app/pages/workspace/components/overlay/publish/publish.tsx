@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import '../_overlay.scss';
 import { Backdrop, Drawer } from '../../../../../components';
 import { Projects, Settings } from '../../../../../models';
-import { Elem } from '../../../../../../utils';
+import { Elem } from '@scrowl/utils';
 import { CourseSettings } from './course-settings';
 import { Reporting } from './reporting';
 import { ExportOptions } from './export-options';
