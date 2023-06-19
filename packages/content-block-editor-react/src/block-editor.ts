@@ -15,7 +15,7 @@ export class BlockEditor implements BlockEditorClass {
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
-        class: CustomBlockOne.CustomBlockOneFactory,
+        class: CustomBlockOne.ColumnFactory,
         inlineToolbar: true,
       },
       customBlockReact: {
@@ -52,14 +52,6 @@ export class BlockEditor implements BlockEditorClass {
       },
       ...tools,
     };
-
-    console.log('Custom Paragraph: ', CustomBlockOne);
-    console.log(
-      'Custom Paragraph factory: ',
-      CustomBlockOne.CustomBlockOneFactory
-    );
-
-    console.log('Paragraph ', Paragraph);
 
     this._editor = new EditorJS({
       tools: extendTools,

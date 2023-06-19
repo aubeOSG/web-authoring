@@ -1,5 +1,5 @@
 import CustomBlockOne from './component';
-import CustomBlockOneFactory from './factory';
+import ColumnFactory from './column-factory';
 import ReactFactory from './react-factory';
 
-export { CustomBlockOne, CustomBlockOneFactory, ReactFactory };
+export { CustomBlockOne, ColumnFactory, ReactFactory };

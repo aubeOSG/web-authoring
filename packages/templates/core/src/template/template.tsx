@@ -34,17 +34,9 @@ export const Template = ({
     width: window.innerWidth,
   });
   // @ts-ignore
-  const [scroll, setScroll] = useState(false);
-  // @ts-ignore
   const [userIsStopped, setUserIsStopped] = useState(stopUserAdvancement);
 
   const Scrowl = window['Scrowl'];
-
-  if (!scroll) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'scroll';
-  }
 
   if (className) {
     classes += ` ${className}`;
@@ -73,18 +65,10 @@ export const Template = ({
   useEffect(() => {
     let scene: Scene;
 
-    if (!Scrowl || !Scrowl.runtime || Scrowl.runtime.API === null) {
-      setScroll(true);
-    }
-
     if (Scrowl && Scrowl.runtime && Scrowl.runtime.API !== null) {
       const [courseStartError, suspendData] = Scrowl.runtime.getSuspendData();
 
       const parsedData = JSON.parse(suspendData);
-
-      if (!courseStartError && parsedData.courseStarted === true) {
-        setScroll(true);
-      }
     }
 
     const createScene = () => {
@@ -370,7 +354,6 @@ export const Template = ({
       if (Scrowl.runtime) {
         Scrowl.runtime.setCourseStart();
       }
-      setScroll(true);
       setTimeout(() => {
         const domSlideParents = document.querySelectorAll('.inner-content');
         const domSlides = Array.from(domSlideParents).map((parent) => {
