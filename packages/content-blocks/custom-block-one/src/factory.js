@@ -78,7 +78,7 @@ export default class CustomBlockOneFactory {
    * @returns {string}
    */
   static get DEFAULT_QUOTE_PLACEHOLDER() {
-    return 'Enter a quote';
+    return 'Left Column Text';
   }
 
   /**
@@ -88,7 +88,7 @@ export default class CustomBlockOneFactory {
    * @returns {string}
    */
   static get DEFAULT_CAPTION_PLACEHOLDER() {
-    return 'Enter a caption';
+    return 'Right Column Text';
   }
 
   /**
@@ -223,13 +223,27 @@ export default class CustomBlockOneFactory {
       innerHTML: this.data.caption,
     });
 
+    quote.style.marginBottom = '0px';
+    quote.style.marginRight = '0.5rem';
+    caption.style.marginLeft = '0.5rem';
+
     quote.dataset.placeholder = this.quotePlaceholder;
     caption.dataset.placeholder = this.captionPlaceholder;
 
     container.appendChild(quote);
     container.appendChild(caption);
 
+    container.style.display = 'flex';
+
+
     console.log('container: ', container);
+    console.log('quote: ', quote);
+    console.log('caption: ', caption);
+
+    console.log('caption: ', container.style);
+    console.log('quote: ', quote.style);
+    console.log('caption: ', caption.style);
+
 
     return container;
   }
