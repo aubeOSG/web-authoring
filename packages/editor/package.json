@@ -97,11 +97,12 @@
   "dependencies": {
     "@popperjs/core": "2.11.6",
     "@reduxjs/toolkit": "^1.8.6",
+    "@scrowl/content-block-editor-react": "^0.0.1",
     "@scrowl/player": "^0.0.100",
     "@scrowl/runtime": "^0.0.100",
     "@scrowl/template-block-text": "^1.0.99",
-    "@scrowl/template-inline-text": "^1.0.99",
     "@scrowl/template-core": "^1.0.99",
+    "@scrowl/template-inline-text": "^1.0.99",
     "@scrowl/template-lesson-intro": "^1.0.99",
     "@scrowl/template-quiz": "^1.0.99",
     "@scrowl/template-simple-text": "^1.0.99",
