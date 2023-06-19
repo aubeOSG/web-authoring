@@ -6,6 +6,7 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
+import CustomBlockOne from '@scrowl/custom-block-one';
 import { BlockEditorClass, BlockEditorOutputData, BlockEditorConfig } from './component.types';
 
 export class BlockEditor implements BlockEditorClass {
@@ -13,6 +14,14 @@ export class BlockEditor implements BlockEditorClass {
 
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
+      customBlockOne: {
+        class: CustomBlockOne.CustomBlockOneFactory,
+        inlineToolbar: true,
+      },
+      customBlockReact: {
+        class: CustomBlockOne.ReactFactory,
+        inlineToolbar: true,
+      },
       checklist: {
         class: Checklist,
         inlineToolbar: true,
@@ -44,10 +53,20 @@ export class BlockEditor implements BlockEditorClass {
       ...tools,
     };
 
+    console.log('Custom Paragraph: ', CustomBlockOne);
+    console.log(
+      'Custom Paragraph factory: ',
+      CustomBlockOne.CustomBlockOneFactory
+    );
+
+    console.log('Paragraph ', Paragraph);
+
     this._editor = new EditorJS({
       tools: extendTools,
       ...config,
     });
+
+    console.log('constructor editor ', this._editor);
   }
 
   public getInstance() {
@@ -58,7 +77,7 @@ export class BlockEditor implements BlockEditorClass {
     await this._editor.clear();
   }
 
-  public async save () {
+  public async save() {
     return this._editor.save();
   }
 
@@ -66,7 +85,7 @@ export class BlockEditor implements BlockEditorClass {
     await this._editor.blocks.render(data);
   }
 
-  public async destroy () {
+  public async destroy() {
     await this._editor.isReady;
     await this._editor.destroy();
   }

@@ -16,6 +16,7 @@
     "config",
     "packages/*",
     "packages/templates/*",
+    "packages/content-blocks/*",
     "plugins/*"
   ],
   "devDependencies": {
