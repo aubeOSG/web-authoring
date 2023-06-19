@@ -21,7 +21,7 @@ const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
   return <>{children}</>;
 };
 
-export const Root = ({ project, templateList, scorm, ...props }) => {
+export const Root = ({ project, scorm, ...props }) => {
   const Scrowl = window['Scrowl'];
   let apiPreference;
 
@@ -68,14 +68,6 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
     }
   }
 
-  if (!templateList || !Object.keys(templateList).length) {
-    return <ErrorComponent msg="Templates missing" />;
-  }
-
-  if (!project || !project.slides || !project.slides.length) {
-    return <ErrorComponent msg="Slides missing" />;
-  }
-
   if (!project || !project.lessons || !project.lessons.length) {
     return <ErrorComponent msg="Lessons missing" />;
   }
@@ -84,7 +76,6 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
     return <ErrorComponent msg="Modules missing" />;
   }
 
-  const slides = project.slides;
   const lessons = project.lessons;
   const modules = project.modules;
   const resources = project.resources;
@@ -94,7 +85,6 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
 
   let moduleIdx;
   let lessonIdx;
-  let slideId;
 
   if (Scrowl.runtime) {
     let locationError;
@@ -108,12 +98,10 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
     if (!locationError && location && location.cur) {
       moduleIdx = location.cur.m;
       lessonIdx = location.cur.l;
-      slideId = location.slideId;
     }
   }
 
   const config = Config.create(
-    slides,
     lessons,
     modules,
     resources,
@@ -121,93 +109,93 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
     name,
     subtitle
   );
-  const pages = PageDefinition.create(config, templateList, slideId);
+  const pages = PageDefinition.create(config);
 
   console.log('config', config);
   console.log('pages', pages);
 
-  useEffect(() => {
-    const handleSlideEnter = (ev) => {
-      const sceneEvent = ev.detail;
-      const previousLocation = Scrowl.runtime?.getLocation();
+  //FIXME::slide-removal
+  // useEffect(() => {
+  //   const handleSlideEnter = (ev) => {
+  //     const sceneEvent = ev.detail;
+  //     const previousLocation = Scrowl.runtime?.getLocation();
 
-      type LocationObject = {
-        cur: {
-          m: number;
-          l: number;
-          s: number;
-        };
-        max: {
-          m: number;
-          l: number;
-          s: number;
-        };
-      };
+  //     type LocationObject = {
+  //       cur: {
+  //         m: number;
+  //         l: number;
+  //         s: number;
+  //       };
+  //       max: {
+  //         m: number;
+  //         l: number;
+  //         s: number;
+  //       };
+  //     };
 
-      const locationObj: LocationObject = {
-        cur: {
-          m: 0,
-          l: 0,
-          s: 0,
-        },
-        max: {
-          m: previousLocation?.[1].max ? previousLocation[1].max.m : 0,
-          l: previousLocation?.[1].max ? previousLocation[1].max.l : 0,
-          s: previousLocation?.[1].max ? previousLocation[1].max.s : 0,
-        },
-      };
+  //     const locationObj: LocationObject = {
+  //       cur: {
+  //         m: 0,
+  //         l: 0,
+  //         s: 0,
+  //       },
+  //       max: {
+  //         m: previousLocation?.[1].max ? previousLocation[1].max.m : 0,
+  //         l: previousLocation?.[1].max ? previousLocation[1].max.l : 0,
+  //         s: previousLocation?.[1].max ? previousLocation[1].max.s : 0,
+  //       },
+  //     };
 
-      const id = sceneEvent.currentTarget.id;
+  //     const id = sceneEvent.currentTarget.id;
 
-      const shortenedId = id
-        .replace('module', 'm')
-        .replace('lesson', 'l')
-        .replace('slide', 's');
+  //     const shortenedId = id
+  //       .replace('module', 'm')
+  //       .replace('lesson', 'l');
 
-      const splitEntries = shortenedId.split('--');
+  //     const splitEntries = shortenedId.split('--');
 
-      splitEntries.map((entry) => {
-        const keyPair = entry.split('-');
-        if (locationObj && locationObj.cur) {
-          locationObj.cur[keyPair[0]] = parseInt(keyPair[1]);
-        }
-      });
+  //     splitEntries.map((entry) => {
+  //       const keyPair = entry.split('-');
+  //       if (locationObj && locationObj.cur) {
+  //         locationObj.cur[keyPair[0]] = parseInt(keyPair[1]);
+  //       }
+  //     });
 
-      if (
-        !previousLocation ||
-        !previousLocation[1].max ||
-        previousLocation[1].max === undefined
-      ) {
-        Scrowl.runtime?.updateLocation(locationObj, id);
-        if (window['API_1484_11'] !== undefined) {
-          window['API_1484_11'].SetValue(
-            'cmi.location',
-            JSON.stringify(locationObj)
-          );
-        }
-      } else {
-        if (locationObj.cur.m > previousLocation[1].max.m) {
-          locationObj.max.m = locationObj.cur.m;
+  //     if (
+  //       !previousLocation ||
+  //       !previousLocation[1].max ||
+  //       previousLocation[1].max === undefined
+  //     ) {
+  //       Scrowl.runtime?.updateLocation(locationObj, id);
+  //       if (window['API_1484_11'] !== undefined) {
+  //         window['API_1484_11'].SetValue(
+  //           'cmi.location',
+  //           JSON.stringify(locationObj)
+  //         );
+  //       }
+  //     } else {
+  //       if (locationObj.cur.m > previousLocation[1].max.m) {
+  //         locationObj.max.m = locationObj.cur.m;
 
-          if (locationObj.cur.l < previousLocation[1].max.l) {
-            locationObj.max.l = locationObj.cur.l;
-          }
-        } else if (locationObj.cur.l > previousLocation?.[1].max.l) {
-          if (locationObj.cur.m >= previousLocation?.[1].max.m) {
-            locationObj.max.l = locationObj.cur.l;
-          }
-        }
+  //         if (locationObj.cur.l < previousLocation[1].max.l) {
+  //           locationObj.max.l = locationObj.cur.l;
+  //         }
+  //       } else if (locationObj.cur.l > previousLocation?.[1].max.l) {
+  //         if (locationObj.cur.m >= previousLocation?.[1].max.m) {
+  //           locationObj.max.l = locationObj.cur.l;
+  //         }
+  //       }
 
-        Scrowl.runtime?.updateLocation(locationObj, id);
-      }
-    };
+  //       Scrowl.runtime?.updateLocation(locationObj, id);
+  //     }
+  //   };
 
-    document.addEventListener('slide.enter', handleSlideEnter);
+  //   document.addEventListener('slide.enter', handleSlideEnter);
 
-    return () => {
-      document.removeEventListener('slide.enter', handleSlideEnter);
-    };
-  }, [project]);
+  //   return () => {
+  //     document.removeEventListener('slide.enter', handleSlideEnter);
+  //   };
+  // }, [project]);
 
   useEffect(() => {
     if (Scrowl && Scrowl.runtime) {
@@ -245,7 +233,7 @@ export const Root = ({ project, templateList, scorm, ...props }) => {
       const errorEvent = new CustomEvent('playerError', { detail: event });
       document.dispatchEvent(errorEvent);
     });
-  }, [project, slides]);
+  }, [project]);
 
   let targetUrl;
 

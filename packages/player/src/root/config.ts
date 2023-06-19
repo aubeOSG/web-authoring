@@ -1,5 +1,4 @@
 import {
-  ProjectSlide,
   ProjectLesson,
   ProjectModule,
   PlayerRootConfig,
@@ -7,7 +6,6 @@ import {
 } from './root.types';
 
 export const create = (
-  slides: Array<ProjectSlide>,
   lessons: Array<ProjectLesson>,
   modules: Array<ProjectModule>,
   resources,
@@ -44,32 +42,8 @@ export const create = (
         break;
       }
 
-      const configSlides: Array<ProjectSlide> = [];
-      const sCnt = slides.length;
-      let s = 0;
-
-      while (slides.length > 0 && s < sCnt) {
-        s++;
-
-        if (
-          slides[0].moduleId !== module.id ||
-          slides[0].lessonId !== lesson.id
-        ) {
-          continue;
-        }
-
-        const slide = slides.shift();
-
-        if (!slide) {
-          break;
-        }
-
-        configSlides.push(slide);
-      }
-
       config.lessons.push({
         lesson,
-        slides: configSlides,
       });
     }
 

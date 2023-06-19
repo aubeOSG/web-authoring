@@ -4,8 +4,8 @@ import { updateObj } from '@scrowl/utils';
 
 export const initialState = {
   hasStarted: true,
-  currentSlideId: '',
-  currentSlideIndex: -1,
+  currentLessonId: '',
+  currentLessonIndex: -1,
 };
 
 export const slice = createSlice({
@@ -21,9 +21,9 @@ export const slice = createSlice({
     toggleStarted: (state, action: PayloadAction<boolean | undefined>) => {
       state.hasStarted = action.payload ? action.payload : !state.hasStarted;
     },
-    updateCurrentSlide: (state, action: PayloadAction<{ id: string; index: number }>) => {
-      state.currentSlideId = action.payload.id;
-      state.currentSlideIndex = action.payload.index;
+    updateCurrentLesson: (state, action: PayloadAction<{ id: string; index: number }>) => {
+      state.currentLessonId = action.payload.id;
+      state.currentLessonIndex = action.payload.index;
     },
   },
 });
@@ -33,7 +33,7 @@ export const {
   set,
   reset,
   toggleStarted,
-  updateCurrentSlide,
+  updateCurrentLesson,
 } = slice.actions;
 
 export default {
@@ -43,5 +43,5 @@ export default {
   set,
   reset,
   toggleStarted,
-  updateCurrentSlide,
+  updateCurrentLesson,
 };
