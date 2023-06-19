@@ -23,7 +23,7 @@ export const CanvasFrame = () => {
       editorInstance.current = api;
 
       if (activeLesson.content) {
-        if (!content) {
+        if (!content && editorInstance.current) {
           editorInstance.current.render(activeLesson.content);
         }
 

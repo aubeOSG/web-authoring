@@ -12,7 +12,7 @@ export type ProjectLesson = {
   name: string;
   moduleId: number;
   id: number;
-  content: BlockEditorOutputData;
+  content?: BlockEditorOutputData;
 };
 
 export type ProjectGlossaryItem = {

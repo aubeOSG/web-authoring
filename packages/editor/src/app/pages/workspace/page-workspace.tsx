@@ -18,7 +18,7 @@ import {
 } from './components';
 import { Projects } from '../../models';
 import { menu, sys, events } from '../../services';
-import { List } from '../../../utils';
+import { List } from '@scrowl/utils';
 
 export const Path = '/workspace/:id';
 
