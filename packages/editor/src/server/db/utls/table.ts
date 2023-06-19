@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import { Schema, Config } from '../db.types';
-import { List } from '../../../utils';
+import { List } from '@scrowl/utils';
 
 export const drop = (
   db: Knex,

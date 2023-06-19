@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import * as css from './_inline-inputs.scss';
 import { InlineInputTextProps } from './inline-inputs.types';
-import { Elem } from '../../../utils';
+import { Elem } from '@scrowl/utils';
 
 export const Text = ({
   isEdit,

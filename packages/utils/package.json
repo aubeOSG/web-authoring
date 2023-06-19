@@ -1,0 +1,67 @@
+{
+  "name": "@scrowl/utils",
+  "version": "0.0.0",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "author": {
+    "name": "OSG"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrowl-io/web-authoring.git",
+    "directory": "packages/utils"
+  },
+  "bugs": {
+    "url": "https://github.com/scrowl-io/web-authoring/issues"
+  },
+  "homepage": "https://github.com/scrowl-io/web-authoring/packages/utils#readme",
+  "scripts": {
+    "clean": "rimraf ../../../.parcel-cache",
+    "prebuild": "yarn run clean && rimraf dist && rimraf lib",
+    "build": "parcel build --no-cache"
+  },
+  "source": "./src/index.ts",
+  "main": "./lib/scrowl.utils.js",
+  "module": "./lib/scrowl.utils.module.js",
+  "types": "./lib/scrowl.utils.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/scrowl.utils.js",
+      "import": "./lib/scrowl.utils.module.js",
+      "default": "./lib/scrowl.utils.js"
+    },
+    "./src": "./src/index.ts"
+  },
+  "eslintConfig": {
+    "extends": "@scrowl/config"
+  },
+  "prettier": "@scrowl/config/prettier",
+  "stylelint": {
+    "extends": "@scrowl/config/stylelint"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/",
+    "lib/",
+    "package.json"
+  ],
+  "devDependencies": {
+    "@parcel/core": "2.8.3",
+    "@parcel/packager-ts": "2.8.3",
+    "@parcel/reporter-dev-server": "2.8.3",
+    "@parcel/runtime-react-refresh": "2.8.3",
+    "@parcel/transformer-sass": "2.8.3",
+    "@parcel/transformer-typescript-types": "2.8.3",
+    "@parcel/validator-typescript": "2.8.3",
+    "@scrowl/config": "^0.0.100",
+    "eslint": "^8.25.0",
+    "parcel": "2.8.3",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "stylelint": "^14.13.0",
+    "typescript": "4.7.4"
+  },
+  "dependencies": {}
+}

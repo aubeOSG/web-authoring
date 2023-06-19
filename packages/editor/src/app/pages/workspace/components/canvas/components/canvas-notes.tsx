@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from '../_canvas.scss';
-import { useActiveSlide, setActiveSlide } from '../../../';
-import { Settings, Projects } from '../../../../../models';
+import { Settings } from '../../../../../models';
 
 export const CanvasNotes = () => {
-  const notes = useActiveSlide('notes');
-  const slideId = useActiveSlide('id');
-  const hasSlide = slideId !== -1;
+  const hasSlide = false;
   const animationSettings = Settings.useAnimation();
   const reducedAnimations = animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
@@ -75,15 +72,8 @@ export const CanvasNotes = () => {
           <textarea
             style={{ minHeight: '72px' }}
             className={`form-control ${css.canvasFooterTextarea}`}
-            value={notes}
             onChange={(ev: React.ChangeEvent<HTMLTextAreaElement>) => {
               const notes = ev.target.value;
-
-              setActiveSlide({ notes });
-              Projects.setSlide({
-                id: slideId,
-                notes,
-              });
             }}
           />
         </motion.div>

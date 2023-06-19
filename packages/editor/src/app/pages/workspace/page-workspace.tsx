@@ -4,21 +4,21 @@ import * as css from './_page-workspace.scss';
 import {
   openPromptProjectName,
   resetWorkspace,
-  resetActiveSlide,
-  useActiveSlide,
+  setActiveLesson,
+  useNewContent,
+  resetNewContent,
 } from './page-workspace-hooks';
 import {
   Header,
   PaneDetails,
   Canvas,
-  PaneEditor,
-  TemplateBrowser,
   PromptProjectName,
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects, Settings, Workspaces } from '../../models';
+import { Projects } from '../../models';
 import { menu, sys, events } from '../../services';
+import { List } from '@scrowl/utils';
 
 export const Path = '/workspace/:id';
 
@@ -33,7 +33,6 @@ export const openProject = (project: Projects.ProjectMeta) => {
 
     Projects.resetState();
     resetWorkspace();
-    resetActiveSlide();
 
     setTimeout(() => {
       Projects.setAssets(res.data.file.assets);
@@ -45,12 +44,12 @@ export const openProject = (project: Projects.ProjectMeta) => {
 export const Page = () => {
   const projectData = Projects.useData();
   const assets = Projects.useAssets();
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(false);
   const isListening = useRef(false);
   const pageParams = useParams();
   const projectLoading = useRef(false);
+  const newContent = useNewContent();
 
   useEffect(() => {
     if (projectData.id) {
@@ -70,7 +69,6 @@ export const Page = () => {
       workspaceId: pageParams.id,
     }).then((res) => {
       projectLoading.current = false;
-      console.log('project get', res);
     });
   }, [pageParams]);
 
@@ -167,24 +165,16 @@ export const Page = () => {
         project: projectData,
       };
 
-      switch (type) {
-        case 'lesson':
-          payload.entityId = activeSlide.lessonId;
-          break;
-        case 'module':
-          payload.entityId = activeSlide.moduleId;
-          break;
-      }
-
-      Settings.setPreviewMode(type);
-      Projects.preview(payload).then((res) => {
-        if (res.error) {
-          sys.messageDialog({
-            message: res.message,
-          });
-          return;
-        }
-      });
+      // FIXME::slide-removal
+      // Settings.setPreviewMode(type);
+      // Projects.preview(payload).then((res) => {
+      //   if (res.error) {
+      //     sys.messageDialog({
+      //       message: res.message,
+      //     });
+      //     return;
+      //   }
+      // });
     };
 
     const createListener = () => {
@@ -196,7 +186,6 @@ export const Page = () => {
         setProgress(true);
         Projects.resetState();
         resetWorkspace();
-        resetActiveSlide();
         // FIXME::electron-web-bug
         // Projects.create().then((result) => {
         //   setProgress(false);
@@ -269,7 +258,30 @@ export const Page = () => {
       menu.API.offProjectOpen();
       menu.API.offPreviewOpen();
     };
-  }, [projectData, assets, activeSlide, projectInteractions, inProgress]);
+  }, [projectData, assets, projectInteractions, inProgress]);
+
+  useEffect(() => {
+    console.log('reloading project data', projectData);
+    if (projectData.lessons && projectData.lessons.length) {
+      console.log('setting active lesson');
+      setActiveLesson(projectData.lessons[0]);
+    }
+  }, [projectData]);
+
+  useEffect(() => {
+    if (!projectData.lessons) {
+      return;
+    }
+
+    if (!newContent.newLesson) {
+      return;
+    }
+
+    const lessons = List.sortBy(projectData.lessons.slice(), ['id']).reverse();
+
+    setActiveLesson(lessons[0]);
+    resetNewContent();
+  }, [newContent, projectData]);
 
   return (
     <>
@@ -277,9 +289,7 @@ export const Page = () => {
         <Header />
         <PaneDetails />
         <Canvas />
-        {/* <PaneEditor /> */}
       </div>
-      <TemplateBrowser />
       <ModuleEditor />
       <PromptProjectName />
       <PublishProgress />

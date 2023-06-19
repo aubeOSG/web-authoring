@@ -1,20 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { stateManager } from '../../../services'
-import { updateObj } from '../../../../utils';
+import { updateObj } from '@scrowl/utils';
 import { Projects } from '../../../models';
 
 export const initialState = {
   isOpenGlossaryEditor: false,
   isOpenAssetBrowser: false,
-  isOpenTemplateBrowser: false,
   isOpenEditModule: false,
   isOpenPromptProjectName: false,
   promptProjectNamePostEvent: '',
   isOpenPublishProgress: false,
   contentFocus: null,
-  newSlide: false,
   newLesson: false,
   newModule: false,
+  activeLesson: {},
+};
+
+const triggerNewContent = (state, action) => {
+  switch (action.payload.type) {
+    case 'lesson':
+      state.newLesson = true;
+      break;
+    case 'module':
+      state.newLesson = true;
+      state.newModule = true;
+      break;
+  }
 };
 
 export const config: stateManager.StateConfig = {
@@ -33,12 +44,6 @@ export const config: stateManager.StateConfig = {
     resetContentFocus: (state) => {
       state.contentFocus = null;
     },
-    openTemplateBrowser: (state) => {
-      state.isOpenTemplateBrowser = true;
-    },
-    closeTemplateBrowser: (state) => {
-      state.isOpenTemplateBrowser = false;
-    },
     openEditModule: (state) => {
       state.isOpenEditModule = true;
     },
@@ -46,7 +51,6 @@ export const config: stateManager.StateConfig = {
       state.isOpenEditModule = false;
     },
     resetNewContent: (state) => {
-      state.newSlide = false;
       state.newLesson = false;
       state.newModule = false;
     },
@@ -71,24 +75,16 @@ export const config: stateManager.StateConfig = {
     closePublishProgress: (state) => {
       state.isOpenPublishProgress = false;
     },
+    setActiveLesson: (state, action) => {
+      state.activeLesson = action.payload;
+    },
+    resetActiveLesson: (state, action) => {
+      state.activeLesson = {};
+    },
   },
   extraReducers: {
-    [Projects.state.addOutlineItem.type]: (state, action) => {
-      switch (action.payload.type) {
-        case 'slide':
-          state.newSlide = true;
-          break;
-        case 'lesson':
-          state.newSlide = true;
-          state.newLesson = true;
-          break;
-        case 'module':
-          state.newSlide = true;
-          state.newLesson = true;
-          state.newModule = true;
-          break;
-      }
-    },
+    [Projects.state.addOutlineItem.type]: triggerNewContent,
+    [Projects.state.duplicateOutlineItem.type]: triggerNewContent,
   },
 };
 
@@ -99,8 +95,6 @@ export const {
   resetData,
   setContentFocus,
   resetContentFocus,
-  openTemplateBrowser,
-  closeTemplateBrowser,
   openEditModule,
   closeEditModule,
   resetNewContent,
@@ -109,6 +103,8 @@ export const {
   resetPromptProjectNamePostEvent,
   openPublishProgress,
   closePublishProgress,
+  setActiveLesson,
+  resetActiveLesson,
 } = slice.actions;
 
 export const reducer = slice.reducer;

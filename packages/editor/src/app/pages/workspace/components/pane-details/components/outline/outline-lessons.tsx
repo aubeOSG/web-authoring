@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ui } from '@scrowl/ui';
-import { Collapse } from 'react-bootstrap';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { resetActiveSlide, setActiveSlide, useActiveSlide } from '../../../../';
 import { Projects } from '../../../../../../models';
-import { menu, sys, events } from '../../../../../../services';
+import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../../utils';
-import { useData } from '../../../../../../models/projects';
+import {
+  useActiveLesson,
+  setActiveLesson,
+} from '../../../../page-workspace-hooks';
+import { ELEM_ALIGNMENT } from '@scrowl/utils';
 
 export const OutlineLessonItem = ({
   lesson,
@@ -17,11 +18,9 @@ export const OutlineLessonItem = ({
   className,
   ...props
 }: OutlineLessonItemProps) => {
-  const project = useData();
   let classes = `${css.outlineHeader} outline-item__lesson`;
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
-  const [isOpen, setOpen] = useState(true);
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
+  const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
   const inputContainerProps = {
     draggable: true,
@@ -69,7 +68,6 @@ export const OutlineLessonItem = ({
             }
 
             if (res.data.response === 0) {
-              resetActiveSlide();
               Projects.removeModule(lesson);
             }
           });
@@ -80,16 +78,6 @@ export const OutlineLessonItem = ({
   if (className) {
     classes += `${className} `;
   }
-
-  const handleToggleOpen = (ev: React.MouseEvent) => {
-    ev.preventDefault();
-    if (project && project.slides) {
-      const targetSlides = project.slides.filter((slide) => {
-        return slide.lessonId === lesson.id;
-      });
-      setActiveSlide(targetSlides[0]);
-    }
-  };
 
   const handleOpenLessonMenu = (
     ev: React.MouseEvent,
@@ -117,21 +105,9 @@ export const OutlineLessonItem = ({
     setIsEdit(false);
   };
 
-  useEffect(() => {
-    const handleSlideFocus = (ev: CustomEvent) => {
-      if (activeSlide.lessonId !== lesson.id) {
-        return;
-      }
-
-      setOpen(true);
-    };
-
-    events.slide.onFocus(handleSlideFocus);
-
-    return () => {
-      events.slide.offFocus(handleSlideFocus);
-    };
-  }, [activeSlide.id]);
+  const handleLesonChange = useCallback(() => {
+    setActiveLesson(lesson);
+  }, [lesson]);
 
   return (
     <div
@@ -142,10 +118,10 @@ export const OutlineLessonItem = ({
     >
       <div className={classes}>
         <ui.Button
-          aria-expanded={isOpen}
+          aria-expanded={activeLesson ? lesson.id === activeLesson.id : false}
           aria-controls={menuId}
           className={css.outlineItem}
-          onClick={handleToggleOpen}
+          onClick={handleLesonChange}
           onContextMenu={handleOpenLessonMenu}
           variant="link"
         >
@@ -154,7 +130,7 @@ export const OutlineLessonItem = ({
               <ui.Icon
                 icon="interests"
                 display="sharp"
-                filled={!isOpen}
+                filled={activeLesson ? lesson.id !== activeLesson.id : false}
                 grad={200}
                 opsz={20}
               />

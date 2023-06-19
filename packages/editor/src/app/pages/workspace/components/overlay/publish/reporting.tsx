@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accordion } from '../../../../../components';
-import { Elem } from '../../../../../../utils';
+import { Elem } from '@scrowl/utils';
 
 export const Reporting = ({ data, onChange, onRollback }) => {
   const { id, reportStatus, lmsIdentifier } = data;

@@ -6,7 +6,6 @@ import * as css from '../_overlay.scss';
 export const Overview = () => {
   const modules = Projects.useModules().length;
   const lessons = Projects.useLessons().length;
-  const slides = Projects.useSlides().length;
 
   return (
     <Accordion title="Overview" disableCollapse={true} show={true}>
@@ -18,10 +17,6 @@ export const Overview = () => {
         <div className={css.publishCourseOverviewItem}>
           <dt>{lessons === 1 ? 'Lesson' : 'Lessons'}</dt>
           <dd>{lessons}</dd>
-        </div>
-        <div className={css.publishCourseOverviewItem}>
-          <dt>{slides === 1 ? 'Slide' : 'Slides'}</dt>
-          <dd>{slides}</dd>
         </div>
       </dl>
     </Accordion>

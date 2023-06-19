@@ -1,7 +1,9 @@
-import * as pages from './pages';
+import * as PageDefinition from './page-definition';
 
-export const Pages = pages;
+export {
+  PageDefinition,
+};
 
 export default {
-  Pages,
+  PageDefinition,
 };

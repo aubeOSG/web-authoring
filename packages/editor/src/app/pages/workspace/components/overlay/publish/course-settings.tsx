@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Accordion } from '../../../../../components';
 import { Projects } from '../../../../../models';
-import { Elem } from '../../../../../../utils';
+import { Elem } from '@scrowl/utils';
 
 export type CourseSettingsProps = {
   data: Projects.ProjectScorm;

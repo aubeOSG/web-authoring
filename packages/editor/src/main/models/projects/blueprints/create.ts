@@ -1,22 +1,4 @@
 import { ProjectData } from '../../../../app/models/projects/projects.types';
-import { TemplateNames, get as getTemplate } from './templates';
-
-export const slide = <T>(
-  name: string,
-  mId: number,
-  lId: number,
-  id: number,
-  template: TemplateNames,
-) => {
-  return {
-    name,
-    moduleId: mId,
-    lessonId: lId,
-    id: id,
-    template: getTemplate<T>(template),
-    notes: '',
-  };
-};
 
 export const project = (): ProjectData => {
   return {
@@ -37,12 +19,11 @@ export const project = (): ProjectData => {
     },
     modules: [],
     lessons: [],
-    slides: [],
     glossary: [],
     resources: [],
   };
 };
 
 export default {
-  slide,
+  project,
 };

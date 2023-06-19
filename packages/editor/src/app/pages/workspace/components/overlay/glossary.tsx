@@ -4,7 +4,7 @@ import './_overlay.scss';
 import { Backdrop, Drawer } from '../../../../components';
 import { Settings } from '../../../../models';
 import { menu } from '../../../../services';
-import { hasProp, Elem } from '../../../../../utils';
+import { hasProp, Elem } from '@scrowl/utils';
 
 const GlossaryFormElement = (
   { className, isOpen, onClose, onSubmit, term, ...props },

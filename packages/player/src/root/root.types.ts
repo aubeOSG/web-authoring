@@ -1,25 +1,24 @@
 import React from 'react';
-import { TemplateSchema } from '@scrowl/template-core';
-import { BlockTextProps } from '@scrowl/template-block-text';
-import { LessonIntroProps } from '@scrowl/template-lesson-intro';
-import { SimpleTextProps } from '@scrowl/template-simple-text';
-import { TwoColumnProps } from '@scrowl/template-two-column';
+import type { TemplateSchema } from '@scrowl/template-core';
+import type { BlockTextProps } from '@scrowl/template-block-text';
+import type { LessonIntroProps } from '@scrowl/template-lesson-intro';
+import type { SimpleTextProps } from '@scrowl/template-simple-text';
+import type { TwoColumnProps } from '@scrowl/template-two-column';
+import type { SimpleVideoProps } from '@scrowl/template-simple-video';
+import type { QuizProps } from '@scrowl/template-quiz';
+import type { BlockEditorOutputData } from '@scrowl/content-block-editor-react';
 
 export type {
   TemplateSchema,
   BlockTextProps,
   LessonIntroProps,
   SimpleTextProps,
-  TwoColumnProps
+  TwoColumnProps,
+  SimpleVideoProps,
+  QuizProps
 }
 
-export type TemplateElementProps = BlockTextProps | LessonIntroProps | SimpleTextProps | TwoColumnProps;
-
 export type TemplateComponent = (TemplateElementProps) => JSX.Element;
-
-export type PlayerTemplateList = {
-  [key: string]: TemplateComponent;
-};
 
 export type ProjectAsset = {
   filname: string;
@@ -29,13 +28,14 @@ export type ProjectAsset = {
 export type ProjectModule = {
   id: number;
   name: string;
+  passingThreshold?: number;
 };
 
 export type LessonQuestion = {
   id: string;
   correct: boolean;
   question: string;
-  answer: string;
+  answers: Array<string>;
   started_at?: string;
   submitted_at?: string;
 };
@@ -51,14 +51,7 @@ export type ProjectLesson = {
   moduleId: number;
   id: number;
   attempts?: Array<LessonAttempt>;
-};
-
-export type ProjectSlide = {
-  name: string;
-  moduleId: number;
-  lessonId: number;
-  id: number;
-  template: TemplateSchema;
+  content: BlockEditorOutputData;
 };
 
 export type ProjectGlossaryItem = {
@@ -79,7 +72,6 @@ export type ProjectData = {
   subtitle?: string;
   modules?: Array<ProjectModule>;
   lessons?: Array<ProjectLesson>;
-  slides?: Array<ProjectSlide>;
   glossary?: Array<ProjectGlossaryItem>;
   resources?: Array<ProjectResource>;
 };
@@ -97,17 +89,25 @@ export type ScormData = {
 
 export interface PlayerRootCommons {
   project: ProjectData;
-  templateList: PlayerTemplateList;
   scorm: ScormData;
 }
 
 export type PlayerRootProps = PlayerRootCommons &
   React.AllHTMLAttributes<HTMLDivElement>;
 
+export type PlayerRootLesson = {
+  lesson: ProjectLesson;
+};
+
 export type PlayerRootConfig = {
   module: ProjectModule;
-  lessons: Array<{
-    lesson: ProjectLesson;
-    slides: Array<ProjectSlide>;
-  }>;
+  lessons: Array<PlayerRootLesson>;
+};
+
+export type ProjectConfig = {
+  name: string;
+  subtitle: string;
+  outlineConfig: Array<PlayerRootConfig>;
+  resources?: Array<ProjectResource>;
+  glossary?: Array<ProjectGlossaryItem>;
 };

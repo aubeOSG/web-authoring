@@ -55,12 +55,6 @@ export const definition: Schema = [
   },
   {
     column: {
-      name: 'slides',
-      type: 'json',
-    }
-  },
-  {
-    column: {
       name: 'glossary',
       type: 'json',
     }

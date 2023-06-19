@@ -1,12 +1,12 @@
-import { ProjectData, ProjectLesson, ProjectModule, ProjectSlide } from '../../../../app/models/projects';
+import type { JSON_DATA } from '@scrowl/utils';
+import { List } from '@scrowl/utils';
+import { ProjectData } from '../../../../app/models/projects';
 import { PreviewTypes } from '../../../../app/services/menu';
 import type { ProjectsApiPreview } from '../projects.types';
 import { fs } from '../../../services';
-import { List } from '../../../../utils';
 import { generateProjectFiles } from './publish';
 import previewViewer from './preview-viewer';
 import { port } from '../../../config';
-import { JSON_DATA } from '../../../../utils/json';
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -90,9 +90,6 @@ export const preview: ProjectsApiPreview = {
             return m.id === lesson.moduleId;
           }),
           lessons: [lesson],
-          slides: project.slides?.filter((s) => {
-            return s.moduleId === lesson.moduleId && s.lessonId === lesson.id;
-          }),
         };
         break;
       case 'module':
@@ -124,9 +121,6 @@ export const preview: ProjectsApiPreview = {
           modules: [module],
           lessons: project.lessons?.filter((l) => {
             return l.moduleId === module.id;
-          }),
-          slides: project.slides?.filter((s) => {
-            return s.moduleId === module.id;
           }),
         };
         break;

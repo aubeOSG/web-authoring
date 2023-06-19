@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {
-  MemoryRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from 'react-router-dom';
 import './_root.scss';
-import { PlayerRootProps } from './root.types';
 import Config from './config';
 import { Error as ErrorComponent } from '../components';
 import { ErrorModal } from '../components/modal';
 import { Preview as PreviewPanel } from '../components/preview';
-import { Pages } from '../services';
+import { PageDefinition } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
+import { store } from '../state';
+import { eventHooks } from '../hooks';
 
-export const Root = ({
-  project,
-  templateList,
-  scorm,
-  ...props
-}: PlayerRootProps) => {
+const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
+  eventHooks.useEvents();
+  return <>{children}</>;
+};
+
+export const Root = ({ project, scorm, ...props }) => {
   const Scrowl = window['Scrowl'];
   let apiPreference;
 
@@ -67,14 +68,6 @@ export const Root = ({
     }
   }
 
-  if (!templateList || !Object.keys(templateList).length) {
-    return <ErrorComponent msg="Templates missing" />;
-  }
-
-  if (!project || !project.slides || !project.slides.length) {
-    return <ErrorComponent msg="Slides missing" />;
-  }
-
   if (!project || !project.lessons || !project.lessons.length) {
     return <ErrorComponent msg="Lessons missing" />;
   }
@@ -83,7 +76,6 @@ export const Root = ({
     return <ErrorComponent msg="Modules missing" />;
   }
 
-  const slides = project.slides;
   const lessons = project.lessons;
   const modules = project.modules;
   const resources = project.resources;
@@ -93,7 +85,6 @@ export const Root = ({
 
   let moduleIdx;
   let lessonIdx;
-  let slideId;
 
   if (Scrowl.runtime) {
     let locationError;
@@ -101,18 +92,16 @@ export const Root = ({
     try {
       [locationError, location] = Scrowl.runtime.getLocation();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (!locationError && location && location.cur) {
       moduleIdx = location.cur.m;
       lessonIdx = location.cur.l;
-      slideId = location.slideId;
     }
   }
 
   const config = Config.create(
-    slides,
     lessons,
     modules,
     resources,
@@ -120,108 +109,93 @@ export const Root = ({
     name,
     subtitle
   );
-  const pages = Pages.create(config, templateList, slideId);
+  const pages = PageDefinition.create(config);
 
-  useEffect(() => {
-    const handleSlideEnter = (ev) => {
-      const sceneEvent = ev.detail;
-      const previousLocation = Scrowl.runtime?.getLocation();
+  console.log('config', config);
+  console.log('pages', pages);
 
-      type LocationObject = {
-        cur: {
-          m: number;
-          l: number;
-          s: number;
-        };
-        max: {
-          m: number;
-          l: number;
-          s: number;
-        };
-      };
+  //FIXME::slide-removal
+  // useEffect(() => {
+  //   const handleSlideEnter = (ev) => {
+  //     const sceneEvent = ev.detail;
+  //     const previousLocation = Scrowl.runtime?.getLocation();
 
-      const locationObj: LocationObject = {
-        cur: {
-          m: 0,
-          l: 0,
-          s: 0,
-        },
-        max: {
-          m: previousLocation?.[1].max ? previousLocation[1].max.m : 0,
-          l: previousLocation?.[1].max ? previousLocation[1].max.l : 0,
-          s: previousLocation?.[1].max ? previousLocation[1].max.s : 0,
-        },
-      };
+  //     type LocationObject = {
+  //       cur: {
+  //         m: number;
+  //         l: number;
+  //         s: number;
+  //       };
+  //       max: {
+  //         m: number;
+  //         l: number;
+  //         s: number;
+  //       };
+  //     };
 
-      const id = sceneEvent.currentTarget.id;
+  //     const locationObj: LocationObject = {
+  //       cur: {
+  //         m: 0,
+  //         l: 0,
+  //         s: 0,
+  //       },
+  //       max: {
+  //         m: previousLocation?.[1].max ? previousLocation[1].max.m : 0,
+  //         l: previousLocation?.[1].max ? previousLocation[1].max.l : 0,
+  //         s: previousLocation?.[1].max ? previousLocation[1].max.s : 0,
+  //       },
+  //     };
 
-      const shortenedId = id
-        .replace('module', 'm')
-        .replace('lesson', 'l')
-        .replace('slide', 's');
+  //     const id = sceneEvent.currentTarget.id;
 
-      const splitEntries = shortenedId.split('--');
+  //     const shortenedId = id
+  //       .replace('module', 'm')
+  //       .replace('lesson', 'l');
 
-      splitEntries.map((entry) => {
-        const keyPair = entry.split('-');
-        if (locationObj && locationObj.cur) {
-          locationObj.cur[keyPair[0]] = parseInt(keyPair[1]);
-        }
-      });
+  //     const splitEntries = shortenedId.split('--');
 
-      if (
-        !previousLocation ||
-        !previousLocation[1].max ||
-        previousLocation[1].max === undefined
-      ) {
-        Scrowl.runtime?.updateLocation(locationObj, id);
-        if (window['API_1484_11'] !== undefined) {
-          window['API_1484_11'].SetValue(
-            'cmi.location',
-            JSON.stringify(locationObj)
-          );
-        }
-      } else {
-        if (locationObj.cur.m > previousLocation[1].max.m) {
-          locationObj.max.m = locationObj.cur.m;
+  //     splitEntries.map((entry) => {
+  //       const keyPair = entry.split('-');
+  //       if (locationObj && locationObj.cur) {
+  //         locationObj.cur[keyPair[0]] = parseInt(keyPair[1]);
+  //       }
+  //     });
 
-          if (locationObj.cur.l < previousLocation[1].max.l) {
-            locationObj.max.l = locationObj.cur.l;
-          }
-        } else if (locationObj.cur.l > previousLocation?.[1].max.l) {
-          if (locationObj.cur.m >= previousLocation?.[1].max.m) {
-            locationObj.max.l = locationObj.cur.l;
-          }
-        }
+  //     if (
+  //       !previousLocation ||
+  //       !previousLocation[1].max ||
+  //       previousLocation[1].max === undefined
+  //     ) {
+  //       Scrowl.runtime?.updateLocation(locationObj, id);
+  //       if (window['API_1484_11'] !== undefined) {
+  //         window['API_1484_11'].SetValue(
+  //           'cmi.location',
+  //           JSON.stringify(locationObj)
+  //         );
+  //       }
+  //     } else {
+  //       if (locationObj.cur.m > previousLocation[1].max.m) {
+  //         locationObj.max.m = locationObj.cur.m;
 
-        Scrowl.runtime?.updateLocation(locationObj, id);
-      }
-    };
-    const handleSlideStart = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideEnd = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideLeave = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
+  //         if (locationObj.cur.l < previousLocation[1].max.l) {
+  //           locationObj.max.l = locationObj.cur.l;
+  //         }
+  //       } else if (locationObj.cur.l > previousLocation?.[1].max.l) {
+  //         if (locationObj.cur.m >= previousLocation?.[1].max.m) {
+  //           locationObj.max.l = locationObj.cur.l;
+  //         }
+  //       }
 
-    document.addEventListener('slide.enter', handleSlideEnter);
-    document.addEventListener('slide.start', handleSlideStart);
-    document.addEventListener('slide.end', handleSlideEnd);
-    document.addEventListener('slide.leave', handleSlideLeave);
+  //       Scrowl.runtime?.updateLocation(locationObj, id);
+  //     }
+  //   };
 
-    return () => {
-      document.removeEventListener('slide.enter', handleSlideEnter);
-      document.removeEventListener('slide.start', handleSlideStart);
-      document.removeEventListener('slide.end', handleSlideEnd);
-      document.removeEventListener('slide.leave', handleSlideLeave);
-    };
-  }, [project]);
+  //   document.addEventListener('slide.enter', handleSlideEnter);
+
+  //   return () => {
+  //     document.removeEventListener('slide.enter', handleSlideEnter);
+  //   };
+  // }, [project]);
 
   useEffect(() => {
     if (Scrowl && Scrowl.runtime) {
@@ -259,7 +233,7 @@ export const Root = ({
       const errorEvent = new CustomEvent('playerError', { detail: event });
       document.dispatchEvent(errorEvent);
     });
-  }, [project, slides]);
+  }, [project]);
 
   let targetUrl;
 
@@ -278,34 +252,44 @@ export const Root = ({
   }
 
   return (
-    <Router>
-      <div id="scrowl-player" {...props}>
-        <main className="owlui-lesson-wrapper">
-          <ErrorModal />
-          <ScrollHint />
-          {window['API_1484_11'] !== undefined && showPanel ? (
-            <PreviewPanel />
-          ) : null}
-          <Routes>
-            {pages.map((page, idx) => {
-              return (
-                <Route key={idx} path={page.url} element={<page.Element />} />
-              );
-            })}
-            <Route
-              path="*"
-              element={
-                <Navigate
-                  to={
-                    targetUrl && targetUrl.length > 1 ? targetUrl : pages[0].url
+    <store.StateProvider>
+      <RootEvents>
+        <Router>
+          <div id="scrowl-player" {...props}>
+            <main className="owlui-lesson-wrapper">
+              <ErrorModal />
+              <ScrollHint />
+              {window['API_1484_11'] !== undefined && showPanel ? (
+                <PreviewPanel />
+              ) : null}
+              <Routes>
+                {pages.map((page, idx) => {
+                  return (
+                    <Route
+                      key={idx}
+                      path={page.url}
+                      element={<page.Element />}
+                    />
+                  );
+                })}
+                <Route
+                  path="*"
+                  element={
+                    <Navigate
+                      to={
+                        targetUrl && targetUrl.length > 1
+                          ? targetUrl
+                          : pages[0].url
+                      }
+                    />
                   }
                 />
-              }
-            />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </RootEvents>
+    </store.StateProvider>
   );
 };
 

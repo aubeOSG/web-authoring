@@ -1,6 +1,6 @@
-import type { TemplateSchema } from '@scrowl/template-core';
 import type { AssetType } from '../../pages/workspace/components/overlay/asset-browser/asset.types';
 import type { PreviewTypes } from '../../services/menu';
+import type { BlockEditorOutputData } from '@scrowl/content-block-editor-react';
 
 export type ProjectModule = {
   id: number;
@@ -12,14 +12,7 @@ export type ProjectLesson = {
   name: string;
   moduleId: number;
   id: number;
-};
-
-export type ProjectSlide = {
-  name: string;
-  moduleId: number;
-  lessonId: number;
-  id: number;
-  template: TemplateSchema;
+  content?: BlockEditorOutputData;
 };
 
 export type ProjectGlossaryItem = {
@@ -77,7 +70,6 @@ export type ProjectData = {
   scorm: Partial<ProjectScorm>;
   modules?: Array<ProjectModule>;
   lessons?: Array<ProjectLesson>;
-  slides?: Array<ProjectSlide>;
   glossary?: Array<ProjectGlossaryItem>;
   resources?: Array<ProjectResource>;
 };
