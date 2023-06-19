@@ -1,5 +1,6 @@
 import type { AssetType } from '../../pages/workspace/components/overlay/asset-browser/asset.types';
 import type { PreviewTypes } from '../../services/menu';
+import type { BlockEditorOutputData } from '@scrowl/content-block-editor-react';
 
 export type ProjectModule = {
   id: number;
@@ -11,6 +12,7 @@ export type ProjectLesson = {
   name: string;
   moduleId: number;
   id: number;
+  content: BlockEditorOutputData;
 };
 
 export type ProjectGlossaryItem = {
