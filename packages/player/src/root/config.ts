@@ -3,6 +3,7 @@ import {
   ProjectLesson,
   ProjectModule,
   PlayerRootConfig,
+  ProjectConfig,
 } from './root.types';
 
 export const create = (
@@ -75,7 +76,7 @@ export const create = (
     rootConfig.push(config);
   }
 
-  const projectConfig = {
+  const projectConfig: ProjectConfig = {
     name: name,
     subtitle: subtitle,
     outlineConfig: rootConfig,

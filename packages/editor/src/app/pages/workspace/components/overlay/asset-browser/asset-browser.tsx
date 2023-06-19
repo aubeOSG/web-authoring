@@ -4,7 +4,7 @@ import { ui, IconType } from '@scrowl/ui';
 import { Backdrop, Drawer } from '../../../../../components';
 import { Projects, Settings } from '../../../../../models';
 import { menu, sys } from '../../../../../services';
-import { List, Elem } from '../../../../../../utils';
+import { List, Elem } from '@scrowl/utils';
 import '../_overlay.scss';
 import {
   AssetSearch,

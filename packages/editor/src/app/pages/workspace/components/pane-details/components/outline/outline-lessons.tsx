@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
-import { Collapse } from 'react-bootstrap';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { resetActiveSlide, setActiveSlide, useActiveSlide } from '../../../../';
 import { Projects } from '../../../../../../models';
 import { menu, sys, events } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
-import { ELEM_ALIGNMENT } from '../../../../../../../utils';
+import { ELEM_ALIGNMENT } from '@scrowl/utils';
 import { useData } from '../../../../../../models/projects';
 
 export const OutlineLessonItem = ({

@@ -1,12 +1,12 @@
+import type { JSON_DATA } from '@scrowl/utils';
+import { List } from '@scrowl/utils';
 import { ProjectData, ProjectLesson, ProjectModule, ProjectSlide } from '../../../../app/models/projects';
 import { PreviewTypes } from '../../../../app/services/menu';
 import type { ProjectsApiPreview } from '../projects.types';
 import { fs } from '../../../services';
-import { List } from '../../../../utils';
 import { generateProjectFiles } from './publish';
 import previewViewer from './preview-viewer';
 import { port } from '../../../config';
-import { JSON_DATA } from '../../../../utils/json';
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;

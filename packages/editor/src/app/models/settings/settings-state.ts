@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import * as utils from '../../../utils';
+import { updateObj, hasProp } from '@scrowl/utils';
 import { stateManager } from '../../services'
 
 export enum ASPECT_RATIO {
@@ -24,7 +24,7 @@ export const config: stateManager.StateConfig = {
   initialState,
   reducers: {
     setState: (state, action) => {
-      utils.updateObj(state, action.payload);
+      updateObj(state, action.payload);
 
       if (action.payload.lastUsedAt) {
         state.hasWelcomed = true;
@@ -49,11 +49,11 @@ export const config: stateManager.StateConfig = {
       state.aspect = action.payload;
     },
     setAnimation: (state, action) => {
-      if (utils.hasProp(action.payload, 'reducedAnimations')) {
+      if (hasProp(action.payload, 'reducedAnimations')) {
         state.reducedAnimations = action.payload.reducedAnimations;
       }
 
-      if (utils.hasProp(action.payload, 'animationDelay')) {
+      if (hasProp(action.payload, 'animationDelay')) {
         state.animationDelay = action.payload.animationDelay;
       }
     },

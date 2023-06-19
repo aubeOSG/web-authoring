@@ -12,7 +12,7 @@ import {
 } from './projects.types';
 import { stateManager, rq } from '../../services';
 import { API, state } from './';
-import { List } from '../../../utils';
+import { List } from '@scrowl/utils';
 
 const processor: stateManager.StateProcessor = {};
 

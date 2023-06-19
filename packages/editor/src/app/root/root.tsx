@@ -13,7 +13,7 @@ import { rq, sys } from '../services';
 import * as pages from '../pages';
 import * as models from '../models';
 import { menu, events, config } from '../services';
-import { Elem } from '../../utils';
+import { Elem } from '@scrowl/utils';
 import { ProjectBrowser, ContextMenu } from '../components';
 
 const Loader = () => {

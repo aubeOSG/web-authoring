@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import {
-  MemoryRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from 'react-router-dom';
 import './_root.scss';
-import { PlayerRootProps } from './root.types';
 import Config from './config';
 import { Error as ErrorComponent } from '../components';
 import { ErrorModal } from '../components/modal';
 import { Preview as PreviewPanel } from '../components/preview';
-import { Pages } from '../services';
+import { PageDefinition } from '../services';
 import { formatResponse } from '../utils/formatResponse';
 import { ScrollHint } from '../components/scrollHint';
+import { store } from '../state';
+import { eventHooks } from '../hooks';
 
-export const Root = ({
-  project,
-  templateList,
-  scorm,
-  ...props
-}: PlayerRootProps) => {
+const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
+  eventHooks.useEvents();
+  return <>{children}</>;
+};
+
+export const Root = ({ project, templateList, scorm, ...props }) => {
   const Scrowl = window['Scrowl'];
   let apiPreference;
 
@@ -101,7 +102,7 @@ export const Root = ({
     try {
       [locationError, location] = Scrowl.runtime.getLocation();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
 
     if (!locationError && location && location.cur) {
@@ -120,7 +121,10 @@ export const Root = ({
     name,
     subtitle
   );
-  const pages = Pages.create(config, templateList, slideId);
+  const pages = PageDefinition.create(config, templateList, slideId);
+
+  console.log('config', config);
+  console.log('pages', pages);
 
   useEffect(() => {
     const handleSlideEnter = (ev) => {
@@ -197,29 +201,11 @@ export const Root = ({
         Scrowl.runtime?.updateLocation(locationObj, id);
       }
     };
-    const handleSlideStart = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideEnd = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
-    const handleSlideLeave = (ev) => {
-      // @ts-ignore
-      const sceneEvent = ev.detail;
-    };
 
     document.addEventListener('slide.enter', handleSlideEnter);
-    document.addEventListener('slide.start', handleSlideStart);
-    document.addEventListener('slide.end', handleSlideEnd);
-    document.addEventListener('slide.leave', handleSlideLeave);
 
     return () => {
       document.removeEventListener('slide.enter', handleSlideEnter);
-      document.removeEventListener('slide.start', handleSlideStart);
-      document.removeEventListener('slide.end', handleSlideEnd);
-      document.removeEventListener('slide.leave', handleSlideLeave);
     };
   }, [project]);
 
@@ -278,34 +264,44 @@ export const Root = ({
   }
 
   return (
-    <Router>
-      <div id="scrowl-player" {...props}>
-        <main className="owlui-lesson-wrapper">
-          <ErrorModal />
-          <ScrollHint />
-          {window['API_1484_11'] !== undefined && showPanel ? (
-            <PreviewPanel />
-          ) : null}
-          <Routes>
-            {pages.map((page, idx) => {
-              return (
-                <Route key={idx} path={page.url} element={<page.Element />} />
-              );
-            })}
-            <Route
-              path="*"
-              element={
-                <Navigate
-                  to={
-                    targetUrl && targetUrl.length > 1 ? targetUrl : pages[0].url
+    <store.StateProvider>
+      <RootEvents>
+        <Router>
+          <div id="scrowl-player" {...props}>
+            <main className="owlui-lesson-wrapper">
+              <ErrorModal />
+              <ScrollHint />
+              {window['API_1484_11'] !== undefined && showPanel ? (
+                <PreviewPanel />
+              ) : null}
+              <Routes>
+                {pages.map((page, idx) => {
+                  return (
+                    <Route
+                      key={idx}
+                      path={page.url}
+                      element={<page.Element />}
+                    />
+                  );
+                })}
+                <Route
+                  path="*"
+                  element={
+                    <Navigate
+                      to={
+                        targetUrl && targetUrl.length > 1
+                          ? targetUrl
+                          : pages[0].url
+                      }
+                    />
                   }
                 />
-              }
-            />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+              </Routes>
+            </main>
+          </div>
+        </Router>
+      </RootEvents>
+    </store.StateProvider>
   );
 };
 
