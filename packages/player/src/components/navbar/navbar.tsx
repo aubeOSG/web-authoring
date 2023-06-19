@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ThemeProvider,
   Navbar,
@@ -16,7 +16,7 @@ import { NavGlossary } from './nav-glossary';
 
 const css = utils.css.removeMapPrefix(_css);
 
-export const NavBar = ({ pageId, project, slides }) => {
+export const NavBar = ({ pageId, project }) => {
   const Scrowl = window['Scrowl'];
   const [tabKey, setTabKey] = useState('outline');
   const themePrefixes: CssMapProps = {};
@@ -31,124 +31,6 @@ export const NavBar = ({ pageId, project, slides }) => {
   themePrefixes['tab-content'] = `owlui-tab-content`;
   themePrefixes['offcanvas'] = `owlui-offcanvas`;
   themePrefixes['container'] = `owlui-container`;
-
-  let currentSlide = `module-${slides[0].moduleId}--lesson-${slides[0].lessonId}--slide-${slides[0].id}-${slides[0].template.meta.filename}`;
-  let currentIndex = 0;
-
-  const OutlineFooter = () => {
-    const targets = slides?.map((slide) => {
-      return `module-${slide.moduleId}--lesson-${slide.lessonId}--slide-${slide.id}-${slide.template.meta.filename}`;
-    });
-
-    const scrollSlide = (ev) => {
-      if (Scrowl && Scrowl.runtime) {
-        if (Scrowl.runtime.API !== null) {
-          const [error, suspendData] = Scrowl.runtime.getSuspendData();
-          if (suspendData === '{}') {
-            return;
-          } else {
-            const parsedData = JSON.parse(suspendData);
-            if (error || !parsedData.courseStarted) {
-              return;
-            }
-          }
-        }
-      }
-
-      let matchingId;
-      if (targets && currentSlide !== 'owlui-last') {
-        matchingId = targets.find((t) => {
-          return t === currentSlide;
-        });
-      } else {
-        currentIndex = targets.length;
-      }
-
-      if (matchingId) {
-        currentIndex = targets?.indexOf(matchingId);
-      }
-
-      let targetIndex;
-      let targetElement;
-
-      switch (ev.target.innerText) {
-        case 'Previous Slide':
-          if (currentIndex === 1) {
-            targetIndex = targets[0];
-            targetElement = document.querySelector(`#${targetIndex}`);
-            currentIndex = 0;
-            currentSlide = `module-${slides[0].moduleId}--lesson-${slides[0].lessonId}--slide-${slides[0].id}-${slides[0].template.meta.filename}`;
-            setTimeout(() => {
-              targetElement?.scrollIntoView(false);
-            }, 0);
-          } else {
-            targetIndex = targets[currentIndex - 1];
-            targetElement = document.querySelector(`#${targetIndex}`);
-            targetElement?.scrollIntoView(false);
-          }
-          break;
-        case 'Next Slide':
-          if (currentIndex + 1 === targets.length) {
-            targetElement = document.querySelector('.owlui-last');
-            targetElement?.scrollIntoView();
-            currentSlide = 'owlui-last';
-          } else {
-            targetIndex = targets[currentIndex + 1];
-            targetElement = document.querySelector(`#${targetIndex}`);
-            targetElement?.scrollIntoView();
-          }
-          break;
-      }
-
-      const currentSlideObj = {
-        currentIndex: currentIndex,
-        currentSlide: currentSlide,
-      };
-
-      const currentSlideEvent = new CustomEvent('CurrentSlideNavUpdate', {
-        detail: currentSlideObj,
-      });
-      document.dispatchEvent(currentSlideEvent);
-    };
-
-    return (
-      <div className={css.outlineFooter}>
-        <div className={css.buttonContainer}>
-          <button onClick={scrollSlide}>Previous Slide</button>
-          <button onClick={scrollSlide}>Next Slide</button>
-        </div>
-      </div>
-    );
-  };
-
-  useEffect(() => {
-    let options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.8,
-    };
-
-    let introObserver = new IntersectionObserver(() => {
-      currentSlide = 'module-0--lesson-0--slide-0-lesson-intro';
-    }, options);
-
-    let finalSlideObserver = new IntersectionObserver(() => {
-      currentSlide = 'owlui-last';
-    }, options);
-
-    let introSlide = document.querySelector(
-      '#module-0--lesson-0--slide-0-lesson-intro'
-    );
-
-    let lastSlide = document.querySelector('.owlui-last');
-
-    if (introSlide) {
-      introObserver.observe(introSlide);
-    }
-    if (lastSlide) {
-      finalSlideObserver.observe(lastSlide);
-    }
-  }, []);
 
   return (
     <ThemeProvider prefixes={themePrefixes}>
@@ -192,7 +74,6 @@ export const NavBar = ({ pageId, project, slides }) => {
                         </div>
                       );
                     })}
-                  <OutlineFooter />
                 </Offcanvas.Body>
               </Tab>
               <Tab eventKey="resources" key="resources" title="Resources">

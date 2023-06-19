@@ -1,13 +1,10 @@
 import React from 'react';
 import { ui } from '@scrowl/ui';
 import * as css from './_pane-editor.scss';
-import { useActiveTemplate } from '../../';
 import { Pane } from '../../../../components';
 import { Settings } from '../../../../models';
-import { Content, Controls, TemplateSelector } from './components';
 
 export const PaneEditor = () => {
-  const data = useActiveTemplate();
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
@@ -30,22 +27,6 @@ export const PaneEditor = () => {
           transitionEnd: { boxShadow: '' },
         },
   };
-  const tabs = [
-    {
-      id: 'tab-content',
-      title: 'Content',
-      view: <Content />,
-    },
-    {
-      id: 'tab-controls',
-      title: 'Controls',
-      view: <Controls />,
-    },
-  ];
-
-  if (!data.meta.filename) {
-    return <></>;
-  }
 
   return (
     <Pane
@@ -53,10 +34,7 @@ export const PaneEditor = () => {
       animate={animationOpts.animate}
       side="right"
     >
-      <TemplateSelector />
-      <div className={css.paneEditorTabs}>
-        <ui.Tabs items={tabs} pxScale="Sm" transition={false} />
-      </div>
+      <div className={css.paneEditorTabs}></div>
     </Pane>
   );
 };

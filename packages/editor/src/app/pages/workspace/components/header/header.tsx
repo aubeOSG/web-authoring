@@ -11,13 +11,13 @@ import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
   closePublishProgress,
-  useActiveSlide,
+  useActiveLesson,
 } from '../../page-workspace-hooks';
 
 export const Header = () => {
   const projectData = Projects.useData();
+  const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -116,17 +116,8 @@ export const Header = () => {
     const payload: Projects.ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
+      entityId: activeLesson.id,
     };
-
-    switch (payload.type) {
-      case 'lesson':
-        payload.entityId = activeSlide.lessonId;
-        break;
-      case 'module':
-        payload.entityId = activeSlide.moduleId;
-        break;
-    }
-
     handleProjectPreview(payload);
   };
 
@@ -139,9 +130,8 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
-          entityId: activeSlide.lessonId,
+          entityId: activeLesson.id,
         };
-
         handleProjectPreview(payload);
       },
     },
@@ -153,9 +143,8 @@ export const Header = () => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
-          entityId: activeSlide.moduleId,
+          entityId: activeLesson.moduleId,
         };
-
         handleProjectPreview(payload);
       },
     },
@@ -265,11 +254,12 @@ export const Header = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
+    console.log('saving', projectData);
     Projects.save(projectData).then((res) => {
       console.log('saveRes', res);
     });
-  };
+  }, [projectData]);
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {

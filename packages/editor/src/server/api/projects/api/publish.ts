@@ -4,44 +4,23 @@ import packager from 'simple-scorm-packager';
 import { Datetime, Str } from '@scrowl/utils';
 import type { ProjectData, ProjectFile } from '../../../../app/models/projects';
 import type { ProjectsApiPublish } from '../projects.types';
-import type { TemplateList, TemplateMap } from '../../templates';
+import type { TemplateList } from '../../templates';
 import type { ApiResult } from '../../../services/requester';
 import { fs, tmpr } from '../../../services';
-import { templatesPath, projectPath } from '../../templates';
+import { projectPath } from '../../templates';
 
-export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
-  let templatePath;
-  const templates = new Set<string>();
-  const templateList: TemplateList = [];
-  const templateMap: TemplateMap = {};
+//FIXME::slide-removal
+// export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
+//   const templates = new Set<string>();
+//   const templateList: TemplateList = [];
+//   const templateMap: TemplateMap = {};
 
-  if (!project.slides) {
-    return [false, templateList];
-  }
+//   for (const [key, template] of Object.entries(templateMap)) {
+//     templateList.push(template);
+//   }
 
-  project.slides.forEach((slide) => {
-    templatePath = fs.utils.join(templatesPath, slide.template.meta.filename);
-    const templateExists = fs.utils.exists(templatePath);
-
-    if (!templateExists.error && templateExists.data.exists) {
-      templates.add(templatePath);
-
-      if (!templateMap[slide.template.meta.component]) {
-        templateMap[slide.template.meta.component] = {
-          component: slide.template.meta.component,
-          js: `./scrowl.template-${slide.template.meta.filename}.js`,
-          css: `./scrowl.template-${slide.template.meta.filename}.css`,
-        };
-      }
-    }
-  });
-
-  for (const [key, template] of Object.entries(templateMap)) {
-    templateList.push(template);
-  }
-
-  return [templates, templateList];
-};
+//   return [templates, templateList];
+// };
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -147,13 +126,13 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
     },
   });
 
-  const [projectTemplatePaths, projectTemplatesList] = getProjectTemplates(projectData);
+  // const [projectTemplatePaths, projectTemplatesList] = getProjectTemplates(projectData);
 
-  if (projectTemplatePaths) {
-    projectTemplatePaths.forEach(copyAsset);
-  }
+  // if (projectTemplatePaths) {
+  //   projectTemplatePaths.forEach(copyAsset);
+  // }
 
-  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: projectTemplatesList, ...renderParams });
+  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: [], ...renderParams });
 
   renderRes.data.tmpDirId = id;
   return renderRes;
@@ -262,7 +241,6 @@ export const publish: ProjectsApiPublish = {
 };
 
 export default {
-  getProjectTemplates,
   renderScormEntries,
   generateProjectFiles,
   cleanupTempDir,

@@ -45,7 +45,6 @@ const PageRoutes = () => {
       const closeProject = () => {
         models.Projects.resetState();
         pages.Workspace.resetWorkspace();
-        pages.Workspace.resetActiveSlide();
 
         setTimeout(() => {
           navigate(defaultPath);

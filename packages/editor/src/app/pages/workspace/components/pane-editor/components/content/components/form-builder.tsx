@@ -1,6 +1,5 @@
 import React from 'react';
 import { TemplateSchemaContent } from '@scrowl/template-core';
-import { InputProps } from '../../../pane-editor.types';
 import { InputFactory } from './input-factory';
 
 export interface FormBuilderCommons {

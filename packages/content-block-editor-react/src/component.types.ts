@@ -1,8 +1,11 @@
-import React from 'react';
-import { OutputData, EditorConfig } from '@scrowl/content-block-editor';
+import type { OutputData, EditorConfig, API, BlockMutationEventMap } from '@scrowl/content-block-editor';
+
+export type ValueOf<T> = T[keyof T];
 
 export type BlockEditorOutputData = OutputData;
 export type BlockEditorConfig = EditorConfig;
+export type BlockEditorAPI = API;
+export type BlockEditorMutationEvent = ValueOf<BlockMutationEventMap>;
 
 export interface BlockEditorClass {
   destroy: () => Promise<void>;

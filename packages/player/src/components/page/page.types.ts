@@ -8,15 +8,10 @@ import type { SimpleVideoProps } from '@scrowl/template-simple-video';
 import type { TwoColumnProps } from '@scrowl/template-two-column';
 import type { InlineTextProps } from '@scrowl/template-inline-text';
 import {
-  PlayerTemplateList,
   ProjectLesson,
-  ProjectSlide
 } from '../../root';
 
 export interface PageCommons {
-  slides: Array<ProjectSlide>;
-  templates: PlayerTemplateList;
-  slideId?: string;
   lesson: ProjectLesson;
   passingThreshold: number;
   controller: Controller;
@@ -37,10 +32,4 @@ export interface TemplateTypesMap {
   'inlineText': InlineTextProps;
 };
 
-export interface PageSlideCommons {
-  idx: number;
-  slide: ProjectSlide;
-  templates: PlayerTemplateList;
-};
-
-export type PageSlideProps<K extends keyof TemplateTypesMap> = TemplateTypesMap[K] & PageSlideCommons;
+export type PageSlideProps<K extends keyof TemplateTypesMap> = TemplateTypesMap[K];

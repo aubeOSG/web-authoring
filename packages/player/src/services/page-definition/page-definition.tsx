@@ -4,10 +4,8 @@ import { Datetime, hasProp } from '@scrowl/utils';
 import { PageDefinition } from './page-definition.types';
 import {
   LessonAttempt,
-  LessonQuestion,
   PlayerRootConfig,
   PlayerRootLesson,
-  PlayerTemplateList,
   ProjectConfig,
 } from '../../root/root.types';
 import { stateHooks } from '../../hooks';
@@ -16,8 +14,6 @@ import utils from '../../utils';
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
 import { BoundaryError, Page } from '../../components';
-import { QuizSchemaProps } from '@scrowl/template-quiz';
-import { ProjectSlide } from '@scrowl/template-core';
 
 const css = utils.css.removeMapPrefix(_css);
 
@@ -63,37 +59,6 @@ const createQuizAttempts = (id: string, page: PlayerRootLesson) => {
     finished_at: '',
     questions: [],
   };
-  let schema: QuizSchemaProps;
-  let question: LessonQuestion = {
-    id: '',
-    correct: false,
-    question: '',
-    answers: [],
-  };
-  let contentKeys: Array<string> = [];
-
-  page.slides.forEach((slide) => {
-    if (slide.template.meta.component !== 'Quiz') {
-      return;
-    }
-
-    schema = slide.template as QuizSchemaProps;
-    question.id = `${id}--slide-${slide.id}-${schema.meta.filename}`;
-    question.question = schema.content.question.content.question.value || '';
-    contentKeys = Object.keys(schema.content);
-    question.answers = [];
-
-    contentKeys.forEach((key) => {
-      if (key.indexOf('answer') === -1) {
-        return;
-      }
-
-      question.answers?.push(schema.content[key].content.answerText.value);
-    });
-
-    attempt.questions.push(question);
-  });
-
   return attempt;
 };
 
@@ -104,8 +69,6 @@ const PageContainer = ({
   mIdx,
   page,
   lIdx,
-  slideId,
-  templateList,
   project,
   children,
 }: {
@@ -115,8 +78,6 @@ const PageContainer = ({
   mIdx: number;
   page: PlayerRootLesson;
   lIdx: number;
-  slideId: string;
-  templateList: PlayerTemplateList;
   project: ProjectConfig;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const Scrowl = window['Scrowl'];
@@ -140,7 +101,6 @@ const PageContainer = ({
   const controller = new Scrowl.core.scroll.Controller();
   const hasStarted = stateHooks.Course.useHasStarted();
   const toggleStarted = stateHooks.Course.useToggleStarted();
-  let pageSlides: Array<ProjectSlide> = [];
 
   if (!hasStarted && runtime) {
     const [_courseStartError, suspendData] = runtime.getSuspendData();
@@ -153,12 +113,6 @@ const PageContainer = ({
         toggleStarted(parsedData.courseStarted || false);
       }
     }
-  }
-
-  if (!hasStarted) {
-    pageSlides = [page.slides[0]];
-  } else {
-    pageSlides = page.slides.slice();
   }
 
   const updateCourseProgress = useCallback(() => {
@@ -223,14 +177,11 @@ const PageContainer = ({
 
   return (
     <BoundaryError>
-      <NavBar slides={page.slides} pageId={id} project={project} />
+      <NavBar pageId={id} project={project} />
       <div className="owlui-lesson">
         <Suspense fallback={<div>Loading...</div>}>
           <Page
             id={id}
-            slides={pageSlides}
-            templates={templateList}
-            slideId={slideId}
             lesson={page.lesson}
             passingThreshold={passingThreshold}
             controller={controller}
@@ -239,7 +190,7 @@ const PageContainer = ({
 
         <Scrowl.core.Template
           className="owlui-last"
-          id={`slide-end-${id}`}
+          id={`end-${id}`}
           controller={controller}
           notScene={true}
         >
@@ -270,8 +221,6 @@ const makePageDefinition = ({
   mIdx: number;
   page: PlayerRootLesson;
   lIdx: number;
-  slideId: string;
-  templateList: PlayerTemplateList;
   project: ProjectConfig;
 }) => {
   return () => {
@@ -279,11 +228,7 @@ const makePageDefinition = ({
   };
 };
 
-export const create = (
-  project: ProjectConfig,
-  templateList: PlayerTemplateList,
-  slideId: string
-) => {
+export const create = (project: ProjectConfig) => {
   const data: Array<PageDefinition> = [];
 
   project.outlineConfig.forEach((module, mIdx) => {
@@ -302,8 +247,6 @@ export const create = (
           mIdx,
           page,
           lIdx,
-          slideId,
-          templateList,
           project,
         }),
       });

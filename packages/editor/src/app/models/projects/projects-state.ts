@@ -34,7 +34,6 @@ export const initialState = {
     },
     modules: [],
     lessons: [],
-    slides: [],
     glossary: [],
     resources: []
   },
@@ -122,11 +121,6 @@ export const config: stateManager.StateConfig = {
       state.isDirty = true;
       state.isUncommitted = true;
     },
-    removeSlide: (state, action) => {
-      state.data.slides.splice(action.payload.idx);
-      state.isDirty = true;
-      state.isUncommitted = true;
-    },
     addOutlineItem: (state, action) => {
       const createItem = (payload) => {
         let outlineList;
@@ -141,10 +135,6 @@ export const config: stateManager.StateConfig = {
           case 'lesson':
             name = 'Untitled Lesson';
             outlineList = state.data.lessons;
-            break;
-          case 'slide':
-            name = 'Untitled Slide';
-            outlineList = state.data.slides;
             break;
         }
 
@@ -162,21 +152,11 @@ export const config: stateManager.StateConfig = {
         return newItem;
       };
 
-      let newSlide;
       let newLesson;
 
       switch (action.payload.type) {
-        case 'slide':
-          newSlide = createItem(action.payload);
-          break;
         case 'lesson':
           newLesson = createItem(action.payload);
-          newSlide = createItem({
-            type: 'slide',
-            id: -1,
-            lessonId: newLesson.id,
-            moduleId: newLesson.moduleId,
-          });
           break;
         case 'module':
           const newModule = createItem(action.payload);
@@ -185,12 +165,6 @@ export const config: stateManager.StateConfig = {
             type: 'lesson',
             id: -1,
             moduleId: newModule.id,
-          });
-          newSlide = createItem({
-            type: 'slide',
-            id: -1,
-            lessonId: newLesson.id,
-            moduleId: newLesson.moduleId,
           });
           break;
       }
@@ -209,9 +183,6 @@ export const config: stateManager.StateConfig = {
           break;
         case 'lesson':
           outlineList = state.data.lessons;
-          break;
-        case 'slide':
-          outlineList = state.data.slides;
           break;
       }
 
@@ -238,28 +209,7 @@ export const config: stateManager.StateConfig = {
       const { type, ...moveFrom } = action.payload.moveFrom;
       const moveTo = action.payload.moveTo;
 
-      const moveSlides = (moduleId, pointer, val) => {
-        state.data.slides.forEach((slide) => {
-          if (slide[pointer] === val) {
-            slide.moduleId = moduleId;
-          }
-        });
-      };
-
       switch (type) {
-        case 'slide':
-          outlineList = state.data.slides;
-          movePosition =
-            moveTo.id === -1
-              ? outlineList.length
-              : List.indexBy(outlineList, 'id', moveTo.id);
-          fromPosition = List.indexBy(outlineList, 'id', moveFrom.id);
-          outlineData = {
-            ...outlineList.splice(fromPosition, 1)[0],
-            moduleId: moveTo.moduleId,
-            lessonId: moveTo.lessonId,
-          };
-          break;
         case 'lesson':
           outlineList = state.data.lessons;
           movePosition =
@@ -271,10 +221,6 @@ export const config: stateManager.StateConfig = {
             ...outlineList.splice(fromPosition, 1)[0],
             moduleId: moveTo.moduleId,
           };
-
-          if (moveTo.moduleId !== moveFrom.moduleId) {
-            moveSlides(moveTo.moduleId, 'lessonId', moveFrom.id);
-          }
           break;
         case 'module':
           outlineList = state.data.modules;
@@ -305,9 +251,6 @@ export const config: stateManager.StateConfig = {
       const name = data.name + ' copy';
 
       switch (type) {
-        case 'slide':
-          outlineList = state.data.slides;
-          break;
         case 'lesson':
           outlineList = state.data.lessons;
           break;
@@ -326,9 +269,6 @@ export const config: stateManager.StateConfig = {
       };
 
       switch (type) {
-        case 'lesson':
-          copyListItems(state.data.slides, 'lessonId', id, newId);
-          break;
         case 'module':
           const copyLessons = List.filterBy(state.data.lessons, 'moduleId', id);
 
@@ -339,24 +279,6 @@ export const config: stateManager.StateConfig = {
               name: lesson.name,
               id: generateNewId(state.data.lessons),
             };
-
-            const copySlides = List.filterBy(
-              state.data.slides,
-              'lessonId',
-              lesson.id
-            );
-
-            copySlides.forEach((slide: { [key: string]: any }) => {
-              const slideData = {
-                ...slide,
-                moduleId: newId,
-                lessonId: lessonData.id,
-                name: `${slide.name} copy`,
-                id: generateNewId(state.data.slides),
-              };
-
-              state.data.slides.push(slideData);
-            });
 
             state.data.lessons.push(lessonData);
           });
@@ -385,30 +307,10 @@ export const config: stateManager.StateConfig = {
             data.id,
             'NE'
           );
-          state.data.slides = List.filterBy(
-            state.data.slides,
-            'moduleId',
-            data.id,
-            'NE'
-          );
           break;
         case 'lesson':
           state.data.lessons = List.filterBy(
             state.data.lessons,
-            'id',
-            data.id,
-            'NE'
-          );
-          state.data.slides = List.filterBy(
-            state.data.slides,
-            'lessonId',
-            data.id,
-            'NE'
-          );
-          break;
-        case 'slide':
-          state.data.slides = List.filterBy(
-            state.data.slides,
             'id',
             data.id,
             'NE'

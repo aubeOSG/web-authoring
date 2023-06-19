@@ -1,18 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import * as css from '../../_pane-details.scss';
 import { Projects } from '../../../../../../models';
-import {
-  useActiveSlide,
-  resetActiveSlide,
-} from '../../../../page-workspace-hooks';
 import { OutlineModules } from './';
 import { getContainer } from './utils';
-import { events, menu, sys } from '../../../../../../services';
 
 export const Outline = () => {
   const draggable = useRef<HTMLDivElement>();
   const defaultId = '-1';
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
 
   const handleDragStart = (ev: React.DragEvent<HTMLDivElement>) => {
     const appNode = document.getElementById('app');
@@ -34,11 +28,6 @@ export const Outline = () => {
     };
 
     switch (type) {
-      case 'slide':
-        data.id = parseInt(target.dataset.slideId || defaultId);
-        data.lessonId = parseInt(target.dataset.lessonId || defaultId);
-        data.moduleId = parseInt(target.dataset.moduleId || defaultId);
-        break;
       case 'lesson':
         data.id = parseInt(target.dataset.lessonId || defaultId);
         data.moduleId = parseInt(target.dataset.moduleId || defaultId);
@@ -74,18 +63,6 @@ export const Outline = () => {
     } = {};
 
     switch (type) {
-      case 'slide':
-        container = getContainer(target, 'outline-list-slide');
-        highlightItem = getContainer(target, 'outline-item__slide');
-        dropIndicatorClass = css.draggableIndicatorSlide;
-        moveFrom.id = parseInt(draggable.current.dataset.slideId || defaultId);
-        moveFrom.lessonId = parseInt(
-          draggable.current.dataset.lessonId || defaultId
-        );
-        moveFrom.moduleId = parseInt(
-          draggable.current.dataset.moduleId || defaultId
-        );
-        break;
       case 'lesson':
         container = getContainer(target, 'outline-list-lesson');
         highlightItem = getContainer(target, 'outline-item__lesson');
@@ -112,11 +89,6 @@ export const Outline = () => {
 
     if (moveTarget) {
       switch (type) {
-        case 'slide':
-          moveTo.id = parseInt(moveTarget.dataset.slideId || defaultId);
-          moveTo.lessonId = parseInt(moveTarget.dataset.lessonId || defaultId);
-          moveTo.moduleId = parseInt(moveTarget.dataset.moduleId || defaultId);
-          break;
         case 'lesson':
           moveTo.id = parseInt(moveTarget.dataset.lessonId || defaultId);
           moveTo.moduleId = parseInt(moveTarget.dataset.moduleId || defaultId);
@@ -131,13 +103,6 @@ export const Outline = () => {
 
     if (!isStartLocation && container && highlightItem) {
       ev.preventDefault();
-
-      const indicator = document.getElementsByClassName(dropIndicatorClass)[0];
-
-      if (indicator) {
-        indicator.classList.remove(css.draggableIndicatorSlide);
-      }
-
       highlightItem.classList.add(dropIndicatorClass);
     }
   };
@@ -151,9 +116,6 @@ export const Outline = () => {
     let dropIndicatorClass;
 
     switch (type) {
-      case 'slide':
-        dropIndicatorClass = `.${css.draggableIndicatorSlide}`;
-        break;
       case 'lesson':
         dropIndicatorClass = `.${css.draggableIndicatorLesson}`;
         break;
@@ -180,10 +142,6 @@ export const Outline = () => {
     let dropIndicatorClass;
 
     switch (moveFrom.type) {
-      case 'slide':
-        container = getContainer(target, 'outline-list-slide');
-        dropIndicatorClass = `.${css.draggableIndicatorSlide}`;
-        break;
       case 'lesson':
         container = getContainer(target, 'outline-list-lesson');
         dropIndicatorClass = `.${css.draggableIndicatorLesson}`;
@@ -215,31 +173,11 @@ export const Outline = () => {
       lessonId?: number;
       moduleId?: number;
     } = {};
-    let updateActiveSlide: boolean | { [key: string]: number } = false;
 
     switch (moveFrom.type) {
-      case 'slide':
-        moveTo.id = parseInt(moveTarget.dataset.slideId || defaultId);
-        moveTo.lessonId = parseInt(moveTarget.dataset.lessonId || defaultId);
-        moveTo.moduleId = parseInt(moveTarget.dataset.moduleId || defaultId);
-        updateActiveSlide =
-          activeSlide.moduleId === moveFrom.moduleId &&
-          activeSlide.lessonId === moveFrom.lessonId &&
-          activeSlide.id === moveFrom.id &&
-          (activeSlide.moduleId !== moveTo.moduleId ||
-            activeSlide.lessonId !== moveTo.lessonId)
-            ? { moduleId: moveTo.moduleId, lessonId: moveTo.lessonId }
-            : false;
-        break;
       case 'lesson':
         moveTo.id = parseInt(moveTarget.dataset.lessonId || defaultId);
         moveTo.moduleId = parseInt(moveTarget.dataset.moduleId || defaultId);
-        updateActiveSlide =
-          activeSlide.moduleId === moveFrom.moduleId &&
-          activeSlide.lessonId === moveFrom.id &&
-          activeSlide.moduleId !== moveTo.moduleId
-            ? { moduleId: moveTo.moduleId }
-            : false;
         break;
       case 'module':
         moveTo.id = parseInt(moveTarget.dataset.moduleId || defaultId);
@@ -255,7 +193,6 @@ export const Outline = () => {
     Projects.moveOutlineItem({
       moveFrom,
       moveTo,
-      updateActiveSlide,
     });
   };
 
@@ -268,99 +205,6 @@ export const Outline = () => {
     draggable.current.remove();
     draggable.current = undefined;
   };
-
-  useEffect(() => {
-    const handleSlideFocus = (ev: CustomEvent) => {
-      const slideId = ev.detail;
-      const slideNavItem = document.querySelector(
-        'div[data-slide-id="' + slideId + '"]'
-      );
-
-      if (!slideNavItem) {
-        return;
-      }
-
-      const slideContainer = slideNavItem.parentElement?.parentElement;
-
-      if (!slideContainer) {
-        return;
-      }
-
-      const lessonContainer =
-        slideContainer.parentElement?.parentElement?.parentElement;
-
-      if (!lessonContainer) {
-        return;
-      }
-
-      const isCollapsed =
-        slideContainer.className.indexOf('show') === -1 ||
-        lessonContainer.className.indexOf('show') === -1;
-
-      setTimeout(
-        () => {
-          slideNavItem.scrollIntoView();
-        },
-        isCollapsed ? 325 : 1
-      );
-    };
-
-    events.slide.onFocus(handleSlideFocus);
-
-    menu.API.onOutlineAddSlide(() => {
-      Projects.addSlide({
-        id: activeSlide.id,
-        lessonId: activeSlide.lessonId,
-        moduleId: activeSlide.moduleId,
-      });
-    });
-
-    menu.API.onOutlineAddLesson(() => {
-      Projects.addLesson({
-        id: activeSlide.lessonId,
-        moduleId: activeSlide.moduleId,
-      });
-    });
-
-    menu.API.onOutlineAddModule(() => {
-      Projects.addModule({
-        id: -1,
-      });
-    });
-
-    menu.API.onOutlineDuplicateSlide(() => {
-      Projects.duplicateSlide(activeSlide);
-    });
-
-    menu.API.onOutlineRemoveSlide(() => {
-      sys
-        .messageDialog({
-          message: 'Are you sure?',
-          buttons: ['Delete Slide', 'Cancel'],
-          detail: activeSlide.name,
-        })
-        .then((res) => {
-          if (res.error) {
-            console.error(res);
-            return;
-          }
-
-          if (res.data.response === 0) {
-            resetActiveSlide();
-            Projects.removeSlide(activeSlide);
-          }
-        });
-    });
-
-    return () => {
-      events.slide.offFocus(handleSlideFocus);
-      menu.API.offOutlineAddSlide();
-      menu.API.offOutlineAddLesson();
-      menu.API.offOutlineAddModule();
-      menu.API.offOutlineDuplicateSlide();
-      menu.API.offOutlineRemoveSlide();
-    };
-  });
 
   return (
     <div

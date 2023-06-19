@@ -19,11 +19,11 @@ export const useHasStarted = () => {
   });
 };
 
-export const useCurrentSlide = () => {
+export const useCurrentLesson = () => {
   return useAppSelector((state: RootState) => {
     return {
-      id: state.course.currentSlideId,
-      index: state.course.currentSlideIndex,
+      id: state.course.currentLessonId,
+      index: state.course.currentLessonIndex,
     };
   });
 };
@@ -56,11 +56,11 @@ export const useToggleStarted = () => {
   };
 };
 
-export const useUpdateCurrentSlide = () => {
+export const useUpdateCurrentLesson = () => {
   const dispatch = useContext(useAppDispatch);
 
-  return (currentSlide: { id: string; index: number }) => {
-    dispatch(Course.updateCurrentSlide(currentSlide));
+  return (currentLesson: { id: string; index: number }) => {
+    dispatch(Course.updateCurrentLesson(currentLesson));
   };
 };
 
@@ -68,10 +68,10 @@ export default {
   // state
   useCourseData,
   useHasStarted,
-  useCurrentSlide,
+  useCurrentLesson,
   // actions
   useSetCourse,
   useResetCourse,
   useToggleStarted,
-  useUpdateCurrentSlide,
+  useUpdateCurrentLesson,
 };

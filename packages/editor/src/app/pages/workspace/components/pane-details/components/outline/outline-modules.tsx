@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { Collapse } from 'react-bootstrap';
 import { OutlineModulesProps, OutlineModuleItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { OutlineLessons } from './outline-lessons';
-import {
-  openModuleEditor,
-  resetActiveSlide,
-  useActiveSlide,
-} from '../../../../';
+import { openModuleEditor } from '../../../../';
 import { Projects } from '../../../../../../models';
-import { menu, sys, events } from '../../../../../../services';
+import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import { ELEM_ALIGNMENT } from '@scrowl/utils';
 
@@ -21,7 +17,6 @@ export const OutlineModuleItem = ({
   ...props
 }: OutlineModuleItemProps) => {
   let classes = `${css.outlineHeader} outline-item__module`;
-  const activeSlide = useActiveSlide() as Projects.ProjectSlide;
   const [isOpen, setOpen] = useState(true);
   const menuId = `module-menu-${module.id}`;
   const [isEdit, setIsEdit] = useState(false);
@@ -84,7 +79,6 @@ export const OutlineModuleItem = ({
             }
 
             if (res.data.response === 0) {
-              resetActiveSlide();
               Projects.removeModule(module);
             }
           });
@@ -126,22 +120,6 @@ export const OutlineModuleItem = ({
   const handleNameClose = () => {
     setIsEdit(false);
   };
-
-  useEffect(() => {
-    const handleSlideFocus = (ev: CustomEvent) => {
-      if (activeSlide.moduleId !== module.id) {
-        return;
-      }
-
-      setOpen(true);
-    };
-
-    events.slide.onFocus(handleSlideFocus);
-
-    return () => {
-      events.slide.offFocus(handleSlideFocus);
-    };
-  }, [activeSlide.id]);
 
   return (
     <div className={css.outlineModule} {...props} data-module-id={module.id}>

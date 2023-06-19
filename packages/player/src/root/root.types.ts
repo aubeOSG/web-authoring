@@ -1,11 +1,12 @@
 import React from 'react';
 import type { TemplateSchema } from '@scrowl/template-core';
-import type { BlockTextProps, BlockTextSchemaProps } from '@scrowl/template-block-text';
-import type { LessonIntroProps, LessonIntroSchemaProps } from '@scrowl/template-lesson-intro';
-import type { SimpleTextProps, SimpleTextSchemaProps } from '@scrowl/template-simple-text';
-import type { TwoColumnProps, TwoColumnSchemaProps } from '@scrowl/template-two-column';
-import type { SimpleVideoProps, SimpleVideoSchemaProps } from '@scrowl/template-simple-video';
-import type { QuizProps, QuizSchemaProps } from '@scrowl/template-quiz';
+import type { BlockTextProps } from '@scrowl/template-block-text';
+import type { LessonIntroProps } from '@scrowl/template-lesson-intro';
+import type { SimpleTextProps } from '@scrowl/template-simple-text';
+import type { TwoColumnProps } from '@scrowl/template-two-column';
+import type { SimpleVideoProps } from '@scrowl/template-simple-video';
+import type { QuizProps } from '@scrowl/template-quiz';
+import type { BlockEditorOutputData } from '@scrowl/content-block-editor-react';
 
 export type {
   TemplateSchema,
@@ -17,13 +18,7 @@ export type {
   QuizProps
 }
 
-export type TemplateElementProps = BlockTextProps | LessonIntroProps | SimpleTextProps | TwoColumnProps;
-
 export type TemplateComponent = (TemplateElementProps) => JSX.Element;
-
-export type PlayerTemplateList = {
-  [key: string]: TemplateComponent;
-};
 
 export type ProjectAsset = {
   filname: string;
@@ -56,20 +51,7 @@ export type ProjectLesson = {
   moduleId: number;
   id: number;
   attempts?: Array<LessonAttempt>;
-};
-
-export type ProjectSlide = {
-  name: string;
-  moduleId: number;
-  lessonId: number;
-  id: number;
-  template: |
-    BlockTextSchemaProps |
-    LessonIntroSchemaProps |
-    SimpleTextSchemaProps |
-    TwoColumnSchemaProps |
-    SimpleVideoSchemaProps |
-    QuizSchemaProps;
+  content: BlockEditorOutputData;
 };
 
 export type ProjectGlossaryItem = {
@@ -90,7 +72,6 @@ export type ProjectData = {
   subtitle?: string;
   modules?: Array<ProjectModule>;
   lessons?: Array<ProjectLesson>;
-  slides?: Array<ProjectSlide>;
   glossary?: Array<ProjectGlossaryItem>;
   resources?: Array<ProjectResource>;
 };
@@ -108,7 +89,6 @@ export type ScormData = {
 
 export interface PlayerRootCommons {
   project: ProjectData;
-  templateList: PlayerTemplateList;
   scorm: ScormData;
 }
 
@@ -117,7 +97,6 @@ export type PlayerRootProps = PlayerRootCommons &
 
 export type PlayerRootLesson = {
   lesson: ProjectLesson;
-  slides: Array<ProjectSlide>;
 };
 
 export type PlayerRootConfig = {
