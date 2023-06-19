@@ -25,9 +25,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/content-block-editor-react.umd.cjs",
-      "default": "./dist/content-block-editor-react.umd.cjs",
-      "import": "./dist/content-block-editor-react.js"
+      "import": "./dist/content-block-editor-react.js",
+      "require": "./dist/content-block-editor-react.umd.cjs"
     }
   },
   "files": [
