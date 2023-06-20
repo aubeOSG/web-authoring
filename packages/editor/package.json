@@ -27,24 +27,18 @@
     "prebuild": "rimraf web",
     "build": "yarn run build:app && yarn run build:server",
     "build:app": "parcel build --target app --no-cache",
-    "build:server": "vite build",
+    "build:server": "tsc --project tsconfig.server.prod.json",
     "deploy": "node ./web/server.js"
   },
-  "type": "commonjs", 
   "main": "./web/server.js",
   "app": "./web/app.html",
   "server": "./web/server.js",
   "targets": {
-    "main": {
-      "context": "node",
-      "source": "./src/server/index.ts"
-    },
+    "main": false,
     "server": {
       "context": "node",
       "source": "./src/server/index.ts",
-      "engines": {
-        "node": "16.15.1"
-      }
+      "includeNodeModules": false
     },
     "app": {
       "context": "browser",
@@ -54,6 +48,10 @@
       "distDir": "./web",
       "publicUrl": "/public"
     }
+  },
+  "@parcel/transformer-js": {
+    "inlineFS": false,
+    "inlineEnvironment": false
   },
   "eslintConfig": {
     "extends": "@scrowl/config"

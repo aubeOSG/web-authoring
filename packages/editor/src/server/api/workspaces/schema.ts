@@ -1,5 +1,5 @@
 import { Schema } from '../../db';
-import { table as userTable } from '../users';
+import { schema as userSchema } from '../users';
 
 export const table: string = 'workspaces';
 
@@ -20,7 +20,7 @@ export const definition: Schema = [
     column: {
       name: 'userId',
       type: 'foreign',
-      table: userTable,
+      table: userSchema.table,
     },
   },
   {

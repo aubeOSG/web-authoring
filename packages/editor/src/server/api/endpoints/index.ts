@@ -1,8 +1,6 @@
-import api from './api';
+import Api from './api';
 
-export {
-  api,
-};
+export const api = Api;
 
 export default {
   api,

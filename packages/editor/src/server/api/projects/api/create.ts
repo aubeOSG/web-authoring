@@ -20,6 +20,18 @@ export const create: ProjectsApiCreate = {
     }
 
     const db = connection.get();
+
+    if (!db) {
+      res.send({
+        error: true,
+        message: 'unable to create project: unable to connect to DB',
+        data: {
+          payload,
+        },
+      });
+      return;
+    };
+
     const project = blueprints.get('default');
 
     project.workspaceId = payload.workspaceId;

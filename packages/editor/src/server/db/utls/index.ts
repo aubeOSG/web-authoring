@@ -1,4 +1,4 @@
-import * as Table from './table';
+import Table from './table';
 
 export const table = Table;
 

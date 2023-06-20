@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { knex } from 'knex';
+import type { Knex } from 'knex';
 import { Config } from './db.types';
 
 export const config: Config = {
@@ -13,16 +14,21 @@ export const config: Config = {
   schema: process.env.DBSCHEMA || '',
 };
 
-export const get = () => {
-  return knex({
-    client: 'pg',
-    connection: {
-      host: config.host,
-      user: config.user,
-      password: config.pass,
-      database: config.name,
-    },
-  });
+export const get = (): Knex | undefined => {
+  try {
+    return knex({
+      client: 'pg',
+      connection: {
+        host: config.host,
+        user: config.user,
+        password: config.pass,
+        database: config.name,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return;
+  }
 };
 
 export default {

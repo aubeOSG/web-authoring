@@ -17,14 +17,23 @@ app.use(bodyParser.json());
 api.init(app);
 routes.init(app);
 
-seed.generate(db)
-  .then(() => {
-    app.listen(port, () => {
-      console.info(`Scrowl Web Server running at http://localhost:${port}/app`);
-    });
-  })
-  .catch((e) => {
-    console.error('Failed to seed database');
-    console.error(e);
-    process.exit(1);
+const serveApp = () => {
+  app.listen(port, () => {
+    console.info(`Scrowl Web Server running at http://localhost:${port}/app`);
   });
+};
+
+const catchSeedError = (e) => {
+  console.error('Failed to seed database');
+  console.error(e);
+  process.exit(1);
+};
+
+if (!db) {
+  console.warn('Unable to connect to DB');
+  serveApp();
+} else {
+  seed.generate(db)
+  .then(serveApp)
+  .catch(catchSeedError);
+}

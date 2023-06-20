@@ -1,13 +1,10 @@
-import { table, definition } from './schema';
-import seed from './seed';
+import Schema from './schema';
+import Seed from './seed';
 
-export * from './schema';
-export {
-  seed,
-};
+export const schema = Schema;
+export const seed = Seed;
 
 export default {
-  table,
-  definition,
+  schema,
   seed,
 };

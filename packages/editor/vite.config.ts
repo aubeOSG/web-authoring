@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+// import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default defineConfig({
   build: {
@@ -22,6 +22,5 @@ export default defineConfig({
         format: 'cjs'
       },
     },
-  },
-  plugins: [nodeResolve()]
+  }
 });

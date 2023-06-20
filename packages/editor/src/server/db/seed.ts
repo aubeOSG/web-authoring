@@ -28,3 +28,7 @@ export const generate = (db: Knex) => {
     }
   });
 };
+
+export default {
+  generate,
+};

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "moduleResolution": "NodeNext",
+    "sourceMap": true,
+    "outDir": "web",
+    "declaration": false
+  },
+  "include": ["src/server/**/*"],
+  "exclude": ["scr/app/**/*", "node_modules"]
+}

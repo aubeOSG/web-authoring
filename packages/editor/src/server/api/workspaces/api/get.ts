@@ -18,6 +18,18 @@ export const get: WorkspacesApiGet = {
 
     const db = connection.get();
 
+    if (!db) {
+      res.send({
+        error: true,
+        message: 'unable to get workspace: unable to connect to DB',
+        data: {
+          workspaceId,
+        },
+      });
+      return;
+    };
+  
+
     try {
       const [data] = await db.select().from(table).where(`${table}.id`, workspaceId);
 
