@@ -31,6 +31,8 @@ export default class ColumnFactory {
   }
 
   render() {
+    console.log('factory data: ', this.data);
+
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
@@ -55,5 +57,21 @@ export default class ColumnFactory {
 
   save() {
     return this.data;
+  }
+
+  static get sanitize() {
+    console.log('SANITIZE');
+    return {
+      br: true,
+      data: {
+        br: true,
+        body: {
+          br: true,
+        },
+        heading: {
+          br: true,
+        },
+      },
+    };
   }
 }

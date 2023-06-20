@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   columnBody: {
     padding: '8px',
     fontSize: '1em',
-    textOverflow: 'ellipsis',
+    // textOverflow: 'ellipsis',
     border: 'none',
     outline: 'none',
     resize: 'none',
@@ -153,8 +153,8 @@ const ColumnComponent = (props) => {
       console.log('e.currentTarget.innerHtml ', e.currentTarget.innerHTML);
       console.log('e.currentTarget.textContent ', e.currentTarget.textContent);
 
-      if (e.currentTarget.innerText) {
-        newData.events[index][fieldName] = e.currentTarget.innerText;
+      if (e.currentTarget.innerHTML) {
+        newData.events[index][fieldName] = e.currentTarget.innerHTML;
       } else {
         newData.events[index][fieldName] = e.currentTarget.textContent;
       }
@@ -191,18 +191,20 @@ const ColumnComponent = (props) => {
                   onBlur={onContentChange(index, 'heading')}
                   contentEditable={!props.readOnly}
                   suppressContentEditableWarning={!props.readOnly}
+                  dangerouslySetInnerHTML={{ __html: event.heading }}
                 >
-                  {event.heading}
+                  {/* {event.heading} */}
                 </h2>
               </div>
               <div
-                className={classes.columnBody}
                 contentEditable={!props.readOnly}
                 id="body"
                 onBlur={onContentChange(index, 'body')}
                 suppressContentEditableWarning={!props.readOnly}
+                className={classes.columnBody}
+                dangerouslySetInnerHTML={{ __html: event.body }}
               >
-                {event.body}
+                {/* {event.body} */}
               </div>
             </div>
           ))}
