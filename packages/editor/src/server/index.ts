@@ -4,7 +4,8 @@ import bodyParser from 'body-parser';
 import api from './api';
 import routes from './routes';
 import { port } from './config';
-import { connection, seed } from './db';
+import { connection } from './db';
+import seed from './db/seed';
 
 const app = express();
 const db = connection.get();
@@ -33,7 +34,7 @@ if (!db) {
   console.warn('Unable to connect to DB');
   serveApp();
 } else {
-  seed.generate(db)
+  seed(db)
   .then(serveApp)
   .catch(catchSeedError);
 }

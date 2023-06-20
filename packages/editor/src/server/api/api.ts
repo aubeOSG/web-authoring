@@ -1,9 +1,9 @@
 import express from 'express';
 import { rq } from '../services';
-import * as endpoints from './endpoints';
-import * as projects from './projects';
-import * as users from './users';
-import * as workspaces from './workspaces';
+import endpoints from './endpoints';
+import projects from './projects';
+import users from './users';
+import workspaces from './workspaces';
 
 export const Route = '/api';
 

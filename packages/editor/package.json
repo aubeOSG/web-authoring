@@ -27,12 +27,12 @@
     "prebuild": "rimraf dist",
     "build": "yarn run build:app && yarn run build:server",
     "build:app": "parcel build --target app --no-cache",
-    "build:server": "rollup -c",
-    "deploy": "node ./dist/server/index.js"
+    "build:server": "parcel build --target server --no-cache",
+    "deploy": "node ./dist/server.js"
   },
-  "main": "./dist/server/index.js",
+  "main": "./dist/server.js",
   "app": "./dist/app.html",
-  "server": "./dist/server/index.js",
+  "server": "./dist/server.js",
   "targets": {
     "main": false,
     "server": {
@@ -69,9 +69,6 @@
     "@parcel/runtime-react-refresh": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
     "@parcel/transformer-typescript-types": "2.8.3",
-    "@rollup/plugin-commonjs": "^25.0.2",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@rollup/plugin-typescript": "^11.1.1",
     "@scrowl/config": "^0.0.100",
     "@types/adm-zip": "^0.5.0",
     "@types/cors": "^2.8.13",
@@ -84,7 +81,6 @@
     "@types/react-redux": "^7.1.24",
     "@types/sharp": "^0.31.0",
     "@types/uuid": "^8.3.4",
-    "@vitejs/plugin-react": "^4.0.1",
     "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.25.0",
@@ -96,7 +92,6 @@
     "prettier": "^2.7.1",
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
-    "rollup": "^3.25.1",
     "stylelint": "^14.13.0",
     "wait-on": "^6.0.1"
   },
