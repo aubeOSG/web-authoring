@@ -12,22 +12,58 @@ export const create = () => {
     ],
     lessons: [
       {
-          "moduleId": 0,
-          "id": 0,
-          "name": "Introduction",
-          "content": {
-              "time": 1687152070816,
-              "blocks": [
-                  {
-                      "id": "omqjErzf6N",
-                      "type": "paragraph",
-                      "data": {
-                          "text": "hello there"
-                      }
-                  }
-              ],
-              "version": "2.27.0"
-          }
+        'moduleId': 0,
+        'id': 0,
+        'name': 'Introduction',
+        'content': {
+          'time': 1687152070816,
+          'blocks': [
+            {
+              'id': 'omqjErzf6N',
+              'type': 'paragraph',
+              'data': {
+                'text': 'hello there',
+              },
+            },
+          ],
+          'version': '2.27.0',
+        },
+      },
+      {
+        'moduleId': 0,
+        'id': 1,
+        'name': 'Lesson 2',
+        'content': {
+          'time': 1687152070817,
+          'blocks': [
+            {
+              'id': 'omqjErzf6N',
+              'type': 'paragraph',
+              'data': {
+                'text': 'hello two',
+              },
+            },
+          ],
+          'version': '2.27.0',
+        },
+      },
+      {
+        'moduleId': 0,
+        'id': 2,
+        'name': 'Lesson 3',
+        'content': {
+          'time': 1687152070818,
+          'blocks': [
+            {
+              'id': 'omqjErzf6N',
+              'type': 'paragraph',
+              'data': {
+                'text': 'hello three',
+              },
+            },
+          ],
+          'version': '2.27.0',
+        },
       },
     ],
     glossary: [

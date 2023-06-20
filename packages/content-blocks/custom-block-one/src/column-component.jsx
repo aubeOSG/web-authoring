@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   rootContainer: {
+    display: 'flex',
     flexDirection: 'row',
     width: '100%',
   },
@@ -71,10 +72,13 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: '3em',
     backgroundColor: '#007ABA',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
-  description: {
+  body: {
     padding: '8px',
-    fontSize: '1.5em',
+    fontSize: '1em',
     textOverflow: 'ellipsis',
     border: 'none',
     outline: 'none',
@@ -93,6 +97,7 @@ const ColumnComponent = (props) => {
   );
 
   const updateColumnData = (newData) => {
+    console.log('update new data: ', newData);
     setColumnData(newData);
     if (props.onDataChange) {
       // Inform editorjs about data change
@@ -116,11 +121,20 @@ const ColumnComponent = (props) => {
       const newData = {
         ...columnData,
       };
-      if (e.currentTarget.value && e.currentTarget.value.length > 0) {
-        newData.events[index][fieldName] = e.currentTarget.value;
+      console.log('column data: ', columnData);
+      console.log('e.currentTarget ', e.currentTarget);
+      console.log('e.currentTarget.value ', e.currentTarget.value);
+      console.log('e.currentTarget.innerText ', e.currentTarget.innerText);
+      console.log('e.currentTarget.innerHtml ', e.currentTarget.innerHTML);
+      console.log('e.currentTarget.textContent ', e.currentTarget.textContent);
+
+      if (e.currentTarget.innerText) {
+        newData.events[index][fieldName] = e.currentTarget.innerText;
       } else {
         newData.events[index][fieldName] = e.currentTarget.textContent;
       }
+
+      console.log('new data: ', newData);
 
       updateColumnData(newData);
     };
@@ -129,9 +143,9 @@ const ColumnComponent = (props) => {
   return (
     <React.Fragment>
       <Box className={classes.root}>
-        <Timeline align="left" className={classes.rootContainer}>
+        <div className={classes.rootContainer}>
           {columnData.events.map((event, index) => (
-            <TimelineItem
+            <div
               className={
                 columnData.events.length < 3
                   ? classes.itemContainerTwo
@@ -145,44 +159,21 @@ const ColumnComponent = (props) => {
                   color="textSecondary"
                   onBlur={onContentChange(index, 'heading')}
                   contentEditable={!props.readOnly}
+                  suppressContentEditableWarning={!props.readOnly}
                 >
                   {event.heading}
                 </h2>
               </div>
-              {/* <TimelineOppositeContent className={classes.headingContainer}>
-                <Typography
-                  className={classes.heading}
-                  color="textSecondary"
-                  onBlur={onContentChange(index, 'heading')}
-                  suppressContentEditableWarning={!props.readOnly}
-                  contentEditable={!props.readOnly}
-                >
-                  {event.heading}
-                </Typography>
-              </TimelineOppositeContent> */}
-              <textarea
-                name="body"
-                className={classes.description}
-                disabled={props.readOnly}
+              <div
+                className={classes.body}
+                contentEditable={!props.readOnly}
                 id="body"
-                cols="30"
-                rows="10"
                 onBlur={onContentChange(index, 'body')}
+                suppressContentEditableWarning={!props.readOnly}
               >
                 {event.body}
-              </textarea>
-              {/* <TimelineContent>
-                <Typography
-                  className={classes.description}
-                  color="primary"
-                  onBlur={onContentChange(index, 'body')}
-                  suppressContentEditableWarning={!props.readOnly}
-                  contentEditable={!props.readOnly}
-                >
-                  {event.body}
-                </Typography>
-              </TimelineContent> */}
-            </TimelineItem>
+              </div>
+            </div>
           ))}
           {!props.readOnly && columnData.events.length < 3 && (
             <TimelineItem>
@@ -195,7 +186,7 @@ const ColumnComponent = (props) => {
               <TimelineContent />
             </TimelineItem>
           )}
-        </Timeline>
+        </div>
       </Box>
     </React.Fragment>
   );
