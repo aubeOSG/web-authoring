@@ -19,17 +19,26 @@
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/editor#readme",
   "scripts": {
     "copy:assets": "node ./scripts/copy-assets.mjs",
-    "prestart": "rimraf web && webpack",
-    "start": "cross-env NODE_ENV=development concurrently \"yarn start:proxy\" \"yarn start:app\" \"yarn start:server\" \"yarn reload:server\"",
-    "start:proxy": "nodemon --watch src/proxy.ts --exec webpack",
-    "start:app": "parcel watch --target app --no-cache",
-    "start:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
-    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js"
+    "preserve": "rimraf web",
+    "serve": "cross-env NODE_ENV=development concurrently \"yarn serve:app\" \"yarn serve:server\" \"yarn reload:server\"",
+    "serve:app": "parcel watch --target app --no-cache",
+    "serve:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
+    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",
+    "prebuild": "rimraf web",
+    "build": "yarn run build:app && yarn run build:server",
+    "build:app": "parcel build --target app --no-cache",
+    "build:server": "vite build",
+    "deploy": "node ./web/server.js"
   },
+  "type": "commonjs", 
+  "main": "./web/server.js",
   "app": "./web/app.html",
   "server": "./web/server.js",
   "targets": {
-    "main": false,
+    "main": {
+      "context": "node",
+      "source": "./src/server/index.ts"
+    },
     "server": {
       "context": "node",
       "source": "./src/server/index.ts",
@@ -63,6 +72,7 @@
     "@parcel/runtime-react-refresh": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
     "@parcel/transformer-typescript-types": "2.8.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
     "@scrowl/config": "^0.0.100",
     "@types/adm-zip": "^0.5.0",
     "@types/cors": "^2.8.13",
@@ -75,13 +85,9 @@
     "@types/react-redux": "^7.1.24",
     "@types/sharp": "^0.31.0",
     "@types/uuid": "^8.3.4",
-    "body-parser": "^1.20.1",
     "concurrently": "^7.4.0",
-    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.3",
     "eslint": "^8.25.0",
-    "express": "^4.18.2",
     "nodemon": "^2.0.20",
     "parcel": "2.8.3",
     "postcss": "^8.4.17",
@@ -91,8 +97,7 @@
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
     "stylelint": "^14.13.0",
-    "wait-on": "^6.0.1",
-    "webpack-merge": "^5.8.0"
+    "wait-on": "^6.0.1"
   },
   "dependencies": {
     "@popperjs/core": "2.11.6",
@@ -112,7 +117,11 @@
     "@scrowl/utils": "^0.0.0",
     "adm-zip": "^0.5.9",
     "axios": "^1.2.1",
+    "body-parser": "^1.20.2",
     "bootstrap": "^5.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "framer-motion": "^7.5.3",
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.7",

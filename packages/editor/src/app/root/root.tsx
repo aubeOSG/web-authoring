@@ -12,7 +12,7 @@ import { Pages, Models } from './root.types';
 import { rq, sys } from '../services';
 import * as pages from '../pages';
 import * as models from '../models';
-import { menu, events, config } from '../services';
+import { menu, events } from '../services';
 import { Elem } from '@scrowl/utils';
 import { ProjectBrowser, ContextMenu } from '../components';
 
@@ -146,7 +146,6 @@ export const Root = () => {
   const modelNames = Object.keys(modelModules);
   const inits: Array<Promise<rq.ApiResult>> = [];
   const [isReady, setIsReady] = useState(false);
-  const isDesktop = config.app.desktop;
 
   models.Settings.useProcessor();
   models.Projects.useProcessor();
@@ -173,21 +172,11 @@ export const Root = () => {
     });
   }, [modelModules, modelNames, inits]);
 
-  if (isDesktop) {
-    return (
-      <MemoryRouter>
-        <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
-        <ProjectBrowser />
-        <ContextMenu.Menu />
-      </MemoryRouter>
-    );
-  } else {
-    return (
-      <BrowserRouter basename="/app">
-        <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
-        <ProjectBrowser />
-        <ContextMenu.Menu />
-      </BrowserRouter>
-    );
-  }
+  return (
+    <BrowserRouter basename="/app">
+      <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
+      <ProjectBrowser />
+      <ContextMenu.Menu />
+    </BrowserRouter>
+  );
 };

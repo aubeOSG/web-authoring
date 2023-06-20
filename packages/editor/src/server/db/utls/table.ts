@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 import { Schema, Config } from '../db.types';
 import { List } from '@scrowl/utils';
 

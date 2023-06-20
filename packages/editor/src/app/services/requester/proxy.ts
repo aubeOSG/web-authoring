@@ -1,27 +1,33 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { rq } from './server/services';
-import { EndpointsApiGet } from './server/api/endpoints/endpoints.types';
+import type {
+  RegisterEndpoint,
+  ApiResult,
+  JSON_DATA,
+  RegisterEndpointType,
+  ApiResultError
+} from '../../../server/services/requester';
+import type { EndpointsApiGet } from '../../../server/api/endpoints/endpoints.types';
 
 type Listener = (...args: unknown[]) => void;
-type UpdateResolver = (value: rq.ApiResult | PromiseLike<rq.ApiResult>) => void;
+type UpdateResolver = (value: ApiResult | PromiseLike<ApiResult>) => void;
 type RequestQueue = Array<{
   endpoint: string;
   method: 'invoke' | 'send' | 'on' | 'removeListener' | 'removeListenerAll';
-  params?: rq.JSON_DATA;
+  params?: JSON_DATA;
   type: 'GET' | 'POST';
   resolve: UpdateResolver;
 }>;
-type ScrowlProxy = {
+type Proxy = {
   timeout: number;
   inProgress: boolean;
-  ENDPOINTS: Array<rq.RegisterEndpoint>;
-  invoke: (endpoint: string, params?: rq.JSON_DATA, type?: 'GET' | 'POST') => Promise<rq.ApiResult>;
+  ENDPOINTS: Array<RegisterEndpoint>;
+  invoke: (endpoint: string, params?: JSON_DATA, type?: 'GET' | 'POST', options?: EndpointRequestConfig) => Promise<ApiResult>;
   on: (endpoint: string, listener: Listener) => void;
-  send: (endpoint: string, listener: Listener) => void;
+  send: (endpoint: string, ...args: unknown[]) => void;
   removeListener: (endpoint: string, listener: Listener) => void;
   removeListenerAll: (endpoint: string) => void;
 };
-interface RequestInterceptorsError extends Omit<rq.ApiResultError, 'data'> {
+interface RequestInterceptorsError extends Omit<ApiResultError, 'data'> {
   message: string;
   data: {
     action: string;
@@ -70,8 +76,8 @@ const requestInterceptors:RequestInterceptors = {
   },
 };
 
-const GET = (endpoint, params?: rq.JSON_DATA, options?: EndpointRequestConfig) => {
-  return new Promise<rq.ApiResult>(async (resolve, reject) => {
+const GET = (endpoint, params?: JSON_DATA, options?: EndpointRequestConfig) => {
+  return new Promise<ApiResult>(async (resolve, reject) => {
     try {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
@@ -79,7 +85,7 @@ const GET = (endpoint, params?: rq.JSON_DATA, options?: EndpointRequestConfig) =
         url: `http://localhost:8000/api${endpoint}`,
         method: 'GET',
         params,
-        timeout: (scrowlProxy.timeout * 10),
+        timeout: (proxy.timeout * 10),
         cancelToken: source.token,
         ...options,
       });
@@ -91,8 +97,8 @@ const GET = (endpoint, params?: rq.JSON_DATA, options?: EndpointRequestConfig) =
   });
 };
 
-const POST = (endpoint, payload?: rq.JSON_DATA, options?: EndpointRequestConfig) => {
-  return new Promise<rq.ApiResult>(async (resolve, reject) => {
+const POST = (endpoint, payload?: JSON_DATA, options?: EndpointRequestConfig) => {
+  return new Promise<ApiResult>(async (resolve, reject) => {
     try {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
@@ -100,7 +106,7 @@ const POST = (endpoint, payload?: rq.JSON_DATA, options?: EndpointRequestConfig)
         url: `http://localhost:8000/api${endpoint}`,
         method: 'POST',
         data: payload,
-        timeout: (scrowlProxy.timeout * 10),
+        timeout: (proxy.timeout * 10),
         cancelToken: source.token,
         ...options,
       };
@@ -116,8 +122,8 @@ const POST = (endpoint, payload?: rq.JSON_DATA, options?: EndpointRequestConfig)
 
 const requestQueue: RequestQueue = [];
 
-const checkEndpoint = (endpoint: string, type?: rq.RegisterEndpointType) => {
-  const endpoints = scrowlProxy.ENDPOINTS
+const checkEndpoint = (endpoint: string, type?: RegisterEndpointType) => {
+  const endpoints = proxy.ENDPOINTS
     .filter((config) => {
       return !type || type === config.type;
     })
@@ -128,15 +134,15 @@ const checkEndpoint = (endpoint: string, type?: rq.RegisterEndpointType) => {
   return endpoints.indexOf(endpoint) !== -1;
 };
 
-const scrowlProxy: ScrowlProxy = {
+const proxy: Proxy = {
   timeout: 1000,
   inProgress: true,
   ENDPOINTS: [],
-  invoke: (endpoint: string, params?: rq.JSON_DATA, type = 'GET', options?: EndpointRequestConfig) => {
-    return new Promise<rq.ApiResult>((resolve) => {
+  invoke: (endpoint: string, params?: JSON_DATA, type = 'GET', options?: EndpointRequestConfig) => {
+    return new Promise<ApiResult>((resolve) => {
       const method = 'invoke';
 
-      if (scrowlProxy.inProgress) {
+      if (proxy.inProgress) {
         console.log('queueing request', endpoint, params);
         requestQueue.push({
           endpoint,
@@ -205,7 +211,7 @@ const scrowlProxy: ScrowlProxy = {
   },
 };
 
-scrowlProxy.inProgress = true;
+proxy.inProgress = true;
 
 const getEndpoints: EndpointsApiGet = {
   name: '/endpoints',
@@ -214,14 +220,14 @@ const getEndpoints: EndpointsApiGet = {
 
 GET(getEndpoints.name)
   .then((res) => {
-    scrowlProxy.inProgress = false;
+    proxy.inProgress = false;
 
     if (res.error) {
       console.error(res);
       return;
     }
 
-    scrowlProxy.ENDPOINTS = res.data.endpoints;
+    proxy.ENDPOINTS = res.data.endpoints;
 
     if (!requestQueue.length) {
       return;
@@ -232,7 +238,7 @@ GET(getEndpoints.name)
 
       switch (req.method) {
         case 'invoke':
-          scrowlProxy.invoke(req.endpoint, req.params, req.type).then(req.resolve);
+          proxy.invoke(req.endpoint, req.params, req.type).then(req.resolve);
           break;
       }
     });
@@ -241,4 +247,8 @@ GET(getEndpoints.name)
     console.error('Getting endpoints failed', e);
   });
 
-window.scrowlProxy = scrowlProxy;
+export {
+  proxy,
+};
+
+export default proxy;

@@ -7,6 +7,9 @@ import renameSync from './rename-sync';
 
 export * from './file-system.types';
 
+export const assetsPath = utils.join(utils.rootPath, '../', 'main', 'assets');
+export const projectPath = utils.join(assetsPath, 'project');
+
 export {
   utils,
   readSync,
@@ -18,6 +21,8 @@ export {
 
 export default {
   ...utils,
+  assetsPath,
+  projectPath,
   readSync,
   writeSync,
   removeSync,

@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import type { Knex } from 'knex';
 import { connection, utils } from '../../db';
 import { table, definition } from './schema';
 

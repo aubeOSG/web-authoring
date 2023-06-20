@@ -1,6 +1,5 @@
 import { ProjectsApiPreviewViewer } from '../projects.types';
 import { fs, rq } from '../../../services';
-import { projectPath, templatesPath } from '../../templates';
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -28,26 +27,15 @@ export const previewViewer: ProjectsApiPreviewViewer = {
     const tempSource =
       previewParams.tmpDirId ?
         fs.utils.join(osRootPath, fs.utils.tempPath, previewParams.tmpDirId)
-        : fs.utils.join(projectPath);
+        : fs.utils.join(fs.projectPath);
     const previewSource = fs.utils.join(tempSource, 'package');
     const previewContent = fs.utils.join(previewSource, 'content');
     let filename = fs.utils.getFilename(req.path);
-    let isTemplateResource = false;
     let pathname = '';
 
     if (!req.path) {
       res.sendStatus(404);
       return;
-    }
-
-    if (!previewParams.tmpDirId) {
-      isTemplateResource = filename.indexOf('scrowl.template-') !== -1;
-
-      if (isTemplateResource) {
-        const templateFolder = filename.replace('scrowl.template-', '').replace(/.(\d)+/g, '').replace('.component', '').replace('.js', '').replace('.css',  '');
-
-        pathname = fs.utils.join(templatesPath, templateFolder, filename);
-      }
     }
 
     if (!pathname) {

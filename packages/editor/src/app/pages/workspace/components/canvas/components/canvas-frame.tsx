@@ -60,6 +60,18 @@ export const CanvasFrame = () => {
     }
 
     isLoading.current = false;
+
+    if (editorInstance.current) {
+      if (activeLesson.content) {
+        editorInstance.current.render(activeLesson.content);
+      } else {
+        editorInstance.current.render({
+          blocks: [],
+          time: new Date().valueOf(),
+          version: '2.27.0',
+        });
+      }
+    }
   }, [activeLesson]);
 
   if (isLoading.current) {

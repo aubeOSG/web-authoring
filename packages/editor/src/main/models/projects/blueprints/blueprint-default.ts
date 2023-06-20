@@ -1,5 +1,4 @@
 import * as create from './create';
-import { TemplateSchemas } from './templates';
 
 export const make = () => {
   const project = create.project();

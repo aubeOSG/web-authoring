@@ -1,4 +1,4 @@
-import engine from 'handlebars';
+import * as engine from 'handlebars';
 import { ApiResult, JsonResult } from '../requester';
 
 engine.registerHelper('raw', options => {
