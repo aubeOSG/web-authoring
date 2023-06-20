@@ -19,20 +19,20 @@
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/editor#readme",
   "scripts": {
     "copy:assets": "node ./scripts/copy-assets.mjs",
-    "preserve": "rimraf web",
+    "preserve": "rimraf dist",
     "serve": "cross-env NODE_ENV=development concurrently \"yarn serve:app\" \"yarn serve:server\" \"yarn reload:server\"",
     "serve:app": "parcel watch --target app --no-cache",
-    "serve:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
-    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js",
-    "prebuild": "rimraf web",
+    "serve:server": "wait-on ./dist/app.html && parcel watch --target server --no-cache",
+    "reload:server": "wait-on ./dist/server.js && nodemon --watch ./dist/server.js --exec node ./dist/server.js",
+    "prebuild": "rimraf dist",
     "build": "yarn run build:app && yarn run build:server",
     "build:app": "parcel build --target app --no-cache",
-    "build:server": "tsc --project tsconfig.server.prod.json",
-    "deploy": "node ./web/server.js"
+    "build:server": "rollup -c",
+    "deploy": "node ./dist/server/index.js"
   },
-  "main": "./web/server.js",
-  "app": "./web/app.html",
-  "server": "./web/server.js",
+  "main": "./dist/server/index.js",
+  "app": "./dist/app.html",
+  "server": "./dist/server/index.js",
   "targets": {
     "main": false,
     "server": {
@@ -45,7 +45,6 @@
       "isLibrary": false,
       "includeNodeModules": true,
       "source": "./src/app/index.html",
-      "distDir": "./web",
       "publicUrl": "/public"
     }
   },
@@ -70,7 +69,9 @@
     "@parcel/runtime-react-refresh": "2.8.3",
     "@parcel/transformer-sass": "2.8.3",
     "@parcel/transformer-typescript-types": "2.8.3",
+    "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.1",
     "@scrowl/config": "^0.0.100",
     "@types/adm-zip": "^0.5.0",
     "@types/cors": "^2.8.13",
@@ -83,6 +84,7 @@
     "@types/react-redux": "^7.1.24",
     "@types/sharp": "^0.31.0",
     "@types/uuid": "^8.3.4",
+    "@vitejs/plugin-react": "^4.0.1",
     "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.25.0",
@@ -94,6 +96,7 @@
     "prettier": "^2.7.1",
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
+    "rollup": "^3.25.1",
     "stylelint": "^14.13.0",
     "wait-on": "^6.0.1"
   },
