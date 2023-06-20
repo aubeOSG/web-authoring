@@ -3,7 +3,7 @@ services:
   authoring-editor-server:
     build:
       context: ../
-      dockerfile: containers/web.dockerfile
+      dockerfile: containers/development.dockerfile
     ports:
       - '${SRPORT}:${SRPORT}'
     volumes:

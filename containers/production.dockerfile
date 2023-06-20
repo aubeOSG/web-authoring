@@ -21,6 +21,7 @@ COPY ./packages/player/package.json ./packages/player/package.json
 COPY ./packages/runtime/package.json ./packages/runtime/package.json
 COPY ./packages/editor/package.json ./packages/editor/package.json
 COPY ./package.json ./package.json
+COPY ./lerna.json ./lerna.json
 COPY ./yarn.lock ./yarn.lock
 
 COPY ./config ./config
@@ -40,10 +41,13 @@ COPY ./packages/templates/quiz-template ./packages/templates/quiz-template
 COPY ./packages/templates/inline-text ./packages/templates/inline-text
 COPY ./packages/player ./packages/player
 COPY ./packages/runtime ./packages/runtime
+COPY ./packages/editor ./packages/editor
+# Uncomment the line below when testing locally with 'yarn prod:test'
+# COPY ./production.test.env ./packages/editor/.env
+# comment the line below when testing locally with 'yarn prod:test'
+COPY ./.env ./packages/editor/.env
 
 RUN yarn install
+RUN yarn update
 
-COPY ./packages/editor ./packages/editor
-COPY ./dev.env ./packages/editor/.env
-
-CMD ["yarn", "serve"]
+CMD ["yarn", "deploy"]

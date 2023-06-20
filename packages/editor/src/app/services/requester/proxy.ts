@@ -82,7 +82,7 @@ const GET = (endpoint, params?: JSON_DATA, options?: EndpointRequestConfig) => {
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
       const { data } = await axios({
-        url: `http://localhost:8000/api${endpoint}`,
+        url: `${window.location.origin}/api${endpoint}`,
         method: 'GET',
         params,
         timeout: (proxy.timeout * 10),
@@ -103,7 +103,7 @@ const POST = (endpoint, payload?: JSON_DATA, options?: EndpointRequestConfig) =>
       const CancelToken = axios.CancelToken;
       const source = CancelToken.source();
       const query = {
-        url: `http://localhost:8000/api${endpoint}`,
+        url: `${window.location.origin}/api${endpoint}`,
         method: 'POST',
         data: payload,
         timeout: (proxy.timeout * 10),

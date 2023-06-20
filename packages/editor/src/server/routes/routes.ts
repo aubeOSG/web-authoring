@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import type { Application } from 'express';
 
-const StaticPath = path.join(process.cwd(), 'web');
+const StaticPath = path.join(process.cwd(), 'dist');
 const AppPathPageHome = path.join(StaticPath, 'app.html');
 
 export const init = (app: Application) => {

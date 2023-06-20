@@ -9,11 +9,11 @@ services:
       POSTGRES_PASSWORD: '${DBPASS}'
       POSTGRES_USER: '${DBUSER}'
   authoring-editor-server:
-    # image: '${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}'
+    image: '${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}'
     build:
       context: ../
-      dockerfile: containers/prod.dockerfile
+      dockerfile: containers/production.dockerfile
     depends_on:
       - authoring-editor-db
     ports:
-      - '80:${SRPORT}'
+      - '${SRPORT}:${SRPORT}'

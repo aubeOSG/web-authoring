@@ -28,7 +28,7 @@
     "build": "yarn run build:app && yarn run build:server",
     "build:app": "parcel build --target app --no-cache",
     "build:server": "parcel build --target server --no-cache",
-    "deploy": "node ./dist/server.js"
+    "deploy": "cross-env NODE_ENV=production node ./dist/server.js"
   },
   "main": "./dist/server.js",
   "app": "./dist/app.html",

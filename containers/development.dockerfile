@@ -21,7 +21,6 @@ COPY ./packages/player/package.json ./packages/player/package.json
 COPY ./packages/runtime/package.json ./packages/runtime/package.json
 COPY ./packages/editor/package.json ./packages/editor/package.json
 COPY ./package.json ./package.json
-COPY ./lerna.json ./lerna.json
 COPY ./yarn.lock ./yarn.lock
 
 COPY ./config ./config
@@ -41,10 +40,10 @@ COPY ./packages/templates/quiz-template ./packages/templates/quiz-template
 COPY ./packages/templates/inline-text ./packages/templates/inline-text
 COPY ./packages/player ./packages/player
 COPY ./packages/runtime ./packages/runtime
-COPY ./packages/editor ./packages/editor
-COPY ./prod.env ./packages/editor/.env
 
 RUN yarn install
-RUN yarn update
 
-CMD ["yarn", "deploy"]
+COPY ./packages/editor ./packages/editor
+COPY ./development.env ./packages/editor/.env
+
+CMD ["yarn", "serve"]
