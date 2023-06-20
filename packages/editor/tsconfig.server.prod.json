@@ -6,8 +6,9 @@
     "moduleResolution": "NodeNext",
     "sourceMap": true,
     "outDir": "web",
-    "declaration": false
+    "declaration": false,
+    "skipLibCheck": true
   },
   "include": ["src/server/**/*"],
-  "exclude": ["scr/app/**/*", "node_modules"]
+  "exclude": ["src/app/**/*.ts", "src/app/**/*.tsx", "node_modules"]
 }

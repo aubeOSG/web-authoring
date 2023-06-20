@@ -11,6 +11,4 @@ export const Rocket = (props) => {
   );
 };
 
-export default {
-  Rocket,
-};
+export default Rocket;

@@ -5,6 +5,4 @@ export const Date = ({ children }) => {
   return <>{Datetime.readableFromValue(children)}</>;
 };
 
-export default {
-  Date,
-};
+export default Date;

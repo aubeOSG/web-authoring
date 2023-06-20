@@ -1,2 +1,9 @@
+import assetIcon from './asset-icon';
+
 export * from './asset-icon.types';
-export * from './asset-icon';
+
+export const AssetIcon = assetIcon;
+
+export default {
+  AssetIcon,
+};

@@ -91,3 +91,8 @@ export const Page = () => {
     </div>
   );
 };
+
+export default {
+  Path,
+  Page,
+};

@@ -1,2 +1,7 @@
+import logo from './logo';
+
 export * from './logo.types';
-export * from './logo';
+
+export const Logo = logo;
+
+export default Logo;

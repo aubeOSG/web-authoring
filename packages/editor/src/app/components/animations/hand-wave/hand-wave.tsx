@@ -11,6 +11,4 @@ export const HandWave = (props) => {
   );
 };
 
-export default {
-  HandWave,
-};
+export default HandWave;

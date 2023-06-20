@@ -133,6 +133,4 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   );
 };
 
-export default {
-  Pane,
-};
+export default Pane;

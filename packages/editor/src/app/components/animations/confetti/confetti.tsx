@@ -11,6 +11,4 @@ export const Confetti = (props) => {
   );
 };
 
-export default {
-  Confetti,
-};
+export default Confetti;
