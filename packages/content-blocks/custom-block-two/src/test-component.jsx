@@ -24,10 +24,10 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: '8px',
-    backgroundColor: '#efefef',
-  },
+  // root: {
+  //   paddingTop: '8px',
+  //   backgroundColor: '#efefef',
+  // },
   timelinedot: {
     boxShadow: 'none',
     marginTop: '20px',
@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
     width: '400px',
     textOverflow: 'ellipsis',
   },
-  addButtonText: {
-    color: '#FFFFFF',
-    fontSize: '1.3rem',
-  },
+  // addButtonText: {
+  //   color: '#FFFFFF',
+  //   fontSize: '1.3rem',
+  // },
 }));
 
 const TestComponent = (props) => {

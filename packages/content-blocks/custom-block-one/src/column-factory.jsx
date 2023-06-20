@@ -1,6 +1,5 @@
 import { default as React } from 'react';
 import ReactDOM from 'react-dom';
-import TestComponent from './test-component';
 import ColumnComponent from './column-component';
 
 export default class ColumnFactory {

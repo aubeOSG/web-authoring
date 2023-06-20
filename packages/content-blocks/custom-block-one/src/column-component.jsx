@@ -1,13 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Timeline from '@material-ui/lab/Timeline';
-import TimelineContent from '@material-ui/lab/TimelineContent';
-import TimelineDot from '@material-ui/lab/TimelineDot';
-import TimelineItem from '@material-ui/lab/TimelineItem';
-import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
-import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import { default as React } from 'react';
 
 const DEFAULT_INITIAL_DATA = () => {
@@ -26,17 +18,17 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  rootColumn: {
     paddingTop: '8px',
     width: '100%',
   },
-  rootContainerSingle: {
+  rootColumnContainerSingle: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
   },
-  rootContainer: {
+  rootColumnContainer: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
@@ -61,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '6px',
     textOverflow: 'ellipsis',
   },
-  heading: {
+  columnHeading: {
     fontSize: '2rem',
     outline: 'none',
   },
@@ -71,10 +63,14 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     display: 'flex',
   },
-  addButton: {
+  addColumnButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '50%',
+    width: '2.5rem',
+    height: '2.5rem',
     boxShadow: 'none',
-    paddingLeft: '14px',
-    paddingRight: '14px',
     position: 'absolute',
     right: '-4rem',
     backgroundColor: '#007ABA',
@@ -82,10 +78,14 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
   },
-  removeButton: {
+  removeColumnButton: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     boxShadow: 'none',
-    paddingLeft: '16.6px',
-    paddingRight: '16.6px',
+    borderRadius: '50%',
+    width: '2.5rem',
+    height: '2.5rem',
     position: 'absolute',
     right: '-1rem',
     backgroundColor: '#007ABA',
@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
   },
-  body: {
+  columnBody: {
     padding: '8px',
     fontSize: '1em',
     textOverflow: 'ellipsis',
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     resize: 'none',
   },
-  addButtonText: {
+  addColumnButtonText: {
     color: 'white',
     fontSize: '1.3rem',
   },
@@ -167,12 +167,12 @@ const ColumnComponent = (props) => {
 
   return (
     <React.Fragment>
-      <Box className={classes.root}>
+      <div className={classes.rootColumn}>
         <div
           className={
             columnData.events.length === 1
-              ? classes.rootContainerSingle
-              : classes.rootContainer
+              ? classes.rootColumnContainerSingle
+              : classes.rootColumnContainer
           }
         >
           {columnData.events.map((event, index) => (
@@ -186,7 +186,7 @@ const ColumnComponent = (props) => {
             >
               <div className={classes.headingContainer}>
                 <h2
-                  className={classes.heading}
+                  className={classes.columnHeading}
                   color="textSecondary"
                   onBlur={onContentChange(index, 'heading')}
                   contentEditable={!props.readOnly}
@@ -196,7 +196,7 @@ const ColumnComponent = (props) => {
                 </h2>
               </div>
               <div
-                className={classes.body}
+                className={classes.columnBody}
                 contentEditable={!props.readOnly}
                 id="body"
                 onBlur={onContentChange(index, 'body')}
@@ -209,22 +209,22 @@ const ColumnComponent = (props) => {
           {!props.readOnly && (
             <div className={classes.buttonContainer}>
               {columnData.events.length > 1 && (
-                <TimelineDot
-                  className={classes.removeButton}
+                <div
+                  className={classes.removeColumnButton}
                   onClick={onRemoveEvent}
                 >
-                  <Typography className={classes.addButtonText}> - </Typography>
-                </TimelineDot>
+                  <span className={classes.addColumnButtonText}> - </span>
+                </div>
               )}
               {columnData.events.length < 3 && (
-                <TimelineDot className={classes.addButton} onClick={onAddEvent}>
-                  <Typography className={classes.addButtonText}> + </Typography>
-                </TimelineDot>
+                <div className={classes.addColumnButton} onClick={onAddEvent}>
+                  <span className={classes.addColumnButtonText}> + </span>
+                </div>
               )}
             </div>
           )}
         </div>
-      </Box>
+      </div>
     </React.Fragment>
   );
 };
