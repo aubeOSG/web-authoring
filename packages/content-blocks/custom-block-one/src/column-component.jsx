@@ -30,13 +30,16 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '8px',
     width: '100%',
   },
+  rootContainerSingle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+  },
   rootContainer: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-  },
-  itemContainer: {
-    flexDirection: 'column',
   },
   itemContainerTwo: {
     flexDirection: 'column',
@@ -65,12 +68,26 @@ const useStyles = makeStyles((theme) => ({
   oppositeInButton: {
     flex: '0.14',
   },
+  buttonContainer: {
+    display: 'flex',
+  },
   addButton: {
     boxShadow: 'none',
     paddingLeft: '14px',
     paddingRight: '14px',
     position: 'absolute',
-    right: '3em',
+    right: '-4rem',
+    backgroundColor: '#007ABA',
+    '&:hover': {
+      cursor: 'pointer',
+    },
+  },
+  removeButton: {
+    boxShadow: 'none',
+    paddingLeft: '16.6px',
+    paddingRight: '16.6px',
+    position: 'absolute',
+    right: '-1rem',
     backgroundColor: '#007ABA',
     '&:hover': {
       cursor: 'pointer',
@@ -116,6 +133,14 @@ const ColumnComponent = (props) => {
     updateColumnData(newData);
   };
 
+  const onRemoveEvent = (e) => {
+    const newData = {
+      ...columnData,
+    };
+    newData.events.pop();
+    updateColumnData(newData);
+  };
+
   const onContentChange = (index, fieldName) => {
     return (e) => {
       const newData = {
@@ -143,7 +168,13 @@ const ColumnComponent = (props) => {
   return (
     <React.Fragment>
       <Box className={classes.root}>
-        <div className={classes.rootContainer}>
+        <div
+          className={
+            columnData.events.length === 1
+              ? classes.rootContainerSingle
+              : classes.rootContainer
+          }
+        >
           {columnData.events.map((event, index) => (
             <div
               className={
@@ -175,16 +206,22 @@ const ColumnComponent = (props) => {
               </div>
             </div>
           ))}
-          {!props.readOnly && columnData.events.length < 3 && (
-            <TimelineItem>
-              <TimelineOppositeContent className={classes.oppositeInButton} />
-              <TimelineSeparator>
+          {!props.readOnly && (
+            <div className={classes.buttonContainer}>
+              {columnData.events.length > 1 && (
+                <TimelineDot
+                  className={classes.removeButton}
+                  onClick={onRemoveEvent}
+                >
+                  <Typography className={classes.addButtonText}> - </Typography>
+                </TimelineDot>
+              )}
+              {columnData.events.length < 3 && (
                 <TimelineDot className={classes.addButton} onClick={onAddEvent}>
                   <Typography className={classes.addButtonText}> + </Typography>
                 </TimelineDot>
-              </TimelineSeparator>
-              <TimelineContent />
-            </TimelineItem>
+              )}
+            </div>
           )}
         </div>
       </Box>
