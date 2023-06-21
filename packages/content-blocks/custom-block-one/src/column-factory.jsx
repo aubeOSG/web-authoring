@@ -1,6 +1,7 @@
-import { default as React } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import ColumnComponent from './column-component';
+import './_styles.scss';
 
 export default class ColumnFactory {
   static get toolbox() {
@@ -31,8 +32,6 @@ export default class ColumnFactory {
   }
 
   render() {
-    console.log('factory data: ', this.data);
-
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
@@ -60,18 +59,8 @@ export default class ColumnFactory {
   }
 
   static get sanitize() {
-    console.log('SANITIZE');
     return {
       br: true,
-      data: {
-        br: true,
-        body: {
-          br: true,
-        },
-        heading: {
-          br: true,
-        },
-      },
     };
   }
 }

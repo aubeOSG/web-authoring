@@ -9,6 +9,7 @@ export default defineConfig({
       name: 'custom-block-one',
       fileName: 'custom-block-one',
     },
+    cssCodeSplit: true,
     rollupOptions: {
       external: ['react'],
       output: {

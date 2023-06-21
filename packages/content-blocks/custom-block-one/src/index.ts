@@ -1,4 +1,4 @@
-import CustomBlockOne from './component';
 import ColumnFactory from './column-factory';
+import './_styles.scss';
 
-export { CustomBlockOne, ColumnFactory };
+export { ColumnFactory };
