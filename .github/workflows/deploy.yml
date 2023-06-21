@@ -23,8 +23,6 @@ jobs:
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registry-type: public
 
       - name: Create production env
         uses: SpicyPizza/create-envfile@v2.0
@@ -44,6 +42,10 @@ jobs:
 
       - name: Build and publish image
         id: build-image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: scrowl-web-app
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker-compose --file containers/prod.docker-compose.yml --env-file ./.env build
           docker-compose --file containers/prod.docker-compose.yml --env-file ./.env push
