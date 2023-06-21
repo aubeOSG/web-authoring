@@ -1,5 +1,5 @@
 import React from 'react';
-import { TemplateSchemaContent } from '@scrowl/template-core';
+import type { TemplateSchemaContent } from '@scrowl/template-core';
 import { InputFactory } from './input-factory';
 
 export interface FormBuilderCommons {

@@ -10,7 +10,6 @@ services:
       - ../packages/editor/package.json:/usr/authoring/packages/editor/package.json
       - ../packages/editor/src/server:/usr/authoring/packages/editor/src/server
       - ../packages/editor/src/app:/usr/authoring/packages/editor/src/app
-      - ../packages/editor/src/proxy:/usr/authoring/packages/editor/src/proxy
   authoring-editor-db:
     image: '${DBIMAGE}'
     restart: 'always'

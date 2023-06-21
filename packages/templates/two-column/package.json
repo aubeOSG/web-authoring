@@ -26,7 +26,6 @@
     "prestart": "yarn run clean && rimraf dev/dist",
     "start": "cd dev && parcel serve --no-cache --open",
     "prebuild": "yarn run clean && rimraf dist",
-    "build": "parcel build --no-cache",
     "build:schema": "cd schema && parcel build --no-cache",
     "postbuild": "webpack --config webpack.config.js && yarn run build:schema"
   },

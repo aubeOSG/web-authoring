@@ -1,21 +1,9 @@
 import React from 'react';
 import type { TemplateSchema } from '@scrowl/template-core';
-import type { BlockTextProps } from '@scrowl/template-block-text';
-import type { LessonIntroProps } from '@scrowl/template-lesson-intro';
-import type { SimpleTextProps } from '@scrowl/template-simple-text';
-import type { TwoColumnProps } from '@scrowl/template-two-column';
-import type { SimpleVideoProps } from '@scrowl/template-simple-video';
-import type { QuizProps } from '@scrowl/template-quiz';
 import type { BlockEditorOutputData } from '@scrowl/content-block-editor-react';
 
 export type {
   TemplateSchema,
-  BlockTextProps,
-  LessonIntroProps,
-  SimpleTextProps,
-  TwoColumnProps,
-  SimpleVideoProps,
-  QuizProps
 }
 
 export type TemplateComponent = (TemplateElementProps) => JSX.Element;

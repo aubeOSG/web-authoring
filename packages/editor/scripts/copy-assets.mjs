@@ -50,62 +50,6 @@ const config = {
     dest: './src/main/assets/project',
     includePaths: ['../../'],
   },
-  'node_modules/@scrowl/template-block-text/dist': {
-    dest: './src/main/assets/templates/block-text',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-lesson-intro/dist': {
-    dest: './src/main/assets/templates/lesson-intro',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-simple-text/dist': {
-    dest: './src/main/assets/templates/simple-text',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-inline-text/dist': {
-    dest: './src/main/assets/templates/inline-text',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-quiz/dist': {
-    dest: './src/main/assets/templates/quiz',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-two-column/dist': {
-    dest: './src/main/assets/templates/two-column',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/template-simple-video/dist': {
-    dest: './src/main/assets/templates/simple-video',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
-  'node_modules/@scrowl/content-block-editor-react/dist/content-block-editor-react.umd.cjs': {
-    dest: './src/main/assets/project/content-block-editor-react.umd.js',
-    includePaths: ['../../'],
-    options: {
-      overwrite: true,
-    },
-  },
 };
 
 const findPath = (source, includePaths) => {
