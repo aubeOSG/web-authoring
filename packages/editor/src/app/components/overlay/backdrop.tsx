@@ -20,6 +20,4 @@ export const Backdrop = ({ onClick, ...props }) => {
   );
 };
 
-export default {
-  Backdrop,
-};
+export default Backdrop;

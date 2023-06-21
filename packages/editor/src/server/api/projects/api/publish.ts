@@ -4,10 +4,8 @@ import packager from 'simple-scorm-packager';
 import { Datetime, Str } from '@scrowl/utils';
 import type { ProjectData, ProjectFile } from '../../../../app/models/projects';
 import type { ProjectsApiPublish } from '../projects.types';
-import type { TemplateList } from '../../templates';
 import type { ApiResult } from '../../../services/requester';
 import { fs, tmpr } from '../../../services';
-import { projectPath } from '../../templates';
 
 //FIXME::slide-removal
 // export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
@@ -55,15 +53,14 @@ export const renderScormEntries = (
   { scorm, meta, ...project }: ProjectData,
   opts: {
     tmpDirId: string;
-    templates: TemplateList;
     entrySrcHTML?: string;
     entrySrcJS?: string;
   }
 ) => {
   const htmlSrc = (opts.entrySrcHTML) ? opts.entrySrcHTML : 'scorm.html.hbs';
   const jsSrc = (opts.entrySrcJS) ? opts.entrySrcJS : 'scorm.js.hbs';
-  const entryPathHTML = fs.utils.join(projectPath, htmlSrc);
-  const entryPathJS = fs.utils.join(projectPath, jsSrc);
+  const entryPathHTML = fs.utils.join(fs.projectPath, htmlSrc);
+  const entryPathJS = fs.utils.join(fs.projectPath, jsSrc);
   const osRootPath = getPathRootOS();
   const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, opts.tmpDirId, 'package');
   const tempContent = fs.utils.join(tempSource, 'content');
@@ -72,7 +69,6 @@ export const renderScormEntries = (
   const renderData = {
     // stringify the scorm data to make available to handlebar
     project: JSON.stringify(project),
-    templates: opts.templates,
     scorm: JSON.stringify(scorm),
     tmpDirId: opts.tmpDirId,
   };
@@ -119,7 +115,7 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
     fs.copySync(pathname, tempContent);
   };
 
-  fs.copySync(projectPath, tempContent, {
+  fs.copySync(fs.projectPath, tempContent, {
     overwrite: false,
     filter: (src: string) => {
       return src.indexOf('.hbs') === -1;
@@ -132,7 +128,7 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
   //   projectTemplatePaths.forEach(copyAsset);
   // }
 
-  const renderRes = renderScormEntries(projectData, { tmpDirId: id, templates: [], ...renderParams });
+  const renderRes = renderScormEntries(projectData, { tmpDirId: id, ...renderParams });
 
   renderRes.data.tmpDirId = id;
   return renderRes;

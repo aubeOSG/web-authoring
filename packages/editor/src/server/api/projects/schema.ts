@@ -1,5 +1,5 @@
 import { Schema } from '../../db';
-import { table as workspaceTable } from '../workspaces';
+import { schema as workspaceSchema } from '../workspaces';
 
 export const table: string = 'projects';
 
@@ -26,7 +26,7 @@ export const definition: Schema = [
     column: {
       name: 'workspaceId',
       type: 'foreign',
-      table: workspaceTable,
+      table: workspaceSchema.table,
     }
   },
   {

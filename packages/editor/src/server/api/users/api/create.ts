@@ -9,6 +9,16 @@ export const create: UsersApiCreate = {
   fn: async (req, res) => {
     // const payload = req.body;
     const db = connection.get();
+
+    if (!db) {
+      res.send({
+        error: true,
+        message: 'unable to create user: unable to connect to DB',
+      });
+      return;
+    };
+  
+
     const user = {
       name: 'test user'
     };

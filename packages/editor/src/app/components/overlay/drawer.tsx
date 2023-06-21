@@ -85,6 +85,4 @@ export const Drawer = ({
   );
 };
 
-export default {
-  Drawer,
-};
+export default Drawer;

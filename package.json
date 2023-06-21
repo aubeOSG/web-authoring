@@ -6,11 +6,13 @@
   "type": "module",
   "scripts": {
     "update": "lerna run build --include-dependencies && yarn workspace @scrowl/editor run copy:assets",
+    "start": "docker-compose --file containers/development.docker-compose.yml --env-file ./development.env up --build -V && docker-compose logs -f -t server",
     "start:update": "yarn run update && yarn run start",
-    "start": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env up --build -V && docker-compose logs -f -t server",
-    "serve": "yarn workspace @scrowl/editor run start",
-    "stop": "docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env down && docker-compose --file containers/web.docker-compose.yml --env-file ./dev.env rm",
-    "version": "lerna version --conventional-commits --no-git-tag-version"
+    "serve": "yarn workspace @scrowl/editor run serve",
+    "stop": "docker-compose --file containers/development.docker-compose.yml --env-file ./development.env down && docker-compose --file containers/development.docker-compose.yml --env-file ./development.env rm",
+    "version": "lerna version --conventional-commits --no-git-tag-version",
+    "prod:test": "docker-compose --file containers/production.docker-compose.yml --env-file ./production.test.env up --build -V && docker-compose logs -f -t server",
+    "deploy": "yarn workspace @scrowl/editor run deploy"
   },
   "workspaces": [
     "config",

@@ -17,6 +17,4 @@ export const Error = ({ children }) => {
   );
 };
 
-export default {
-  Error,
-};
+export default Error;

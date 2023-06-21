@@ -1,16 +1,12 @@
-import * as connection from './connection';
-import * as utils from './utls';
-import * as seed from './seed';
+import Connection from './connection';
+import Utils from './utls';
 
 export * from './db.types';
-export {
-  connection,
-  utils,
-  seed,
-};
+
+export const connection = Connection;
+export const utils = Utils;
 
 export default {
   connection,
-  utils,
-  seed,
+  utils
 };

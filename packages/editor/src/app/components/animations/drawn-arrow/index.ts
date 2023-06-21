@@ -1,1 +1,5 @@
-export * from './drawn-arrow';
+import drawnArrow from './drawn-arrow';
+
+export const DrawnArrow = drawnArrow;
+
+export default DrawnArrow;

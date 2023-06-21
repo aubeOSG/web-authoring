@@ -1,4 +1,5 @@
-import * as templater from './templater';
+import Templater from './templater';
 
-export * from './templater';
+export const templater = Templater;
+
 export default templater;

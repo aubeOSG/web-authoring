@@ -1,0 +1,49 @@
+name: Build and Deploy Image to AWS ECR
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+jobs:
+  build:
+    name: Build and Deploy to ECR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ca-central-1
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
+
+      - name: Create production env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: .env
+          envkey_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          envkey_REPOSITORY: scrowl-web-app
+          envkey_IMAGE_TAG: ${{ github.sha }}
+          envkey_SRPORT: 80
+          envkey_DBIMAGE: postgres
+          envkey_DBPASS: scrowldevwebapp
+          envkey_DBUSER: scrowldevuser
+          envkey_DBNAME: scrowldevuser
+          envkey_DBPORT: 5432
+          envkey_DBHOST: authoring-editor-db
+          envkey_DBSCHEMA: public
+
+      - name: Build and publish image
+        id: build-image
+        run: |
+          docker-compose --file containers/prod.docker-compose.yml --env-file ./.env build
+          docker-compose --file containers/prod.docker-compose.yml --env-file ./.env push

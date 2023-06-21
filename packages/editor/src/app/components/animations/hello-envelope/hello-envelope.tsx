@@ -11,6 +11,4 @@ export const HelloEnvelope = (props) => {
   );
 };
 
-export default {
-  HelloEnvelope,
-};
+export default HelloEnvelope;

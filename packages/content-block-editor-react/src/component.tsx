@@ -59,7 +59,7 @@ const BlockEditor = ({
     return () => {
       document.removeEventListener(customEventMap.ready, handleReady);
     };
-  }, [onInit, editorJS.current]);
+  }, [onInit]);
 
   useEffect(() => {
     if (!holderRef.current) {
@@ -94,7 +94,14 @@ const BlockEditor = ({
       ...(defaultValue && { data: defaultValue }),
       ...props,
     });
-  }, [holderRef.current, editorJS.current, defaultValue]);
+
+    // return () => {
+    //   if (editorJS.current) {
+    //     console.log('destroying editor');
+    //     editorJS.current.destroy();
+    //   }
+    // };
+  }, [holderRef.current]);
 
   useEffect(() => {
     if (!value) {
@@ -107,14 +114,6 @@ const BlockEditor = ({
 
     editorJS.current.render(value);
   }, [value]);
-
-  useEffect(() => {
-    return () => {
-      if (editorJS.current) {
-        editorJS.current.destroy();
-      }
-    };
-  }, []);
 
   return <div ref={holderRef} />;
 };

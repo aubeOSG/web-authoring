@@ -1,5 +1,5 @@
 import type { CopyOptionsSync } from 'fs-extra';
-import { rq } from '..';
+import type { RegisterEndpoint } from '..';
 import {
   ApiResult,
   ApiResultSuccess,
@@ -77,15 +77,15 @@ export interface FileDataResultSuccess extends Omit<ApiResultSuccess, 'data'> {
 
 export type FileDataResult = FileDataResultSuccess | ApiResultError;
 
-export interface FSApiMessage extends Omit<rq.RegisterEndpoint, 'name'> {
+export interface FSApiMessage extends Omit<RegisterEndpoint, 'name'> {
   name: '/system/message';
 }
 
-export interface FSApiSave extends Omit<rq.RegisterEndpoint, 'name'> {
+export interface FSApiSave extends Omit<RegisterEndpoint, 'name'> {
   name: '/system/save';
 }
 
-export interface FSApiOpen extends Omit<rq.RegisterEndpoint, 'name'> {
+export interface FSApiOpen extends Omit<RegisterEndpoint, 'name'> {
   name: '/system/open';
 }
 

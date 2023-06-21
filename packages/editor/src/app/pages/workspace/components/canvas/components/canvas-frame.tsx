@@ -15,7 +15,8 @@ import { Projects } from '../../../../../models';
 
 export const CanvasFrame = () => {
   const activeLesson = useActiveLesson();
-  const [content, setContent] = useState();
+  const lessonId = useRef(activeLesson.id);
+  const content = useRef(activeLesson.content);
   const isLoading = useRef(true);
   const editorInstance = useRef<BlockEditorClass | null>(null);
   const onInit = useCallback(
@@ -23,14 +24,14 @@ export const CanvasFrame = () => {
       editorInstance.current = api;
 
       if (activeLesson.content) {
-        if (!content && editorInstance.current) {
+        if (!content.current && editorInstance.current) {
           editorInstance.current.render(activeLesson.content);
         }
 
-        setContent(activeLesson.content);
+        content.current = activeLesson.content;
       }
     },
-    [activeLesson, content]
+    [activeLesson]
   );
   const onChange = useCallback(
     (
@@ -60,6 +61,23 @@ export const CanvasFrame = () => {
     }
 
     isLoading.current = false;
+
+    const updateEditor = () => {
+      if (editorInstance.current) {
+        editorInstance.current.render(activeLesson.content);
+      }
+    };
+
+    if (activeLesson.content) {
+      if (
+        lessonId.current === undefined ||
+        lessonId.current !== activeLesson.id
+      ) {
+        updateEditor();
+      }
+
+      lessonId.current = activeLesson.id;
+    }
   }, [activeLesson]);
 
   if (isLoading.current) {
@@ -69,15 +87,7 @@ export const CanvasFrame = () => {
   return (
     <div className={css.canvasFrame}>
       <Error>
-        {!content ? (
-          <BlockEditor onChange={onChange} onInit={onInit} />
-        ) : (
-          <BlockEditor
-            onChange={onChange}
-            onInit={onInit}
-            defaultValue={content}
-          />
-        )}
+        <BlockEditor onChange={onChange} onInit={onInit} />
       </Error>
     </div>
   );

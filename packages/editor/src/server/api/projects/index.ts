@@ -1,17 +1,15 @@
-import api from './api';
-import { table, definition } from './schema';
-import seed from './seed';
+import Api from './api';
+import Schema from './schema';
+import Seed from './seed';
 
 export * from './projects.types';
-export * from './schema';
-export {
-  api,
-  seed,
-};
+
+export const schema = Schema;
+export const api = Api;
+export const seed = Seed;
 
 export default {
+  schema,
   api,
-  table,
-  definition,
   seed,
 };

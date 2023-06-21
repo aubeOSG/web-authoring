@@ -1,12 +1,10 @@
-import { Knex } from 'knex';
-import {
-  workspaces,
-  projects,
-  assets,
-  users
-} from '../api/entities';
+import type { Knex } from 'knex';
+import workspaces from '../api/workspaces';
+import projects from '../api/projects';
+import assets from '../api/assets';
+import users from '../api/users';
 
-export const generate = (db: Knex) => {
+export const seed = (db: Knex) => {
   return new Promise(async (resolve, reject) => {
     try {
       console.log('seeding DB');
@@ -28,3 +26,5 @@ export const generate = (db: Knex) => {
     }
   });
 };
+
+export default seed;

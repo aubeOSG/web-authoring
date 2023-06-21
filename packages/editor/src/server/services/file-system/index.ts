@@ -1,23 +1,25 @@
-import utils from './utils';
-import readSync from './read-sync';
-import writeSync from './write-sync';
-import removeSync from './remove-sync';
-import copySync from './copy-sync';
-import renameSync from './rename-sync';
+import Utils from './utils';
+import ReadSync from './read-sync';
+import WriteSync from './write-sync';
+import RemoveSync from './remove-sync';
+import CopySync from './copy-sync';
+import RenameSync from './rename-sync';
 
 export * from './file-system.types';
 
-export {
-  utils,
-  readSync,
-  writeSync,
-  removeSync,
-  copySync,
-  renameSync,
-};
+export const utils = Utils;
+export const readSync = ReadSync;
+export const writeSync = WriteSync;
+export const removeSync = RemoveSync;
+export const copySync = CopySync;
+export const renameSync = RenameSync;
+export const assetsPath = utils.join(utils.rootPath, '../', 'main', 'assets');
+export const projectPath = utils.join(assetsPath, 'project');
 
 export default {
-  ...utils,
+  utils,
+  assetsPath,
+  projectPath,
   readSync,
   writeSync,
   removeSync,

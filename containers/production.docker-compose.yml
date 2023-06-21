@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  authoring-editor-db:
+    image: '${DBIMAGE}'
+    restart: 'always'
+    ports:
+      - '${DBPORT}:${DBPORT}'
+    environment:
+      POSTGRES_PASSWORD: '${DBPASS}'
+      POSTGRES_USER: '${DBUSER}'
+  authoring-editor-server:
+    image: '${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}'
+    build:
+      context: ../
+      dockerfile: containers/production.dockerfile
+    depends_on:
+      - authoring-editor-db
+    ports:
+      - '${SRPORT}:${SRPORT}'

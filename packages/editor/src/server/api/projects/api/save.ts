@@ -21,6 +21,17 @@ export const update = async (payload: ProjectData) => {
   }
 
   const db = connection.get();
+
+  if (!db) {
+    return {
+      error: true,
+      message: 'unable to save project: unable to connect to DB',
+      data: {
+        payload,
+      },
+    };
+  };
+
   const { modules, lessons, glossary, resources, ...projectData } = payload;
   const project = {
     modules: JSON.stringify(modules),

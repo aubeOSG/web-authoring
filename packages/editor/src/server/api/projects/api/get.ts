@@ -19,6 +19,18 @@ export const get: ProjectsApiGet = {
 
     const db = connection.get();
 
+    if (!db) {
+      res.send({
+        error: true,
+        message: 'unable to get project: unable to connect to DB',
+        data: {
+          projectId,
+          workspaceId,
+        },
+      });
+      return;
+    };
+
     try {
       let data:Array<ProjectData> = []
 

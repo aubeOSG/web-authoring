@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { rq, menu, events } from '../../services';
-
-export type ContextMenuProps = React.AllHTMLAttributes<HTMLDivElement>;
+import { ContextMenuProps } from './overlay.types';
 
 export const Menu = ({ ...props }: ContextMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);

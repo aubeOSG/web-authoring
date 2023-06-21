@@ -27,6 +27,4 @@ export const ProjectSearch = ({ value, onChange }: ProjectSearchProps) => {
   );
 };
 
-export default {
-  ProjectSearch,
-};
+export default ProjectSearch;
