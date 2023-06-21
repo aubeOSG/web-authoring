@@ -1,5 +1,5 @@
 import ADM from 'adm-zip';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 import packager from 'simple-scorm-packager';
 import { Datetime, Str } from '@scrowl/utils';
 import type { ProjectData, ProjectFile } from '../../../../app/models/projects';
@@ -105,7 +105,7 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
   entrySrcHTML?: string;
   entrySrcJS?: string;
 }) => {
-  const id = uuid.v4();
+  const id = uuid();
   const osRootPath = getPathRootOS();
   const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, id, 'package');
   const tempContent = fs.utils.join(tempSource, 'content');
