@@ -47,5 +47,5 @@ jobs:
           REPOSITORY: scrowl-web-app
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker-compose --file containers/prod.docker-compose.yml --env-file ./.env build
-          docker-compose --file containers/prod.docker-compose.yml --env-file ./.env push
+          docker-compose --file containers/production.docker-compose.yml --env-file ./.env build
+          docker-compose --file containers/production.docker-compose.yml --env-file ./.env push
