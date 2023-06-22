@@ -7,7 +7,12 @@ import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import CustomBlockOne from '@scrowl/custom-block-one';
-import { BlockEditorClass, BlockEditorOutputData, BlockEditorConfig } from './component.types';
+import CustomBlockThree from '@scrowl/custom-block-three';
+import {
+  BlockEditorClass,
+  BlockEditorOutputData,
+  BlockEditorConfig,
+} from './component.types';
 
 export class BlockEditor implements BlockEditorClass {
   private _editor: EditorJS;
@@ -16,6 +21,10 @@ export class BlockEditor implements BlockEditorClass {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
         class: CustomBlockOne.CustomBlockOneFactory,
+        inlineToolbar: true,
+      },
+      customBlockThree: {
+        class: CustomBlockThree.IntroductionFactory,
         inlineToolbar: true,
       },
       customBlockReact: {
@@ -53,14 +62,6 @@ export class BlockEditor implements BlockEditorClass {
       ...tools,
     };
 
-    console.log('Custom Paragraph: ', CustomBlockOne);
-    console.log(
-      'Custom Paragraph factory: ',
-      CustomBlockOne.CustomBlockOneFactory
-    );
-
-    console.log('Paragraph ', Paragraph);
-
     this._editor = new EditorJS({
       tools: extendTools,
       ...config,
@@ -81,7 +82,7 @@ export class BlockEditor implements BlockEditorClass {
     return this._editor.save();
   }
 
-  public async render (data: BlockEditorOutputData) {
+  public async render(data: BlockEditorOutputData) {
     await this._editor.blocks.render(data);
   }
 
