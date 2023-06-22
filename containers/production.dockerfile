@@ -24,4 +24,6 @@ COPY ./packages/editor ./packages/editor
 RUN yarn install
 RUN yarn update
 
+EXPOSE 80
+
 CMD ["yarn", "deploy"]
