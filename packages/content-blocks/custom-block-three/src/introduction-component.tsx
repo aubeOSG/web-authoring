@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-// import './_styles.scss';
+import { Clock } from './assets/clock';
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
     events: [
       {
-        'heading': 'Heading 1',
-        'body': 'Body 1',
-      },
-      {
-        'heading': 'Heading 2',
-        'body': 'Body 2',
+        'title': 'Introduction',
+        'subtitle': 'Subtitle Here',
+        'time': '15 min',
+        'startLabel': 'Start',
       },
     ],
   };
@@ -19,110 +17,78 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const IntroductionComponent = (props) => {
   // const classes = useStyles();
-  const [columnData, setColumnData] = React.useState(
+  const [introData, setIntroData] = React.useState(
     props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
   );
+  const Scrowl = window['Scrowl'];
 
-  const updateColumnData = (newData) => {
-    console.log('update new data: ', newData);
-    setColumnData(newData);
+  const updateIntroData = (newData) => {
+    setIntroData(newData);
     if (props.onDataChange) {
       // Inform editorjs about data change
       props.onDataChange(newData);
     }
   };
 
-  const onAddEvent = (e) => {
-    const newData = {
-      ...columnData,
-    };
-    newData.events.push({
-      'heading': 'Heading',
-      'body': 'Body',
-    });
-    updateColumnData(newData);
-  };
-
-  const onRemoveEvent = (e) => {
-    const newData = {
-      ...columnData,
-    };
-    newData.events.pop();
-    updateColumnData(newData);
-  };
-
   const onContentChange = (index, fieldName) => {
     return (e) => {
       const newData = {
-        ...columnData,
+        ...introData,
       };
 
       if (e.currentTarget.innerHTML) {
         newData.events[index][fieldName] = e.currentTarget.innerHTML;
       }
 
-      updateColumnData(newData);
+      updateIntroData(newData);
     };
   };
 
   return (
     <React.Fragment>
-      <div className="root-column">
-        <div
-          className={
-            columnData.events.length === 1
-              ? 'root-column-container-single'
-              : 'root-column-container'
-          }
-        >
-          {columnData.events.map((event, index) => (
-            <div
-              className={
-                columnData.events.length < 3
-                  ? 'item-container-two'
-                  : 'item-container-three'
-              }
-              key={index}
-            >
-              <div className="heading-container">
-                <h2
-                  className="column-heading"
-                  onBlur={onContentChange(index, 'heading')}
+      <div className="root-introduction">
+        {introData.events.map((event, index) => (
+          <div className="introduction" key={index}>
+            <div className="title-container">
+              <h1
+                className="introduction-title"
+                onBlur={onContentChange(index, 'title')}
+                contentEditable={!props.readOnly}
+                suppressContentEditableWarning={!props.readOnly}
+                dangerouslySetInnerHTML={{ __html: event.title }}
+              ></h1>
+              <h2
+                className="introduction-subtitle"
+                onBlur={onContentChange(index, 'subtitle')}
+                contentEditable={!props.readOnly}
+                suppressContentEditableWarning={!props.readOnly}
+                dangerouslySetInnerHTML={{ __html: event.subtitle }}
+              ></h2>
+            </div>
+            <div className="start-container">
+              <div className="time-container">
+                <span className="time-icon">
+                  <Clock />
+                </span>
+                <p
+                  className="introduction-time"
+                  onBlur={onContentChange(index, 'time')}
                   contentEditable={!props.readOnly}
                   suppressContentEditableWarning={!props.readOnly}
-                  dangerouslySetInnerHTML={{ __html: event.heading }}
-                ></h2>
+                  dangerouslySetInnerHTML={{ __html: event.time }}
+                ></p>
               </div>
-              <div
+
+              <button
+                className="introduction-start-button"
+                onBlur={onContentChange(index, 'startLabel')}
                 contentEditable={!props.readOnly}
-                onBlur={onContentChange(index, 'body')}
                 suppressContentEditableWarning={!props.readOnly}
-                className="column-body"
-                dangerouslySetInnerHTML={{ __html: event.body }}
-              />
+                dangerouslySetInnerHTML={{ __html: event.startLabel }}
+              ></button>
             </div>
-          ))}
-          {!props.readOnly && (
-            <div>
-              {columnData.events.length > 1 && (
-                <div
-                  className="column-button remove-column-button"
-                  onClick={onRemoveEvent}
-                >
-                  <span className="column-button-text"> - </span>
-                </div>
-              )}
-              {columnData.events.length < 3 && (
-                <div
-                  className="column-button add-column-button"
-                  onClick={onAddEvent}
-                >
-                  <span className="column-button-text"> + </span>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
     </React.Fragment>
   );

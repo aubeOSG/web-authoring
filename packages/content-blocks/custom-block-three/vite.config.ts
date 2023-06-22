@@ -9,6 +9,7 @@ export default defineConfig({
       name: 'custom-block-three',
       fileName: 'custom-block-three',
     },
+    cssCodeSplit: true,
     rollupOptions: {
       external: ['react'],
       output: {

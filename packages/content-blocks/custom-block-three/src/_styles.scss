@@ -1,0 +1,56 @@
+.root-introduction {
+  padding: 4rem;
+}
+
+.introduction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  &-title {
+    outline: none;
+    font-size: 4rem;
+  }
+
+  &-subtitle {
+    outline: none;
+    font-weight: 600;
+  }
+
+  &-time {
+    outline: none;
+    margin-bottom: 0;
+    margin-left: 0.25rem;
+  }
+
+  &-start-button {
+    outline: none;
+    border: transparent solid 2px;
+    background-color: inherit;
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    transition: color 0.25s ease, border 0.25s ease;
+
+    &:hover {
+      border: #007aba solid 2px;
+      color: #007aba;
+      cursor: pointer;
+    }
+  }
+
+  .start-container {
+    margin-top: 5rem;
+
+    .time-icon {
+      height: 1rem;
+    }
+
+    .time-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+  }
+}
