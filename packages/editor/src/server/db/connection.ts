@@ -16,6 +16,7 @@ export const config: Config = {
 
 export const get = (): Knex | undefined => {
   try {
+    console.log(`connecting to: ${config.name} - on: ${config.host} - with: ${config.user}`);
     return knex({
       client: 'pg',
       connection: {
