@@ -65,6 +65,7 @@
     "@editorjs/table": "^2.2.1",
     "@scrowl/content-block-editor": "^2.27.0",
     "@scrowl/custom-block-one": "^0.0.1",
-    "@scrowl/custom-block-three": "^0.0.1"
+    "@scrowl/custom-block-three": "^0.0.1",
+    "@scrowl/custom-block-two": "^0.0.1"
   }
 }

@@ -9,6 +9,7 @@ COPY ./packages/content-block-editor/package.json ./packages/content-block-edito
 COPY ./packages/content-block-editor-react/package.json ./packages/content-block-editor-react/package.json
 COPY ./packages/content-blocks/custom-block-one/package.json ./packages/content-blocks/custom-block-one/package.json
 COPY ./packages/content-blocks/custom-block-three/package.json ./packages/content-blocks/custom-block-three/package.json
+COPY ./packages/content-blocks/custom-block-two/package.json ./packages/content-blocks/custom-block-two/package.json
 COPY ./packages/ui/package.json ./packages/ui/package.json
 COPY ./packages/templates/core/package.json ./packages/templates/core/package.json
 COPY ./packages/player/package.json ./packages/player/package.json
@@ -24,6 +25,7 @@ COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/content-blocks/custom-block-one ./packages/content-blocks/custom-block-one
 COPY ./packages/content-blocks/custom-block-three ./packages/content-blocks/custom-block-three
+COPY ./packages/content-blocks/custom-block-two ./packages/content-blocks/custom-block-two
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/player ./packages/player

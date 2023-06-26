@@ -8,6 +8,7 @@ import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import CustomBlockOne from '@scrowl/custom-block-one';
 import CustomBlockThree from '@scrowl/custom-block-three';
+import CustomBlockTwo from '@scrowl/custom-block-two';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -20,7 +21,7 @@ export class BlockEditor implements BlockEditorClass {
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
-        class: CustomBlockOne.CustomBlockOneFactory,
+        class: CustomBlockOne.ColumnFactory,
         inlineToolbar: true,
       },
       customBlockThree: {
@@ -28,7 +29,7 @@ export class BlockEditor implements BlockEditorClass {
         inlineToolbar: true,
       },
       customBlockReact: {
-        class: CustomBlockOne.ReactFactory,
+        class: CustomBlockTwo.ReactFactory,
         inlineToolbar: true,
       },
       checklist: {
