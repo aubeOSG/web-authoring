@@ -1,6 +1,9 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 export const schema = 'public';
 export const api = '/api';
-export const port = 8000;
+export const port = process.env.SRPORT;
 export const timeout = 1000;
 
 export default {

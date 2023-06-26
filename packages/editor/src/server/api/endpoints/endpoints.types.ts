@@ -1,6 +1,6 @@
-import { rq } from '../../services';
+import type { RegisterEndpoint } from '../../services';
 
-export interface EndpointsApiGet extends Omit<rq.RegisterEndpoint, 'name'> {
+export interface EndpointsApiGet extends Omit<RegisterEndpoint, 'name'> {
   name: '/endpoints';
 };
 

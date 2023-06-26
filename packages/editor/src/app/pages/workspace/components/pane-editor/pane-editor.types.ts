@@ -1,4 +1,4 @@
-import { InputProps } from '@scrowl/template-core';
+import type { InputProps } from '@scrowl/template-core';
 
 export type {
   InputProps,

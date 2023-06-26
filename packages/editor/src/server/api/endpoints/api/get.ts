@@ -1,5 +1,5 @@
 import { rq } from '../../../services';
-import { EndpointsApiGet } from '../endpoints.types';
+import type { EndpointsApiGet } from '../endpoints.types';
 
 export const get: EndpointsApiGet = {
   name: '/endpoints',

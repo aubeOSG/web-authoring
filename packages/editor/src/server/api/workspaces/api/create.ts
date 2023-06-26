@@ -19,6 +19,19 @@ export const create: WorkspacesApiCreate = {
     }
 
     const db = connection.get();
+
+    if (!db) {
+      res.send({
+        error: true,
+        message: 'unable to create workspace: unable to connect to DB',
+        data: {
+          payload,
+        },
+      });
+      return;
+    };
+  
+
     const workspace = {
       userId: payload.userId,
     };

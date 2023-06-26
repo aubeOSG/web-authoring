@@ -1,4 +1,4 @@
-import express from 'express';
+import type { Handler } from 'express';
 
 export type {
   JSON_DATA,
@@ -18,7 +18,7 @@ export interface RegisterEndpoint {
   name: string;
   type: RegisterEndpointType;
   method?: 'GET' | 'POST';
-  fn?: express.Handler;
+  fn?: Handler;
 }
 
 export interface RegisterEndpoints {

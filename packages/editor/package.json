@@ -19,32 +19,38 @@
   "homepage": "https://github.com/scrowl-io/web-authoring/packages/editor#readme",
   "scripts": {
     "copy:assets": "node ./scripts/copy-assets.mjs",
-    "prestart": "rimraf web && webpack",
-    "start": "cross-env NODE_ENV=development concurrently \"yarn start:proxy\" \"yarn start:app\" \"yarn start:server\" \"yarn reload:server\"",
-    "start:proxy": "nodemon --watch src/proxy.ts --exec webpack",
-    "start:app": "parcel watch --target app --no-cache",
-    "start:server": "wait-on ./web/app.html && parcel watch --target server --no-cache",
-    "reload:server": "wait-on ./web/server.js && nodemon --watch ./web/server.js --exec node ./web/server.js"
+    "preserve": "rimraf dist",
+    "serve": "cross-env NODE_ENV=development concurrently \"yarn serve:app\" \"yarn serve:server\" \"yarn reload:server\"",
+    "serve:app": "parcel watch --target app --no-cache",
+    "serve:server": "wait-on ./dist/app.html && parcel watch --target server --no-cache",
+    "reload:server": "wait-on ./dist/server.js && nodemon --watch ./dist/server.js --exec node ./dist/server.js",
+    "prebuild": "rimraf dist",
+    "build": "cross-env NODE_ENV=production concurrently \"yarn run build:app\" \"yarn run build:server\"",
+    "build:app": "parcel build --target app --no-cache",
+    "build:server": "parcel build --target server --no-cache",
+    "deploy": "cross-env NODE_ENV=production node ./dist/server.js"
   },
-  "app": "./web/app.html",
-  "server": "./web/server.js",
+  "main": "./dist/server.js",
+  "app": "./dist/app.html",
+  "server": "./dist/server.js",
   "targets": {
     "main": false,
     "server": {
       "context": "node",
       "source": "./src/server/index.ts",
-      "engines": {
-        "node": "16.15.1"
-      }
+      "includeNodeModules": false
     },
     "app": {
       "context": "browser",
       "isLibrary": false,
       "includeNodeModules": true,
       "source": "./src/app/index.html",
-      "distDir": "./web",
       "publicUrl": "/public"
     }
+  },
+  "@parcel/transformer-js": {
+    "inlineFS": false,
+    "inlineEnvironment": false
   },
   "eslintConfig": {
     "extends": "@scrowl/config"
@@ -75,13 +81,9 @@
     "@types/react-redux": "^7.1.24",
     "@types/sharp": "^0.31.0",
     "@types/uuid": "^8.3.4",
-    "body-parser": "^1.20.1",
     "concurrently": "^7.4.0",
-    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.0.3",
     "eslint": "^8.25.0",
-    "express": "^4.18.2",
     "nodemon": "^2.0.20",
     "parcel": "2.8.3",
     "postcss": "^8.4.17",
@@ -91,8 +93,7 @@
     "process": "^0.11.10",
     "rimraf": "^3.0.2",
     "stylelint": "^14.13.0",
-    "wait-on": "^6.0.1",
-    "webpack-merge": "^5.8.0"
+    "wait-on": "^6.0.1"
   },
   "dependencies": {
     "@popperjs/core": "2.11.6",
@@ -100,19 +101,16 @@
     "@scrowl/content-block-editor-react": "^0.0.1",
     "@scrowl/player": "^0.0.100",
     "@scrowl/runtime": "^0.0.100",
-    "@scrowl/template-block-text": "^1.0.99",
     "@scrowl/template-core": "^1.0.99",
-    "@scrowl/template-inline-text": "^1.0.99",
-    "@scrowl/template-lesson-intro": "^1.0.99",
-    "@scrowl/template-quiz": "^1.0.99",
-    "@scrowl/template-simple-text": "^1.0.99",
-    "@scrowl/template-simple-video": "^1.0.99",
-    "@scrowl/template-two-column": "^1.0.99",
     "@scrowl/ui": "^0.0.40",
     "@scrowl/utils": "^0.0.0",
     "adm-zip": "^0.5.9",
     "axios": "^1.2.1",
+    "body-parser": "^1.20.2",
     "bootstrap": "^5.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "framer-motion": "^7.5.3",
     "fs-extra": "^10.1.0",
     "handlebars": "^4.7.7",

@@ -1,2 +1,9 @@
+import text from './text';
+
 export * from './inline-inputs.types';
-export * from './text';
+
+export const Text = text;
+
+export default {
+  Text,
+};

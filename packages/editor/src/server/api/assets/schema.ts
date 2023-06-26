@@ -1,9 +1,9 @@
 import { Schema } from '../../db';
-import { table as workspaceTable } from '../workspaces';
+import { schema as workspaceSchema } from '../workspaces';
 
-const table: string = 'assets';
+export const table: string = 'assets';
 
-const definition: Schema = [
+export const definition: Schema = [
   {
     column: {
       name: 'id',
@@ -14,7 +14,7 @@ const definition: Schema = [
     column: {
       name: 'workspaceId',
       type: 'foreign',
-      table: workspaceTable,
+      table: workspaceSchema.table,
     }
   },
   {
@@ -85,12 +85,7 @@ const definition: Schema = [
   },
 ];
 
-const schema = {
-  table,
-  definition,
-};
-
-export {
+export const schema = {
   table,
   definition,
 };

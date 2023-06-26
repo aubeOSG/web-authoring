@@ -11,6 +11,4 @@ export const Trophy = (props) => {
   );
 };
 
-export default {
-  Trophy,
-};
+export default Trophy;

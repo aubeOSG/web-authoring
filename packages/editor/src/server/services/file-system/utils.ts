@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'node:os';
 import fs from 'fs-extra';
-import { rq } from '../';
+import type { ApiResult } from '../';
 
 export const basePath = process.env.PWD;
 export const rootPath = path.join(basePath || '', 'src', 'server');
@@ -27,7 +27,7 @@ export const getExt = (pathname: string) => {
   return path.extname(pathname);
 };
 
-export const exists = (pathname: string): rq.ApiResult => {
+export const exists = (pathname: string): ApiResult => {
   try {
     return {
       error: false,

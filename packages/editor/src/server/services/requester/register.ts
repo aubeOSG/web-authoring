@@ -1,12 +1,12 @@
-import express from 'express';
-import {
+import type { Router } from 'express';
+import type {
   RegisterEndpoint,
   RegisterEndpoints,
 } from './requester.types';
 
 export const ENDPOINTS: Array<RegisterEndpoint> = [];
 
-export const add = (router: express.Router, endpoint: RegisterEndpoint) => {
+export const add = (router: Router, endpoint: RegisterEndpoint) => {
   switch (endpoint.type) {
     case 'invoke':
       if (!endpoint.fn || typeof endpoint.fn !== 'function') {
@@ -47,7 +47,7 @@ export const add = (router: express.Router, endpoint: RegisterEndpoint) => {
   }
 };
 
-export const addAll = (router: express.Router, endpoints: RegisterEndpoints) => {
+export const addAll = (router: Router, endpoints: RegisterEndpoints) => {
   for (const key in endpoints) {
     add(router, endpoints[key]);
   }

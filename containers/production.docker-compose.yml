@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  authoring-editor-server:
+    image: '${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}'
+    build:
+      context: ../
+      dockerfile: containers/production.dockerfile
+    ports:
+      - '${SRPORT}:${SRPORT}'

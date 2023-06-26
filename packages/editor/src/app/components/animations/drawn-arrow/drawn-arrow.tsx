@@ -52,6 +52,4 @@ export const DrawnArrow = (props) => {
   );
 };
 
-export default {
-  DrawnArrow,
-};
+export default DrawnArrow;

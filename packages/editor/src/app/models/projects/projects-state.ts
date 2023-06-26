@@ -135,6 +135,11 @@ export const config: stateManager.StateConfig = {
           case 'lesson':
             name = 'Untitled Lesson';
             outlineList = state.data.lessons;
+            data.content = {
+              blocks: [],
+              time: new Date().valueOf(),
+              version: '2.27.0',
+            };
             break;
         }
 

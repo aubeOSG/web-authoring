@@ -1,0 +1,59 @@
+name: Build and Deploy Image to AWS ECR
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+jobs:
+  build:
+    name: Build and Deploy to ECR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION_NAME }}
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Create production env
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: .env
+          envkey_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          envkey_REPOSITORY: ${{ secrets.AWS_ECR_NAME }}
+          envkey_IMAGE_TAG: ${{ github.sha }}
+          envkey_SRPORT: ${{ secrets.AWS_APP_PORT }}
+          envkey_DBPASS: ${{ secrets.AWS_DB_PASS }}
+          envkey_DBUSER: ${{ secrets.AWS_DB_USER }}
+          envkey_DBNAME: ${{ secrets.AWS_DB_NAME }}
+          envkey_DBPORT: ${{ secrets.AWS_DB_PORT }}
+          envkey_DBHOST: ${{ secrets.AWS_DB_HOST }}
+          envkey_DBSCHEMA: public
+
+      - name: Build and publish image
+        id: build-image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ secrets.AWS_ECR_NAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker-compose --file containers/production.docker-compose.yml --env-file ./.env build
+          docker-compose --file containers/production.docker-compose.yml --env-file ./.env push
+          echo "image=${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: aws/task-definitions/deploy.json
+          container-name: authoring-editor-server
+          image: ${{ steps.build-image.outputs.image }}

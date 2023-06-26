@@ -7,7 +7,7 @@ import { Modal, filter } from '../';
 import { Projects } from '../../models';
 import { Workspace } from '../../pages';
 import { sys, events } from '../../services';
-import { ProjectSearch } from './';
+import { ProjectSearch } from './project-search';
 import { List, Elem } from '@scrowl/utils';
 
 const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
@@ -356,6 +356,4 @@ export const ProjectBrowser = (props) => {
   return <ProjectBrowserRef ref={overlayRef} isOpen={isOpen} {...props} />;
 };
 
-export default {
-  ProjectBrowser,
-};
+export default ProjectBrowser;

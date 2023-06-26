@@ -2,7 +2,7 @@
   "extends": "@scrowl/config/tsconfig",
   "compilerOptions": {
     "types": ["@scrowl/config/src/typings"],
-    "outDir": "dist",
+    "outDir": "web",
     "noEmit": false,
     "declaration": false,
     "declarationMap": false

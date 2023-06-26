@@ -59,3 +59,5 @@ export interface ModalProps extends React.AllHTMLAttributes<HTMLDivElement> {
   onClose: () => void;
   modalSize?: 'sm' | 'md' | 'lg';
 }
+
+export type ContextMenuProps = React.AllHTMLAttributes<HTMLDivElement>;
