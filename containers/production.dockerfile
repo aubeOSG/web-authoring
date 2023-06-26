@@ -14,9 +14,9 @@ COPY ./packages/utils ./packages/utils
 COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
-COPY ./packages/content-blocks/content-block-columns ./packages/content-blocks/content-block-columns
-COPY ./packages/content-blocks/content-block-introduction ./packages/content-blocks/content-block-introduction
-COPY ./packages/content-blocks/content-block-timeline ./packages/content-blocks/content-block-timeline
+COPY ./packages/content-blocks/columns ./packages/content-blocks/columns
+COPY ./packages/content-blocks/introduction ./packages/content-blocks/introduction
+COPY ./packages/content-blocks/timeline ./packages/content-blocks/timeline
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/player ./packages/player
