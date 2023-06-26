@@ -8,7 +8,7 @@ import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import CustomBlockOne from '@scrowl/content-block-columns';
 import CustomBlockThree from '@scrowl/content-block-introduction';
-import CustomBlockTwo from '@scrowl/custom-block-two';
+import TimelineComponent from '@scrowl/content-block-timeline';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -29,7 +29,7 @@ export class BlockEditor implements BlockEditorClass {
         inlineToolbar: true,
       },
       customBlockReact: {
-        class: CustomBlockTwo.ReactFactory,
+        class: TimelineComponent.ReactFactory,
         inlineToolbar: true,
       },
       checklist: {

@@ -66,6 +66,6 @@
     "@scrowl/content-block-editor": "^2.27.0",
     "@scrowl/content-block-columns": "^0.0.1",
     "@scrowl/content-block-introduction": "^0.0.1",
-    "@scrowl/custom-block-two": "^0.0.1"
+    "@scrowl/content-block-timeline": "^0.0.1"
   }
 }

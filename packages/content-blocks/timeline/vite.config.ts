@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'custom-block-two',
-      fileName: 'custom-block-two',
+      name: 'content-block-timeline',
+      fileName: 'content-block-timeline',
     },
     rollupOptions: {
       external: ['react'],

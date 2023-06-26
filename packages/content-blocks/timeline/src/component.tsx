@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 
-const CustomBlockTwo = () => {
+const TimelineComponent = () => {
   return <div>Hello World</div>;
 };
 
-export { CustomBlockTwo };
+export { TimelineComponent };
 
-export default CustomBlockTwo;
+export default TimelineComponent;
