@@ -6,8 +6,9 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
-import CustomBlockOne from '@scrowl/custom-block-one';
-import CustomBlockTwo from '@scrowl/custom-block-two';
+import CustomBlockOne from '@scrowl/content-block-columns';
+import CustomBlockThree from '@scrowl/content-block-introduction';
+import TimelineComponent from '@scrowl/content-block-timeline';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -23,8 +24,12 @@ export class BlockEditor implements BlockEditorClass {
         class: CustomBlockOne.ColumnFactory,
         inlineToolbar: true,
       },
+      customBlockThree: {
+        class: CustomBlockThree.IntroductionFactory,
+        inlineToolbar: true,
+      },
       customBlockReact: {
-        class: CustomBlockTwo.ReactFactory,
+        class: TimelineComponent.ReactFactory,
         inlineToolbar: true,
       },
       checklist: {
