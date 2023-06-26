@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import utils from '../../utils';
 //@ts-ignore
 import * as _css from './_navbar.scss';
+import { useCurrentLesson } from '../../hooks/state/course';
 
 const css = utils.css.removeMapPrefix(_css);
 
 export const NavModule = ({ pageId, config, mIdx }) => {
   const Scrowl = window['Scrowl'];
   const [isOpen, setIsOpen] = useState(true);
+  const currentLesson = useCurrentLesson();
 
   return (
     <div>
@@ -37,7 +39,13 @@ export const NavModule = ({ pageId, config, mIdx }) => {
                       display="outlined"
                       className={css.lessonIconActive}
                     />
-                    <p className={`${css.lessonLink}`}>{lessonName}</p>
+                    <p
+                      className={`${css.lessonLink} ${
+                        currentLesson.index === lIdx ? css.lessonLinkActive : ''
+                      }`}
+                    >
+                      {lessonName}
+                    </p>
                   </span>
                 </Link>
               </li>

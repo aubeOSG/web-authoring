@@ -6,10 +6,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'custom-block-one',
-      fileName: 'custom-block-one',
+      name: 'custom-block-two',
+      fileName: 'custom-block-two',
     },
-    cssCodeSplit: true,
     rollupOptions: {
       external: ['react'],
       output: {

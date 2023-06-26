@@ -14,6 +14,7 @@ import utils from '../../utils';
 import * as _css from '../../root/_root.scss';
 import { NavBar } from '../../components/navbar';
 import { BoundaryError, Page } from '../../components';
+import { useUpdateCurrentLesson } from '../../hooks/state/course';
 
 const css = utils.css.removeMapPrefix(_css);
 
@@ -91,6 +92,9 @@ const PageContainer = ({
     lIdx
   );
   const quizAttempt = createQuizAttempts(id, page);
+  const updateCurrentLesson = useUpdateCurrentLesson();
+
+  updateCurrentLesson({ id: page.lesson.id.toString(), index: lIdx });
 
   if (!page.lesson.attempts) {
     page.lesson.attempts = [];

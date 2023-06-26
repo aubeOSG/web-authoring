@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 
-const CustomBlockOne = () => {
+const CustomBlockTwo = () => {
   return <div>Hello World</div>;
 };
 
-export { CustomBlockOne };
+export { CustomBlockTwo };
 
-export default CustomBlockOne;
+export default CustomBlockTwo;
