@@ -14,7 +14,7 @@ COPY ./packages/utils ./packages/utils
 COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
-COPY ./packages/content-blocks/custom-block-one ./packages/content-blocks/custom-block-one
+COPY ./packages/content-blocks/content-block-columns ./packages/content-blocks/content-block-columns
 COPY ./packages/content-blocks/custom-block-three ./packages/content-blocks/custom-block-three
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core

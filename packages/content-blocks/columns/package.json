@@ -1,5 +1,5 @@
 {
-  "name": "@scrowl/custom-block-one",
+  "name": "@scrowl/content-block-columns",
   "version": "0.0.1",
   "description": "",
   "license": "MIT",
@@ -20,14 +20,14 @@
     "build": "vite build"
   },
   "type": "module",
-  "main": "./dist/custom-block-one.umd.cjs",
-  "module": "./dist/custom-block-one.js",
+  "main": "./dist/content-block-columns.umd.cjs",
+  "module": "./dist/content-block-columns.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/custom-block-one.umd.cjs",
-      "default": "./dist/custom-block-one.umd.cjs",
-      "import": "./dist/custom-block-one.js"
+      "require": "./dist/content-block-columns.umd.cjs",
+      "default": "./dist/content-block-columns.umd.cjs",
+      "import": "./dist/content-block-columns.js"
     }
   },
   "files": [

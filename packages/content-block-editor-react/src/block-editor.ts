@@ -6,7 +6,7 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
-import CustomBlockOne from '@scrowl/custom-block-one';
+import CustomBlockOne from '@scrowl/content-block-columns';
 import CustomBlockThree from '@scrowl/custom-block-three';
 import CustomBlockTwo from '@scrowl/custom-block-two';
 import {

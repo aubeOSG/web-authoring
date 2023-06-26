@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'custom-block-one',
-      fileName: 'custom-block-one',
+      name: 'content-block-columns',
+      fileName: 'content-block-columns',
     },
     cssCodeSplit: true,
     rollupOptions: {
