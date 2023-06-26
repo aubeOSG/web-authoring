@@ -20,7 +20,6 @@ const IntroductionComponent = (props) => {
   const [introData, setIntroData] = React.useState(
     props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
   );
-  const Scrowl = window['Scrowl'];
 
   const updateIntroData = (newData) => {
     setIntroData(newData);
