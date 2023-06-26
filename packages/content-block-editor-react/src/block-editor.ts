@@ -6,8 +6,14 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
+import DragDrop from 'editorjs-drag-drop';
+import Undo from 'editorjs-undo';
 import CustomBlockOne from '@scrowl/custom-block-one';
-import { BlockEditorClass, BlockEditorOutputData, BlockEditorConfig } from './component.types';
+import {
+  BlockEditorClass,
+  BlockEditorOutputData,
+  BlockEditorConfig,
+} from './component.types';
 
 export class BlockEditor implements BlockEditorClass {
   private _editor: EditorJS;
@@ -53,17 +59,17 @@ export class BlockEditor implements BlockEditorClass {
       ...tools,
     };
 
-    console.log('Custom Paragraph: ', CustomBlockOne);
-    console.log(
-      'Custom Paragraph factory: ',
-      CustomBlockOne.CustomBlockOneFactory
-    );
-
-    console.log('Paragraph ', Paragraph);
+    const handleReady = (editor) => {
+      new Undo({ editor });
+      new DragDrop(editor);
+    };
 
     this._editor = new EditorJS({
       tools: extendTools,
       ...config,
+      onReady: () => {
+        handleReady(this._editor);
+      },
     });
 
     console.log('constructor editor ', this._editor);
@@ -81,7 +87,7 @@ export class BlockEditor implements BlockEditorClass {
     return this._editor.save();
   }
 
-  public async render (data: BlockEditorOutputData) {
+  public async render(data: BlockEditorOutputData) {
     await this._editor.blocks.render(data);
   }
 
