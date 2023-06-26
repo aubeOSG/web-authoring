@@ -8,7 +8,7 @@ COPY ./plugins/postcss-prefixer/package.json ./plugins/postcss-prefixer/package.
 COPY ./packages/content-block-editor/package.json ./packages/content-block-editor/package.json
 COPY ./packages/content-block-editor-react/package.json ./packages/content-block-editor-react/package.json
 COPY ./packages/content-blocks/content-block-columns/package.json ./packages/content-blocks/content-block-columns/package.json
-COPY ./packages/content-blocks/custom-block-three/package.json ./packages/content-blocks/custom-block-three/package.json
+COPY ./packages/content-blocks/content-block-introduction/package.json ./packages/content-blocks/content-block-introduction/package.json
 COPY ./packages/content-blocks/custom-block-two/package.json ./packages/content-blocks/custom-block-two/package.json
 COPY ./packages/ui/package.json ./packages/ui/package.json
 COPY ./packages/templates/core/package.json ./packages/templates/core/package.json
@@ -24,7 +24,7 @@ COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/content-blocks/content-block-columns ./packages/content-blocks/content-block-columns
-COPY ./packages/content-blocks/custom-block-three ./packages/content-blocks/custom-block-three
+COPY ./packages/content-blocks/content-block-introduction ./packages/content-blocks/content-block-introduction
 COPY ./packages/content-blocks/custom-block-two ./packages/content-blocks/custom-block-two
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core

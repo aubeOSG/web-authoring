@@ -6,8 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'custom-block-three',
-      fileName: 'custom-block-three',
+      name: 'content-block-introduction',
+      fileName: 'content-block-introduction',
     },
     cssCodeSplit: true,
     rollupOptions: {

@@ -7,7 +7,7 @@ import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import CustomBlockOne from '@scrowl/content-block-columns';
-import CustomBlockThree from '@scrowl/custom-block-three';
+import CustomBlockThree from '@scrowl/content-block-introduction';
 import CustomBlockTwo from '@scrowl/custom-block-two';
 import {
   BlockEditorClass,
