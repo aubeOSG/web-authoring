@@ -6,7 +6,7 @@ import { BoundaryError } from '../';
 export const Page = ({ lesson }: PageProps) => {
   return (
     <BoundaryError>
-      <BlockEditor defaultValue={lesson.content} readOnly={true} />
+      <BlockEditor defaultValue={lesson.content} readOnly={false} />
     </BoundaryError>
   );
 };
