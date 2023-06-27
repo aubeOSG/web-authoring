@@ -22,6 +22,7 @@ export const CanvasFrame = () => {
   const onInit = useCallback(
     (api) => {
       editorInstance.current = api;
+      lessonId.current = activeLesson.id;
 
       if (activeLesson.content) {
         if (!content.current && editorInstance.current) {

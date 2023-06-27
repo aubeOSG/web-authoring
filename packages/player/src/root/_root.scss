@@ -35,6 +35,19 @@ body {
   width: 100%;
   position: relative;
   z-index: 0;
+
+  .content-block-columns-container {
+    display: flex !important;
+
+    .cdx-quote__text {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+    }
+
+    .cdx-quote__caption {
+      margin-left: 0.5rem;
+    }
+  }
 }
 
 .next-lesson-container {

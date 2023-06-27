@@ -9,9 +9,11 @@ import Table from "@editorjs/table";
 import DragDrop from 'editorjs-drag-drop';
 import Undo from 'editorjs-undo';
 import { UnderlineInlineTool } from 'editorjs-inline-tool';
-import CustomBlockOne from '@scrowl/custom-block-one';
 import { SmallInlineTool, MarkInlineTool } from '@scrowl/custom-inline-tools';
 
+import CustomBlockOne from '@scrowl/content-block-columns';
+import CustomBlockThree from '@scrowl/content-block-introduction';
+import TimelineComponent from '@scrowl/content-block-timeline';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -24,11 +26,15 @@ export class BlockEditor implements BlockEditorClass {
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
-        class: CustomBlockOne.CustomBlockOneFactory,
+        class: CustomBlockOne.ColumnFactory,
+        inlineToolbar: true,
+      },
+      customBlockThree: {
+        class: CustomBlockThree.IntroductionFactory,
         inlineToolbar: true,
       },
       customBlockReact: {
-        class: CustomBlockOne.ReactFactory,
+        class: TimelineComponent.ReactFactory,
         inlineToolbar: true,
       },
       checklist: {

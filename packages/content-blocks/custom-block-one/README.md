@@ -1,1 +1,0 @@
-# Scrowl React EditorJS

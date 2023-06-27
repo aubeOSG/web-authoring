@@ -64,10 +64,12 @@
     "@editorjs/quote": "^2.5.0",
     "@editorjs/table": "^2.2.1",
     "@scrowl/content-block-editor": "^2.27.0",
-    "@scrowl/custom-block-one": "^0.0.1",
     "@scrowl/custom-inline-tools": "^0.0.1",
     "editorjs-drag-drop": "^1.1.13",
     "editorjs-inline-tool": "^0.4.0",
-    "editorjs-undo": "^2.0.22"
+    "editorjs-undo": "^2.0.22",
+    "@scrowl/content-block-columns": "^0.0.1",
+    "@scrowl/content-block-introduction": "^0.0.1",
+    "@scrowl/content-block-timeline": "^0.0.1"
   }
 }
