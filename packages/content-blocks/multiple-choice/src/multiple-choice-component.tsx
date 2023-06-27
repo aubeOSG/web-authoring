@@ -1,17 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import './_styles.scss';
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
+    // question: 'What does AODA stand for?',
     events: [
       {
-        'heading': 'Heading 1',
-        'body': 'Body 1',
+        'content': 'What does AODA stand for?',
       },
       {
-        'heading': 'Heading 2',
-        'body': 'Body 2',
+        'content': 'Accessibility for Ontarians with Disabilities Act',
+      },
+      {
+        'content': "Association for Ontario's Disabled Adults.",
+      },
+      {
+        'content': 'Act for Ontarians with Disabilities and Afflictions',
       },
     ],
   };
@@ -19,13 +23,13 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const MultipleChoiceComponent = (props) => {
   // const classes = useStyles();
-  const [columnData, setColumnData] = React.useState(
+  const [questionsData, setQuestionsData] = React.useState(
     props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
   );
 
   const updateColumnData = (newData) => {
     console.log('update new data: ', newData);
-    setColumnData(newData);
+    setQuestionsData(newData);
     if (props.onDataChange) {
       // Inform editorjs about data change
       props.onDataChange(newData);
@@ -34,18 +38,17 @@ const MultipleChoiceComponent = (props) => {
 
   const onAddEvent = (e) => {
     const newData = {
-      ...columnData,
+      ...questionsData,
     };
     newData.events.push({
-      'heading': 'Heading',
-      'body': 'Body',
+      'content': 'Answer text here...',
     });
     updateColumnData(newData);
   };
 
   const onRemoveEvent = (e) => {
     const newData = {
-      ...columnData,
+      ...questionsData,
     };
     newData.events.pop();
     updateColumnData(newData);
@@ -54,7 +57,7 @@ const MultipleChoiceComponent = (props) => {
   const onContentChange = (index, fieldName) => {
     return (e) => {
       const newData = {
-        ...columnData,
+        ...questionsData,
       };
 
       if (e.currentTarget.innerHTML) {
@@ -67,57 +70,46 @@ const MultipleChoiceComponent = (props) => {
 
   return (
     <React.Fragment>
-      <div className="root-column">
-        <div
-          className={
-            columnData.events.length === 1
-              ? 'root-column-container-single'
-              : 'root-column-container'
-          }
-        >
-          {columnData.events.map((event, index) => (
-            <div
-              className={
-                columnData.events.length < 3
-                  ? 'item-container-two'
-                  : 'item-container-three'
-              }
-              key={index}
-            >
-              <div className="heading-container">
-                <h2
-                  className="column-heading"
-                  onBlur={onContentChange(index, 'heading')}
+      <div className="root-multiple-choice">
+        <div className="root-multiple-choice-container">
+          {questionsData.events.map((event, index) => (
+            <div className="event-container" key={index}>
+              {index === 0 && (
+                <h4
+                  className="question-content"
+                  onBlur={onContentChange(index, 'content')}
                   contentEditable={!props.readOnly}
                   suppressContentEditableWarning={!props.readOnly}
-                  dangerouslySetInnerHTML={{ __html: event.heading }}
-                ></h2>
-              </div>
-              <div
-                contentEditable={!props.readOnly}
-                onBlur={onContentChange(index, 'body')}
-                suppressContentEditableWarning={!props.readOnly}
-                className="column-body"
-                dangerouslySetInnerHTML={{ __html: event.body }}
-              />
+                  dangerouslySetInnerHTML={{ __html: event.content }}
+                ></h4>
+              )}
+              {index !== 0 && (
+                <div
+                  contentEditable={!props.readOnly}
+                  onBlur={onContentChange(index, 'content')}
+                  suppressContentEditableWarning={!props.readOnly}
+                  className="answer-content"
+                  dangerouslySetInnerHTML={{ __html: event.content }}
+                />
+              )}
             </div>
           ))}
           {!props.readOnly && (
             <div>
-              {columnData.events.length > 1 && (
+              {questionsData.events.length > 3 && (
                 <div
-                  className="column-button remove-column-button"
+                  className="answer-button remove-answer-button"
                   onClick={onRemoveEvent}
                 >
-                  <span className="column-button-text"> - </span>
+                  <span className="answer-button-text"> - </span>
                 </div>
               )}
-              {columnData.events.length < 3 && (
+              {questionsData.events.length < 6 && (
                 <div
-                  className="column-button add-column-button"
+                  className="answer-button add-answer-button"
                   onClick={onAddEvent}
                 >
-                  <span className="column-button-text"> + </span>
+                  <span className="answer-button-text"> + </span>
                 </div>
               )}
             </div>
