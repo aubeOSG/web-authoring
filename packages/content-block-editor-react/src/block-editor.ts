@@ -8,7 +8,10 @@ import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import DragDrop from 'editorjs-drag-drop';
 import Undo from 'editorjs-undo';
+import { UnderlineInlineTool } from 'editorjs-inline-tool';
 import CustomBlockOne from '@scrowl/custom-block-one';
+import { SmallInlineTool, MarkInlineTool } from '@scrowl/custom-inline-tools';
+
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -56,6 +59,9 @@ export class BlockEditor implements BlockEditorClass {
         class: Table,
         inlineToolbar: false,
       },
+      underline: UnderlineInlineTool,
+      small: SmallInlineTool,
+      mark: MarkInlineTool,
       ...tools,
     };
 

@@ -15,6 +15,8 @@ COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/content-blocks/custom-block-one ./packages/content-blocks/custom-block-one
+COPY ./packages/content-blocks/custom-inline-blocks ./packages/content-blocks/custom-inline-blocks
+
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/player ./packages/player
