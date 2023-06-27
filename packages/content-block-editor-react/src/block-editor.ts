@@ -6,10 +6,16 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
+import Embed from '@editorjs/embed';
 import DragDrop from 'editorjs-drag-drop';
 import Undo from 'editorjs-undo';
+// import HyperLink from 'editorjs-hyperlink';
 import { UnderlineInlineTool } from 'editorjs-inline-tool';
-import { SmallInlineTool, MarkInlineTool } from '@scrowl/custom-inline-tools';
+import {
+  SmallInlineTool,
+  LargeInlineTool,
+  MarkInlineTool,
+} from '@scrowl/custom-inline-tools';
 
 import CustomBlockOne from '@scrowl/content-block-columns';
 import CustomBlockThree from '@scrowl/content-block-introduction';
@@ -67,7 +73,20 @@ export class BlockEditor implements BlockEditorClass {
       },
       underline: UnderlineInlineTool,
       small: SmallInlineTool,
+      large: LargeInlineTool,
       mark: MarkInlineTool,
+      // hyperlink: {
+      //   class: HyperLink,
+      //   config: {
+      //     shortcut: 'CMD+L',
+      //     target: '_blank',
+      //     rel: 'nofollow',
+      //     availableTargets: ['_blank', '_self'],
+      //     availableRels: ['author', 'noreferrer'],
+      //     validate: false,
+      //   },
+      // },
+      embed: Embed,
       ...tools,
     };
 

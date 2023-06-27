@@ -1,3 +1,7 @@
-import { SmallInlineTool, MarkInlineTool } from './inline-tools';
+import {
+  SmallInlineTool,
+  LargeInlineTool,
+  MarkInlineTool,
+} from './inline-tools';
 
-export { SmallInlineTool, MarkInlineTool };
+export { SmallInlineTool, LargeInlineTool, MarkInlineTool };

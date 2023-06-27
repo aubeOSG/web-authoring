@@ -589,6 +589,11 @@
   resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.27.0.tgz#ec2d6e2f42d1aa84d13eaea6a9c48b4324972c59"
   integrity sha512-XyPnvu61Ynk4k7R/1gVYUJjrtuf9Tf0A+CZuvp2suW4z5TNHqNjBa9vRdr3ngHzhNSoZvgstrOO3zCVqVTezPg==
 
+"@editorjs/embed@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@editorjs/embed/-/embed-2.5.3.tgz#83a9e2fa74f065ba90863b34e1dcc21389cb83da"
+  integrity sha512-+X0xX2tiwQjU/B2rPDv8DOwg0suiqrt2h/o9frjR308YuY1VTpqjLRF1lIV4TmelQyVr9cXkZruaa4Ty1wvfJg==
+
 "@editorjs/header@^2.7.0":
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/@editorjs/header/-/header-2.7.0.tgz#755d104a9210a8e2d9ccf22b175b2a93bdbb2330"
@@ -5593,6 +5598,11 @@ editorjs-html@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/editorjs-html/-/editorjs-html-3.4.2.tgz#1ebe6b6631e3011ef974bb52727f645464c84428"
   integrity sha512-Gy8FV4oHMvnPDXLsdpZYW0Dgjaagff9bPd28/WW9aFdy87FvktJxQz8H+NKpxiGcGoNY27MmjFffurK2yhXjEg==
+
+editorjs-hyperlink@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/editorjs-hyperlink/-/editorjs-hyperlink-1.0.6.tgz#f75ba7d3e8dab4527993ed165fd44cbfcae3a672"
+  integrity sha512-E8UZA9AM3jPwMTE40ul4eGCFzH3+XoUR5YRCy5O1+Yrl5UZQXeJppZ0IHHKaNmHAikDN9dUbKGLabxXZkPRi9w==
 
 editorjs-inline-tool@^0.4.0:
   version "0.4.0"

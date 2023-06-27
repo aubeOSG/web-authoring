@@ -4,20 +4,31 @@ export const MarkInlineTool = createGenericInlineTool({
   sanitize: {
     mark: {},
   },
-  shortcut: 'CMD+N',
+  shortcut: 'CMD+K',
   tagName: 'MARK',
   toolboxIcon:
     // icon editor-js uses
-    "<svg fill='#000000' width='800px' height='800px' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><g id='Highlighter_pen'><path d='M451.4692,125.4041,380.5656,54.5016a13.1093,13.1093,0,0,0-17.7457-.7327L164.9985,221.3722,284.6018,340.9744l167.6-197.8225A13.11,13.11,0,0,0,451.4692,125.4041Z'/><rect height='172.7608' transform='translate(-166.0416 227.6148) rotate(-45)' width='41.0143' x='171.2274' y='227.8569'/><path d='M94.5521,363.7306,142.2413,411.42c18.5232-11.008,40.65-15.58,63.1619-17.3911l-93.46-93.46C110.1316,323.08,105.56,345.2073,94.5521,363.7306Z'/><path d='M58.6143,403.6279a6.5743,6.5743,0,0,0-1.2732,7.5013l22.3748,46.4866a6.5746,6.5746,0,0,0,10.5723,1.7965l31.4111-31.4111L77.9706,384.2726Z'/></g></svg>",
+    "<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'><path d='M80 0v-121h800V0H80Zm501-474L466-589 284-407l115 115 182-182Zm-72-158 115 115 186-186-115-115-186 186Zm-64-21 200 200-194 194q-19 19-52.5 19T346-259l-11-11-43 43H137l120-120-4-4q-22-22-21.5-55.5T254-462l191-191Zm0 0 210-210q17-17 43-17t43 17l112 112q17 17 16.5 45.5T852-660L645-453 445-653Z'/></svg>",
 });
 
 export const SmallInlineTool = createGenericInlineTool({
   sanitize: {
     small: {},
   },
-  shortcut: 'CMD+M',
+  shortcut: 'CMD+G',
   tagName: 'SMALL',
   toolboxIcon:
     // icon editor-js uses
-    "<svg fill='#000000' width='800px' height='800px' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><g id='Highlighter_pen'><path d='M451.4692,125.4041,380.5656,54.5016a13.1093,13.1093,0,0,0-17.7457-.7327L164.9985,221.3722,284.6018,340.9744l167.6-197.8225A13.11,13.11,0,0,0,451.4692,125.4041Z'/><rect height='172.7608' transform='translate(-166.0416 227.6148) rotate(-45)' width='41.0143' x='171.2274' y='227.8569'/><path d='M94.5521,363.7306,142.2413,411.42c18.5232-11.008,40.65-15.58,63.1619-17.3911l-93.46-93.46C110.1316,323.08,105.56,345.2073,94.5521,363.7306Z'/><path d='M58.6143,403.6279a6.5743,6.5743,0,0,0-1.2732,7.5013l22.3748,46.4866a6.5746,6.5746,0,0,0,10.5723,1.7965l31.4111-31.4111L77.9706,384.2726Z'/></g></svg>",
+    "<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'><path d='m40-200 220-560h80l220 560h-75l-57-150H172l-57 150H40Zm156-214h208L302-685h-4L196-414Zm414-36v-60h310v60H610Z'/></svg>",
+});
+
+export const LargeInlineTool = createGenericInlineTool({
+  sanitize: {
+    small: {},
+  },
+  shortcut: 'CMD+O',
+  tagName: 'BIG',
+  toolboxIcon:
+    // icon editor-js uses
+    "<svg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'><path d='m40-200 220-560h80l220 560h-75l-57-150H172l-57 150H40Zm156-214h208L302-685h-4L196-414Zm534 94v-130H600v-60h130v-130h60v130h130v60H790v130h-60Z'/></svg>",
 });
