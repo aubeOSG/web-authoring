@@ -105,6 +105,7 @@
     "@scrowl/ui": "^0.0.40",
     "@scrowl/utils": "^0.0.0",
     "adm-zip": "^0.5.9",
+    "aws-sdk": "^2.1405.0",
     "axios": "^1.2.1",
     "body-parser": "^1.20.2",
     "bootstrap": "^5.2.2",

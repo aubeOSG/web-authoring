@@ -6,6 +6,7 @@ import routes from './routes';
 import { port } from './config';
 import { connection } from './db';
 import seed from './db/seed';
+import { aws } from './services';
 
 const app = express();
 const db = connection.get();
@@ -21,6 +22,13 @@ routes.init(app);
 const serveApp = () => {
   app.listen(port, () => {
     console.info(`Scrowl Web Server running at http://localhost:${port}/app`);
+    const bucket = new aws.Bucket();
+
+    bucket.list().then((data) => {
+      console.log('bucket', data);
+    }, (e) => {
+      console.error('unable to list bucket', e);
+    });
   });
 };
 
