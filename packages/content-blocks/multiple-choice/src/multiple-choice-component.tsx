@@ -26,9 +26,19 @@ const DEFAULT_INITIAL_DATA = () => {
 
 const MultipleChoiceComponent = (props) => {
   // const classes = useStyles();
-  const [questionsData, setQuestionsData] = React.useState(
-    props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
-  );
+  const loadedData = props.data;
+  let questionsData;
+  let setQuestionsData;
+
+  if (loadedData.events.length > 0) {
+    console.log('wrong. ', loadedData);
+    [questionsData, setQuestionsData] = React.useState(loadedData);
+  } else {
+    [questionsData, setQuestionsData] = React.useState(DEFAULT_INITIAL_DATA);
+  }
+  // const [questionsData, setQuestionsData] = React.useState(
+  //   props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
+  // );
 
   console.log('props: ', props);
   console.log('questionsData: ', questionsData);

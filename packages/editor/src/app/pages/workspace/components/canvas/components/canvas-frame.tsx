@@ -24,6 +24,8 @@ export const CanvasFrame = () => {
       editorInstance.current = api;
       lessonId.current = activeLesson.id;
 
+      console.log('----lesson ID: ', lessonId);
+
       if (activeLesson.content) {
         if (!content.current && editorInstance.current) {
           editorInstance.current.render(activeLesson.content);
@@ -61,9 +63,12 @@ export const CanvasFrame = () => {
       return;
     }
 
+    console.log('active lesson: ', activeLesson);
+
     isLoading.current = false;
 
     const updateEditor = () => {
+      console.log('update? ');
       if (editorInstance.current) {
         editorInstance.current.render(activeLesson.content);
       }
@@ -79,6 +84,7 @@ export const CanvasFrame = () => {
 
       lessonId.current = activeLesson.id;
     }
+    console.log('editor instance: ', editorInstance);
   }, [activeLesson]);
 
   if (isLoading.current) {

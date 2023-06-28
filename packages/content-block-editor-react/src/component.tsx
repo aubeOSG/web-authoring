@@ -61,7 +61,10 @@ const BlockEditor = ({
     };
   }, [onInit]);
 
+  console.log('COMP holder ref: ', holderRef.current);
+
   useEffect(() => {
+    console.log('USEEFFECT holder ref: ', holderRef.current);
     if (!holderRef.current) {
       console.info('block-editor::no holder ref');
       return;
