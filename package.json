@@ -13,7 +13,7 @@
     "version": "lerna version --conventional-commits --no-git-tag-version",
     "prod:test": "docker-compose --file containers/production.docker-compose.yml --env-file ./production.test.env up --build -V && docker-compose logs -f -t server",
     "deploy": "yarn workspace @scrowl/editor run deploy",
-    "create:devenv": "node ./aws/scripts/create-dev-env.js"
+    "create:envs": "node ./aws/scripts/create-envs.js"
   },
   "workspaces": [
     "config",

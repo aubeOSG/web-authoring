@@ -108,3 +108,4 @@ dist
 packages/editor/src/app/proxy-web.js
 packages/editor/src/app/proxy-web.js.map
 development.env
+production.test.env

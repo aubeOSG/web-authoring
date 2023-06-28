@@ -24,10 +24,10 @@ try {
 }
 
 try {
-  let envFile = '';
   const secret = JSON.parse(response.SecretString);
-  const envFilename = 'development.env';
-  const envData = {
+  let envDevFile = '';
+  const envDevFilename = 'development.env';
+  const envDevData = {
     SRPORT: "8000",
     DBIMAGE: "postgres",
     DBPASS: "scrowldevwebapp",
@@ -38,12 +38,26 @@ try {
     DBSCHEMA: "public",
     ...secret,
   };
+  let envProdTestFile = '';
+  const envProdTestFilename = 'production.test.env';
+  const envProdTestData = {
+    ...envDevData,
+    SRPORT: "80",
+    REGISTRY: "localhost/test",
+    REPOSITORY: "scrowl-web-app",
+    IMAGE_TAG: "latest",
+  };
 
-  for (const [key, value] of Object.entries(envData)) {
-    envFile += `${key}=${value}\n`;
+  for (const [key, value] of Object.entries(envDevData)) {
+    envDevFile += `${key}=${value}\n`;
   }
 
-  fs.writeFileSync(path.join('./', envFilename), envFile);
+  for (const [key, value] of Object.entries(envProdTestData)) {
+    envProdTestFile += `${key}=${value}\n`;
+  }
+
+  fs.writeFileSync(path.join('./', envDevFilename), envDevFile);
+  fs.writeFileSync(path.join('./', envProdTestFilename), envProdTestFile);
 } catch (e) {
   throw e;
 }
