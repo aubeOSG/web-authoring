@@ -8,6 +8,7 @@ services:
       - '${SRPORT}:${SRPORT}'
     volumes:
       - ../packages/editor/package.json:/usr/authoring/packages/editor/package.json
+      - ../packages/editor/src/main:/usr/authoring/packages/editor/src/main
       - ../packages/editor/src/server:/usr/authoring/packages/editor/src/server
       - ../packages/editor/src/app:/usr/authoring/packages/editor/src/app
   authoring-editor-db:

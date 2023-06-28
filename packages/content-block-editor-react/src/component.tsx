@@ -61,10 +61,7 @@ const BlockEditor = ({
     };
   }, [onInit]);
 
-  console.log('COMP holder ref: ', holderRef.current);
-
   useEffect(() => {
-    console.log('USEEFFECT holder ref: ', holderRef.current);
     if (!holderRef.current) {
       console.info('block-editor::no holder ref');
       return;
@@ -73,7 +70,7 @@ const BlockEditor = ({
     if (editorJS.current) {
       return;
     }
-
+    console.log('lesson testing :: editor - new factory');
     editorJS.current = factory({
       holder: holderRef.current,
       onChange: (
@@ -118,7 +115,11 @@ const BlockEditor = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return <div ref={holderRef} />;
+  useEffect(() => {
+    console.log('lesson testing :: editor - id and ref has changed');
+  }, [props.id, holderRef]);
+
+  return <div ref={holderRef} {...props} />;
 };
 
 export { BlockEditor };

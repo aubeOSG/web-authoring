@@ -12,6 +12,11 @@ export const make = () => {
     moduleId: 0,
     id: 0,
     name: 'Introduction',
+    content: {
+      blocks: [],
+      time: new Date().valueOf(),
+      version: '2.27.0',
+    },
   });
 
   return project;

@@ -7,32 +7,15 @@ import type {
 } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
 import { Error } from '../../../../../components';
-import {
-  useActiveLesson,
-  setActiveLesson,
-} from '../../../page-workspace-hooks';
+import { setActiveLesson } from '../../../page-workspace-hooks';
 import { Projects } from '../../../../../models';
 
-export const CanvasFrame = () => {
-  const activeLesson = useActiveLesson();
-  const lessonId = useRef(activeLesson.id);
-  const content = useRef(activeLesson.content);
-  const isLoading = useRef(true);
+export const CanvasFrame = ({ activeLesson }) => {
+  const lessonId = useRef<number | null>(activeLesson.id);
   const editorInstance = useRef<BlockEditorClass | null>(null);
   const onInit = useCallback(
     (api) => {
       editorInstance.current = api;
-      lessonId.current = activeLesson.id;
-
-      console.log('----lesson ID: ', lessonId);
-
-      if (activeLesson.content) {
-        if (!content.current && editorInstance.current) {
-          editorInstance.current.render(activeLesson.content);
-        }
-
-        content.current = activeLesson.content;
-      }
     },
     [activeLesson]
   );
@@ -53,48 +36,41 @@ export const CanvasFrame = () => {
         };
         setActiveLesson(lessonUpdate);
         Projects.setLesson(lessonUpdate);
+        console.log('lesson update', lessonUpdate);
       });
     },
     [activeLesson]
   );
 
   useEffect(() => {
-    if (!activeLesson) {
+    if (!activeLesson.id) {
       return;
     }
 
-    console.log('active lesson: ', activeLesson);
-
-    isLoading.current = false;
-
     const updateEditor = () => {
-      console.log('update? ');
+      console.log('updating on lesson change');
       if (editorInstance.current) {
         editorInstance.current.render(activeLesson.content);
       }
     };
 
-    if (activeLesson.content) {
-      if (
-        lessonId.current === undefined ||
-        lessonId.current !== activeLesson.id
-      ) {
-        updateEditor();
-      }
-
+    if (lessonId.current !== activeLesson.id) {
       lessonId.current = activeLesson.id;
+      updateEditor();
     }
-    console.log('editor instance: ', editorInstance);
-  }, [activeLesson]);
+  }, [activeLesson.id]);
 
-  if (isLoading.current) {
-    return <div>...Loading</div>;
-  }
+  console.log('lesson testing :: app - canvas frame', activeLesson.content);
 
   return (
     <div className={css.canvasFrame}>
       <Error>
-        <BlockEditor onChange={onChange} onInit={onInit} />
+        <BlockEditor
+          id={activeLesson.id}
+          onChange={onChange}
+          onInit={onInit}
+          defaultValue={activeLesson.content}
+        />
       </Error>
     </div>
   );
