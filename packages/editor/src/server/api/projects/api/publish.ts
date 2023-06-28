@@ -1,4 +1,3 @@
-import ADM from 'adm-zip';
 import { v4 as uuid } from 'uuid';
 import packager from 'simple-scorm-packager';
 import { Datetime, Str } from '@scrowl/utils';
@@ -212,27 +211,25 @@ export const publish: ProjectsApiPublish = {
       return;
     }
 
-    try {
-      const zip = new ADM(packageRes.data.filename);
-      const fileData = zip.toBuffer();
-      const fileName = fs.utils.getFilename(packageRes.data.filename);
-      const fileType = 'application/zip';
+    res.setHeader('content-type', 'application/zip');
 
-      res.set('Content-Type', fileType);
-      res.set('Content-Disposition', `attachment; filename=${fileName}`);
-      res.set('Content-Length', `${fileData.length}`);
-      res.send(fileData);
-    } catch (err) {
-      res.send({
+    const stream = fs.createReadStream(packageRes.data.filename);
+
+    stream.on('error', (err) => {
+      res.status(500).send({
         error: true,
         message: 'unable to publish: unexpected error',
         data: {
           trace: err,
         },
       });
-    }
+    });
 
-    cleanupTempDir(generationRes.data.tmpDirId);
+    stream.on('close', () => {
+      cleanupTempDir(generationRes.data.tmpDirId);
+    });
+
+    stream.pipe(res);
   },
 };
 
