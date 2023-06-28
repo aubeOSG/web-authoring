@@ -37,12 +37,14 @@ try {
     DBHOST: "authoring-editor-db",
     DBSCHEMA: "public",
     ...secret,
+    AWS_BUCKET_FOLDER: "development",
   };
   let envProdTestFile = '';
   const envProdTestFilename = 'production.test.env';
   const envProdTestData = {
     ...envDevData,
     SRPORT: "80",
+    AWS_BUCKET_FOLDER: "production",
     REGISTRY: "localhost/test",
     REPOSITORY: "scrowl-web-app",
     IMAGE_TAG: "latest",

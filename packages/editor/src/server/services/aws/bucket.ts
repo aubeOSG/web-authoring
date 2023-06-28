@@ -7,19 +7,19 @@ aws.config.update({
 
 export default class BucketFactory {
   private _s3: aws.S3;
-  private _params: {
-    Bucket: string;
-  };
+  private _params: aws.S3.Types.ListObjectsV2Request;
 
   constructor () {
     this._s3 = new aws.S3();
     this._params = {
       Bucket: config.bucket,
+      Prefix: `${config.bucketFolder}/`,
     };
   }
 
   public list () {
     return new Promise((resolve, reject) => {
+      console.log('params', this._params);
       this._s3.listObjectsV2(this._params, (err, data) => {
         if (err) {
           reject(err);
