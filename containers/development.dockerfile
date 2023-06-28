@@ -8,6 +8,7 @@ COPY ./plugins/postcss-prefixer/package.json ./plugins/postcss-prefixer/package.
 COPY ./packages/content-block-editor/package.json ./packages/content-block-editor/package.json
 COPY ./packages/content-block-editor-react/package.json ./packages/content-block-editor-react/package.json
 COPY ./packages/content-blocks/columns/package.json ./packages/content-blocks/columns/package.json
+COPY ./packages/content-blocks/multiple-choice/package.json ./packages/content-blocks/columns/package.json
 COPY ./packages/content-blocks/introduction/package.json ./packages/content-blocks/introduction/package.json
 COPY ./packages/content-blocks/timeline/package.json ./packages/content-blocks/timeline/package.json
 COPY ./packages/ui/package.json ./packages/ui/package.json
@@ -24,6 +25,7 @@ COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/content-blocks/columns ./packages/content-blocks/columns
+COPY ./packages/content-blocks/multiple-choice ./packages/content-blocks/multiple-choice
 COPY ./packages/content-blocks/introduction ./packages/content-blocks/introduction
 COPY ./packages/content-blocks/timeline ./packages/content-blocks/timeline
 COPY ./packages/ui ./packages/ui

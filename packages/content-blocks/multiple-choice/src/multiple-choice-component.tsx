@@ -10,12 +10,15 @@ const DEFAULT_INITIAL_DATA = () => {
       },
       {
         'content': 'Accessibility for Ontarians with Disabilities Act',
+        'correctness': true,
       },
       {
         'content': "Association for Ontario's Disabled Adults.",
+        'correctness': false,
       },
       {
         'content': 'Act for Ontarians with Disabilities and Afflictions',
+        'correctness': false,
       },
     ],
   };
@@ -27,7 +30,10 @@ const MultipleChoiceComponent = (props) => {
     props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
   );
 
-  const updateColumnData = (newData) => {
+  console.log('props: ', props);
+  console.log('questionsData: ', questionsData);
+
+  const updateMultipleChoiceData = (newData) => {
     console.log('update new data: ', newData);
     setQuestionsData(newData);
     if (props.onDataChange) {
@@ -42,8 +48,9 @@ const MultipleChoiceComponent = (props) => {
     };
     newData.events.push({
       'content': 'Answer text here...',
+      'correctness': false,
     });
-    updateColumnData(newData);
+    updateMultipleChoiceData(newData);
   };
 
   const onRemoveEvent = (e) => {
@@ -51,7 +58,30 @@ const MultipleChoiceComponent = (props) => {
       ...questionsData,
     };
     newData.events.pop();
-    updateColumnData(newData);
+    updateMultipleChoiceData(newData);
+  };
+
+  const onCorrectnessChange = (index) => {
+    return (e) => {
+      const newData = {
+        ...questionsData,
+      };
+
+      console.log('new Data: ', newData);
+
+      console.log('index: ', index);
+      console.log(
+        "events[index]['correctness']: ",
+        newData.events[index]['correctness']
+      );
+
+      console.log('event.currentTarget: ', e.currentTarget);
+      console.log('event.currentTarget.checked: ', e.currentTarget.checked);
+
+      newData.events[index]['correctness'] =
+        !newData.events[index]['correctness'];
+      updateMultipleChoiceData(newData);
+    };
   };
 
   const onContentChange = (index, fieldName) => {
@@ -64,7 +94,7 @@ const MultipleChoiceComponent = (props) => {
         newData.events[index][fieldName] = e.currentTarget.innerHTML;
       }
 
-      updateColumnData(newData);
+      updateMultipleChoiceData(newData);
     };
   };
 
@@ -84,13 +114,21 @@ const MultipleChoiceComponent = (props) => {
                 ></h4>
               )}
               {index !== 0 && (
-                <div
-                  contentEditable={!props.readOnly}
-                  onBlur={onContentChange(index, 'content')}
-                  suppressContentEditableWarning={!props.readOnly}
-                  className="answer-content"
-                  dangerouslySetInnerHTML={{ __html: event.content }}
-                />
+                <div className="answer-container">
+                  <input
+                    value={event.correctness}
+                    type="checkbox"
+                    checked={event.correctness}
+                    onChange={onCorrectnessChange(index)}
+                  />
+                  <div
+                    contentEditable={!props.readOnly}
+                    onBlur={onContentChange(index, 'content')}
+                    suppressContentEditableWarning={!props.readOnly}
+                    className="answer-content"
+                    dangerouslySetInnerHTML={{ __html: event.content }}
+                  />
+                </div>
               )}
             </div>
           ))}
