@@ -36,7 +36,6 @@ export const CanvasFrame = ({ activeLesson }) => {
         };
         setActiveLesson(lessonUpdate);
         Projects.setLesson(lessonUpdate);
-        console.log('lesson update', lessonUpdate);
       });
     },
     [activeLesson]
@@ -48,7 +47,6 @@ export const CanvasFrame = ({ activeLesson }) => {
     }
 
     const updateEditor = () => {
-      console.log('updating on lesson change');
       if (editorInstance.current) {
         editorInstance.current.render(activeLesson.content);
       }
@@ -59,8 +57,6 @@ export const CanvasFrame = ({ activeLesson }) => {
       updateEditor();
     }
   }, [activeLesson.id]);
-
-  console.log('lesson testing :: app - canvas frame', activeLesson.content);
 
   return (
     <div className={css.canvasFrame}>

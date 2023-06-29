@@ -16,11 +16,11 @@ const BlockEditor = ({
   id,
   ...props
 }: BlockEditorProps) => {
-  const logCallout = '\n\n---------\n\n';
   const factory = useCallback((config: BlockEditorConfig) => {
     return new BlockEditorFactory(config);
   }, []);
-  const idRef = useRef<string | number>(id || '');
+  const elemId = id.toString();
+  const idRef = useRef<string>('');
   const holderRef = useRef<HTMLDivElement>(null);
   const editorJS = useRef<BlockEditorClass | null>(null);
   const customEventMap = {
@@ -64,30 +64,17 @@ const BlockEditor = ({
     };
   }, [onInit]);
 
-  console.log('hey hey');
-
   useEffect(() => {
-    console.log('helloworld');
     if (!holderRef.current) {
       console.info('block-editor::no holder ref');
       return;
     }
 
-    if (idRef.current === id) {
+    if (idRef.current === elemId) {
       return;
     }
 
-    console.log(logCallout);
-    console.log('hey hey');
-    console.log('lesson testing :: editor - id and ref has changed');
-    console.log('idRef', idRef.current);
-    console.log('id og', id);
-    console.log('holderRef', holderRef.current);
-    console.log('editor instance', editorJS);
-    console.log(logCallout);
-
-    console.log('lesson testing :: editor - new factory');
-    idRef.current = id || '';
+    idRef.current = elemId;
     editorJS.current = factory({
       holder: holderRef.current,
       onChange: (
@@ -111,14 +98,15 @@ const BlockEditor = ({
       ...(defaultValue && { data: defaultValue }),
       ...props,
     });
+  }, [elemId, holderRef.current, idRef.current]);
 
+  useEffect(() => {
     return () => {
       if (editorJS.current) {
-        console.log('destroying editor');
         editorJS.current.destroy();
       }
     };
-  }, [id, holderRef.current]);
+  }, [elemId]);
 
   useEffect(() => {
     if (!value) {
@@ -131,8 +119,6 @@ const BlockEditor = ({
 
     editorJS.current.render(value);
   }, [value]);
-
-  console.log('lesson testing :: editor - rendering', props);
 
   return <div ref={holderRef} id={id} />;
 };

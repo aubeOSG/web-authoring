@@ -7,6 +7,7 @@
   "scripts": {
     "update": "lerna run build --include-dependencies && yarn workspace @scrowl/editor run copy:assets",
     "start": "docker-compose --file containers/development.docker-compose.yml --env-file ./development.env up --build -V && docker-compose logs -f -t server",
+    "start:update": "yarn run update && yarn run start",
     "serve": "yarn workspace @scrowl/editor run serve",
     "watch": "yarn watch:block-editor-react",
     "watch:block-editor-react": "yarn workspace @scrowl/content-block-editor-react run watch",
