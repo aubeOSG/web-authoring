@@ -18,10 +18,11 @@ export interface BlockEditorClass {
 export type BlockEditorFactory = (config: EditorConfig) => BlockEditorClass;
 
 export interface BlockEditorCommons extends Omit<EditorConfig, 'data'> {
+  id: string;
   factory: BlockEditorFactory;
   value?: EditorConfig['data'];
   defaultValue?: EditorConfig['data'];
   onInit?: (editor: BlockEditorClass) => void;
 };
 
-export type BlockEditorProps = Omit<BlockEditorCommons, 'factory'> & Omit<React.AllHTMLAttributes<HTMLDivElement>, 'data'>;
+export type BlockEditorProps = Omit<BlockEditorCommons, 'factory' | 'holderId' | 'holder'>;

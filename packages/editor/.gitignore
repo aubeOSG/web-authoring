@@ -108,4 +108,6 @@ release/app/*
 release/build/*
 dist/
 web/
+*.scss\?used.json
+*.scss.json
  
