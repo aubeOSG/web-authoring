@@ -72,8 +72,6 @@ export class BlockEditor implements BlockEditorClass {
       tools: extendTools,
       ...config,
     });
-
-    console.log('constructor editor ', this._editor);
   }
 
   public getInstance() {

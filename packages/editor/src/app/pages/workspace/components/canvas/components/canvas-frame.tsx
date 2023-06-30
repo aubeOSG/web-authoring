@@ -29,8 +29,6 @@ export const CanvasFrame = ({ activeLesson }) => {
     [activeLesson.id]
   );
 
-  console.log('canvas - frame :: rendering', activeLesson);
-
   return (
     <div className={css.canvasFrame}>
       <Error>
