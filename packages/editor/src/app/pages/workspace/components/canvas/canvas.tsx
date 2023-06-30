@@ -8,7 +8,7 @@ export const Canvas = () => {
 
   return (
     <div className={css.canvas}>
-      {activeLesson && activeLesson.content ? (
+      {activeLesson.id !== -1 ? (
         <CanvasFrame activeLesson={activeLesson} />
       ) : (
         <div>Loading...</div>

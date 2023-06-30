@@ -5,10 +5,11 @@ import {
   BlockEditorClass,
   BlockEditorAPI,
   BlockEditorMutationEvent,
+  BlockEditorOutputData,
 } from './component.types';
 import BlockEditorFactory from './block-editor';
 
-const BlockEditor = ({
+const BlockEditorElement = ({
   defaultValue,
   value,
   onInit,
@@ -123,6 +124,35 @@ const BlockEditor = ({
   return <div ref={holderRef} id={id} />;
 };
 
-export { BlockEditor };
+const BlockEditorWrapper = ({
+  defaultValue,
+  id,
+  ...props
+}: BlockEditorProps) => {
+  const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
+  const elemId = id.toString();
+  const idRef = useRef<string>('');
 
-export default BlockEditor;
+  useEffect(() => {
+    if (idRef.current === elemId) {
+      return;
+    }
+
+    idRef.current = elemId;
+    startingValue.current = defaultValue;
+  }, [elemId, defaultValue]);
+
+  console.log('canvas - editor :: rendering', startingValue.current);
+
+  return (
+    <BlockEditorElement
+      defaultValue={startingValue.current}
+      id={id}
+      {...props}
+    />
+  );
+};
+
+export { BlockEditorWrapper };
+
+export default BlockEditorWrapper;
