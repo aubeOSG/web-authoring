@@ -24,6 +24,7 @@ const BlockEditorElement = ({
   const idRef = useRef<string>('');
   const holderRef = useRef<HTMLDivElement>(null);
   const editorJS = useRef<BlockEditorClass | null>(null);
+  const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
   const customEventMap = {
     mutation: 'block-editor-mutation',
     ready: 'block-editor-ready',
@@ -121,7 +122,7 @@ const BlockEditorElement = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return <div ref={holderRef} id={id} />;
+  return <div ref={holderRef} id={id.toString()} />;
 };
 
 const BlockEditorWrapper = ({
@@ -130,19 +131,12 @@ const BlockEditorWrapper = ({
   ...props
 }: BlockEditorProps) => {
   const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
-  const elemId = id.toString();
-  const idRef = useRef<string>('');
+  const idRef = useRef<number>(-1);
 
-  useEffect(() => {
-    if (idRef.current === elemId) {
-      return;
-    }
-
-    idRef.current = elemId;
+  if (id !== idRef.current) {
+    idRef.current = id;
     startingValue.current = defaultValue;
-  }, [elemId, defaultValue]);
-
-  console.log('canvas - editor :: rendering', startingValue.current);
+  }
 
   return (
     <BlockEditorElement
