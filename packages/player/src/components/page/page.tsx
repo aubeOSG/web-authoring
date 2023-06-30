@@ -7,9 +7,9 @@ export const Page = ({ lesson }: PageProps) => {
   return (
     <BoundaryError>
       <BlockEditor
-        id={lesson.id.toString()}
+        id={lesson.id}
         defaultValue={lesson.content}
-        readOnly={false}
+        readOnly={true}
       />
     </BoundaryError>
   );
