@@ -7,6 +7,7 @@ import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
 import CustomBlockOne from '@scrowl/content-block-columns';
+import CustomBlockTwo from '@scrowl/content-block-multiple-choice';
 import CustomBlockThree from '@scrowl/content-block-introduction';
 import TimelineComponent from '@scrowl/content-block-timeline';
 import {
@@ -22,6 +23,10 @@ export class BlockEditor implements BlockEditorClass {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
         class: CustomBlockOne.ColumnFactory,
+        inlineToolbar: true,
+      },
+      CustomBlockTwo: {
+        class: CustomBlockTwo.MultipleChoiceFactory,
         inlineToolbar: true,
       },
       customBlockThree: {
@@ -67,8 +72,6 @@ export class BlockEditor implements BlockEditorClass {
       tools: extendTools,
       ...config,
     });
-
-    console.log('constructor editor ', this._editor);
   }
 
   public getInstance() {

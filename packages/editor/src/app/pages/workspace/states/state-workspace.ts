@@ -13,7 +13,16 @@ export const initialState = {
   contentFocus: null,
   newLesson: false,
   newModule: false,
-  activeLesson: {},
+  activeLesson: {
+    moduleId: -1,
+    id: -1,
+    name: '',
+    content: {
+      blocks: [],
+      time: new Date().valueOf(),
+      version: '2.27.0',
+    },
+  },
 };
 
 const triggerNewContent = (state, action) => {
@@ -76,7 +85,7 @@ export const config: stateManager.StateConfig = {
       state.isOpenPublishProgress = false;
     },
     setActiveLesson: (state, action) => {
-      state.activeLesson = action.payload;
+      updateObj(state.activeLesson, action.payload);
     },
     resetActiveLesson: (state, action) => {
       state.activeLesson = {};

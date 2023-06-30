@@ -5,21 +5,26 @@ import {
   BlockEditorClass,
   BlockEditorAPI,
   BlockEditorMutationEvent,
+  BlockEditorOutputData,
 } from './component.types';
 import BlockEditorFactory from './block-editor';
 
-const BlockEditor = ({
+const BlockEditorElement = ({
   defaultValue,
   value,
   onInit,
   onChange,
+  id,
   ...props
 }: BlockEditorProps) => {
   const factory = useCallback((config: BlockEditorConfig) => {
     return new BlockEditorFactory(config);
   }, []);
+  const elemId = id.toString();
+  const idRef = useRef<string>('');
   const holderRef = useRef<HTMLDivElement>(null);
   const editorJS = useRef<BlockEditorClass | null>(null);
+  const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
   const customEventMap = {
     mutation: 'block-editor-mutation',
     ready: 'block-editor-ready',
@@ -67,10 +72,11 @@ const BlockEditor = ({
       return;
     }
 
-    if (editorJS.current) {
+    if (idRef.current === elemId) {
       return;
     }
 
+    idRef.current = elemId;
     editorJS.current = factory({
       holder: holderRef.current,
       onChange: (
@@ -94,14 +100,15 @@ const BlockEditor = ({
       ...(defaultValue && { data: defaultValue }),
       ...props,
     });
+  }, [elemId, holderRef.current, idRef.current]);
 
-    // return () => {
-    //   if (editorJS.current) {
-    //     console.log('destroying editor');
-    //     editorJS.current.destroy();
-    //   }
-    // };
-  }, [holderRef.current]);
+  useEffect(() => {
+    return () => {
+      if (editorJS.current) {
+        editorJS.current.destroy();
+      }
+    };
+  }, [elemId]);
 
   useEffect(() => {
     if (!value) {
@@ -115,9 +122,31 @@ const BlockEditor = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return <div ref={holderRef} />;
+  return <div ref={holderRef} id={id.toString()} />;
 };
 
-export { BlockEditor };
+const BlockEditorWrapper = ({
+  defaultValue,
+  id,
+  ...props
+}: BlockEditorProps) => {
+  const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
+  const idRef = useRef<number>(-1);
 
-export default BlockEditor;
+  if (id !== idRef.current) {
+    idRef.current = id;
+    startingValue.current = defaultValue;
+  }
+
+  return (
+    <BlockEditorElement
+      defaultValue={startingValue.current}
+      id={id}
+      {...props}
+    />
+  );
+};
+
+export { BlockEditorWrapper };
+
+export default BlockEditorWrapper;

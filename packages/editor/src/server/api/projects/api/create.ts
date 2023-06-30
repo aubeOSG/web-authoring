@@ -13,7 +13,7 @@ export const create: ProjectsApiCreate = {
     if (!payload.workspaceId) {
       res.send({
         error: true,
-        message: 'unable to create project: workspace id required',
+        message: 'unable to create project: workspace id required ',
         data: payload,
       });
       return;
@@ -33,7 +33,7 @@ export const create: ProjectsApiCreate = {
     };
 
     const project = blueprints.get('default');
-
+    console.log('new project', JSON.stringify(project));
     project.workspaceId = payload.workspaceId;
     //@ts-ignore
     project.modules = JSON.stringify(project.modules);
@@ -43,7 +43,7 @@ export const create: ProjectsApiCreate = {
     project.glossary = JSON.stringify(project.glossary);
     //@ts-ignore
     project.resources = JSON.stringify(project.resources);
-
+    console.log('lessons', project.lessons);
     try {
       const insertRes = await dbUtils.table.insert(db, table, [project]);
       const projectId = insertRes[0][0].id;
