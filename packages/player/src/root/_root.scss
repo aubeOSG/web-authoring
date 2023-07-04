@@ -19,6 +19,12 @@ body {
     position: fixed;
     width: 100%;
     z-index: 10;
+    padding: 0.5em;
+    margin: 0;
+
+    .container-fluid {
+      padding: 0;
+    }
 
     &-light {
       background-color: var(--bs-gray-100);
