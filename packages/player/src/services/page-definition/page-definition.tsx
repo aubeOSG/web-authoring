@@ -1,5 +1,4 @@
 import React, { Suspense, useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Datetime, hasProp } from '@scrowl/utils';
 import { PageDefinition } from './page-definition.types';
 import {
@@ -181,7 +180,7 @@ const PageContainer = ({
 
   return (
     <BoundaryError>
-      <NavBar pageId={id} project={project} />
+      <NavBar project={project} />
       <div className="owlui-lesson">
         <Suspense fallback={<div>Loading...</div>}>
           <Page
@@ -201,9 +200,7 @@ const PageContainer = ({
           <div className={css.nextLessonContainer}>
             {lIdx < module.lessons.length - 1 ||
             mIdx < project.outlineConfig.length - 1 ? (
-              <Link to={nextLessonUrl} onClick={updateCourseProgress}>
-                {nextLessonText}
-              </Link>
+              <div onClick={updateCourseProgress}>{nextLessonText}</div>
             ) : (
               <Scrowl.ui.Button onClick={finishCourse}>
                 Finish Course

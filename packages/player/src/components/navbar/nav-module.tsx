@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Collapse } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import utils from '../../utils';
 //@ts-ignore
 import * as _css from './_navbar.scss';
@@ -8,7 +7,7 @@ import { useCurrentLesson } from '../../hooks/state/course';
 
 const css = utils.css.removeMapPrefix(_css);
 
-export const NavModule = ({ pageId, config, mIdx }) => {
+export const NavModule = ({ config, mIdx }) => {
   const Scrowl = window['Scrowl'];
   const [isOpen, setIsOpen] = useState(true);
   const currentLesson = useCurrentLesson();
@@ -27,12 +26,11 @@ export const NavModule = ({ pageId, config, mIdx }) => {
         <ul className={css.lessonList}>
           {config.lessons.map((lesson, lIdx) => {
             const id = `module-${mIdx}--lesson-${lesson.lesson.id}`;
-            const url = `/${id}`;
             const lessonName = lesson.lesson.name;
 
             return (
               <li key={lIdx}>
-                <Link to={url}>
+                <div>
                   <span className={css.lessonButton}>
                     <Scrowl.ui.Icon
                       icon="arrow_drop_down_circle"
@@ -47,7 +45,7 @@ export const NavModule = ({ pageId, config, mIdx }) => {
                       {lessonName}
                     </p>
                   </span>
-                </Link>
+                </div>
               </li>
             );
           })}

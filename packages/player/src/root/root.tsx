@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './_root.scss';
+import { PlayerRootProps } from './root.types';
 import {
   Error as ErrorComponent,
   Modals,
+  NavBar,
   Preview,
   ScrollHint,
 } from '../components';
 import { formatResponse } from '../utils/formatResponse';
 import { store } from '../state';
 import { eventHooks } from '../hooks';
+import config from './config';
 
 const RootEvents = ({ children }: React.AllHTMLAttributes<HTMLDivElement>) => {
   eventHooks.useEvents();
   return <>{children}</>;
 };
 
-export const Root = ({ project, scorm, ...props }) => {
-  const Scrowl = window['Scrowl'];
+export const Root = ({ project, scorm, ...props }: PlayerRootProps) => {
   let apiPreference;
-
+  const Scrowl = window['Scrowl'];
   const [showPanel, _setShowPanel] = useState(true);
+  const projectConfig = config.create(project);
 
   if (scorm && scorm.outputFormat) {
     switch (scorm.outputFormat) {
@@ -216,6 +219,7 @@ export const Root = ({ project, scorm, ...props }) => {
           <RootEvents />
           <Modals.ErrorModal />
           <ScrollHint />
+          <NavBar project={projectConfig} />
           {window['API_1484_11'] !== undefined && showPanel ? (
             <Preview />
           ) : null}

@@ -13,10 +13,11 @@ import * as _css from './_navbar.scss';
 import { NavModule } from './nav-module';
 import { NavResource } from './nav-resource';
 import { NavGlossary } from './nav-glossary';
+import { ProjectConfig } from '../../root';
 
 const css = utils.css.removeMapPrefix(_css);
 
-export const NavBar = ({ pageId, project }) => {
+export const NavBar = ({ project }: { project: ProjectConfig }) => {
   const Scrowl = window['Scrowl'];
   const [tabKey, setTabKey] = useState('outline');
   const themePrefixes: CssMapProps = {};
@@ -65,12 +66,7 @@ export const NavBar = ({ pageId, project }) => {
                     project.outlineConfig.map((config, mIdx) => {
                       return (
                         <div className={css.moduleLessons} key={mIdx}>
-                          <NavModule
-                            pageId={pageId}
-                            config={config}
-                            mIdx={mIdx}
-                            key={mIdx}
-                          />
+                          <NavModule config={config} mIdx={mIdx} key={mIdx} />
                         </div>
                       );
                     })}
