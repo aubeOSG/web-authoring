@@ -65,24 +65,6 @@ export const create = () => {
           'version': '2.27.0',
         },
       },
-      {
-        "moduleId": 0,
-        "id": 1,
-        "name": "Second Lesson",
-        "content": {
-            "time": 1687152070818,
-            "blocks": [
-                {
-                    "id": "omqjErzf68",
-                    "type": "paragraph",
-                    "data": {
-                        "text": "there there"
-                    }
-                }
-            ],
-            "version": "2.27.0"
-        }
-    },
     ],
     glossary: [
       {

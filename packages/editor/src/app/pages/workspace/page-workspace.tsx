@@ -5,6 +5,7 @@ import {
   openPromptProjectName,
   resetWorkspace,
   setActiveLesson,
+  useActiveLesson,
   useNewContent,
   resetNewContent,
 } from './page-workspace-hooks';
@@ -42,6 +43,7 @@ export const openProject = (project: Projects.ProjectMeta) => {
 };
 
 export const Page = () => {
+  const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
   const assets = Projects.useAssets();
   const projectInteractions = Projects.useInteractions();
@@ -261,12 +263,16 @@ export const Page = () => {
   }, [projectData, assets, projectInteractions, inProgress]);
 
   useEffect(() => {
-    console.log('reloading project data', projectData);
-    if (projectData.lessons && projectData.lessons.length) {
-      console.log('setting active lesson');
-      setActiveLesson(projectData.lessons[0]);
+    if (activeLesson.id !== -1) {
+      return;
     }
-  }, [projectData]);
+
+    if (!projectData.lessons || !projectData.lessons.length) {
+      return;
+    }
+
+    setActiveLesson(projectData.lessons[0]);
+  }, [projectData, activeLesson]);
 
   useEffect(() => {
     if (!projectData.lessons) {

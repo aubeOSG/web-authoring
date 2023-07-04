@@ -197,10 +197,8 @@ export const Header = () => {
       }
 
       setIsOpenPublish(false);
-      const data = pubRes as unknown as ArrayBuffer;
-      const url = window.URL.createObjectURL(
-        new Blob([data], { type: 'application/zip' })
-      );
+      const data = pubRes as unknown as Blob;
+      const url = window.URL.createObjectURL(data);
       const link = document.createElement('a');
 
       link.href = url;

@@ -55,7 +55,7 @@ export const save = (data?): Promise<rq.ApiResult> => {
 };
 
 export const publish = (data?): Promise<rq.ApiResult> => {
-  return rq.invoke(ENDPOINTS.publish, data, 'POST', { responseType: 'arraybuffer' });
+  return rq.invoke(ENDPOINTS.publish, data, 'POST', { responseType: 'blob' });
 };
 
 export const list = (limit?: number): Promise<rq.ApiResult> => {

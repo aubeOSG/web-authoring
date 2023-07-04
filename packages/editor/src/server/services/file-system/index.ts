@@ -1,3 +1,4 @@
+import fs from 'fs-extra';
 import Utils from './utils';
 import ReadSync from './read-sync';
 import WriteSync from './write-sync';
@@ -15,6 +16,7 @@ export const copySync = CopySync;
 export const renameSync = RenameSync;
 export const assetsPath = utils.join(utils.rootPath, '../', 'main', 'assets');
 export const projectPath = utils.join(assetsPath, 'project');
+export const createReadStream = fs.createReadStream;
 
 export default {
   utils,
@@ -25,4 +27,5 @@ export default {
   removeSync,
   copySync,
   renameSync,
+  createReadStream,
 };

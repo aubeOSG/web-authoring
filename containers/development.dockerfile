@@ -8,6 +8,7 @@ COPY ./plugins/postcss-prefixer/package.json ./plugins/postcss-prefixer/package.
 COPY ./packages/content-block-editor/package.json ./packages/content-block-editor/package.json
 COPY ./packages/content-block-editor-react/package.json ./packages/content-block-editor-react/package.json
 COPY ./packages/content-blocks/columns/package.json ./packages/content-blocks/columns/package.json
+COPY ./packages/content-blocks/multiple-choice/package.json ./packages/content-blocks/multiple-choice/package.json
 COPY ./packages/content-blocks/introduction/package.json ./packages/content-blocks/introduction/package.json
 COPY ./packages/content-blocks/timeline/package.json ./packages/content-blocks/timeline/package.json
 COPY ./packages/ui/package.json ./packages/ui/package.json
@@ -21,11 +22,12 @@ COPY ./yarn.lock ./yarn.lock
 COPY ./config ./config
 COPY ./packages/utils ./packages/utils
 COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
-COPY ./packages/content-block-editor ./packages/content-block-editor
-COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
-COPY ./packages/content-blocks/columns ./packages/content-blocks/columns
-COPY ./packages/content-blocks/introduction ./packages/content-blocks/introduction
-COPY ./packages/content-blocks/timeline ./packages/content-blocks/timeline
+COPY ./packages/content-block-editor/dist ./packages/content-block-editor/dist
+COPY ./packages/content-block-editor-react/dist ./packages/content-block-editor-react/dist
+COPY ./packages/content-blocks/columns/dist ./packages/content-blocks/columns/dist
+COPY ./packages/content-blocks/multiple-choice/dist ./packages/content-blocks/multiple-choice/dist
+COPY ./packages/content-blocks/introduction/dist ./packages/content-blocks/introduction/dist
+COPY ./packages/content-blocks/timeline/dist ./packages/content-blocks/timeline/dist
 COPY ./packages/ui ./packages/ui
 COPY ./packages/templates/core ./packages/templates/core
 COPY ./packages/player ./packages/player

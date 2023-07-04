@@ -15,6 +15,7 @@ COPY ./plugins/postcss-prefixer ./plugins/postcss-prefixer
 COPY ./packages/content-block-editor ./packages/content-block-editor
 COPY ./packages/content-block-editor-react ./packages/content-block-editor-react
 COPY ./packages/content-blocks/columns ./packages/content-blocks/columns
+COPY ./packages/content-blocks/multiple-choice ./packages/content-blocks/multiple-choice
 COPY ./packages/content-blocks/introduction ./packages/content-blocks/introduction
 COPY ./packages/content-blocks/timeline ./packages/content-blocks/timeline
 COPY ./packages/ui ./packages/ui
