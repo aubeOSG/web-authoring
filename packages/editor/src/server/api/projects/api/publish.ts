@@ -200,6 +200,7 @@ export const publish: ProjectsApiPublish = {
     const packageRes = await createScormPackage(generationRes.data.tmpDirId, projectData);
 
     if (packageRes.error) {
+      res.sendStatus(500);
       res.send(packageRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
