@@ -191,26 +191,18 @@ const PageContainer = ({
             controller={controller}
           />
         </Suspense>
-
-        <Scrowl.core.Template
-          className="owlui-last"
-          id={`end-${id}`}
-          controller={controller}
-          notScene={true}
-        >
-          <div className={css.nextLessonContainer}>
-            {lIdx < module.lessons.length - 1 ||
-            mIdx < project.outlineConfig.length - 1 ? (
-              <Link to={nextLessonUrl} onClick={updateCourseProgress}>
-                {nextLessonText}
-              </Link>
-            ) : (
-              <Scrowl.ui.Button onClick={finishCourse}>
-                Finish Course
-              </Scrowl.ui.Button>
-            )}
-          </div>
-        </Scrowl.core.Template>
+      </div>
+      <div className={css.nextLessonContainer}>
+        {lIdx < module.lessons.length - 1 ||
+        mIdx < project.outlineConfig.length - 1 ? (
+          <Link to={nextLessonUrl} onClick={updateCourseProgress}>
+            {nextLessonText}
+          </Link>
+        ) : (
+          <Scrowl.ui.Button onClick={finishCourse}>
+            Finish Course
+          </Scrowl.ui.Button>
+        )}
       </div>
     </BoundaryError>
   );

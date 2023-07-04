@@ -33,7 +33,8 @@ body {
 }
 
 .navbar + .lesson {
-  padding-top: 56px;
+  padding-top: 5rem;
+  min-height: 100vh;
 }
 
 .lesson {
@@ -57,7 +58,8 @@ body {
 }
 
 .next-lesson-container {
-  bottom: 10px;
+  margin-top: 120px;
+  margin-bottom: 200px;
   display: flex;
   justify-content: center;
   text-align: center;
