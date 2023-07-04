@@ -29,6 +29,8 @@ export default class MultipleChoiceFactory {
     this.nodes = {
       holder: null,
     };
+
+    console.log('contructor data: ', this.data);
   }
 
   render() {
@@ -37,11 +39,11 @@ export default class MultipleChoiceFactory {
     this.nodes.holder = rootNode;
 
     const onDataChange = (newData) => {
-      console.log('new Data: ', newData);
+      // console.log('new Data: ', newData);
       this.data = {
         ...newData,
       };
-      console.log('this.data: ', this.data);
+      // console.log('this.data: ', this.data);
     };
 
     ReactDOM.render(
