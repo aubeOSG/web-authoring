@@ -149,6 +149,7 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
     const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, tmpDirId);
     const scormSource = fs.utils.join(tempSource, 'package');
     const scormContent = fs.utils.join(scormSource, 'content');
+    const courseName = config.name && config.name.length > 0 ? config.name : project.meta.name as string;
     const packagerOpts = {
       source: scormSource,
       title: project.meta.name,
@@ -162,27 +163,20 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
         zip: true,
         date: today,
         version: projectVersion,
-        name: config.name,
+        name: courseName,
         description: config.description,
         author: config.authors,
         rights: '©Copyright ' + new Date().getFullYear(),
       },
     };
-    const packageFilename = packagerOpts.package.name
-        ? fs.utils.join(
-            packagerOpts.package.outputFolder,
-            `${Str.toScormCase(packagerOpts.package.name)}_v${
-              packagerOpts.package.version
-            }_${today}.zip`
-          )
-        : fs.utils.join(
-          packagerOpts.package.outputFolder,
-            `${Str.toScormCase(packagerOpts.title || '')}_v${
-              packagerOpts.package.version
-            }_${today}.zip`
-          );
-    const projectFilename = fs.utils.join(packagerOpts.package.outputFolder, `${Str.toKebabCase(config.name || '')}-${projectVersion}.zip`);
-
+    const packageFilename = fs.utils.join(
+      packagerOpts.package.outputFolder,
+      `${Str.toScormCase(courseName)}_v${
+        packagerOpts.package.version
+      }_${today}.zip`
+    );
+    const projectFilename = fs.utils.join(packagerOpts.package.outputFolder, `${Str.toKebabCase(courseName || '')}-${projectVersion}.zip`);
+    
     packager(packagerOpts, (message: string) => {
       resolve(fs.renameSync(packageFilename, projectFilename));
     });
@@ -206,6 +200,7 @@ export const publish: ProjectsApiPublish = {
     const packageRes = await createScormPackage(generationRes.data.tmpDirId, projectData);
 
     if (packageRes.error) {
+      res.sendStatus(500);
       res.send(packageRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
