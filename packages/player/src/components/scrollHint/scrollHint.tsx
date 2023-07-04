@@ -80,6 +80,4 @@ export const ScrollHint = () => {
   );
 };
 
-export default {
-  ScrollHint,
-};
+export default ScrollHint;

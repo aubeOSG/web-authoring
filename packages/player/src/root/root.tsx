@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom';
 import './_root.scss';
-import Config from './config';
-import { Error as ErrorComponent } from '../components';
-import { ErrorModal } from '../components/modal';
-import { Preview as PreviewPanel } from '../components/preview';
-import { PageDefinition } from '../services';
+import {
+  Error as ErrorComponent,
+  Modals,
+  Preview,
+  ScrollHint,
+} from '../components';
 import { formatResponse } from '../utils/formatResponse';
-import { ScrollHint } from '../components/scrollHint';
 import { store } from '../state';
 import { eventHooks } from '../hooks';
 
@@ -76,43 +70,13 @@ export const Root = ({ project, scorm, ...props }) => {
     return <ErrorComponent msg="Modules missing" />;
   }
 
-  const lessons = project.lessons;
-  const modules = project.modules;
-  const resources = project.resources;
-  const glossary = project.glossary;
-  const name = project.name;
-  const subtitle = project.subtitle;
-
-  let moduleIdx;
-  let lessonIdx;
-
   if (Scrowl.runtime) {
-    let locationError;
-    let location;
     try {
-      [locationError, location] = Scrowl.runtime.getLocation();
+      let [locationError, location] = Scrowl.runtime.getLocation();
     } catch (e) {
       console.error(e);
     }
-
-    if (!locationError && location && location.cur) {
-      moduleIdx = location.cur.m;
-      lessonIdx = location.cur.l;
-    }
   }
-
-  const config = Config.create(
-    lessons,
-    modules,
-    resources,
-    glossary,
-    name,
-    subtitle
-  );
-  const pages = PageDefinition.create(config);
-
-  console.log('config', config);
-  console.log('pages', pages);
 
   //FIXME::slide-removal
   // useEffect(() => {
@@ -235,12 +199,6 @@ export const Root = ({ project, scorm, ...props }) => {
     });
   }, [project]);
 
-  let targetUrl;
-
-  if (moduleIdx !== undefined) {
-    targetUrl = `/module-${moduleIdx}--lesson-${lessonIdx}`;
-  }
-
   if (window['API_1484_11']) {
     window['API_1484_11'].on('SetValue.cmi.*', () => {
       const value = window['API_1484_11'].GetValue('cmi');
@@ -253,42 +211,16 @@ export const Root = ({ project, scorm, ...props }) => {
 
   return (
     <store.StateProvider>
-      <RootEvents>
-        <Router>
-          <div id="scrowl-player" {...props}>
-            <main className="owlui-lesson-wrapper">
-              <ErrorModal />
-              <ScrollHint />
-              {window['API_1484_11'] !== undefined && showPanel ? (
-                <PreviewPanel />
-              ) : null}
-              <Routes>
-                {pages.map((page, idx) => {
-                  return (
-                    <Route
-                      key={idx}
-                      path={page.url}
-                      element={<page.Element />}
-                    />
-                  );
-                })}
-                <Route
-                  path="*"
-                  element={
-                    <Navigate
-                      to={
-                        targetUrl && targetUrl.length > 1
-                          ? targetUrl
-                          : pages[0].url
-                      }
-                    />
-                  }
-                />
-              </Routes>
-            </main>
-          </div>
-        </Router>
-      </RootEvents>
+      <div id="scrowl-player" {...props}>
+        <main className="owlui-lesson-wrapper">
+          <RootEvents />
+          <Modals.ErrorModal />
+          <ScrollHint />
+          {window['API_1484_11'] !== undefined && showPanel ? (
+            <Preview />
+          ) : null}
+        </main>
+      </div>
     </store.StateProvider>
   );
 };

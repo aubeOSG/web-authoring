@@ -1,2 +1,7 @@
+import pane from './pane';
+
 export * from './pane.types';
-export * from './pane';
+
+export const Pane = pane;
+
+export default Pane;

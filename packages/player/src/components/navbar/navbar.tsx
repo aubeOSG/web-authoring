@@ -109,6 +109,4 @@ export const NavBar = ({ pageId, project }) => {
   );
 };
 
-export default {
-  NavBar,
-};
+export default NavBar;
