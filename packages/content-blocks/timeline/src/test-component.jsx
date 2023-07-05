@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TestComponent = (props) => {
+  const classes = useStyles();
   const loadedData = props.data;
   const parsedProps = JSON.parse(JSON.stringify(loadedData));
   const [timelineData, setTimelineData] = useState(
