@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/scrowl-io/authoring/packages/runtime#readme",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "watch": "chokidar \"./src/*\" -c \"yarn run build\""
   },
   "type": "module",
   "main": "./dist/content-block-timeline.umd.cjs",
