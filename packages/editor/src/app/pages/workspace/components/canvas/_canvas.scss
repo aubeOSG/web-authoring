@@ -16,10 +16,6 @@
   overflow: hidden;
   z-index: 20;
 
-  .ce-block__content {
-    max-width: 100%;
-  }
-
   &__header {
     @extend .h3;
     margin: $owl-sys-space-workspace $owl-sys-space-workspace 0.25em;
@@ -91,10 +87,13 @@
   }
 
   &__frame {
+    max-height: calc(100% - 142px);
+    height: calc(100% - 142px);
+    width: 820px;
+    margin: 60px auto 0px;
     padding: 20px 0 0;
     overflow: auto;
     background-color: var(--bs-white);
-    min-height: 100%;
   }
 
   &__body {
