@@ -1,3 +1,10 @@
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --scrollType: smooth;
+    scroll-behavior: var(--scrollType);
+  }
+}
+
 html,
 body {
   margin: 0;

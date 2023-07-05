@@ -79,18 +79,42 @@ export const Page = ({ project, config }: PageProps) => {
   }, [currentLesson]);
 
   useEffect(() => {
+    const cleanUp = () => {
+      document.documentElement.style.setProperty('--scrollType', 'none');
+
+      const resetScrollType = () => {
+        setTimeout(() => {
+          console.log('window.scrollY', window.scrollY);
+          if (window.scrollY === 0) {
+            document.documentElement.style.setProperty(
+              '--scrollType',
+              'smooth'
+            );
+          } else {
+            resetScrollType();
+          }
+        }, 250);
+      };
+
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        resetScrollType();
+      }, 1);
+    };
+
     if (!currentLesson || currentLesson.id === -1) {
-      return;
+      return cleanUp;
     }
 
     setIsLastLesson(checkLastLesson(currentLesson, config));
     setIsEndLesson(currentLesson.id === endLesson?.id);
 
     if (!editorRef.current) {
-      return;
+      return cleanUp;
     }
 
     editorRef.current.render(currentLesson.content);
+    return cleanUp;
   }, [currentLesson, config]);
 
   useEffect(() => {
