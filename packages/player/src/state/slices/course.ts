@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { updateObj } from '@scrowl/utils';
+import type { ProjectLesson } from '../.././root';
 
 export const initialState = {
   hasStarted: true,
-  currentLessonId: '',
-  currentLessonIndex: -1,
+  currentLesson: {
+    id: -1,
+  },
 };
 
 export const slice = createSlice({
@@ -21,9 +23,8 @@ export const slice = createSlice({
     toggleStarted: (state, action: PayloadAction<boolean | undefined>) => {
       state.hasStarted = action.payload ? action.payload : !state.hasStarted;
     },
-    updateCurrentLesson: (state, action: PayloadAction<{ id: string; index: number }>) => {
-      state.currentLessonId = action.payload.id;
-      state.currentLessonIndex = action.payload.index;
+    updateCurrentLesson: (state, action: PayloadAction<ProjectLesson>) => {
+      state.currentLesson = action.payload;
     },
   },
 });

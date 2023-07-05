@@ -83,13 +83,9 @@ export interface PlayerRootCommons {
 export type PlayerRootProps = PlayerRootCommons &
   React.AllHTMLAttributes<HTMLDivElement>;
 
-export type PlayerRootLesson = {
-  lesson: ProjectLesson;
-};
-
 export type PlayerRootConfig = {
   module: ProjectModule;
-  lessons: Array<PlayerRootLesson>;
+  lessons: Array<ProjectLesson>;
 };
 
 export type ProjectConfig = {

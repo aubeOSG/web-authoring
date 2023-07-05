@@ -45,9 +45,7 @@ export const create = (project: ProjectData): ProjectConfig => {
         break;
       }
 
-      config.lessons.push({
-        lesson,
-      });
+      config.lessons.push(lesson);
     }
 
     rootConfig.push(config);

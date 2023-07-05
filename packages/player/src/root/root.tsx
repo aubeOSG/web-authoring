@@ -5,6 +5,7 @@ import {
   Error as ErrorComponent,
   Modals,
   NavBar,
+  Page,
   Preview,
   ScrollHint,
 } from '../components';
@@ -220,6 +221,7 @@ export const Root = ({ project, scorm, ...props }: PlayerRootProps) => {
           <Modals.ErrorModal />
           <ScrollHint />
           <NavBar project={projectConfig} />
+          <Page project={project} />
           {window['API_1484_11'] !== undefined && showPanel ? (
             <Preview />
           ) : null}
