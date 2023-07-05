@@ -28,10 +28,9 @@ const MultipleChoiceComponent = (props) => {
   const loadedData = props.data;
   const parsedProps = JSON.parse(JSON.stringify(loadedData));
 
-  const [questionsData, setQuestionsData] =
-    loadedData.events.length > 0
-      ? useState(parsedProps)
-      : useState(DEFAULT_INITIAL_DATA);
+  const [questionsData, setQuestionsData] = useState(
+    loadedData.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
+  );
 
   const updateMultipleChoiceData = (newData) => {
     setQuestionsData(newData);

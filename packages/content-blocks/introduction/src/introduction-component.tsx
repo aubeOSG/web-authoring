@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Clock } from './assets/clock';
 
 const DEFAULT_INITIAL_DATA = () => {
@@ -18,7 +18,7 @@ const DEFAULT_INITIAL_DATA = () => {
 const IntroductionComponent = (props) => {
   const loadedData = props.data;
   const parsedProps = JSON.parse(JSON.stringify(loadedData));
-  const [introData, setIntroData] = React.useState(
+  const [introData, setIntroData] = useState(
     props.data.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
   );
 
@@ -30,7 +30,7 @@ const IntroductionComponent = (props) => {
     }
   };
 
-  const onContentChange = (index, fieldName) => {
+  const onContentChange = useCallback((index, fieldName) => {
     return (e) => {
       const newData = {
         ...introData,
@@ -42,7 +42,7 @@ const IntroductionComponent = (props) => {
 
       updateIntroData(newData);
     };
-  };
+  }, []);
 
   return (
     <React.Fragment>

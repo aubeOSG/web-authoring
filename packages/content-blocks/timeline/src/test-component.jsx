@@ -10,7 +10,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
-import { default as React } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 const TestComponent = (props) => {
   const loadedData = props.data;
   const parsedProps = JSON.parse(JSON.stringify(loadedData));
-  const [timelineData, setTimelineData] = React.useState(
+  const [timelineData, setTimelineData] = useState(
     props.data.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
   );
 
@@ -72,7 +72,7 @@ const TestComponent = (props) => {
     }
   };
 
-  const onAddEvent = (e) => {
+  const onAddEvent = useCallback(() => {
     const newData = {
       ...timelineData,
     };
@@ -81,9 +81,9 @@ const TestComponent = (props) => {
       'description': 'Description',
     });
     updateTimelineData(newData);
-  };
+  }, []);
 
-  const onContentChange = (index, fieldName) => {
+  const onContentChange = useCallback((index, fieldName) => {
     return (e) => {
       const newData = {
         ...timelineData,
@@ -91,7 +91,7 @@ const TestComponent = (props) => {
       newData.events[index][fieldName] = e.currentTarget.textContent;
       updateTimelineData(newData);
     };
-  };
+  }, []);
 
   return (
     <React.Fragment>
