@@ -7,7 +7,7 @@ import {
   BlockEditorMutationEvent,
   BlockEditorOutputData,
 } from './component.types';
-import BlockEditorFactory from './block-editor';
+import api from './api';
 
 const BlockEditorElement = ({
   defaultValue,
@@ -18,7 +18,7 @@ const BlockEditorElement = ({
   ...props
 }: BlockEditorProps) => {
   const factory = useCallback((config: BlockEditorConfig) => {
-    return new BlockEditorFactory(config);
+    return new api(config);
   }, []);
   const elemId = id.toString();
   const idRef = useRef<string>('');

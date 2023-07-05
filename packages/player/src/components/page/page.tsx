@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import {
-  BlockEditor,
   BlockEditorClass,
+  BlockEditorStateless,
 } from '@scrowl/content-block-editor-react';
 import * as _css from './_page.scss';
 import { List, hasProp } from '@scrowl/utils';
@@ -37,17 +37,8 @@ export const Page = ({ project, config }: PageProps) => {
   const [isLastLesson, setIsLastLesson] = useState(false);
   const endLesson = project.lessons?.slice(-1)[0];
   const [isEndLesson, setIsEndLesson] = useState(false);
-
-  const onInit = useCallback(
-    (editorInstance: BlockEditorClass) => {
-      editorRef.current = editorInstance;
-
-      if (currentLesson && currentLesson.id !== -1) {
-        editorRef.current.render(currentLesson.content);
-      }
-    },
-    [currentLesson]
-  );
+  const editorAPIRef = useRef<BlockEditorClass | null>();
+  const editorReadyEv = 'block-editor-stateless-ready';
 
   const onEndCourse = useCallback(() => {
     if (runtime) {
@@ -102,11 +93,33 @@ export const Page = ({ project, config }: PageProps) => {
     editorRef.current.render(currentLesson.content);
   }, [currentLesson, config]);
 
+  useEffect(() => {
+    const handleReady = (e) => {
+      const api = e.detail.api;
+
+      editorAPIRef.current = api;
+
+      if (currentLesson.id !== -1) {
+        api.render(currentLesson.content);
+      }
+    };
+
+    if (editorAPIRef.current && currentLesson.id !== -1) {
+      editorAPIRef.current.render(currentLesson.content);
+    }
+
+    document.addEventListener(editorReadyEv, handleReady);
+
+    return () => {
+      document.removeEventListener(editorReadyEv, handleReady);
+    };
+  }, [currentLesson, editorAPIRef.current]);
+
   return (
     <BoundaryError>
       <section className={css.page}>
         {currentLesson && currentLesson.id !== -1 ? (
-          <BlockEditor onInit={onInit} id={currentLesson.id} readOnly={true} />
+          <BlockEditorStateless />
         ) : (
           <></>
         )}

@@ -16,7 +16,7 @@ import {
   BlockEditorConfig,
 } from './component.types';
 
-export class BlockEditor implements BlockEditorClass {
+export class BlockEditorAPI implements BlockEditorClass {
   private _editor: EditorJS;
 
   constructor({ tools, ...config }: BlockEditorConfig) {
@@ -96,4 +96,4 @@ export class BlockEditor implements BlockEditorClass {
   }
 };
 
-export default BlockEditor;
+export default BlockEditorAPI;
