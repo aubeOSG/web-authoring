@@ -21,6 +21,4 @@ export const Pane = ({ children, className, side }: PaneProps) => {
   return <div className={paneStyles}>{children}</div>;
 };
 
-export default {
-  Pane,
-};
+export default Pane;

@@ -88,8 +88,6 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-keywords": "^0.0.5",
-    "react-lazyload": "github:twobin/react-lazyload",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^6.4.2"
+    "react-redux": "^8.0.4"
   }
 }

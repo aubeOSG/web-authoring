@@ -1,8 +1,7 @@
-import Page from "./page";
+import page from "./page";
 
-export { Page };
 export * from './page.types';
 
-export default {
-  Page
-};
+export const Page = page;
+
+export default Page;

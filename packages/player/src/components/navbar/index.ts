@@ -1,2 +1,7 @@
+import navbar from './navbar';
+
 export * from './navbar.types';
-export * from './navbar';
+
+export const NavBar = navbar;
+
+export default NavBar;

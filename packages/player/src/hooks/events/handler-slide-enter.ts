@@ -2,7 +2,6 @@ import { CustomEventMap } from '../../../types/globals';
 import { stateHooks } from '../../hooks';
 
 export const useHandlerSlideEnter = () => {
-  const updateCurrentLesson = stateHooks.Course.useUpdateCurrentLesson();
 
   return ({ detail }: CustomEventMap['slide.enter']) => {
     const { id } = detail.currentTarget as unknown as HTMLDivElement;
@@ -13,8 +12,6 @@ export const useHandlerSlideEnter = () => {
     }
 
     const index = parseInt(parsed[1]);
-
-    updateCurrentLesson({ id, index });
   };
 };
 

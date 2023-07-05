@@ -1,9 +1,5 @@
-import BoundaryError from './boundary-error';
+import boundaryError from './boundary-error';
 
-export {
-  BoundaryError,
-};
+export const BoundaryError = boundaryError;
 
-export default {
-  BoundaryError,
-};
+export default BoundaryError;

@@ -1,22 +1,24 @@
 import {
-  ProjectLesson,
-  ProjectModule,
   PlayerRootConfig,
   ProjectConfig,
+  ProjectData,
 } from './root.types';
 
-export const create = (
-  lessons: Array<ProjectLesson>,
-  modules: Array<ProjectModule>,
-  resources,
-  glossary,
-  name,
-  subtitle
-) => {
+export const create = (project: ProjectData): ProjectConfig => {
+  const {
+    lessons,
+    modules,
+    resources,
+    glossary,
+    name,
+    subtitle,
+  } = project;
   const rootConfig: Array<PlayerRootConfig> = [];
+  const Modules = modules ? modules.slice() : [];
+  const Lessons = lessons ? lessons.slice() : [];
 
-  while (modules.length > 0) {
-    const module = modules.shift();
+  while (Modules.length > 0) {
+    const module = Modules.shift();
 
     if (!module) {
       break;
@@ -26,33 +28,32 @@ export const create = (
       module: module,
       lessons: [],
     };
-    const lCnt = lessons.length;
+
+    const lCnt = Lessons.length;
     let l = 0;
 
-    while (lessons.length > 0 && l < lCnt) {
+    while (Lessons.length > 0 && l < lCnt) {
       l++;
 
-      if (lessons[0].moduleId !== module.id) {
+      if (Lessons[0].moduleId !== module.id) {
         continue;
       }
 
-      const lesson = lessons.shift();
+      const lesson = Lessons.shift();
 
       if (!lesson) {
         break;
       }
 
-      config.lessons.push({
-        lesson,
-      });
+      config.lessons.push(lesson);
     }
 
     rootConfig.push(config);
   }
 
   const projectConfig: ProjectConfig = {
-    name: name,
-    subtitle: subtitle,
+    name: name || '',
+    subtitle: subtitle || '',
     outlineConfig: rootConfig,
     resources: resources,
     glossary: glossary,

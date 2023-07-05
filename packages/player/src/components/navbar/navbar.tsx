@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ThemeProvider,
   Navbar,
@@ -13,13 +13,19 @@ import * as _css from './_navbar.scss';
 import { NavModule } from './nav-module';
 import { NavResource } from './nav-resource';
 import { NavGlossary } from './nav-glossary';
+import type { ProjectConfig } from '../../root';
+import { Course } from '../../hooks/state';
 
 const css = utils.css.removeMapPrefix(_css);
 
-export const NavBar = ({ pageId, project }) => {
+export const NavBar = ({ project }: { project: ProjectConfig }) => {
   const Scrowl = window['Scrowl'];
   const [tabKey, setTabKey] = useState('outline');
   const themePrefixes: CssMapProps = {};
+  const updateCurrentLesson = Course.useUpdateCurrentLesson();
+  const currentLesson = Course.useCurrentLesson();
+  const [isOpen, setIsOpen] = useState(false);
+  const navBarElemRef = useRef<HTMLElement>(null);
 
   themePrefixes['nav'] = `owlui-nav`;
   themePrefixes['nav-tabs'] = `owlui-nav-tabs`;
@@ -32,9 +38,36 @@ export const NavBar = ({ pageId, project }) => {
   themePrefixes['offcanvas'] = `owlui-offcanvas`;
   themePrefixes['container'] = `owlui-container`;
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, [isOpen]);
+
+  useEffect(() => {
+    navBarElemRef.current?.classList.remove('owlui-navbar-expand');
+  }, [navBarElemRef]);
+
+  useEffect(() => {
+    if (!currentLesson || currentLesson.id === -1) {
+      const defaultModule = project.outlineConfig[0];
+      const defaultLesson = defaultModule.lessons[0];
+
+      updateCurrentLesson(defaultLesson);
+    }
+  }, [currentLesson]);
+
+  const handleToggle = useCallback((expanded) => {
+    setIsOpen(expanded);
+  }, []);
+
   return (
     <ThemeProvider prefixes={themePrefixes}>
-      <Navbar key="1" expand={false} className="mb-3">
+      <Navbar
+        key="1"
+        className="mb-3"
+        expanded={isOpen}
+        onToggle={handleToggle}
+        ref={navBarElemRef}
+      >
         <Container fluid>
           <Navbar.Toggle
             className={css.navButton}
@@ -66,10 +99,10 @@ export const NavBar = ({ pageId, project }) => {
                       return (
                         <div className={css.moduleLessons} key={mIdx}>
                           <NavModule
-                            pageId={pageId}
                             config={config}
                             mIdx={mIdx}
                             key={mIdx}
+                            onChange={handleClose}
                           />
                         </div>
                       );
@@ -109,6 +142,4 @@ export const NavBar = ({ pageId, project }) => {
   );
 };
 
-export default {
-  NavBar,
-};
+export default NavBar;
