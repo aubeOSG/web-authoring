@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import './_styles.scss';
 
 const DEFAULT_INITIAL_DATA = () => {
@@ -18,13 +18,13 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const ColumnComponent = (props) => {
-  // const classes = useStyles();
-  const [columnData, setColumnData] = React.useState(
-    props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
+  const loadedData = props.data;
+  const parsedProps = JSON.parse(JSON.stringify(loadedData));
+  const [columnData, setColumnData] = useState(
+    props.data.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
   );
 
   const updateColumnData = (newData) => {
-    console.log('update new data: ', newData);
     setColumnData(newData);
     if (props.onDataChange) {
       // Inform editorjs about data change
@@ -32,7 +32,7 @@ const ColumnComponent = (props) => {
     }
   };
 
-  const onAddEvent = (e) => {
+  const onAddEvent = useCallback(() => {
     const newData = {
       ...columnData,
     };
@@ -41,17 +41,17 @@ const ColumnComponent = (props) => {
       'body': 'Body',
     });
     updateColumnData(newData);
-  };
+  }, []);
 
-  const onRemoveEvent = (e) => {
+  const onRemoveEvent = useCallback(() => {
     const newData = {
       ...columnData,
     };
     newData.events.pop();
     updateColumnData(newData);
-  };
+  }, []);
 
-  const onContentChange = (index, fieldName) => {
+  const onContentChange = useCallback((index, fieldName) => {
     return (e) => {
       const newData = {
         ...columnData,
@@ -63,7 +63,7 @@ const ColumnComponent = (props) => {
 
       updateColumnData(newData);
     };
-  };
+  }, []);
 
   return (
     <React.Fragment>
