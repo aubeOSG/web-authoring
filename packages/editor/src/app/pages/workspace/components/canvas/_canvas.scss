@@ -16,6 +16,10 @@
   overflow: hidden;
   z-index: 20;
 
+  .ce-block__content {
+    max-width: 100%;
+  }
+
   &__header {
     @extend .h3;
     margin: $owl-sys-space-workspace $owl-sys-space-workspace 0.25em;
