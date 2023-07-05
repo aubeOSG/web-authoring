@@ -2,10 +2,14 @@
   padding-top: 60px;
 }
 
+.lesson-container {
+  min-height: 100vh;
+}
+
 .lesson-end {
   display: flex;
   justify-content: center;
-  padding: 80px 0 200px;
+  padding: 100px 0 200px;
 
   & button {
     height: 3em;

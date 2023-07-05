@@ -118,11 +118,14 @@ export const Page = ({ project, config }: PageProps) => {
   return (
     <BoundaryError>
       <section className={css.page}>
-        {currentLesson && currentLesson.id !== -1 ? (
-          <BlockEditorStateless />
-        ) : (
-          <></>
-        )}
+        <div className={css.lessonContainer}>
+          {currentLesson && currentLesson.id !== -1 ? (
+            <BlockEditorStateless />
+          ) : (
+            <></>
+          )}
+        </div>
+
         <div className={css.lessonEnd}>
           <EndButton
             isEnd={isEndLesson}
