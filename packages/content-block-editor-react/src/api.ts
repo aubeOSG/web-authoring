@@ -6,10 +6,10 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
-import CustomBlockOne from '@scrowl/content-block-columns';
-import CustomBlockTwo from '@scrowl/content-block-multiple-choice';
-import CustomBlockThree from '@scrowl/content-block-introduction';
-import TimelineComponent from '@scrowl/content-block-timeline';
+import { IntroductionFactory } from '@scrowl/content-block-introduction';
+import { ColumnFactory } from '@scrowl/content-block-columns';
+import { MultipleChoiceFactory } from '@scrowl/content-block-multiple-choice';
+import { TimelineFactory } from '@scrowl/content-block-timeline';
 import {
   BlockEditorClass,
   BlockEditorOutputData,
@@ -22,19 +22,19 @@ export class BlockEditorAPI implements BlockEditorClass {
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
       customBlockOne: {
-        class: CustomBlockOne.ColumnFactory,
+        class: ColumnFactory,
         inlineToolbar: true,
       },
       CustomBlockTwo: {
-        class: CustomBlockTwo.MultipleChoiceFactory,
+        class: MultipleChoiceFactory,
         inlineToolbar: true,
       },
       customBlockThree: {
-        class: CustomBlockThree.IntroductionFactory,
+        class: IntroductionFactory,
         inlineToolbar: true,
       },
       customBlockReact: {
-        class: TimelineComponent.ReactFactory,
+        class: TimelineFactory,
         inlineToolbar: true,
       },
       checklist: {

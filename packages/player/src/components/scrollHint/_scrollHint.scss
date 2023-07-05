@@ -19,7 +19,7 @@
     transition: opacity 0.5s;
 
     span {
-      background: #ffffffab;
+      background-color: var(--bs-gray-100);
       padding: 2px 7px;
       border-radius: 5px;
     }
@@ -43,7 +43,7 @@
     border-radius: 15px;
     box-shadow: 0 0 0 2px #ffffffdd;
     border: 1px solid black;
-    background: #ffffffab;
+    background-color: var(--bs-gray-100);
   }
 
   .icon-scroll::before {
