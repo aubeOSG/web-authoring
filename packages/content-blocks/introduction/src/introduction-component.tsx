@@ -16,9 +16,10 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const IntroductionComponent = (props) => {
-  // const classes = useStyles();
+  const loadedData = props.data;
+  const parsedProps = JSON.parse(JSON.stringify(loadedData));
   const [introData, setIntroData] = React.useState(
-    props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
+    props.data.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
   );
 
   const updateIntroData = (newData) => {
