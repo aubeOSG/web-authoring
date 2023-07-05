@@ -10,6 +10,4 @@ export const Error = ({ msg, ...props }: ErrorProps) => {
   );
 };
 
-export default {
-  Error,
-};
+export default Error;
