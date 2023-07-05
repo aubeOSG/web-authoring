@@ -221,7 +221,7 @@ export const Root = ({ project, scorm, ...props }: PlayerRootProps) => {
           <Modals.ErrorModal />
           <ScrollHint />
           <NavBar project={projectConfig} />
-          <Page project={project} />
+          <Page project={project} config={projectConfig} />
           {window['API_1484_11'] !== undefined && showPanel ? (
             <Preview />
           ) : null}
