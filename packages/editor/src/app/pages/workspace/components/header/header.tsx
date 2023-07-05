@@ -200,12 +200,13 @@ export const Header = () => {
       const data = pubRes as unknown as Blob;
       const url = window.URL.createObjectURL(data);
       const link = document.createElement('a');
+      const courseName =
+        submittedData.scorm.name && submittedData.scorm.name.length
+          ? submittedData.scorm.name
+          : submittedData.meta.name;
 
       link.href = url;
-      link.setAttribute(
-        'download',
-        `${Str.toKebabCase(submittedData.scorm.name)}.zip`
-      );
+      link.setAttribute('download', `${Str.toKebabCase(courseName)}.zip`);
       document.body.appendChild(link);
       link.click();
       link.parentNode?.removeChild(link);
