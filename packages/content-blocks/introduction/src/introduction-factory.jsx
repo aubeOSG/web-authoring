@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import IntroductionComponent from './introduction-component';
 import './_styles.scss';
 
@@ -41,6 +41,7 @@ export default class IntroductionFactory {
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
+    const root = createRoot(rootNode);
 
     const onDataChange = (newData) => {
       this.data = {
@@ -48,13 +49,12 @@ export default class IntroductionFactory {
       };
     };
 
-    ReactDOM.render(
+    root.render(
       <IntroductionComponent
         onDataChange={onDataChange}
         readOnly={this.readOnly}
         data={this.data}
-      />,
-      rootNode
+      />
     );
 
     return this.nodes.holder;

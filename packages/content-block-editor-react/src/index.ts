@@ -1,3 +1,4 @@
+import './_styles.scss';
 import BlockEditor from "./component";
 import BlockEditorStateless from './component-stateless';
 

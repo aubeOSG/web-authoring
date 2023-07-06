@@ -30,7 +30,7 @@ export const EditorElement = () => {
     };
   }, [holderRef]);
 
-  return <div ref={holderRef} />;
+  return <div className="owlui-editor" ref={holderRef} />;
 };
 
 export default EditorElement;

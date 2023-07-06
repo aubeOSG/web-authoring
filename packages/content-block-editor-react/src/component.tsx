@@ -122,7 +122,7 @@ const BlockEditorElement = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return <div ref={holderRef} id={id.toString()} />;
+  return <div className="owlui-editor" ref={holderRef} id={id.toString()} />;
 };
 
 const BlockEditorWrapper = ({
