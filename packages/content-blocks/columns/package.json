@@ -27,8 +27,8 @@
   "exports": {
     ".": {
       "require": "./dist/content-block-columns.umd.cjs",
-      "default": "./dist/content-block-columns.umd.cjs",
-      "import": "./dist/content-block-columns.js"
+      "import": "./dist/content-block-columns.js",
+      "default": "./dist/content-block-columns.umd.cjs"
     }
   },
   "files": [
@@ -53,6 +53,7 @@
     "stylelint": "^14.13.0",
     "typescript": "4.7.4",
     "vite": "^4.3.9",
+    "vite-plugin-css-injected-by-js": "^3.2.0",
     "vite-plugin-dts": "^2.3.0"
   },
   "peerDependencies": {

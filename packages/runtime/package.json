@@ -29,8 +29,8 @@
   "exports": {
     ".": {
       "require": "./lib/scrowl.runtime.js",
-      "default": "./lib/scrowl.runtime.js",
-      "import": "./lib/scrowl.runtime.module.js"
+      "import": "./lib/scrowl.runtime.module.js",
+      "default": "./lib/scrowl.runtime.js"
     },
     "./src": "./src/index.ts",
     "./web": "./dist/scrowl.runtime.js"
