@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ColumnComponent from './column-component';
 import './_styles.scss';
 
@@ -45,6 +45,7 @@ export default class ColumnFactory {
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
+    const root = createRoot(rootNode);
 
     const onDataChange = (newData) => {
       this.data = {
@@ -52,13 +53,12 @@ export default class ColumnFactory {
       };
     };
 
-    ReactDOM.render(
+    root.render(
       <ColumnComponent
         onDataChange={onDataChange}
         readOnly={this.readOnly}
         data={this.data}
-      />,
-      rootNode
+      />
     );
 
     return this.nodes.holder;

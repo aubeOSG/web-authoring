@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import MultipleChoiceComponent from './multiple-choice-component';
 import './_styles.scss';
 
@@ -38,22 +38,20 @@ export default class MultipleChoiceFactory {
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
+    const root = createRoot(rootNode);
 
     const onDataChange = (newData) => {
-      // console.log('new Data: ', newData);
       this.data = {
         ...newData,
       };
-      // console.log('this.data: ', this.data);
     };
 
-    ReactDOM.render(
+    root.render(
       <MultipleChoiceComponent
         onDataChange={onDataChange}
         readOnly={this.readOnly}
         data={this.data}
-      />,
-      rootNode
+      />
     );
 
     return this.nodes.holder;
