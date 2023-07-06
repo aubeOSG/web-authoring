@@ -2,11 +2,6 @@
 @use '@scrowl/ui/src/theme/global/_bootstrap.scss' as *;
 
 .canvas {
-  --workspace-canvas-height: calc(
-    100vh - 224px - var(--workspace-notes-height, 0px)
-  );
-  --workspace-canvas-width: calc(100% - 3rem);
-  --workspace-slide-height: calc(var(--workspace-canvas-height) - 2px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,7 +10,7 @@
   background: var(--owl-workspace-bg);
   overflow: hidden;
   z-index: 20;
-  height: 100%;
+  height: calc(100% - 5rem);
 
   &__header {
     @extend .h3;
