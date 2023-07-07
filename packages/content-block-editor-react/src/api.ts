@@ -48,6 +48,9 @@ export class BlockEditorAPI implements BlockEditorClass {
       link: {
         class: Link,
         inlineToolbar: true,
+        config: {
+          endpoint: '/api/editor/preview-link'
+        },
       },
       nestedList: {
         class: NestedList,
