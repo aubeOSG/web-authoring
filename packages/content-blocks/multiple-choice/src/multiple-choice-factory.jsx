@@ -60,10 +60,4 @@ export default class MultipleChoiceFactory {
   save() {
     return this.data;
   }
-
-  static get sanitize() {
-    return {
-      br: true,
-    };
-  }
 }
