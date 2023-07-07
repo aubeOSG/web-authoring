@@ -59,7 +59,7 @@ export const OutlineModuleItem = ({
     {
       label: 'Edit',
       click: () => {
-        openModuleEditor();
+        openModuleEditor(module);
       },
     },
     { type: 'separator' },
@@ -73,14 +73,14 @@ export const OutlineModuleItem = ({
             detail: module.name,
           })
           .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
+            // if (res.error) {
+            //   console.error(res);
+            //   return;
+            // }
 
-            if (res.data.response === 0) {
-              Projects.removeModule(module);
-            }
+            // if (res.data.response === 0) {
+            Projects.removeModule(module);
+            // }
           });
       },
     },
