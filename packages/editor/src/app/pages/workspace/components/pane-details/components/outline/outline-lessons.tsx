@@ -62,14 +62,14 @@ export const OutlineLessonItem = ({
             detail: lesson.name,
           })
           .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
+            // if (res.error) {
+            //   console.error(res);
+            //   return;
+            // }
 
-            if (res.data.response === 0) {
-              Projects.removeModule(lesson);
-            }
+            // if (res.data.response === 0) {
+            Projects.removeLesson(lesson);
+            // }
           });
       },
     },
