@@ -66,22 +66,8 @@ export const OutlineModuleItem = ({
     {
       label: 'Delete Module',
       click: () => {
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Delete Module', 'Cancel'],
-            detail: module.name,
-          })
-          .then((res) => {
-            // if (res.error) {
-            //   console.error(res);
-            //   return;
-            // }
-
-            // if (res.data.response === 0) {
-            Projects.removeModule(module);
-            // }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeModule(module);
       },
     },
   ];
