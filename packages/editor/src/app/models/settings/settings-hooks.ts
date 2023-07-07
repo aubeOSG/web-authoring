@@ -98,12 +98,12 @@ export const setPreviewMode = (type: menu.PreviewTypes) => {
     return;
   }
   //FIXME::electron-web-bug
-  // processor.dispatch(state.setPreviewMode(type));
-  // API.set('previewMode', type).then((res) => {
-  //   if (res.error) {
-  //     console.error(res);
-  //   }
-  // });
+  processor.dispatch(state.setPreviewMode(type));
+  API.set('previewMode', type).then((res) => {
+    if (res.error) {
+      console.error(res);
+    }
+  });
 };
 
 export const init = () => {
