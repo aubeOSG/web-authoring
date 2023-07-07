@@ -33,24 +33,13 @@ export const Glossary = () => {
       label: 'Remove Term',
       click: (menuItem) => {
         const res = menuItem as unknown as ContextMenuResult;
-        const editTerm = res.data.item as GlossaryItem;
 
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Remove Term', 'Cancel'],
-            detail: editTerm.word,
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
+        const targetTerm = glossaryTerms.find((term) => {
+          return term.id === selectedTerm.current.id;
+        });
 
-            if (res.data.response === 0) {
-              Projects.removeGlossaryItem(editTerm);
-            }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeGlossaryItem(targetTerm);
       },
     },
   ];
