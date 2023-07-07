@@ -21,19 +21,19 @@ export class BlockEditorAPI implements BlockEditorClass {
 
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
-      customBlockOne: {
+      columns: {
         class: ColumnFactory,
         inlineToolbar: true,
       },
-      CustomBlockTwo: {
+      multipleChoice: {
         class: MultipleChoiceFactory,
         inlineToolbar: true,
       },
-      customBlockThree: {
+      introduction: {
         class: IntroductionFactory,
         inlineToolbar: true,
       },
-      customBlockReact: {
+      timeline: {
         class: TimelineFactory,
         inlineToolbar: true,
       },
