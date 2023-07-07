@@ -55,22 +55,8 @@ export const OutlineLessonItem = ({
     {
       label: 'Delete Lesson',
       click: () => {
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Delete Lesson', 'Cancel'],
-            detail: lesson.name,
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
-
-            if (res.data.response === 0) {
-              Projects.removeModule(lesson);
-            }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeLesson(lesson);
       },
     },
   ];

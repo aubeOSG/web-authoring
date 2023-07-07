@@ -77,11 +77,18 @@ export const useModuleEditor = () => {
   });
 };
 
-export const openModuleEditor = () => {
+export const openModuleEditor = (module) => {
   if (!processor.dispatch) {
     console.warn('workspace processor not ready');
     return;
   }
+
+  const moduleEditorEvent = new CustomEvent('moduleEditor', {
+    detail: {
+      module: module,
+    },
+  });
+  document.dispatchEvent(moduleEditorEvent);
 
   const fn = state.workspace.openEditModule as ActionCreatorWithoutPayload;
   processor.dispatch(fn());
