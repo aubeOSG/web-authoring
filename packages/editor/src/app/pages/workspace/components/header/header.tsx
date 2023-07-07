@@ -86,14 +86,14 @@ export const Header = () => {
     Settings.setPreviewMode(payload.type);
 
     // FIXME::electron-web-bug
-    // menu.API.updatePreviewMenu(payload.type).then((res) => {
-    //   if (res.error) {
-    //     sys.messageDialog({
-    //       message: res.message,
-    //     });
-    //     return;
-    //   }
-    // });
+    menu.API.updatePreviewMenu(payload.type).then((res) => {
+      if (res.error) {
+        sys.messageDialog({
+          message: res.message,
+        });
+        return;
+      }
+    });
 
     Projects.preview(payload).then((res) => {
       if (res.error) {
@@ -123,7 +123,7 @@ export const Header = () => {
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
-      label: 'Current Lesson',
+      label: `Current Lesson ${previewMode === 'lesson' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'lesson',
       click: () => {
@@ -136,7 +136,7 @@ export const Header = () => {
       },
     },
     {
-      label: 'Current Module',
+      label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'module',
       click: () => {
@@ -149,7 +149,7 @@ export const Header = () => {
       },
     },
     {
-      label: 'Entire Project',
+      label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'project',
       click: () => {
