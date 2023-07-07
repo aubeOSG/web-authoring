@@ -63,10 +63,4 @@ export default class IntroductionFactory {
   save() {
     return this.data;
   }
-
-  static get sanitize() {
-    return {
-      br: true,
-    };
-  }
 }

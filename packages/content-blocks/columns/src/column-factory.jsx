@@ -67,10 +67,4 @@ export default class ColumnFactory {
   save() {
     return this.data;
   }
-
-  static get sanitize() {
-    return {
-      br: true,
-    };
-  }
 }
