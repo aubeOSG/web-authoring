@@ -192,7 +192,7 @@ export const publish: ProjectsApiPublish = {
     const generationRes = generateProjectFiles(projectData);
 
     if (generationRes.error) {
-      res.send(generationRes);
+      res.status(500).send(generationRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
@@ -200,14 +200,13 @@ export const publish: ProjectsApiPublish = {
     const packageRes = await createScormPackage(generationRes.data.tmpDirId, projectData);
 
     if (packageRes.error) {
-      res.sendStatus(500);
-      res.send(packageRes);
+      res.status(500).send(packageRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
 
     res.setHeader('content-type', 'application/zip');
-
+    
     const stream = fs.createReadStream(packageRes.data.filename);
 
     stream.on('error', (err) => {
