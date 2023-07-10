@@ -8,6 +8,7 @@ export const initialState = {
   deletedAt: '',
   name: '',
   avatar: '',
+  hasPublished: false,
 };
 
 export const config: stateManager.StateConfig = {

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Settings } from '../../../../models';
+import { Projects, Users, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { Logo } from '../../../../components';
 import { PublishOverlay, Confirmation } from '../overlay';
@@ -16,6 +16,7 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
+  const userData = Users.useData();
   const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
@@ -176,6 +177,13 @@ export const Header = () => {
 
   const handleCLosePublish = () => {
     setIsOpenPublish(false);
+    // const hasPublished = true;
+    userData.hasPublished = true;
+    console.log('close publish userData: ', userData);
+    console.log('userData.hasPublished? ');
+    Users.save(userData).then((res) => {
+      console.log('saveRes', res);
+    });
   };
 
   const handelSubmitPublish = (formData) => {
