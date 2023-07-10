@@ -16,7 +16,22 @@ export const make = () => {
     id: 0,
     name: 'Introduction',
     content: {
-      blocks: [],
+      blocks: [
+        {
+          'id': 'mQ-6SMxbIz',
+          'type': 'header',
+          'data': {
+            'text': 'A new lesson',
+          },
+        },
+        {
+          'id': 'z13gJyKBtz',
+          'type': 'paragraph',
+          'data': {
+            'text': "Let's begin with a cold open.",
+          },
+        },
+      ],
       time: new Date().valueOf(),
       version: '2.27.0',
     },
