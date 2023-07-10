@@ -20,11 +20,10 @@ const BlockEditorElement = ({
   const factory = useCallback((config: BlockEditorConfig) => {
     return new api(config);
   }, []);
-  const elemId = id.toString();
+  const elemId = id ? id.toString() : '-1';
   const idRef = useRef<string>('');
   const holderRef = useRef<HTMLDivElement>(null);
   const editorJS = useRef<BlockEditorClass | null>(null);
-  const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
   const customEventMap = {
     mutation: 'block-editor-mutation',
     ready: 'block-editor-ready',
@@ -122,29 +121,19 @@ const BlockEditorElement = ({
     editorJS.current.render(value);
   }, [value]);
 
-  return <div className="owlui-editor" ref={holderRef} id={id.toString()} />;
+  return <div className="owlui-editor" ref={holderRef} id={elemId} />;
 };
 
-const BlockEditorWrapper = ({
-  defaultValue,
-  id,
-  ...props
-}: BlockEditorProps) => {
+const BlockEditorWrapper = ({ defaultValue, ...props }: BlockEditorProps) => {
   const startingValue = useRef<BlockEditorOutputData | undefined>(undefined);
   const idRef = useRef<number>(-1);
 
-  if (id !== idRef.current) {
-    idRef.current = id;
+  if (props.id !== idRef.current) {
+    idRef.current = props.id || -1;
     startingValue.current = defaultValue;
   }
 
-  return (
-    <BlockEditorElement
-      defaultValue={startingValue.current}
-      id={id}
-      {...props}
-    />
-  );
+  return <BlockEditorElement defaultValue={startingValue.current} {...props} />;
 };
 
 export { BlockEditorWrapper };
