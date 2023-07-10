@@ -149,7 +149,7 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
     const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, tmpDirId);
     const scormSource = fs.utils.join(tempSource, 'package');
     const scormContent = fs.utils.join(scormSource, 'content');
-    const courseName = config.name && config.name.length > 0 ? config.name : project.meta.name as string;
+    const courseName = Str.toScormCase(config.name && config.name.length > 0 ? config.name : project.meta.name || '');
     const packagerOpts = {
       source: scormSource,
       title: project.meta.name,
