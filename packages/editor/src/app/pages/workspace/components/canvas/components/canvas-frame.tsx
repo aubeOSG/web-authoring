@@ -1,31 +1,56 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { BlockEditor } from '@scrowl/content-block-editor-react';
-import type {
-  BlockEditorAPI,
-  BlockEditorClass,
-  BlockEditorMutationEvent,
+import React, { useEffect, useRef } from 'react';
+import {
+  BlockEditor,
+  editorEventMap,
 } from '@scrowl/content-block-editor-react';
+import type { BlockEditorClass } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
 import { Error } from '../../../../../components';
-import { setActiveLesson } from '../../../page-workspace-hooks';
+import {
+  useActiveLesson,
+  setActiveLesson,
+} from '../../../page-workspace-hooks';
 import { Projects } from '../../../../../models';
 
-export const CanvasFrame = ({ activeLesson }) => {
-  const idRef = useRef(activeLesson.id);
+export const CanvasFrame = () => {
   const apiRef = useRef<BlockEditorClass>();
-  const onInit = useCallback(
-    (api: BlockEditorClass) => {
-      apiRef.current = api;
+  const activeLesson = useActiveLesson();
+  const idRef = useRef(activeLesson.id);
+
+  useEffect(() => {
+    if (activeLesson.id === -1) {
+      return;
+    }
+
+    if (!apiRef.current) {
+      return;
+    }
+
+    if (idRef.current === activeLesson.id) {
+      return;
+    }
+
+    if (activeLesson.content.blocks.length) {
       apiRef.current.render(activeLesson.content);
-    },
-    [activeLesson.id]
-  );
-  const onChange = useCallback(
-    (
-      api: BlockEditorAPI,
-      ev: BlockEditorMutationEvent | BlockEditorMutationEvent[]
-    ) => {
-      api.saver.save().then((data) => {
+    } else {
+      apiRef.current.clear();
+    }
+
+    idRef.current = activeLesson.id;
+  }, [activeLesson, apiRef]);
+
+  useEffect(() => {
+    const handleReady = (ev) => {
+      apiRef.current = ev.detail.api;
+      idRef.current = activeLesson.id;
+
+      if (activeLesson.content.length) {
+        apiRef.current?.render(activeLesson.content);
+      }
+    };
+
+    const handleMutation = (ev) => {
+      ev.detail.api.saver.save().then((data) => {
         const { content, ...lesson } = activeLesson;
         const lessonUpdate = {
           content: data,
@@ -35,27 +60,21 @@ export const CanvasFrame = ({ activeLesson }) => {
         setActiveLesson(lessonUpdate);
         Projects.setLesson(lessonUpdate);
       });
-    },
-    [activeLesson.id]
-  );
+    };
 
-  useEffect(() => {
-    if (!apiRef.current) {
-      return;
-    }
+    document.addEventListener(editorEventMap.ready, handleReady);
+    document.addEventListener(editorEventMap.mutation, handleMutation);
 
-    if (idRef.current === activeLesson.id) {
-      return;
-    }
-
-    apiRef.current.render(activeLesson.content);
-    idRef.current = activeLesson.id;
-  }, [apiRef.current, activeLesson.id]);
+    return () => {
+      document.removeEventListener(editorEventMap.ready, handleReady);
+      document.removeEventListener(editorEventMap.mutation, handleMutation);
+    };
+  }, [activeLesson]);
 
   return (
     <div className={css.canvasFrame}>
       <Error>
-        <BlockEditor onChange={onChange} onInit={onInit} />
+        {activeLesson && activeLesson.id !== -1 ? <BlockEditor /> : <></>}
       </Error>
     </div>
   );
