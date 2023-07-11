@@ -6,7 +6,6 @@ import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
 import { Projects, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
-import { Logo } from '../../../../components';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
@@ -307,13 +306,6 @@ export const Header = () => {
       >
         <Navbar fixed="top" expand="xs" className={css.workspaceHeader}>
           <div className={css.projectMeta}>
-            <Logo
-              asLink={true}
-              sizing="sm"
-              isAnimated={isAnimated}
-              animationDelay={animationDelay}
-            />
-
             <motion.div
               className={css.projectName}
               initial={motionOptsProjectName.initial}
