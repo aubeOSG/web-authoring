@@ -1,4 +1,4 @@
-import type { OutputData, EditorConfig, API, BlockMutationEventMap } from '@scrowl/content-block-editor';
+import type { OutputData, EditorConfig, BlockMutationEventMap, API } from '@scrowl/content-block-editor';
 
 export type ValueOf<T> = T[keyof T];
 

@@ -17,7 +17,7 @@ import {
 } from './component.types';
 
 export class BlockEditorAPI implements BlockEditorClass {
-  private _editor: EditorJS;
+  public _editor: EditorJS;
 
   constructor({ tools, ...config }: BlockEditorConfig) {
     const extendTools: BlockEditorConfig['tools'] = {
@@ -86,7 +86,7 @@ export class BlockEditorAPI implements BlockEditorClass {
   }
 
   public async save() {
-    return this._editor.save();
+    return this._editor.saver.save();
   }
 
   public async render(data: BlockEditorOutputData) {
