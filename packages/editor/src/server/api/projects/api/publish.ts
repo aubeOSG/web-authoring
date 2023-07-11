@@ -6,19 +6,6 @@ import type { ProjectsApiPublish } from '../projects.types';
 import type { ApiResult } from '../../../services/requester';
 import { fs, tmpr } from '../../../services';
 
-//FIXME::slide-removal
-// export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
-//   const templates = new Set<string>();
-//   const templateList: TemplateList = [];
-//   const templateMap: TemplateMap = {};
-
-//   for (const [key, template] of Object.entries(templateMap)) {
-//     templateList.push(template);
-//   }
-
-//   return [templates, templateList];
-// };
-
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
   let pathname = '';
@@ -117,7 +104,7 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
   fs.copySync(fs.projectPath, tempContent, {
     overwrite: false,
     filter: (src: string) => {
-      return src.indexOf('.hbs') === -1;
+      return src.indexOf('.hbs') === -1 && src.indexOf('.map') === -1;
     },
   });
 
