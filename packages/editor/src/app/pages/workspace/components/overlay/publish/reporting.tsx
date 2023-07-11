@@ -3,7 +3,7 @@ import { Accordion } from '../../../../../components';
 import { Elem } from '@scrowl/utils';
 
 export const Reporting = ({ data, onChange, onRollback }) => {
-  const { id, reportStatus, lmsIdentifier } = data;
+  const { id, reportStatus, identifier } = data;
 
   const handleFormUpdate = () => {
     onChange();
@@ -18,18 +18,16 @@ export const Reporting = ({ data, onChange, onRollback }) => {
     onChange(update);
   };
 
-  const handleUpdateLmsIdentifier = (ev: React.FormEvent<HTMLInputElement>) => {
+  const handleUpdateidentifier = (ev: React.FormEvent<HTMLInputElement>) => {
     const val = ev.currentTarget.value;
     const update = {
-      lmsIdentifier: id === val ? '' : val,
+      identifier: id === val ? '' : val,
     };
 
     onChange(update);
   };
 
-  const handleInputLmsIdentifier = (
-    ev: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleInputidentifier = (ev: React.KeyboardEvent<HTMLInputElement>) => {
     switch (ev.key) {
       case 'Escape':
         Elem.stopEvent(ev);
@@ -74,9 +72,9 @@ export const Reporting = ({ data, onChange, onRollback }) => {
             name="reporting-lms-identifier"
             type="text"
             className="form-control form-control-sm"
-            value={lmsIdentifier}
-            onChange={handleUpdateLmsIdentifier}
-            onKeyDown={handleInputLmsIdentifier}
+            value={identifier}
+            onChange={handleUpdateidentifier}
+            onKeyDown={handleInputidentifier}
             onBlur={handleFormUpdate}
           />
         </div>
