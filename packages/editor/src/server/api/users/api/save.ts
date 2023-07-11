@@ -7,7 +7,7 @@ export const update = async (payload: User) => {
   if (!payload.id) {
     return {
       error: true,
-      message: 'unable to save project: id is required',
+      message: 'unable to save user: id is required',
       data: payload,
     };
   }
@@ -17,7 +17,7 @@ export const update = async (payload: User) => {
   if (!db) {
     return {
       error: true,
-      message: 'unable to save project: unable to connect to DB',
+      message: 'unable to save user: unable to connect to DB',
       data: {
         payload,
       },
@@ -44,7 +44,7 @@ export const update = async (payload: User) => {
   } catch (e) {
     return {
       error: true,
-      message: 'unexpected error while saving project',
+      message: 'unexpected error while saving user',
       data: {
         trace: e,
       },

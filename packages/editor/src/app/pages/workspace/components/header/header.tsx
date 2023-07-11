@@ -16,6 +16,7 @@ import {
 export const Header = () => {
   const projectData = Projects.useData();
   const userData = Users.useData();
+  const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
@@ -211,22 +212,21 @@ export const Header = () => {
             ? submittedData.scorm.name
             : submittedData.meta.name;
 
-      link.href = url;
-      link.setAttribute('download', `${Str.toKebabCase(courseName)}.zip`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
+        link.href = url;
+        link.setAttribute('download', `${Str.toKebabCase(courseName)}.zip`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
 
-      const initialHasPublished = userData.hasPublished;
-      const updatedUser = { ...userData, hasPublished: true };
+        const updatedUser = { ...userData, hasPublished: true };
 
-      Users.save(updatedUser).then((res) => {
-        console.log('----saveRes', res);
-        if (!initialHasPublished) {
-          setIsOpenConfirmation(true);
-        }
+        Users.save(updatedUser).then((res) => {
+          console.log('----saveRes', res);
+          if (!initialHasPublished) {
+            setIsOpenConfirmation(true);
+          }
+        });
       });
-    });
 
       // Projects.save({ data: submittedData, assets }).then((saveRes) => {
       //   if (saveRes.error) {
@@ -264,7 +264,7 @@ export const Header = () => {
       //   });
       // });
     },
-    [projectData]
+    [projectData, userData]
   );
 
   const handleCloseConfirmation = () => {
