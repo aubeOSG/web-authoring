@@ -29,7 +29,7 @@ export const initialState = {
       authors: '',
       organization: '',
       reportStatus: 'Passed/Incomplete',
-      lmsIdentifier: '',
+      identifier: '',
       outputFormat: 'SCORM 2004',
       optimizeMedia: 'Recommended',
     },
