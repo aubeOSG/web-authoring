@@ -51,18 +51,18 @@ export const save = (req): Promise<rq.ApiResult> => {
     console.log('req: ', req);
     API.save(req).then((res) => {
       console.log('users hook save: ', res);
-      // if (processor.dispatch) {
-      //   const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
-      //   processor.dispatch(fn());
-      // }
+      if (processor.dispatch) {
+        const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
+        processor.dispatch(fn());
+      }
 
-      // if (res.error) {
-      //   console.error(res);
-      // } else {
-      //   setData(res.data);
-      // }
+      if (res.error) {
+        console.error(res);
+      } else {
+        setData(res.data);
+      }
 
-      // resolve(res);
+      resolve(res);
     });
   });
 };

@@ -25,7 +25,7 @@ export const Header = () => {
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  const hasPublished = Settings.useHasPublished();
+  // const hasPublished = Settings.useHasPublished();
   const previewMode = Settings.usePreviewMode();
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
@@ -177,13 +177,6 @@ export const Header = () => {
 
   const handleCLosePublish = () => {
     setIsOpenPublish(false);
-    // const hasPublished = true;
-    userData.hasPublished = true;
-    console.log('close publish userData: ', userData);
-    console.log('userData.hasPublished? ');
-    Users.save(userData).then((res) => {
-      console.log('saveRes', res);
-    });
   };
 
   const handelSubmitPublish = (formData) => {
@@ -220,6 +213,19 @@ export const Header = () => {
       link.parentNode?.removeChild(link);
     });
 
+    console.log('initial userData: ', userData);
+
+    const updatedUser = { ...userData, hasPublished: true };
+    console.log('updatE: ', updatedUser);
+    Users.save(updatedUser).then((res) => {
+      console.log('----saveRes', res);
+    });
+
+    if (!userData.hasPublished) {
+      setTimeout(() => {
+        setIsOpenConfirmation(true);
+      }, 1800);
+    }
     // Projects.save({ data: submittedData, assets }).then((saveRes) => {
     //   if (saveRes.error) {
     //     closePublishProgress();
