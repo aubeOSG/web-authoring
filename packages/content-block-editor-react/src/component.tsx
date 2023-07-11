@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import {
-  BlockEditorProps,
   BlockEditorClass,
   BlockEditorAPI,
   BlockEditorMutationEvent,
