@@ -84,7 +84,6 @@ export const Page = ({ project, config }: PageProps) => {
 
       const resetScrollType = () => {
         setTimeout(() => {
-          console.log('window.scrollY', window.scrollY);
           if (window.scrollY === 0) {
             document.documentElement.style.setProperty(
               '--scrollType',
