@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, forwardRef } from 'react';
 import {
   BlockEditorClass,
   BlockEditorAPI,
   BlockEditorMutationEvent,
+  BlockEditorProps,
 } from './component.types';
 import api from './api';
 
@@ -11,7 +12,7 @@ export const editorEventMap = {
   ready: 'block-editor-ready',
 };
 
-export const BlockEditorElement = () => {
+export const BlockEditorElement = (props: BlockEditorProps, elemRef) => {
   const holderRef = useRef(
     `editorjs-${new Date().valueOf().toString().slice(-8)}`
   );
@@ -54,7 +55,7 @@ export const BlockEditorElement = () => {
     };
   }, []);
 
-  return <div className="owlui-editor" id={holderRef.current} />;
+  return <div className="owlui-editor" id={holderRef.current} ref={elemRef} />;
 };
 
-export default BlockEditorElement;
+export default forwardRef(BlockEditorElement);
