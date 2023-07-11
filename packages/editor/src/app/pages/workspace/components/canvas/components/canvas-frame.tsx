@@ -85,16 +85,29 @@ export const CanvasFrame = () => {
     }
 
     const handleEditorAutoFocus = (ev: MouseEvent) => {
+      const focusedElem = ev.target as HTMLElement;
       const editableZone = editorElem.querySelector(
         '.codex-editor__redactor'
       ) as HTMLDivElement;
-      const focusedElem = ev.target as HTMLElement;
+      const toolbar = editorElem.querySelector('.ce-toolbar') as HTMLDivElement;
+      const inlineTools = editorElem.querySelector(
+        '.ce-inline-toolbar'
+      ) as HTMLDivElement;
 
-      if (editableZone.contains(focusedElem)) {
-        return;
+      try {
+        if (
+          editableZone.contains(focusedElem) ||
+          toolbar.contains(focusedElem) ||
+          inlineTools.contains(focusedElem) ||
+          focusedElem.classList.toString().includes('ce-popover-item')
+        ) {
+          return;
+        }
+
+        api.focus();
+      } catch (e) {
+        console.error(e);
       }
-
-      api.focus();
     };
 
     frameElem.addEventListener('click', handleEditorAutoFocus);

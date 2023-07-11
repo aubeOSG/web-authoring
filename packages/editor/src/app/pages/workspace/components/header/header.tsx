@@ -6,7 +6,6 @@ import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
 import { Projects, Users, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
-import { Logo } from '../../../../components';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
@@ -81,130 +80,136 @@ export const Header = () => {
     }
   };
 
-  const handleProjectPreview = (
-    payload: Projects.ProjectsReqPreviewProject
-  ) => {
-    Settings.setPreviewMode(payload.type);
+  const handleProjectPreview = useCallback(
+    (payload: Projects.ProjectsReqPreviewProject) => {
+      Settings.setPreviewMode(payload.type);
 
-    // FIXME::electron-web-bug
-    menu.API.updatePreviewMenu(payload.type).then((res) => {
-      if (res.error) {
-        sys.messageDialog({
-          message: res.message,
-        });
-        return;
-      }
-    });
+      // FIXME::electron-web-bug
+      menu.API.updatePreviewMenu(payload.type).then((res) => {
+        if (res.error) {
+          sys.messageDialog({
+            message: res.message,
+          });
+          return;
+        }
+      });
 
-    Projects.preview(payload).then((res) => {
-      if (res.error) {
-        sys.messageDialog({
-          message: res.message,
-        });
-        return;
-      }
+      Projects.preview(payload).then((res) => {
+        if (res.error) {
+          sys.messageDialog({
+            message: res.message,
+          });
+          return;
+        }
 
-      console.log('preview result', res);
-      const url = res.data.url;
+        console.log('preview result', res);
+        const url = res.data.url;
 
-      if (url) {
-        window.open(url, '_blank')?.focus();
-      }
-    });
-  };
+        if (url) {
+          window.open(url, '_blank')?.focus();
+        }
+      });
+    },
+    [projectData]
+  );
 
-  const handlePreviewDefault = () => {
+  const handlePreviewDefault = useCallback(() => {
     const payload: Projects.ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
       entityId: activeLesson.id,
     };
+    console.log('preview default', payload);
     handleProjectPreview(payload);
-  };
+  }, [projectData, activeLesson]);
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
       label: `Current Lesson ${previewMode === 'lesson' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'lesson',
-      click: () => {
+      click: useCallback(() => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
           entityId: activeLesson.id,
         };
         handleProjectPreview(payload);
-      },
+      }, [projectData, activeLesson]),
     },
     {
       label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'module',
-      click: () => {
+      click: useCallback(() => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
           entityId: activeLesson.moduleId,
         };
         handleProjectPreview(payload);
-      },
+      }, [projectData, activeLesson]),
     },
     {
       label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'project',
-      click: () => {
+      click: useCallback(() => {
         const payload: Projects.ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
         };
 
         handleProjectPreview(payload);
-      },
+      }, [projectData]),
     },
   ];
 
-  const handleOpenPreviewMenu = (ev: React.MouseEvent, offsetX?: number) => {
-    menu.API.contextMenu(ev, previewMenuItems, undefined, {
-      alignment: 'left-bottom',
-      offset: [-100 + (offsetX ? offsetX : 0), 6],
-    });
-  };
+  const handleOpenPreviewMenu = useCallback(
+    (ev: React.MouseEvent, offsetX?: number) => {
+      menu.API.contextMenu(ev, previewMenuItems, undefined, {
+        alignment: 'left-bottom',
+        offset: [-100 + (offsetX ? offsetX : 0), 6],
+      });
+    },
+    []
+  );
 
-  const handleOpenPublish = () => {
+  const handleOpenPublish = useCallback(() => {
     setIsOpenPublish(true);
-  };
+  }, [isOpenPublish]);
 
-  const handleCLosePublish = () => {
+  const handleCLosePublish = useCallback(() => {
     setIsOpenPublish(false);
-  };
+  }, [isOpenPublish]);
 
-  const handelSubmitPublish = (formData) => {
-    openPublishProgress();
+  const handelSubmitPublish = useCallback(
+    (formData) => {
+      openPublishProgress();
 
-    const submittedData = {
-      ...projectData,
-      scorm: formData,
-    };
+      const submittedData = {
+        ...projectData,
+        scorm: formData,
+      };
 
-    Projects.publish(submittedData).then((pubRes) => {
-      closePublishProgress();
+      Projects.publish(submittedData).then((pubRes) => {
+        closePublishProgress();
 
-      if (pubRes.error) {
-        sys.messageDialog({
-          message: pubRes.message,
-        });
-        return;
-      }
+        if (pubRes.error) {
+          sys.messageDialog({
+            message: pubRes.message,
+          });
+          return;
+        }
 
-      setIsOpenPublish(false);
-      const data = pubRes as unknown as Blob;
-      const url = window.URL.createObjectURL(data);
-      const link = document.createElement('a');
-      const courseName =
-        submittedData.scorm.name && submittedData.scorm.name.length
-          ? submittedData.scorm.name
-          : submittedData.meta.name;
+        setIsOpenPublish(false);
+        const data = pubRes as unknown as Blob;
+        const url = window.URL.createObjectURL(data);
+        const link = document.createElement('a');
+        const courseName =
+          submittedData.scorm.name && submittedData.scorm.name.length
+            ? submittedData.scorm.name
+            : submittedData.meta.name;
 
       link.href = url;
       link.setAttribute('download', `${Str.toKebabCase(courseName)}.zip`);
@@ -223,42 +228,44 @@ export const Header = () => {
       });
     });
 
-    // Projects.save({ data: submittedData, assets }).then((saveRes) => {
-    //   if (saveRes.error) {
-    //     closePublishProgress();
-    //     sys.messageDialog({
-    //       message: saveRes.message,
-    //     });
-    //     return;
-    //   }
+      // Projects.save({ data: submittedData, assets }).then((saveRes) => {
+      //   if (saveRes.error) {
+      //     closePublishProgress();
+      //     sys.messageDialog({
+      //       message: saveRes.message,
+      //     });
+      //     return;
+      //   }
 
-    //   Projects.publish(saveRes.data.project).then((pubRes) => {
-    //     if (pubRes.error) {
-    //       closePublishProgress();
-    //       sys.messageDialog({
-    //         message: pubRes.message,
-    //       });
-    //       return;
-    //     }
+      //   Projects.publish(saveRes.data.project).then((pubRes) => {
+      //     if (pubRes.error) {
+      //       closePublishProgress();
+      //       sys.messageDialog({
+      //         message: pubRes.message,
+      //       });
+      //       return;
+      //     }
 
-    //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-    //     setIsOpenPublish(false);
-    //     closePublishProgress();
+      //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
+      //     setIsOpenPublish(false);
+      //     closePublishProgress();
 
-    //     if (pubRes.data.canceled) {
-    //       return;
-    //     }
+      //     if (pubRes.data.canceled) {
+      //       return;
+      //     }
 
-    //     if (hasPublished) {
-    //       return;
-    //     }
+      //     if (hasPublished) {
+      //       return;
+      //     }
 
-    //     setTimeout(() => {
-    //       setIsOpenConfirmation(true);
-    //     }, 1);
-    //   });
-    // });
-  };
+      //     setTimeout(() => {
+      //       setIsOpenConfirmation(true);
+      //     }, 1);
+      //   });
+      // });
+    },
+    [projectData]
+  );
 
   const handleCloseConfirmation = () => {
     setIsOpenConfirmation(false);
@@ -310,13 +317,6 @@ export const Header = () => {
       >
         <Navbar fixed="top" expand="xs" className={css.workspaceHeader}>
           <div className={css.projectMeta}>
-            <Logo
-              asLink={true}
-              sizing="sm"
-              isAnimated={isAnimated}
-              animationDelay={animationDelay}
-            />
-
             <motion.div
               className={css.projectName}
               initial={motionOptsProjectName.initial}
