@@ -6,15 +6,9 @@ export const previewLink: EditorApiPreviewLink = {
   name: '/editor/preview-link',
   type: 'invoke',
   fn: async (req, res) => {
-    console.log('editor preview link req', req.params, req.query, req.url);
-
     const fetchURL = req.query.url as string;
 
     axios.get(fetchURL).then((fetchRes) => {
-      console.log('data', fetchRes.headers);
-      console.log('status', fetchRes.status);
-      console.log('statusText', fetchRes.statusText);
-
       if (fetchRes.status !== 200) {
         res.sendStatus(fetchRes.status);
         res.send(fetchRes.data);
