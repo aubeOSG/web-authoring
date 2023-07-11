@@ -119,9 +119,9 @@ export const Header = () => {
       project: projectData,
       entityId: activeLesson.id,
     };
-
+    console.log('preview default', payload);
     handleProjectPreview(payload);
-  }, [projectData]);
+  }, [projectData, activeLesson]);
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
@@ -135,7 +135,7 @@ export const Header = () => {
           entityId: activeLesson.id,
         };
         handleProjectPreview(payload);
-      }, [projectData]),
+      }, [projectData, activeLesson]),
     },
     {
       label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
@@ -148,7 +148,7 @@ export const Header = () => {
           entityId: activeLesson.moduleId,
         };
         handleProjectPreview(payload);
-      }, [projectData]),
+      }, [projectData, activeLesson]),
     },
     {
       label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
