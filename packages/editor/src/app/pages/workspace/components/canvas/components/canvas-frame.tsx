@@ -44,7 +44,7 @@ export const CanvasFrame = () => {
       apiRef.current = ev.detail.api;
       idRef.current = activeLesson.id;
 
-      if (activeLesson.content.length) {
+      if (activeLesson.content.blocks.length) {
         apiRef.current?.render(activeLesson.content);
       }
     };
