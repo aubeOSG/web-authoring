@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { stateManager } from '../../services';
 import { List, updateObj } from '@scrowl/utils';
-import { v4 as uuid } from 'uuid';
+import { nanoid } from 'nanoid';
 
 export const initialState = {
   isDirty: false, // true if the user has made any change
@@ -141,14 +141,14 @@ export const config: stateManager.StateConfig = {
             data.content = {
               blocks: [
                 {
-                  'id': uuid(),
+                  'id': nanoid(10),
                   'type': 'header',
                   'data': {
                     'text': 'A new lesson',
                   },
                 },
                 {
-                  'id': uuid(),
+                  'id': nanoid(10),
                   'type': 'paragraph',
                   'data': {
                     'text': "Let's begin with a cold open.",

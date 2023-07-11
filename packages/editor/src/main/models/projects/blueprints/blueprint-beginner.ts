@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { project as createProject } from './create';
 
 export const make = () => {
@@ -18,14 +19,14 @@ export const make = () => {
     content: {
       blocks: [
         {
-          'id': 'mQ-6SMxbIz',
+          'id': nanoid(10),
           'type': 'header',
           'data': {
             'text': 'A new lesson',
           },
         },
         {
-          'id': 'z13gJyKBtz',
+          'id': nanoid(10),
           'type': 'paragraph',
           'data': {
             'text': "Let's begin with a cold open.",
