@@ -72,7 +72,7 @@ export const ScrollHint = () => {
   useEffect(() => {
     const updateBottomRef = () => {
       if (
-        window.innerHeight + window.pageYOffset + 200 <
+        window.innerHeight + window.scrollY + 200 <
         document.body.offsetHeight
       ) {
         bottom.current = false;
@@ -88,7 +88,8 @@ export const ScrollHint = () => {
     };
   }, []);
 
-  return !bottom.current ? (
+  return !bottom.current &&
+    window.innerHeight + 100 <= document.body.offsetHeight ? (
     <div className={css.scrollHint + (visible ? ' visible' : '')}>
       <div
         className={css.hintText + (visible && noticeVisible ? ' visible' : '')}
