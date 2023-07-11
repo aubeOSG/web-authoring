@@ -13,6 +13,7 @@ export interface BlockEditorClass {
   save: () => Promise<OutputData>;
   render: (data: OutputData) => Promise<void>;
   getInstance: () => any | null;
+  focus: () => void;
 };
 
 export type BlockEditorFactory = (config: EditorConfig) => BlockEditorClass;
@@ -25,4 +26,4 @@ export interface BlockEditorCommons extends Omit<EditorConfig, 'data'> {
   onInit?: (editor: BlockEditorClass) => void;
 };
 
-export type BlockEditorProps = Omit<BlockEditorCommons, 'factory' | 'holderId' | 'holder'>;
+export type BlockEditorProps = Omit<BlockEditorCommons, 'factory' | 'holderId' | 'holder'> & React.AllHTMLAttributes<HTMLDivElement>;

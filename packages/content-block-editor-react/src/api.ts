@@ -97,6 +97,17 @@ export class BlockEditorAPI implements BlockEditorClass {
     await this._editor.isReady;
     await this._editor.destroy();
   }
+
+  public focus () {
+    const blockCount = this._editor.blocks.getBlocksCount();
+    const lastBlock = this._editor.blocks.getBlockByIndex(blockCount - 1);
+
+    if (!lastBlock?.isEmpty) {
+      this._editor.blocks.insert('paragraph', undefined, undefined, blockCount, true);
+    }
+
+    this._editor.caret.setToLastBlock('end');
+  }
 };
 
 export default BlockEditorAPI;

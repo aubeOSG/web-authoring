@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   BlockEditor,
   editorEventMap,
@@ -13,7 +13,10 @@ import {
 import { Projects } from '../../../../../models';
 
 export const CanvasFrame = () => {
+  const frameRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<BlockEditorClass>();
+  const [isApiReady, setIsApiReady] = useState(false);
   const activeLesson = useActiveLesson();
   const idRef = useRef(activeLesson.id);
 
@@ -43,6 +46,7 @@ export const CanvasFrame = () => {
     const handleReady = (ev) => {
       apiRef.current = ev.detail.api;
       idRef.current = activeLesson.id;
+      setIsApiReady(true);
 
       if (activeLesson.content.blocks.length) {
         apiRef.current?.render(activeLesson.content);
@@ -69,12 +73,45 @@ export const CanvasFrame = () => {
       document.removeEventListener(editorEventMap.ready, handleReady);
       document.removeEventListener(editorEventMap.mutation, handleMutation);
     };
-  }, [activeLesson]);
+  }, [activeLesson, isApiReady]);
+
+  useEffect(() => {
+    const frameElem = frameRef.current;
+    const editorElem = editorRef.current;
+    const api = apiRef.current;
+
+    if (!frameElem || !editorElem || !api) {
+      return;
+    }
+
+    const handleEditorAutoFocus = (ev: MouseEvent) => {
+      const editableZone = editorElem.querySelector(
+        '.codex-editor__redactor'
+      ) as HTMLDivElement;
+      const focusedElem = ev.target as HTMLElement;
+
+      if (editableZone.contains(focusedElem)) {
+        return;
+      }
+
+      api.focus();
+    };
+
+    frameElem.addEventListener('click', handleEditorAutoFocus);
+
+    return () => {
+      frameElem.removeEventListener('click', handleEditorAutoFocus);
+    };
+  }, [isApiReady]);
 
   return (
-    <div className={css.canvasFrame}>
+    <div className={css.canvasFrame} ref={frameRef}>
       <Error>
-        {activeLesson && activeLesson.id !== -1 ? <BlockEditor /> : <></>}
+        {activeLesson && activeLesson.id !== -1 ? (
+          <BlockEditor ref={editorRef} />
+        ) : (
+          <></>
+        )}
       </Error>
     </div>
   );
