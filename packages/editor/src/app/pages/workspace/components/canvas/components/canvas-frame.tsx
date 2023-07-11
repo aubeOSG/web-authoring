@@ -85,7 +85,7 @@ export const CanvasFrame = () => {
     }
 
     const handleEditorAutoFocus = (ev: MouseEvent) => {
-      console.log('ev', ev);
+      const focusedElem = ev.target as HTMLElement;
       const editableZone = editorElem.querySelector(
         '.codex-editor__redactor'
       ) as HTMLDivElement;
@@ -93,17 +93,21 @@ export const CanvasFrame = () => {
       const inlineTools = editorElem.querySelector(
         '.ce-inline-toolbar'
       ) as HTMLDivElement;
-      const focusedElem = ev.target as HTMLElement;
 
-      if (
-        editableZone.contains(focusedElem) ||
-        toolbar.contains(focusedElem) ||
-        inlineTools.contains(focusedElem)
-      ) {
-        return;
+      try {
+        if (
+          editableZone.contains(focusedElem) ||
+          toolbar.contains(focusedElem) ||
+          inlineTools.contains(focusedElem) ||
+          focusedElem.classList.toString().includes('ce-popover-item')
+        ) {
+          return;
+        }
+
+        api.focus();
+      } catch (e) {
+        console.error(e);
       }
-
-      api.focus();
     };
 
     frameElem.addEventListener('click', handleEditorAutoFocus);
