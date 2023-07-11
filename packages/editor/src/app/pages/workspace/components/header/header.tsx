@@ -211,21 +211,18 @@ export const Header = () => {
       document.body.appendChild(link);
       link.click();
       link.parentNode?.removeChild(link);
+
+      const initialHasPublished = userData.hasPublished;
+      const updatedUser = { ...userData, hasPublished: true };
+
+      Users.save(updatedUser).then((res) => {
+        console.log('----saveRes', res);
+        if (!initialHasPublished) {
+          setIsOpenConfirmation(true);
+        }
+      });
     });
 
-    console.log('initial userData: ', userData);
-
-    const updatedUser = { ...userData, hasPublished: true };
-    console.log('updatE: ', updatedUser);
-    Users.save(updatedUser).then((res) => {
-      console.log('----saveRes', res);
-    });
-
-    if (!userData.hasPublished) {
-      setTimeout(() => {
-        setIsOpenConfirmation(true);
-      }, 1800);
-    }
     // Projects.save({ data: submittedData, assets }).then((saveRes) => {
     //   if (saveRes.error) {
     //     closePublishProgress();
