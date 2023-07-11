@@ -85,12 +85,21 @@ export const CanvasFrame = () => {
     }
 
     const handleEditorAutoFocus = (ev: MouseEvent) => {
+      console.log('ev', ev);
       const editableZone = editorElem.querySelector(
         '.codex-editor__redactor'
       ) as HTMLDivElement;
+      const toolbar = editorElem.querySelector('.ce-toolbar') as HTMLDivElement;
+      const inlineTools = editorElem.querySelector(
+        '.ce-inline-toolbar'
+      ) as HTMLDivElement;
       const focusedElem = ev.target as HTMLElement;
 
-      if (editableZone.contains(focusedElem)) {
+      if (
+        editableZone.contains(focusedElem) ||
+        toolbar.contains(focusedElem) ||
+        inlineTools.contains(focusedElem)
+      ) {
         return;
       }
 
