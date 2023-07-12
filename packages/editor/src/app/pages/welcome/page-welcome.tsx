@@ -23,7 +23,6 @@ export const Page = () => {
 
     setProgress(true);
     Users.create().then((userRes) => {
-      console.log('userRes', userRes);
       if (userRes.error) {
         return;
       }

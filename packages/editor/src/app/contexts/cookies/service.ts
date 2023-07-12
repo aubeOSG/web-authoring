@@ -2,7 +2,7 @@ import { CookiesServiceClass } from "./cookies.types";
 
 export default class CookieService implements CookiesServiceClass {
   private _base = '/app';
-  private _domain = '';
+  private _domain;
 
   constructor() {}
 
@@ -93,7 +93,7 @@ export default class CookieService implements CookiesServiceClass {
     }
 
     if (expiry) {
-      cookie.expiry = this._expire(expiry);
+      cookie.expiries = this._expire(expiry);
     }
 
     cookie.path = this._base;
@@ -105,7 +105,11 @@ export default class CookieService implements CookiesServiceClass {
 
     const formatValue = (key: string, idx: number) => {
       try {
-        result += `${key}=${encodeURIComponent(JSON.stringify(cookie[key]))}${idx!==lastIndex ? ';' : ''}`;
+        if (key === 'domain') {
+          result += `${key}=${idx!==lastIndex ? ';' : ''}`;
+        } else {
+          result += `${key}=${encodeURIComponent(JSON.stringify(cookie[key]))}${idx!==lastIndex ? ';' : ''}`;
+        }
       } catch (e) {
         console.error(`unable to format cookie property: ${key}`, cookie[key], e);
       }

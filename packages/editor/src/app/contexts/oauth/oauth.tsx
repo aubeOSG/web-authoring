@@ -3,6 +3,7 @@ import { OAuthProviderProps, OAuthContextProps } from './ouath.types';
 import { useCookies } from '../cookies';
 
 const oauthContext = createContext<OAuthContextProps | null>(null);
+const defaultExpiry = 1000 * 60 * 60 * 24 * 7 - 1000;
 
 export const useOAuth = () => {
   return useContext(oauthContext);
@@ -15,7 +16,7 @@ export const OAuthProvider = ({ children }: OAuthProviderProps) => {
   const update = useCallback(
     (value: string) => {
       setToken(value);
-      cookies?.put('accessToken', value);
+      cookies?.put('accessToken', value, defaultExpiry);
     },
     [token]
   );
