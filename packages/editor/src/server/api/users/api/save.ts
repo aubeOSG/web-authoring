@@ -1,5 +1,4 @@
-import type { User } from '../users.types';
-// import type { ProjectData } from '../../../../app/models/projects';
+import type { User, UsersApiSave } from '../users.types';
 import { table } from '../schema';
 import { connection } from '../../../db';
 
@@ -52,7 +51,7 @@ export const update = async (payload: User) => {
   }
 };
 
-export const save = {
+export const save: UsersApiSave = {
   name: '/users/save',
   type: 'invoke',
   method: 'POST',
