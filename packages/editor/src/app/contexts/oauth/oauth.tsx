@@ -1,17 +1,36 @@
-import React, { createContext, useContext } from 'react';
-import { OAuthProviderProps } from './ouath.types';
+import React, { createContext, useContext, useCallback, useState } from 'react';
+import { OAuthProviderProps, OAuthContextProps } from './ouath.types';
+import { useCookies } from '../cookies';
 
-const oauthContext = createContext<string | null>(null);
+const oauthContext = createContext<OAuthContextProps | null>(null);
 
 export const useOAuth = () => {
   return useContext(oauthContext);
 };
 
 export const OAuthProvider = ({ children }: OAuthProviderProps) => {
-  const token = 'dev-testing-token';
+  const cookies = useCookies();
+  const [token, setToken] = useState(cookies?.get('accessToken'));
+
+  const update = useCallback(
+    (value: string) => {
+      setToken(value);
+    },
+    [token]
+  );
+
+  const remove = useCallback(() => {
+    setToken(undefined);
+  }, [token]);
+
+  const value = {
+    token,
+    update,
+    remove,
+  };
 
   return (
-    <oauthContext.Provider value={token}>{children}</oauthContext.Provider>
+    <oauthContext.Provider value={value}>{children}</oauthContext.Provider>
   );
 };
 

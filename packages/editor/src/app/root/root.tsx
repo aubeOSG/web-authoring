@@ -15,6 +15,7 @@ import * as models from '../models';
 import { menu, events } from '../services';
 import { Elem } from '@scrowl/utils';
 import { ProjectBrowser, ContextMenu } from '../components';
+import { CookiesProvider } from '../contexts/cookies';
 import { OAuthProvider } from '../contexts/oauth';
 import RouteProtection from './route-protection';
 
@@ -183,12 +184,14 @@ export const Root = () => {
   }, [modelModules, modelNames, inits]);
 
   return (
-    <OAuthProvider>
-      <BrowserRouter basename="/app">
-        <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
-        <ProjectBrowser />
-        <ContextMenu.Menu />
-      </BrowserRouter>
-    </OAuthProvider>
+    <CookiesProvider>
+      <OAuthProvider>
+        <BrowserRouter basename="/app">
+          <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
+          <ProjectBrowser />
+          <ContextMenu.Menu />
+        </BrowserRouter>
+      </OAuthProvider>
+    </CookiesProvider>
   );
 };

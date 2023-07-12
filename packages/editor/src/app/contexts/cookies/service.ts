@@ -85,13 +85,11 @@ export default class CookieService implements CookiesServiceClass {
     }
   }
 
-  private _update (value: any, key?: string, expiry?: string | number) {
-    let cookie = this._findAll() || {};
+  private _update (key: string, value: any, expiry?: string | number) {
+    const cookie: {[key: string]: any} = {};
 
     if (key) {
       cookie[key] = value;
-    } else {
-      cookie = value;
     }
 
     if (expiry) {
@@ -107,7 +105,7 @@ export default class CookieService implements CookiesServiceClass {
 
     const formatValue = (key: string, idx: number) => {
       try {
-        result += `${key}=${encodeURIComponent(JSON.stringify(cookie[key]))}${idx!==lastIndex ? '; ' : ''}`;
+        result += `${key}=${encodeURIComponent(JSON.stringify(cookie[key]))}${idx!==lastIndex ? ';' : ''}`;
       } catch (e) {
         console.error(`unable to format cookie property: ${key}`, cookie[key], e);
       }
@@ -117,8 +115,8 @@ export default class CookieService implements CookiesServiceClass {
     document.cookie = result;
   }
 
-  public put (value: any, key?: string, expiry?: string | number) {
-    this._update(value, key, expiry);
+  public put (key: string, value: any, expiry?: string | number) {
+    this._update(key, value, expiry);
   }
 
   public get (key?: string) {
@@ -126,14 +124,12 @@ export default class CookieService implements CookiesServiceClass {
   }
 
   public remove (key: string) {
-    let cookie = this._findAll();
+    let cookie = this._find(key);
 
     if (!cookie) {
       return;
     }
 
-    delete cookie[key];
-
-    this._update(cookie);
+    this._update(key, '', 'Thu, 01-Jan-1970 00:00:01 GMT');
   }
 };

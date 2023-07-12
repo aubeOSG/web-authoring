@@ -5,10 +5,14 @@ import * as css from './page-welcome.scss';
 import { animations } from '../../components';
 import { Projects, Users, Workspaces } from '../../models';
 import { menu } from '../../services';
+import { useCookies } from '../../contexts/cookies';
+import { useOAuth } from '../../contexts/oauth';
 
 export const Path = '/welcome';
 
 export const Page = () => {
+  const cookies = useCookies();
+  const oauth = useOAuth();
   const [inProgress, setProgress] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const isReady = useRef(false);
@@ -26,6 +30,8 @@ export const Page = () => {
         return;
       }
 
+      cookies?.put('accessToken', userRes.data.id);
+      oauth?.update(userRes.data.id);
       Users.setData(userRes.data);
       Workspaces.create(userRes.data.id).then((workspaceRes) => {
         if (workspaceRes.error) {

@@ -20,6 +20,8 @@ import {
 import { Projects } from '../../models';
 import { menu, sys, events } from '../../services';
 import { List } from '@scrowl/utils';
+import { useCookies } from '../../contexts/cookies';
+import { useOAuth } from '../../contexts/oauth';
 
 export const Path = '/workspace/:id';
 export const isProtected = true;
