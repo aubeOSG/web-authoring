@@ -165,6 +165,23 @@
     color: var(--owl-footer-color);
     background: var(--owl-footer-bg);
 
+    .icon {
+      font-size: 1.2em;
+      margin-right: 0.5em;
+
+      &-module {
+        color: var(--owl-color-module);
+        font-size: 1.2em;
+        margin-right: 0.5em;
+      }
+
+      &-lesson {
+        color: var(--owl-color-lesson);
+        font-size: 1.2em;
+        margin-right: 0.5em;
+      }
+    }
+
     &__list {
       --bs-breadcrumb-margin-bottom: 0.25em;
       --bs-breadcrumb-divider-color: var(--owl-footer-label-color);
@@ -173,9 +190,12 @@
       flex-wrap: nowrap;
       flex-grow: 1;
       color: var(--owl-footer-label-color);
+      align-items: center;
 
       .breadcrumb-item {
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
 
         &__content {
           overflow: hidden;
@@ -190,6 +210,8 @@
           border: 0;
           background: transparent;
           box-shadow: none;
+          display: flex;
+          align-items: center;
         }
 
         .dropdown-toggle {

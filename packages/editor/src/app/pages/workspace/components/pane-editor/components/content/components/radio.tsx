@@ -1,5 +1,5 @@
 import React from 'react';
-import { ui, IconType } from '@scrowl/ui';
+import { IconType } from '@scrowl/ui';
 import { InputRadioProps } from '../../../pane-editor.types';
 
 export const Radio = ({
@@ -124,7 +124,7 @@ export const Radio = ({
               <div className="form-radio-label">
                 {radioOpt.icon && (
                   <div className="form-radio-label__icon">
-                    <ui.Icon icon={icon} />
+                    {/* <ui.Icon icon={icon} /> */}
                   </div>
                 )}
                 {radioOpt.label && (

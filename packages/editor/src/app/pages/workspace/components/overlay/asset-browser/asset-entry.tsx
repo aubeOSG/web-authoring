@@ -116,13 +116,13 @@ export const AssetEntry = ({
               handleAssetMenu(ev);
             }}
           >
-            <ui.Icon
+            {/* <ui.Icon
               display="rounded"
               icon="more_vert"
               opsz={20}
               filled
               pxScale="Sm"
-            />
+            /> */}
           </ui.Button>
         </div>
       </td>

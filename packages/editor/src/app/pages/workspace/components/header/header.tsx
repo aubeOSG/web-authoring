@@ -339,7 +339,9 @@ export const Header = () => {
                     handleOpenPreviewMenu(ev, 102);
                   }}
                 >
-                  <ui.Icon icon="interests" filled display="sharp" opsz={20} />
+                  <span className="material-symbols-sharp icon-lesson">
+                    interests
+                  </span>
                   Preview
                 </ui.Button>
 
@@ -350,12 +352,9 @@ export const Header = () => {
                   onClick={handleOpenPreviewMenu}
                   onContextMenu={handleOpenPreviewMenu}
                 >
-                  <ui.Icon
-                    icon="arrow_drop_down"
-                    filled
-                    display="sharp"
-                    opsz={20}
-                  />
+                  <span className="material-symbols-sharp owlui-icons">
+                    arrow_drop_down
+                  </span>
                 </ui.Button>
               </Dropdown>
             </Nav.Item>
@@ -366,12 +365,9 @@ export const Header = () => {
                 size="sm"
                 onClick={handleOpenPublish}
               >
-                <ui.Icon
-                  icon="rocket_launch"
-                  filled
-                  display="sharp"
-                  opsz={20}
-                />
+                <span className="material-symbols-sharp icon-rocket">
+                  rocket_launch
+                </span>
                 Publish
               </ui.Button>
             </Nav.Item>
@@ -382,7 +378,7 @@ export const Header = () => {
                 size="sm"
                 onClick={handleSave}
               >
-                <ui.Icon icon="save" filled display="sharp" opsz={20} />
+                <span className="material-symbols-sharp icon-save">save</span>
                 Save
               </ui.Button>
             </Nav.Item>

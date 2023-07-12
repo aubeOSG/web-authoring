@@ -1,5 +1,5 @@
 import React from 'react';
-import { ui, IconType } from '@scrowl/ui';
+import { IconType } from '@scrowl/ui';
 import { InputSelectProps } from '../../../pane-editor.types';
 import { GroupElement } from './';
 
@@ -125,7 +125,7 @@ export const Select = ({
           <></>
         ) : (
           <span className="input-group-text pre">
-            <ui.Icon icon={icon} display="sharp" grad={200} opsz={20} />
+            {/* <ui.Icon icon={icon} display="sharp" grad={200} opsz={20} /> */}
           </span>
         )}
         {GroupElement('pre', pre)}

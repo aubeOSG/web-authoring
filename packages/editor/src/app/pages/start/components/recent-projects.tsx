@@ -36,7 +36,7 @@ export const RecentProjects = ({ projects, ...props }: RecentProjectsProps) => {
                   handleOpenProject(version);
                 }}
               >
-                <ui.Icon display="outlined" icon="pages" />
+                {/* <ui.Icon display="outlined" icon="pages" /> */}
                 <span>{version.name}</span>
                 <span className={css.projectVersion}>{vCnt}</span>
               </ui.Button>

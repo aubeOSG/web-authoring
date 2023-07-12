@@ -253,9 +253,9 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
                       className="cell-name"
                     >
                       Name
-                      {sortField === 'project.name' && (
+                      {/* {sortField === 'project.name' && (
                         <ui.Icon className="sort-indicator" icon={sortIcon} />
-                      )}
+                      )} */}
                     </th>
                     <th
                       scope="col"
@@ -263,9 +263,9 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
                       className="cell-created-at"
                     >
                       Created
-                      {sortField === 'createdAt' && (
+                      {/* {sortField === 'createdAt' && (
                         <ui.Icon className="sort-indicator" icon={sortIcon} />
-                      )}
+                      )} */}
                     </th>
                     <th
                       scope="col"
@@ -273,9 +273,9 @@ const ProjectBrowserElement = ({ isOpen, ...props }, ref) => {
                       className="cell-updated-at"
                     >
                       Last Modified
-                      {sortField === 'updatedAt' && (
+                      {/* {sortField === 'updatedAt' && (
                         <ui.Icon className="sort-indicator" icon={sortIcon} />
-                      )}
+                      )} */}
                     </th>
                   </tr>
                 </thead>

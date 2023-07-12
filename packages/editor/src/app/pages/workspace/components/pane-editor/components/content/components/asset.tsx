@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ui } from '@scrowl/ui';
 import { InputAssetProps } from '../../../pane-editor.types';
 import { useContentFocus } from '../../../../../page-workspace-hooks';
 import { AssetBrowser, AssetProps } from '../../../../../components';
@@ -138,7 +137,7 @@ export const Asset = ({
               disabled={disabled}
               onClick={handleRemoveAsset}
             >
-              <ui.Icon icon="close" pxScale="Sm" />
+              {/* <ui.Icon icon="close" pxScale="Sm" /> */}
             </button>
           ) : null}
 

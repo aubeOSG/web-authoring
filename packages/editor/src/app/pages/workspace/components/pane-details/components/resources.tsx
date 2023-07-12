@@ -187,12 +187,9 @@ export const Resources = () => {
                       handleResourceMenu(ev, editableResource);
                     }}
                   >
-                    <ui.Icon
-                      display="rounded"
-                      icon="more_vert"
-                      opsz={20}
-                      filled
-                    />
+                    <span className="material-symbols-rounded owlui-icons">
+                      more_vert
+                    </span>
                   </ui.Button>
                 </div>
                 <dd className="tab_resources__item--description">
@@ -213,13 +210,9 @@ export const Resources = () => {
             }}
           >
             <span className="txt-placeholder">Add a new resource...</span>
-            <ui.Icon
-              display="rounded"
-              icon="attach_file"
-              opsz={20}
-              filled
-              pxScale="Lg"
-            />
+            <span className="material-symbols-rounded owlui-icons">
+              attach_file
+            </span>
           </ui.Button>
         </div>
       </div>
