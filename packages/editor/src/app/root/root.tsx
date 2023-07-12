@@ -15,6 +15,7 @@ import * as models from '../models';
 import { menu, events } from '../services';
 import { Elem } from '@scrowl/utils';
 import { ProjectBrowser, ContextMenu } from '../components';
+import { OAuthProvider } from '../contexts/oauth';
 
 const Loader = () => {
   return <div>Loading...</div>;
@@ -173,10 +174,12 @@ export const Root = () => {
   }, [modelModules, modelNames, inits]);
 
   return (
-    <BrowserRouter basename="/app">
-      <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
-      <ProjectBrowser />
-      <ContextMenu.Menu />
-    </BrowserRouter>
+    <OAuthProvider>
+      <BrowserRouter basename="/app">
+        <main>{!isReady ? <Loader /> : <PageRoutes />}</main>
+        <ProjectBrowser />
+        <ContextMenu.Menu />
+      </BrowserRouter>
+    </OAuthProvider>
   );
 };
