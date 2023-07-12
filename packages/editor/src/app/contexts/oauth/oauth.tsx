@@ -15,12 +15,14 @@ export const OAuthProvider = ({ children }: OAuthProviderProps) => {
   const update = useCallback(
     (value: string) => {
       setToken(value);
+      cookies?.put('accessToken', value);
     },
     [token]
   );
 
   const remove = useCallback(() => {
     setToken(undefined);
+    cookies?.remove('accessToken');
   }, [token]);
 
   const value = {

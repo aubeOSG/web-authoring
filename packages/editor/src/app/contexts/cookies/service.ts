@@ -58,6 +58,7 @@ export default class CookieService implements CookiesServiceClass {
 
   private _find (key?: string) {
     const cookie = document.cookie;
+    console.log('finding cookie', cookie);
 
     if (!key) {
       return this._findAll();
@@ -70,10 +71,10 @@ export default class CookieService implements CookiesServiceClass {
     }
 
     const valueStart = cookie.indexOf(`=`, keyIdx) + 1;
-    const valueEnd = cookie.indexOf(';', keyIdx);
+    let valueEnd = cookie.indexOf(';', keyIdx);
 
     if (valueEnd === -1) {
-      return;
+      valueEnd = cookie.length;
     }
 
     const value = cookie.substring(valueStart, valueEnd);
@@ -120,7 +121,9 @@ export default class CookieService implements CookiesServiceClass {
   }
 
   public get (key?: string) {
-    return this._find(key);
+    const value = this._find(key);
+    console.log('cookie ', key, ' got', value);
+    return value;
   }
 
   public remove (key: string) {
