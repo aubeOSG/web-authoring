@@ -67,10 +67,26 @@ export const save = (req): Promise<rq.ApiResult> => {
   });
 };
 
+export const get = (id: string): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    API.get(id).then((res) => {
+
+      if (res.error) {
+        console.error(res);
+      } else if (processor.dispatch) {
+        processor.dispatch(state.setData(res.data));
+      }
+
+      resolve(res);
+    });
+  });
+};
+
 export default {
   useProcessor,
   resetState,
   useData,
   setData,
   create,
+  get,
 };
