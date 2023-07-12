@@ -94,7 +94,7 @@ export const ErrorModal = () => {
             <Modal.Header>
               <h1>Error</h1>
               <span className={css.closeButton} onClick={toggleModal}>
-                <ui.Icon display="sharp" icon="close" />
+                <span className="material-symbols-sharp">close</span>
               </span>
             </Modal.Header>
             <Modal.Body>

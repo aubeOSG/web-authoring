@@ -32,6 +32,8 @@ export const EndButton = ({
     [isEnd, isLast, onNext, onEnd]
   );
 
+  console.log('label: ', label);
+
   return (
     <Scrowl.ui.Button {...props} onClick={handleClick} variant={variant}>
       {label}

@@ -10,8 +10,6 @@ export const SearchBar = ({
   confirmedSearchTerm,
   setConfirmedSearchTerm,
 }) => {
-  const Scrowl = window['Scrowl'];
-
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -36,7 +34,8 @@ export const SearchBar = ({
   const clearSearch = (e) => {
     if (
       e.target.classList[0] === 'input' ||
-      e.target.classList[0] === 'owlui-clear'
+      e.target.classList[0] === 'owlui-clear' ||
+      e.target.classList[0] === 'material-symbols-outlined'
     ) {
       e.preventDefault();
       e.target.blur();
@@ -51,7 +50,8 @@ export const SearchBar = ({
 
   return (
     <div className={css.searchBar}>
-      <Scrowl.ui.Icon icon="search" display="outlined" />
+      <span className="material-symbols-outlined">search</span>
+
       <div className={css.searchTerm}>
         <input
           type="text"
@@ -70,7 +70,7 @@ export const SearchBar = ({
           aria-label="Clear Search"
           title="Clear Search"
         >
-          <Scrowl.ui.Icon icon="close" display="outlined" />
+          <span className="material-symbols-outlined icons">close</span>
         </button>
       ) : null}
     </div>
