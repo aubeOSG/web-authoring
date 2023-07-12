@@ -16,6 +16,7 @@ import { menu, events } from '../services';
 import { Elem } from '@scrowl/utils';
 import { ProjectBrowser, ContextMenu } from '../components';
 import { OAuthProvider } from '../contexts/oauth';
+import RouteProtection from './route-protection';
 
 const Loader = () => {
   return <div>Loading...</div>;
@@ -133,7 +134,15 @@ const PageRoutes = () => {
           <Route
             key={idx}
             path={pageModule.Path}
-            element={<pageModule.Page />}
+            element={
+              pageModule.isProtected ? (
+                <RouteProtection>
+                  <pageModule.Page />
+                </RouteProtection>
+              ) : (
+                <pageModule.Page />
+              )
+            }
           />
         );
       })}
