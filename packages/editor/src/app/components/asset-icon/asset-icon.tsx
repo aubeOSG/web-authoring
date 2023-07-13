@@ -32,8 +32,6 @@ export const AssetIcon = ({ type, ext, ...props }: AssetIconProps) => {
       }
       break;
   }
-
-  // return <ui.Icon icon={icon} {...props} />;
 };
 
 export default AssetIcon;

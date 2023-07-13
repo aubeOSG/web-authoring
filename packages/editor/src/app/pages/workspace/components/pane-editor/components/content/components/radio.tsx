@@ -123,9 +123,7 @@ export const Radio = ({
               />
               <div className="form-radio-label">
                 {radioOpt.icon && (
-                  <div className="form-radio-label__icon">
-                    {/* <ui.Icon icon={icon} /> */}
-                  </div>
+                  <div className="form-radio-label__icon"></div>
                 )}
                 {radioOpt.label && (
                   <div className="form-radio-label__text">{radioOpt.label}</div>

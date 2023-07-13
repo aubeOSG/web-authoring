@@ -254,12 +254,6 @@ export const AssetDrawerElement = (
                           <tr onClick={handleSortOrder}>
                             <th scope="col" data-sort-field="sourceFilename">
                               Name
-                              {/* {sortField === 'sourceFilename' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )} */}
                             </th>
                             <th
                               scope="col"
@@ -267,12 +261,6 @@ export const AssetDrawerElement = (
                               style={stylesColType}
                             >
                               Type
-                              {/* {sortField === 'type' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )} */}
                             </th>
                             <th
                               scope="col"
@@ -280,12 +268,6 @@ export const AssetDrawerElement = (
                               style={stylesColSize}
                             >
                               Size
-                              {/* {sortField === 'size' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )} */}
                             </th>
                           </tr>
                         </thead>

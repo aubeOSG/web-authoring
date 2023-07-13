@@ -136,9 +136,7 @@ export const Asset = ({
               type="button"
               disabled={disabled}
               onClick={handleRemoveAsset}
-            >
-              {/* <ui.Icon icon="close" pxScale="Sm" /> */}
-            </button>
+            ></button>
           ) : null}
 
           <input id={inputId} {...inputProps} disabled />

@@ -121,13 +121,7 @@ export const Select = ({
     <div className={controlClasses}>
       <label className="form-label">{label}</label>
       <div className={groupClasses}>
-        {!icon ? (
-          <></>
-        ) : (
-          <span className="input-group-text pre">
-            {/* <ui.Icon icon={icon} display="sharp" grad={200} opsz={20} /> */}
-          </span>
-        )}
+        {!icon ? <></> : <span className="input-group-text pre"></span>}
         {GroupElement('pre', pre)}
         <select {...inputProps}>
           {options.map((option) => {
