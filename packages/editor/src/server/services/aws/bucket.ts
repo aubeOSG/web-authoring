@@ -1,37 +1,52 @@
-import aws from 'aws-sdk';
+import {
+  S3Client,
+  ListObjectsCommand,
+  ListObjectsCommandInput,
+  ListObjectsCommandOutput,
+  GetObjectCommand,
+  GetObjectCommandOutput
+} from '@aws-sdk/client-s3';
 import { config } from './connection';
 
-aws.config.update({
-  region: config.region,
-});
-
 export default class BucketFactory {
-  private _s3: aws.S3;
-  private _params: aws.S3.Types.ListObjectsV2Request;
+  private _client: S3Client;
+  private _command: { Bucket: string, Prefix: string; };
 
   constructor () {
-    this._s3 = new aws.S3();
-    this._params = {
+    this._client = new S3Client({
+      region: config.region,
+    });
+    this._command = {
       Bucket: config.bucket,
       Prefix: `${config.bucketFolder}/`,
     };
   }
 
-  public list () {
+  public list (params?: ListObjectsCommandInput): Promise<ListObjectsCommandOutput> {
     return new Promise((resolve, reject) => {
-      console.log('params', this._params);
-      this._s3.listObjectsV2(this._params, (err, data) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        resolve(data);
+      const command = new ListObjectsCommand({
+        ...params,
+        ...this._command,
       });
+
+      this._client.send(command).then((result) => {
+        resolve(result);
+      }).catch(reject);
     })
   }
 
-  public get() {}
+  public get(filename: string): Promise<GetObjectCommandOutput> {
+    return new Promise((resolve, reject) => {
+        const command = new GetObjectCommand({
+          Key: filename,
+          ...this._command,
+        });
+
+        this._client.send(command).then((result) => {
+          resolve(result);
+        }).catch(reject);
+    });
+  }
 
   public put() {}
 };
