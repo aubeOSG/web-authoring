@@ -91,13 +91,6 @@ export const CanvasHeader = () => {
       transition={animationOpts.transition}
     >
       <h1 className="visually-hidden"></h1>
-      <ui.Icon
-        icon="rectangle"
-        display="outlined"
-        opsz={20}
-        appearance="Slide"
-        pxScale="H3"
-      />
       <div className={css.canvasHeaderSlideName}>
         <span ref={nameRef}></span>
         <input
@@ -115,15 +108,7 @@ export const CanvasHeader = () => {
         variant="ghost"
         onClick={handelOpenSlideMenu}
         onContextMenu={handelOpenSlideMenu}
-      >
-        <ui.Icon
-          display="rounded"
-          icon="more_vert"
-          opsz={20}
-          filled
-          pxScale="H4"
-        />
-      </ui.Button>
+      ></ui.Button>
     </motion.div>
   );
 };

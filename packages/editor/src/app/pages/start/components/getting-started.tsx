@@ -58,7 +58,6 @@ export const GettingStarted = ({ hasProjects, ...props }: StartNewProps) => {
               handleNewProject('beginner');
             }}
           >
-            <ui.Icon display="sharp" icon="assistant_direction" />
             Beginner Tutorial Project
           </ui.Button>
         </Nav.Item>

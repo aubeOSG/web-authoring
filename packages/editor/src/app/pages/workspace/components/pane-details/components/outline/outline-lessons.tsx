@@ -113,13 +113,9 @@ export const OutlineLessonItem = ({
         >
           <div className={css.lessonIcons}>
             <span className={css.outlineItemIconDetail}>
-              <ui.Icon
-                icon="interests"
-                display="sharp"
-                filled={activeLesson ? lesson.id !== activeLesson.id : false}
-                grad={200}
-                opsz={20}
-              />
+              <span className="material-symbols-sharp icon-outline">
+                interests
+              </span>
             </span>
             <InlineInput.Text
               isEdit={isEdit}
@@ -140,7 +136,7 @@ export const OutlineLessonItem = ({
             handleOpenLessonMenu(ev, 'left-bottom');
           }}
         >
-          <ui.Icon display="rounded" icon="more_vert" opsz={20} filled />
+          <span className="material-symbols-sharp owlui-icons">more_vert</span>
         </ui.Button>
       </div>
     </div>
@@ -186,7 +182,9 @@ export const OutlineLessons = ({
         data-module-id={moduleId}
         data-lesson-id={-1}
       >
-        <ui.Icon icon="add" display="outlined" />
+        <span className="material-symbols-outlined owlui-icons icon-add">
+          add
+        </span>
         <span>Add New Lesson</span>
       </ui.Button>
     </div>

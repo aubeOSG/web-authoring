@@ -25,11 +25,14 @@ export const NavModule = ({ config, mIdx, onChange }) => {
   return (
     <div>
       <div className={css.moduleButton}>
-        <Scrowl.ui.Icon
-          icon="chevron_right"
-          display="outlined"
-          className={isOpen ? css.iconExpanded : css.icon}
-        />
+        <span
+          className={`material-symbols-outlined ${
+            isOpen ? css.iconExpanded : css.icon
+          }`}
+        >
+          chevron_right
+        </span>
+
         <h5 className={css.moduleNameExpanded}>{config.module.name}</h5>
       </div>
       <Collapse in={isOpen}>
@@ -43,11 +46,12 @@ export const NavModule = ({ config, mIdx, onChange }) => {
                   }}
                 >
                   <span className={css.lessonButton}>
-                    <Scrowl.ui.Icon
-                      icon="arrow_drop_down_circle"
-                      display="outlined"
-                      className={css.lessonIconActive}
-                    />
+                    <span
+                      className={`material-symbols-outlined ${css.lessonIconActive}`}
+                    >
+                      arrow_drop_down_circle
+                    </span>
+
                     <p
                       className={`${css.lessonLink} ${
                         currentLesson && currentLesson.id === lesson.id

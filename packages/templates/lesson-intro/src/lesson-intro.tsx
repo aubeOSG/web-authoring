@@ -118,7 +118,6 @@ const LessonIntro = ({ id, schema, ...props }: LessonIntroProps) => {
           </h2>
           {time && time.length > 0 && (
             <span className={timeClasses} onMouseDown={handleFocusTime}>
-              <Scrowl.ui.Icon icon="schedule" display="outlined" />
               <span className="template-lesson-intro-time-value">{time}</span>
             </span>
           )}

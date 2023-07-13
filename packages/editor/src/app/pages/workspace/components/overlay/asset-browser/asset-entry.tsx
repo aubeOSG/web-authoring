@@ -115,15 +115,7 @@ export const AssetEntry = ({
             onContextMenu={(ev) => {
               handleAssetMenu(ev);
             }}
-          >
-            <ui.Icon
-              display="rounded"
-              icon="more_vert"
-              opsz={20}
-              filled
-              pxScale="Sm"
-            />
-          </ui.Button>
+          ></ui.Button>
         </div>
       </td>
     </tr>
