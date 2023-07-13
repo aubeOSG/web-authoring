@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Collapse } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import utils from '../../utils';
 //@ts-ignore
 import * as _css from './_navbar.scss';
-import { useCurrentLesson } from '../../hooks/state/course';
+import { Course } from '../../hooks/state';
+import type { ProjectLesson } from '../../root';
 
 const css = utils.css.removeMapPrefix(_css);
 
-export const NavModule = ({ pageId, config, mIdx }) => {
+export const NavModule = ({ config, mIdx, onChange }) => {
   const Scrowl = window['Scrowl'];
   const [isOpen, setIsOpen] = useState(true);
-  const currentLesson = useCurrentLesson();
+  const currentLesson = Course.useCurrentLesson();
+  const updateCurrentLesson = Course.useUpdateCurrentLesson();
+
+  const handleLessonSelect = useCallback((lesson: ProjectLesson) => {
+    updateCurrentLesson(lesson);
+
+    if (onChange) {
+      onChange();
+    }
+  }, []);
 
   return (
     <div>
@@ -25,14 +34,14 @@ export const NavModule = ({ pageId, config, mIdx }) => {
       </div>
       <Collapse in={isOpen}>
         <ul className={css.lessonList}>
-          {config.lessons.map((lesson, lIdx) => {
-            const id = `module-${mIdx}--lesson-${lesson.lesson.id}`;
-            const url = `/${id}`;
-            const lessonName = lesson.lesson.name;
-
+          {config.lessons.map((lesson: ProjectLesson, lIdx: number) => {
             return (
               <li key={lIdx}>
-                <Link to={url}>
+                <div
+                  onClick={() => {
+                    handleLessonSelect(lesson);
+                  }}
+                >
                   <span className={css.lessonButton}>
                     <Scrowl.ui.Icon
                       icon="arrow_drop_down_circle"
@@ -41,13 +50,15 @@ export const NavModule = ({ pageId, config, mIdx }) => {
                     />
                     <p
                       className={`${css.lessonLink} ${
-                        currentLesson.index === lIdx ? css.lessonLinkActive : ''
+                        currentLesson && currentLesson.id === lesson.id
+                          ? css.lessonLinkActive
+                          : ''
                       }`}
                     >
-                      {lessonName}
+                      {lesson.name}
                     </p>
                   </span>
-                </Link>
+                </div>
               </li>
             );
           })}

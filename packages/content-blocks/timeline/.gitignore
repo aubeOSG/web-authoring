@@ -108,4 +108,4 @@ release/app/*
 release/build/*
 dist/
 web/
- 
+*.[sc]*ss.json

@@ -2,6 +2,10 @@
   box-shadow: none !important;
 }
 
+.nav-button {
+  padding: 0.3em;
+}
+
 .tabs-container {
   display: flex;
   flex-direction: row !important;
@@ -246,7 +250,6 @@
     display: flex;
     align-items: center;
     height: 40px;
-    background: #1d1d1f;
     color: #72727e;
     padding: 10px;
     font-size: 16px;
@@ -259,7 +262,6 @@
 
       input {
         width: 100%;
-        background: #1d1d1f;
         border: none;
         outline: none;
         color: #72727e;

@@ -148,7 +148,10 @@
       }
     }
 
-    &--definition,
+    &--definition {
+      white-space: pre-line;
+    }
+
     &--description {
       display: block;
       margin-top: 0.25em;

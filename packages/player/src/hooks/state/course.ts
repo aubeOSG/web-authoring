@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import type { RootState } from '../../state/store';
 import { useAppDispatch, useAppSelector } from '../../state/store';
 import { Course } from '../../state/slices';
+import type { ProjectLesson } from '../../root';
 
 /** 
  * Here begins hooks to state
@@ -20,11 +21,8 @@ export const useHasStarted = () => {
 };
 
 export const useCurrentLesson = () => {
-  return useAppSelector((state: RootState) => {
-    return {
-      id: state.course.currentLessonId,
-      index: state.course.currentLessonIndex,
-    };
+  return useAppSelector((state: RootState): ProjectLesson => {
+    return state.course.currentLesson;
   });
 };
 
@@ -59,7 +57,7 @@ export const useToggleStarted = () => {
 export const useUpdateCurrentLesson = () => {
   const dispatch = useContext(useAppDispatch);
 
-  return (currentLesson: { id: string; index: number }) => {
+  return (currentLesson: ProjectLesson) => {
     dispatch(Course.updateCurrentLesson(currentLesson));
   };
 };

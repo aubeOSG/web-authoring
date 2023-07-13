@@ -1,18 +1,11 @@
 import React from 'react';
 import * as css from './_canvas.scss';
 import { CanvasFrame, CanvasBreadcrumb } from './components';
-import { useActiveLesson } from '../../page-workspace-hooks';
 
 export const Canvas = () => {
-  const activeLesson = useActiveLesson();
-
   return (
     <div className={css.canvas}>
-      {activeLesson.id !== -1 ? (
-        <CanvasFrame activeLesson={activeLesson} />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <CanvasFrame />
       <CanvasBreadcrumb />
     </div>
   );

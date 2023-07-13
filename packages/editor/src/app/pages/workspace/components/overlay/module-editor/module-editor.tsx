@@ -14,7 +14,11 @@ export const ModuleEditor = () => {
   const isOpen = useModuleEditor();
   const [stateThreshold, setStateThreshold] = useState(0);
   let project = Projects.useData();
-  let module;
+  const [module, setModule] = useState({
+    name: '',
+    id: 0,
+    passingThreshold: 0,
+  });
 
   const handleInputChange = (ev) => {
     const target = ev.target as HTMLInputElement;
@@ -40,25 +44,40 @@ export const ModuleEditor = () => {
   };
 
   const handleSubmit = () => {
-    if (project.modules) {
-      const newModule = { ...module, passingThreshold: stateThreshold };
-      const modules = [...project.modules];
+    if (project.modules && module) {
+      let modules = [...project.modules];
+
+      const newMod = {
+        name: module.name,
+        id: module.id,
+        passingThreshold: stateThreshold,
+      };
+
+      const index = modules.findIndex((mod) => mod.id === newMod.id);
+      modules[index] = newMod;
+
       const newProj = {
         ...project,
         modules: modules,
       };
 
-      console.log('new threshold: ', newProj, project);
-      // Projects.setData(newProj);
+      Projects.setData(newProj);
       closeModuleEditor();
     }
   };
 
+  const updateModule = (ev) => {
+    setModule(ev.detail.module);
+    setStateThreshold(ev.detail.module.passingThreshold);
+  };
+
   useEffect(() => {
-    if (isOpen) {
-      setStateThreshold(module.passingThreshold);
-    }
-  }, [isOpen]);
+    document.addEventListener('moduleEditor', updateModule);
+
+    return () => {
+      document.removeEventListener('moduleEditor', updateModule);
+    };
+  }, []);
 
   return (
     <Modal

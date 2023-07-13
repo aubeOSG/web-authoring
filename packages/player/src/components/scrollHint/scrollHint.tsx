@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import utils from '../../utils';
 import * as _css from './_scrollHint.scss';
 
@@ -8,6 +8,7 @@ export const ScrollHint = () => {
   const [visible, setVisible] = useState(false);
   const [noticeVisible, setNoticeVisible] = useState(false);
   const [busy, setBusy] = useState(false);
+  const bottom = useRef(false);
 
   let secondsSinceIdle = 0;
 
@@ -68,7 +69,27 @@ export const ScrollHint = () => {
     setInterval(checkIdleStatus, 1000);
   }, [busy]);
 
-  return (
+  useEffect(() => {
+    const updateBottomRef = () => {
+      if (
+        window.innerHeight + window.scrollY + 200 <
+        document.body.offsetHeight
+      ) {
+        bottom.current = false;
+      } else {
+        bottom.current = true;
+      }
+    };
+
+    window.addEventListener('scroll', updateBottomRef);
+
+    return () => {
+      window.removeEventListener('scroll', updateBottomRef);
+    };
+  }, []);
+
+  return !bottom.current &&
+    window.innerHeight + 100 <= document.body.offsetHeight ? (
     <div className={css.scrollHint + (visible ? ' visible' : '')}>
       <div
         className={css.hintText + (visible && noticeVisible ? ' visible' : '')}
@@ -77,9 +98,9 @@ export const ScrollHint = () => {
       </div>
       <div className={css.iconScroll}></div>
     </div>
+  ) : (
+    <></>
   );
 };
 
-export default {
-  ScrollHint,
-};
+export default ScrollHint;

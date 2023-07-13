@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 const DEFAULT_INITIAL_DATA = () => {
   return {
@@ -25,26 +25,14 @@ const DEFAULT_INITIAL_DATA = () => {
 };
 
 const MultipleChoiceComponent = (props) => {
-  // const classes = useStyles();
   const loadedData = props.data;
-  let questionsData;
-  let setQuestionsData;
+  const parsedProps = JSON.parse(JSON.stringify(loadedData));
 
-  if (loadedData.events.length > 0) {
-    console.log('wrong. ', loadedData);
-    [questionsData, setQuestionsData] = React.useState(loadedData);
-  } else {
-    [questionsData, setQuestionsData] = React.useState(DEFAULT_INITIAL_DATA);
-  }
-  // const [questionsData, setQuestionsData] = React.useState(
-  //   props.data.events.length > 0 ? props.data : DEFAULT_INITIAL_DATA
-  // );
-
-  console.log('props: ', props);
-  console.log('questionsData: ', questionsData);
+  const [questionsData, setQuestionsData] = useState(
+    loadedData.events.length > 0 ? parsedProps : DEFAULT_INITIAL_DATA
+  );
 
   const updateMultipleChoiceData = (newData) => {
-    console.log('update new data: ', newData);
     setQuestionsData(newData);
     if (props.onDataChange) {
       // Inform editorjs about data change
@@ -52,7 +40,7 @@ const MultipleChoiceComponent = (props) => {
     }
   };
 
-  const onAddEvent = (e) => {
+  const onAddEvent = useCallback(() => {
     const newData = {
       ...questionsData,
     };
@@ -61,40 +49,29 @@ const MultipleChoiceComponent = (props) => {
       'correctness': false,
     });
     updateMultipleChoiceData(newData);
-  };
+  }, []);
 
-  const onRemoveEvent = (e) => {
+  const onRemoveEvent = useCallback(() => {
     const newData = {
       ...questionsData,
     };
     newData.events.pop();
     updateMultipleChoiceData(newData);
-  };
+  }, []);
 
-  const onCorrectnessChange = (index) => {
-    return (e) => {
+  const onCorrectnessChange = useCallback((index) => {
+    return () => {
       const newData = {
         ...questionsData,
       };
-
-      console.log('new Data: ', newData);
-
-      console.log('index: ', index);
-      console.log(
-        "events[index]['correctness']: ",
-        newData.events[index]['correctness']
-      );
-
-      console.log('event.currentTarget: ', e.currentTarget);
-      console.log('event.currentTarget.checked: ', e.currentTarget.checked);
 
       newData.events[index]['correctness'] =
         !newData.events[index]['correctness'];
       updateMultipleChoiceData(newData);
     };
-  };
+  }, []);
 
-  const onContentChange = (index, fieldName) => {
+  const onContentChange = useCallback((index, fieldName) => {
     return (e) => {
       const newData = {
         ...questionsData,
@@ -106,7 +83,7 @@ const MultipleChoiceComponent = (props) => {
 
       updateMultipleChoiceData(newData);
     };
-  };
+  }, []);
 
   return (
     <React.Fragment>
