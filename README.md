@@ -1,66 +1,57 @@
 # Scrowl
 
-This project is an Content Authoring tool built with [Electron](https://www.electronjs.org/). This application can be used to create courses for Learning Management Systems (LMSs). What makes this tool different than others, is the dynamic template system. Our template system allows developers to code their own, offering a great degree of flexibility.
-
-## Acknowledgement
-
-![tri-wordmark](https://raw.githubusercontent.com/scrowl-io/web-authoring/main/eo-tri-wordmark-english-black.png)
-This Employment Ontario project is funded in part by the Government of Canada and the Government of Ontario
-
 ## Getting Started
 
 This project uses [yarn](https://yarnpkg.com/) to manage dependencies, you will need to have that installed.
 
 `npm install yarn -g`
 
-Install [lerna](https://lerna.js.org/) globally.
+You will also need to have [AWS CLI](https://aws.amazon.com/cli/) installed. Once installed, you will need to [configure](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html) the tool.
 
-`yarn global lerna`
+You will also need to have [Docker](https://docs.docker.com/get-docker/) installed.
 
-Next install the project.
+Next install the dependencies with `yarn install`.
 
-`lerna bootstrap`
+Before starting the application, you will need to create the .envs files with `yarn create:envs`.
 
-After that is complete, you'll need to build a few internal packages
-
-`yarn update`
-
-Finally, you can start the project
-
-`yarn start`
+Now you can run the application with `yarn start:update`.
 
 ## Developing
 
-This project is mono repo consisting of a number of packages, each of which is written in [typescript](https://www.typescriptlang.org/). Additionally, any package that contains UI is written with [react](https://reactjs.org/).
+When developing it is useful to open a second terminal to run `yarn watch`. The watch command checks on several packages for changes and ensures that the application can be rebuilt/HMR correctly.
 
-#### Editor
+If you aren't adding new dependencies than using `yarn start` to run the application will allow for quicker launch times. Otherwise you will need to run `yarn start:update`.
 
-This package is the electron application and is the core of the project.
+## Packages
 
-`yarn start` will launch the application.
+### Editor
 
-`yarn start:update` will build internal packages that the app relies on, then launch.
+This package is the main application that allows users to build courses.
 
-`yarn package` will build internal packages and then build platform specific executables.
+### Player
 
-<br />
+This package is what enables a user to consume a course.
 
-> Whenever you make changes to any package that isn't the editor, use `yarn start:update` to get those changes to be applied to the editor.
+### Runtime
 
-<br />
+This package is facade around the various SCORM APIs that can exist in an LMS.
 
-#### Player
+### UI
 
-When a user publishes a project, this package is used to run that content as a course in an LMS.
+This package contains styling and some basic components.
 
-While within the player package, you can `yarn start` to launch a dev environment for isolated development.
+### Utils
 
-#### Runtime
+This package contains helpers for primitives and some base objects.
 
-This package is a helper library that facilitates communication between the player and the LMS. The standard for this communication is [SCORM](https://scorm.com/scorm-explained/technical-scorm/run-time/run-time-reference/).
+### Content Block Editor & Content Block Editor React
 
-#### Templates
+The content block editor is a full copy of [EditorJS](https://github.com/codex-team/editor.js). The block editor react is a react component facade that wraps EditorJS.
 
-> **Core** is not an actual template but a provider of useful APIs to manage content.
+### Content Blocks
 
-Within the package of each template (with exception to core), you can `yarn start` to launch a dev environment and develop the template in isolation.
+These group of packages are our custom blocks use in the conte t editor.
+
+### Config
+
+This package is where we store settings for eslint, tsconfig, prettier, etc.
