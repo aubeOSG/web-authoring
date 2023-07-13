@@ -52,7 +52,6 @@ export const StartNew = ({ hasProjects, ...props }: StartNewProps) => {
       <Nav className="flex-column">
         <Nav.Item>
           <ui.Button variant="link" onClick={handleNewProject}>
-            <ui.Icon display="outlined" icon="library_add" />
             New Project
           </ui.Button>
         </Nav.Item>

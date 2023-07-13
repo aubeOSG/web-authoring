@@ -151,12 +151,9 @@ export const Glossary = () => {
                             handleGlossaryMenu(ev, item);
                           }}
                         >
-                          <ui.Icon
-                            display="rounded"
-                            icon="more_vert"
-                            opsz={20}
-                            filled
-                          />
+                          <span className="material-symbols-rounded owlui-icons">
+                            more_vert
+                          </span>
                         </ui.Button>
                       </div>
                       <dd className={css.tabGlossaryTermDefinition}>
@@ -180,13 +177,9 @@ export const Glossary = () => {
             }}
           >
             <span className="txt-placeholder">Add a new glossary term...</span>
-            <ui.Icon
-              display="rounded"
-              icon="add_circle"
-              opsz={20}
-              filled
-              pxScale="Lg"
-            />
+            <span className="material-symbols-rounded owlui-icons">
+              add_circle
+            </span>
           </ui.Button>
         </div>
       </div>

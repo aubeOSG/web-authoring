@@ -90,7 +90,10 @@ export const NavBar = ({ project }: { project: ProjectConfig }) => {
                     <h3>{project.name}</h3>
                     <h4 className={css.outlineSubtitle}>{project.subtitle}</h4>
                     <span className={css.outlineDuration}>
-                      <Scrowl.ui.Icon icon="schedule" display="outlined" />
+                      <span className="material-symbols-outlined">
+                        schedule
+                      </span>
+
                       <h5>60 min</h5>
                     </span>
                   </div>

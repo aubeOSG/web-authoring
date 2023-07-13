@@ -1,5 +1,5 @@
 import React from 'react';
-import { ui, IconType } from '@scrowl/ui';
+import { IconType } from '@scrowl/ui';
 import { AssetIconProps } from './';
 
 export const AssetIcon = ({ type, ext, ...props }: AssetIconProps) => {
@@ -32,8 +32,6 @@ export const AssetIcon = ({ type, ext, ...props }: AssetIconProps) => {
       }
       break;
   }
-
-  return <ui.Icon icon={icon} {...props} />;
 };
 
 export default AssetIcon;

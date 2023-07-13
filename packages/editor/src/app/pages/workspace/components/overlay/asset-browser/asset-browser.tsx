@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { ui, IconType } from '@scrowl/ui';
+import { IconType } from '@scrowl/ui';
 import { Backdrop, Drawer } from '../../../../../components';
 import { Projects, Settings } from '../../../../../models';
 import { menu, sys } from '../../../../../services';
@@ -254,12 +254,6 @@ export const AssetDrawerElement = (
                           <tr onClick={handleSortOrder}>
                             <th scope="col" data-sort-field="sourceFilename">
                               Name
-                              {sortField === 'sourceFilename' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )}
                             </th>
                             <th
                               scope="col"
@@ -267,12 +261,6 @@ export const AssetDrawerElement = (
                               style={stylesColType}
                             >
                               Type
-                              {sortField === 'type' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )}
                             </th>
                             <th
                               scope="col"
@@ -280,12 +268,6 @@ export const AssetDrawerElement = (
                               style={stylesColSize}
                             >
                               Size
-                              {sortField === 'size' && (
-                                <ui.Icon
-                                  className="sort-indicator"
-                                  icon={sortIcon}
-                                />
-                              )}
                             </th>
                           </tr>
                         </thead>

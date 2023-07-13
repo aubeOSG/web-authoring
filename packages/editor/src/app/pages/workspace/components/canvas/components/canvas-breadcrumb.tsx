@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ui } from '@scrowl/ui';
 import * as css from '../_canvas.scss';
 import { Settings, Projects } from '../../../../../models';
 import { events } from '../../../../../services';
@@ -55,14 +54,10 @@ export const CanvasBreadcrumb = () => {
                 className="breadcrumb-item__content"
                 onClick={handleFocus}
               >
-                <ui.Icon
-                  icon="folder"
-                  display="sharp"
-                  filled={true}
-                  grad={200}
-                  opsz={20}
-                  appearance="Module"
-                />
+                <span className="material-symbols-sharp icon-module">
+                  folder
+                </span>
+
                 {module && module.name}
               </button>
             </li>
@@ -72,14 +67,10 @@ export const CanvasBreadcrumb = () => {
                 id={`module-${module.id}-lesson-${lesson.id}`}
                 onClick={handleFocus}
               >
-                <ui.Icon
-                  icon="interests"
-                  display="sharp"
-                  filled={true}
-                  grad={200}
-                  opsz={20}
-                  appearance="Lesson"
-                />
+                <span className="material-symbols-sharp icon-lesson">
+                  interests
+                </span>
+
                 {lesson && lesson.name}
               </button>
             </li>
@@ -94,13 +85,6 @@ export const CanvasBreadcrumb = () => {
                   pointerEvents: 'none',
                 }}
               >
-                <ui.Icon
-                  icon="rectangle"
-                  display="outlined"
-                  opsz={20}
-                  grad={200}
-                  appearance="Slide"
-                />
                 No lesson selected...
               </button>
             </li>
