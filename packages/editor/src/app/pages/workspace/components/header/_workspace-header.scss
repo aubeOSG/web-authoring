@@ -131,11 +131,15 @@
   font-weight: $headings-font-weight;
   padding: 0.375em 1em;
 
-  &:hover,
+  &:hover {
+    .icon-lesson {
+      color: #ffffff;
+    }
+  }
+
   &:focus,
   &:active {
-    .owlui-icons,
-    .icon-lesson {
+    .owlui-icons {
       color: #ffffff;
     }
   }
