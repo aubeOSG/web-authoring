@@ -498,6 +498,7 @@
   &:focus {
     span[class*='owlui-icons'] {
       background: var(--owl-transparent-hover-bg);
+      line-height: 1;
     }
   }
 

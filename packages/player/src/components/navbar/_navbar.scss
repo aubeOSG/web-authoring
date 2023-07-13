@@ -91,12 +91,13 @@
       }
 
       .icon {
-        font-size: 16px;
+        font-size: 1.2em;
         color: black;
         margin-right: 10px !important;
         transition: transform 0.2s;
 
         &-expanded {
+          font-size: 1.2em;
           margin-right: 6.8px !important;
           transform: rotate(90deg);
           transition: transform 0.2s;
@@ -142,8 +143,10 @@
           margin-top: 0.1rem;
           margin-right: 0.25rem;
           transform: rotate(-90deg);
+          font-size: 1.2em;
 
           &-active {
+            font-size: 1.2em;
             color: #007aba;
             margin-top: 0.1em;
             margin-right: 0.25rem;
