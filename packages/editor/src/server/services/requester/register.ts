@@ -1,4 +1,5 @@
 import type { Router } from 'express';
+import { urlencoded } from 'body-parser';
 import type {
   RegisterEndpoint,
   RegisterEndpoints,
@@ -7,6 +8,7 @@ import type {
 export const ENDPOINTS: Array<RegisterEndpoint> = [];
 
 export const add = (router: Router, endpoint: RegisterEndpoint) => {
+
   switch (endpoint.type) {
     case 'invoke':
       if (!endpoint.fn || typeof endpoint.fn !== 'function') {
@@ -17,15 +19,22 @@ export const add = (router: Router, endpoint: RegisterEndpoint) => {
       }
 
       ENDPOINTS.push(endpoint);
+      let routerAction;
 
       switch (endpoint.method) {
         case 'POST':
-          router.post(endpoint.name, endpoint.fn);
+          routerAction = router.post;
           break;
         case 'GET':
         default:
-          router.get(endpoint.name, endpoint.fn);
+          routerAction = router.get;
           break;
+      }
+
+      if (endpoint.urlencoded) {
+        routerAction(endpoint.name, urlencoded(endpoint.urlencoded), endpoint.fn);
+      } else {
+        routerAction(endpoint.name, endpoint.fn);
       }
       break;
     case 'on':
