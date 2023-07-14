@@ -1,7 +1,7 @@
 import { CookiesServiceClass } from "./cookies.types";
 
 export default class CookieService implements CookiesServiceClass {
-  private _base = '/app';
+  private _path = '/';
   private _domain;
 
   constructor() {}
@@ -86,6 +86,9 @@ export default class CookieService implements CookiesServiceClass {
   }
 
   private _update (key: string, value: any, expiry?: string | number) {
+    console.log('');
+    console.log('');
+    console.log('cookie:update-start', key, value, expiry);
     const cookie: {[key: string]: any} = {};
 
     if (key) {
@@ -93,11 +96,11 @@ export default class CookieService implements CookiesServiceClass {
     }
 
     if (expiry) {
-      cookie.expiries = this._expire(expiry);
+      cookie.Expiries = this._expire(expiry);
     }
 
-    cookie.path = this._base;
-    cookie.domain = this._domain;
+    cookie.Path = this._path;
+    cookie.Domain = this._domain;
 
     const cookieKeys = Object.keys(cookie);
     const lastIndex = cookieKeys.length - 1;
@@ -116,6 +119,10 @@ export default class CookieService implements CookiesServiceClass {
     };
 
     cookieKeys.forEach(formatValue);
+    console.log('cookie:update-obj', cookie);
+    console.log('cookie:update-res', result);
+    console.log('');
+    console.log('');
     document.cookie = result;
   }
 

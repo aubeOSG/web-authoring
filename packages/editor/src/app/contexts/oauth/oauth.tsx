@@ -13,8 +13,11 @@ export const OAuthProvider = ({ children }: OAuthProviderProps) => {
   const cookies = useCookies();
   const [token, setToken] = useState(cookies?.get('accessToken'));
 
+  console.log('cookie::oauth init', token);
+
   const update = useCallback(
     (value: string) => {
+      console.log('cookie:token-update', value);
       setToken(value);
       cookies?.put('accessToken', value, defaultExpiry);
     },

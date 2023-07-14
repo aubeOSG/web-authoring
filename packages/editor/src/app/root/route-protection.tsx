@@ -29,6 +29,9 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   }, [progress]);
 
   useEffect(() => {
+    console.log('cookie::user', user.id);
+    console.log('cookie::token', oauth.token);
+
     if (!oauth.token) {
       setProgress(1);
       return;

@@ -72,13 +72,11 @@ export const pipeContent = (res: ServerResponse, pathname: string) => {
   const existRes = utils.exists(pathname);
   
   if (existRes.error) {
-    console.log('path error', pathname);
     responseInternalError(existRes, res);
     return;
   }
 
   if (!existRes.data.exists) {
-    console.log('path not found', pathname);
     responseNotFound(pathname, res);
     return;
   }

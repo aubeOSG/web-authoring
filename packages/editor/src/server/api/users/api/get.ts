@@ -31,7 +31,11 @@ export const get: UsersApiGet = {
 
     try {
       const data:Array<User> = await db.select().from(table).where(`${table}.id`, id);
-
+      console.log('');
+      console.log('');
+      console.log('getting user', id);
+      console.log('');
+      console.log('');
       res.send({
         error: false,
         data: data[0],

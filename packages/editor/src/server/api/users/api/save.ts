@@ -24,9 +24,6 @@ export const update = async (payload: User) => {
   }
 
   const { ...userData } = payload;
-
-  console.log('USER DATA: ', userData);
-
   const user = {
     ...userData,
   };
