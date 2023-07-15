@@ -39,7 +39,6 @@ const foreignKey = (
     table: string,
   }
 ) => {
-  console.log(`creating foreign key ${opts.col} for ${opts.table}`);
   table.foreign(opts.col).references(`${opts.table}.id`);
 };
 
@@ -102,7 +101,6 @@ export const insert = (
   data: Array<{}>
 ) => {
   const addEntry = (entry) => {
-    console.log(`inserting entry into ${table} \n`, JSON.stringify(entry, null, 2));
     return db(table).returning('id').insert(entry);
   };
 

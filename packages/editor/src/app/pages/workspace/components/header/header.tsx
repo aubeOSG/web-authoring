@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Settings } from '../../../../models';
+import { Projects, Users, Settings } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
@@ -15,6 +15,8 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
+  const userData = Users.useData();
+  const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
@@ -23,7 +25,7 @@ export const Header = () => {
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  const hasPublished = Settings.useHasPublished();
+  // const hasPublished = Settings.useHasPublished();
   const previewMode = Settings.usePreviewMode();
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
@@ -215,6 +217,14 @@ export const Header = () => {
         document.body.appendChild(link);
         link.click();
         link.parentNode?.removeChild(link);
+
+        const updatedUser = { ...userData, hasPublished: true };
+
+        Users.save(updatedUser).then((res) => {
+          if (!initialHasPublished) {
+            setIsOpenConfirmation(true);
+          }
+        });
       });
 
       // Projects.save({ data: submittedData, assets }).then((saveRes) => {
@@ -253,7 +263,7 @@ export const Header = () => {
       //   });
       // });
     },
-    [projectData]
+    [projectData, userData]
   );
 
   const handleCloseConfirmation = () => {

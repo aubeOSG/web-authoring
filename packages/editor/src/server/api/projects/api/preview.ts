@@ -27,7 +27,7 @@ export const cleanupTempDir = (tmpDirId: string) => {
 
 export const createPreviewSource = (previewData: ProjectData) => {
   const generationRes = generateProjectFiles(previewData, { entrySrcHTML: 'preview.html.hbs' });
-  console.log('creating preview source', generationRes);
+  
   if (generationRes.error) {
     cleanupTempDir(generationRes.data.tmpDirId);
     return generationRes;

@@ -185,7 +185,7 @@ const proxy: Proxy = {
             },
           });
       };
-      console.log('invoking', type);
+
       switch (type) {
         case 'POST':
           POST(endpoint, params, options).then(resolve).catch(handleRejection);

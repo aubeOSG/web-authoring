@@ -46,10 +46,47 @@ export const create = (): Promise<rq.ApiResult> => {
   });
 };
 
+export const save = (req): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    console.log('req: ', req);
+    API.save(req).then((res) => {
+      console.log('users hook save: ', res);
+      if (processor.dispatch) {
+        const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
+        processor.dispatch(fn());
+      }
+
+      if (res.error) {
+        console.error(res);
+      } else {
+        setData(res.data);
+      }
+
+      resolve(res);
+    });
+  });
+};
+
+export const get = (id: string): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    API.get(id).then((res) => {
+
+      if (res.error) {
+        console.error(res);
+      } else if (processor.dispatch) {
+        processor.dispatch(state.setData(res.data));
+      }
+
+      resolve(res);
+    });
+  });
+};
+
 export default {
   useProcessor,
   resetState,
   useData,
   setData,
   create,
+  get,
 };
