@@ -17,7 +17,7 @@ import {
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects, Users } from '../../models';
+import { Projects } from '../../models';
 import { menu, sys, events } from '../../services';
 import { List } from '@scrowl/utils';
 
@@ -44,7 +44,6 @@ export const openProject = (project: Projects.ProjectMeta) => {
 };
 
 export const Page = () => {
-  const user = Users.useData();
   const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
   const assets = Projects.useAssets();
@@ -54,12 +53,6 @@ export const Page = () => {
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();
-
-  console.log('');
-  console.log('---------');
-  console.log('workspace-page::user', user); // TEST LOG - REMOVE WHEN DONE
-  console.log('---------');
-  console.log('');
 
   useEffect(() => {
     if (projectData.id) {

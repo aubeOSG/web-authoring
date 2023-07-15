@@ -86,9 +86,6 @@ export default class CookieService implements CookiesServiceClass {
   }
 
   private _update (key: string, value: any, expiry?: string | number) {
-    console.log('');
-    console.log('');
-    console.log('cookie:update-start', key, value, expiry);
     const cookie: {[key: string]: any} = {};
 
     if (key) {
@@ -119,10 +116,6 @@ export default class CookieService implements CookiesServiceClass {
     };
 
     cookieKeys.forEach(formatValue);
-    console.log('cookie:update-obj', cookie);
-    console.log('cookie:update-res', result);
-    console.log('');
-    console.log('');
     document.cookie = result;
   }
 

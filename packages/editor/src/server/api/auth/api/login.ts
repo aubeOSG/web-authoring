@@ -3,6 +3,7 @@ import { AuthApiLogin } from '../auth.types';
 export const login: AuthApiLogin = {
   name: '/auth/login',
   type: 'invoke',
+  method: 'POST',
   fn: async (req, res, next) => {
     req.session.regenerate((err) => {
       if (err) next(err);
@@ -12,7 +13,9 @@ export const login: AuthApiLogin = {
       req.session.save((err) => {
         if (err) return next(err);
 
-        res.redirect('/app');
+        res.send({
+          authenticated: true,
+        });
       })
     })
   },

@@ -19,10 +19,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
+  name: 'session',
   secret: nanoid(),
   resave: false,
   saveUninitialized: true,
-}))
+}));
 
 api.init(app);
 routes.init(app);

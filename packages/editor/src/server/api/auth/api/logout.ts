@@ -12,7 +12,9 @@ export const logout: AuthApiLogout = {
       req.session.regenerate((err) => {
         if (err) next(err);
 
-        res.redirect('/app');
+        res.send({
+          authenticated: false,
+        });
       });
     });
   },

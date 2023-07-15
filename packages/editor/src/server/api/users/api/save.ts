@@ -56,7 +56,27 @@ export const save: UsersApiSave = {
     const payload = req.body;
     const updateRes = await update(payload);
 
-    res.send(updateRes);
+    const updateSession = () => {
+      req.session.user = updateRes.data;
+      req.session.save((e) => {
+        if (e) {
+          res.send({
+            error: true,
+            message: 'failed to update session',
+            trace: e,
+          });
+          return;
+        }
+
+        res.send(updateRes);
+      });
+    };
+
+    if (req.session.user?.id === updateRes.data.id) {
+      updateSession();
+    } else {
+      res.send(updateRes);
+    }
   },
 };
 

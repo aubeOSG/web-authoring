@@ -221,7 +221,6 @@ export const Header = () => {
         const updatedUser = { ...userData, hasPublished: true };
 
         Users.save(updatedUser).then((res) => {
-          console.log('----saveRes', res);
           if (!initialHasPublished) {
             setIsOpenConfirmation(true);
           }

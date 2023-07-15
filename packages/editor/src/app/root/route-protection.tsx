@@ -4,16 +4,13 @@ import { useOAuth } from '../contexts/oauth';
 import { RouteProtectionProps } from './root.types';
 import { Path as defaultRoute } from '../pages/welcome';
 import { Users } from '../models';
+import { User } from '../../server/api/users';
 
 export const RouteProtection = ({ children }: RouteProtectionProps) => {
   const oauth = useOAuth();
   const location = useLocation();
   const user = Users.useData();
   const [progress, setProgress] = useState(0);
-
-  if (!oauth?.token) {
-    return <Navigate to={defaultRoute} replace state={{ from: location }} />;
-  }
 
   const getContent = useCallback(() => {
     switch (progress) {
@@ -29,27 +26,24 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   }, [progress]);
 
   useEffect(() => {
-    console.log('cookie::user', user.id);
-    console.log('cookie::token', oauth.token);
-
-    if (!oauth.token) {
-      setProgress(1);
-      return;
-    }
-
-    if (user.id) {
-      setProgress(2);
-      return;
-    }
-
-    Users.get(oauth.token).then((res) => {
+    oauth?.get().then((res) => {
       if (res.error) {
+        console.error(res);
+        setProgress(1);
         return;
       }
 
-      oauth.update(res.data.id);
+      if (!res.data || !res.data.id) {
+        setProgress(1);
+        return;
+      }
+
+      const user = res.data as User;
+      oauth.update(user);
+      Users.setData(user);
+      setProgress(2);
     });
-  }, [user, oauth.token]);
+  }, [user, oauth?.token]);
 
   return <>{getContent()}</>;
 };
