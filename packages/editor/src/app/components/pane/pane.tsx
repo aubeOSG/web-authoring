@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import * as css from './_pane.scss';
 import { PaneProps } from './pane.types';
+import { Workspaces } from '../../models';
 
 export const Pane = ({ className, children, ...props }: PaneProps) => {
   let classes = className
@@ -9,9 +10,11 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
     : `${css.pane} support-high-contrast `;
   let grabClasses = `${css.grabHandle} `;
   const grabNode = useRef<HTMLDivElement>(null);
-  const [paneWidth, setPaneWidth] = useState(325);
   const side = props.side ? props.side : 'left';
+  const workspace = Workspaces.useData();
+  const [paneWidth, setPaneWidth] = useState(workspace.paneWidth);
 
+  console.log('----workspace: ', workspace);
   useEffect(() => {
     const grabElem = grabNode.current;
     let winResizeTimer: ReturnType<typeof setTimeout>;
@@ -40,6 +43,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
       }
 
       rootElem.style.setProperty(`--pane-${side}-width`, newWidth + 'px');
+      Workspaces.setData({ paneWidth: newWidth });
       return newWidth;
     };
 

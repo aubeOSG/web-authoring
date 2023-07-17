@@ -17,7 +17,7 @@ import {
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects } from '../../models';
+import { Projects, Workspaces } from '../../models';
 import { menu, sys, events } from '../../services';
 import { List } from '@scrowl/utils';
 
@@ -46,6 +46,7 @@ export const openProject = (project: Projects.ProjectMeta) => {
 export const Page = () => {
   const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
+  const workspaceData = Workspaces.useData();
   const assets = Projects.useAssets();
   const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(false);
@@ -53,6 +54,12 @@ export const Page = () => {
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();
+
+  if (projectData && projectData.workspaceId && workspaceData.id === '') {
+    Workspaces.get(projectData.workspaceId).then((res) => {
+      Workspaces.setData(res.data);
+    });
+  }
 
   useEffect(() => {
     if (projectData.id) {

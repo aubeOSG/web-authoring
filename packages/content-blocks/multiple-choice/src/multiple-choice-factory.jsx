@@ -30,8 +30,6 @@ export default class MultipleChoiceFactory {
     this.nodes = {
       holder: null,
     };
-
-    console.log('contructor data: ', this.data);
   }
 
   render() {

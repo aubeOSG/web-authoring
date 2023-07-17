@@ -5,6 +5,7 @@ import { updateObj } from '@scrowl/utils';
 export const initialState = {
   id: '',
   userId: '',
+  paneWidth: 320,
   createdAt: '',
   deletedAt: '',
   openedAt: '',
