@@ -11,10 +11,11 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   let grabClasses = `${css.grabHandle} `;
   const grabNode = useRef<HTMLDivElement>(null);
   const side = props.side ? props.side : 'left';
-  const workspace = Workspaces.useData();
-  const [paneWidth, setPaneWidth] = useState(workspace.paneWidth);
+  const workspaceData = Workspaces.useData();
+  const [paneWidth, setPaneWidth] = useState(
+    parseFloat(workspaceData.paneWidth)
+  );
 
-  console.log('----workspace: ', workspace);
   useEffect(() => {
     const grabElem = grabNode.current;
     let winResizeTimer: ReturnType<typeof setTimeout>;
@@ -114,7 +115,13 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
       grabElem.removeEventListener('mousedown', handleGrabStart);
       window.removeEventListener('resize', handleWindowResize);
     };
-  }, [grabNode]);
+  }, [grabNode, paneWidth]);
+
+  useEffect(() => {
+    if (paneWidth !== parseFloat(workspaceData.paneWidth)) {
+      setPaneWidth(parseFloat(workspaceData.paneWidth));
+    }
+  }, [workspaceData]);
 
   switch (side) {
     case 'right':

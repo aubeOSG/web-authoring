@@ -34,6 +34,7 @@ export const create: WorkspacesApiCreate = {
 
     const workspace = {
       userId: payload.userId,
+      paneWidth: 300,
     };
 
     try {

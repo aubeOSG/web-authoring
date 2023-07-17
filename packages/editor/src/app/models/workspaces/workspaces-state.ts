@@ -21,18 +21,18 @@ export const config: stateManager.StateConfig = {
     setData: (state, action) => {
       updateObj(state, action.payload);
     },
+    resetIsUncommitted: (state) => {
+      state.isUncommitted = false;
+    },
     resetState: (state) => {
       updateObj(state, initialState);
     },
-  }
+  },
 };
 
 export const slice = createSlice(config);
 
-export const {
-  setData,
-  resetState,
-} = slice.actions;
+export const { setData, resetState, resetIsUncommitted } = slice.actions;
 
 export const reducer = slice.reducer;
 
