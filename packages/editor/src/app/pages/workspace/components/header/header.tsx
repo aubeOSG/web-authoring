@@ -103,7 +103,6 @@ export const Header = () => {
           return;
         }
 
-        console.log('preview result', res);
         const url = res.data.url;
 
         if (url) {
@@ -111,7 +110,7 @@ export const Header = () => {
         }
       });
     },
-    [projectData]
+    [projectData, previewMode]
   );
 
   const handlePreviewDefault = useCallback(() => {
@@ -120,9 +119,9 @@ export const Header = () => {
       project: projectData,
       entityId: activeLesson.id,
     };
-    console.log('preview default', payload);
+
     handleProjectPreview(payload);
-  }, [projectData, activeLesson]);
+  }, [projectData, activeLesson, previewMode]);
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
@@ -135,8 +134,9 @@ export const Header = () => {
           project: projectData,
           entityId: activeLesson.id,
         };
+
         handleProjectPreview(payload);
-      }, [projectData, activeLesson]),
+      }, [projectData, activeLesson, previewMode]),
     },
     {
       label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
@@ -148,8 +148,9 @@ export const Header = () => {
           project: projectData,
           entityId: activeLesson.moduleId,
         };
+
         handleProjectPreview(payload);
-      }, [projectData, activeLesson]),
+      }, [projectData, activeLesson, previewMode]),
     },
     {
       label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
@@ -162,7 +163,7 @@ export const Header = () => {
         };
 
         handleProjectPreview(payload);
-      }, [projectData]),
+      }, [projectData, previewMode]),
     },
   ];
 
@@ -173,7 +174,7 @@ export const Header = () => {
         offset: [-100 + (offsetX ? offsetX : 0), 6],
       });
     },
-    []
+    [projectData, activeLesson, previewMode]
   );
 
   const handleOpenPublish = useCallback(() => {
@@ -271,7 +272,6 @@ export const Header = () => {
   };
 
   const handleSave = useCallback(() => {
-    console.log('saving', projectData);
     Projects.save(projectData).then((res) => {
       console.log('saveRes', res);
     });
