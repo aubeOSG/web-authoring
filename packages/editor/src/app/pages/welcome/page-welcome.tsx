@@ -80,6 +80,10 @@ export const Page = () => {
       exit={{ opacity: 0, transition: { delay: 0.2 } }}
       style={inProgress ? { pointerEvents: 'none' } : {}}
     >
+      <img
+        src="/api/assets/7de1f01e8d427210ff38bac8647efbb3.jpg"
+        className="test-asset"
+      />
       <div className="body">
         <motion.h1
           initial={{ transform: 'translate(0,-80px)' }}

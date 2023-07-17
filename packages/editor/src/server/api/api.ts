@@ -6,6 +6,7 @@ import projects from './projects';
 import users from './users';
 import workspaces from './workspaces';
 import editor from './editor';
+import assets from './assets';
 
 export const Route = '/api';
 
@@ -18,6 +19,7 @@ export const init = (app: express.Application) => {
   rq.register.addAll(router, users.api);
   rq.register.addAll(router, workspaces.api);
   rq.register.addAll(router, editor.api);
+  rq.register.addAll(router, assets.api);
   app.use(Route, router);
 };
 
