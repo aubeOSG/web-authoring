@@ -1,8 +1,12 @@
 import { Listener, JSON_DATA, EndpointRequestConfig } from './requester.types';
 import proxy from './proxy';
 
-export const invoke = (endpoint: string, params?: JSON_DATA, type?: 'GET' | 'POST', options?: EndpointRequestConfig) => {
-  console.log('invoking', endpoint, params, type, options);
+export const invoke = (
+  endpoint: string,
+  params?: JSON_DATA,
+  type?: 'GET' | 'POST',
+  options?: EndpointRequestConfig
+) => {
   return proxy.invoke(endpoint, params, type, options);
 };
 

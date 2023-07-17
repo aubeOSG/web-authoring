@@ -22,6 +22,7 @@ import { menu, sys, events } from '../../services';
 import { List } from '@scrowl/utils';
 
 export const Path = '/workspace/:id';
+export const isProtected = true;
 
 export const openProject = (project: Projects.ProjectMeta) => {
   Projects.open(project).then((res) => {
@@ -305,6 +306,7 @@ export const Page = () => {
 
 export default {
   Path,
+  isProtected,
   Page,
   openProject,
 };
