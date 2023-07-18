@@ -56,14 +56,6 @@ export const Page = () => {
   const newContent = useNewContent();
   const [activeTab, setActiveTab] = useState(workspaceData.activeTab);
 
-  if (projectData && projectData.workspaceId && workspaceData.id === '') {
-    console.log('helo');
-    Workspaces.get(projectData.workspaceId).then((res) => {
-      Workspaces.setData(res.data);
-      setProgress(false);
-    });
-  }
-
   useEffect(() => {
     if (projectData.id) {
       return;
@@ -116,29 +108,26 @@ export const Page = () => {
     setActiveTab(workspaceData.activeTab);
   }, [workspaceData]);
 
-  console.log('in progress: ', inProgress);
-  // useEffect(() => {
-  //   if (projectData && projectData.workspaceId && workspaceData.id === '') {
-  //     console.log('helo');
-  //     Workspaces.get(projectData.workspaceId).then((res) => {
-  //       Workspaces.setData(res.data);
-  //       setProgress(false);
-  //     });
-  //   }
-  //   // else {
-  //   //   setProgress(false);
-  //   // }
-  //   return () => {
-  //     setProgress(true);
-  //   };
-  // }, []);
+  useEffect(() => {
+    if (projectData && projectData.workspaceId && workspaceData.id === '') {
+      Workspaces.get(projectData.workspaceId).then((res) => {
+        Workspaces.setData(res.data);
+        setProgress(false);
+      });
+    } else {
+      setProgress(false);
+    }
+    return () => {
+      setProgress(true);
+    };
+  }, [workspaceData, projectData]);
 
   if (!inProgress) {
     return (
       <>
         <div className={css.workspace}>
           <Header />
-          <PaneDetails activeTab={activeTab} setActiveTab={setActiveTab} />
+          <PaneDetails activeTab={activeTab} />
           <Canvas />
         </div>
         <ModuleEditor />
@@ -147,7 +136,7 @@ export const Page = () => {
       </>
     );
   } else {
-    return <></>;
+    return <>Loading...</>;
   }
 };
 

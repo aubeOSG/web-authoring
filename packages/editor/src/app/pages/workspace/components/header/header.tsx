@@ -278,7 +278,7 @@ export const Header = () => {
     Workspaces.save({
       id: workspaceData.id,
       updatedAt: workspaceData.updatedAt,
-      paneWidth: parseFloat(workspaceData.paneWidth),
+      paneWidth: workspaceData.paneWidth,
       activeTab: workspaceData.activeTab,
     }).then((res) => {
       console.log('space saveRes', res);

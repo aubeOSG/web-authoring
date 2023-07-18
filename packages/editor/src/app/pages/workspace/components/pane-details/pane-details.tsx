@@ -4,11 +4,10 @@ import { Outline, Glossary, Resources } from './components';
 import { Pane } from '../../../../components';
 import { Settings, Workspaces } from '../../../../models';
 
-export const PaneDetails = ({ activeTab, setActiveTab }) => {
+export const PaneDetails = ({ activeTab }) => {
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
-  const workspaceData = Workspaces.useData();
   const animationOpts = {
     initial: !isAnimated
       ? {}
@@ -48,13 +47,8 @@ export const PaneDetails = ({ activeTab, setActiveTab }) => {
   ];
 
   const handleSetActiveTab = (key) => {
-    setActiveTab(key);
     Workspaces.setData({ activeTab: key });
   };
-
-  useEffect(() => {
-    setActiveTab(workspaceData.activeTab);
-  }, [workspaceData]);
 
   return (
     <Pane initial={animationOpts.initial} animate={animationOpts.animate}>
