@@ -278,9 +278,11 @@ export const Header = () => {
   }, [projectData]);
 
   const handleNameFocus = useCallback((e) => {
+    const defaultProjectName = 'untitled project';
+
     if (
-      e.target.value === 'Untitled Project' ||
-      projectMeta.name === 'Untitled Project'
+      e.target.value.toLowerCase() === defaultProjectName ||
+      projectMeta.name?.toLowerCase() === defaultProjectName
     ) {
       e.target.select();
     }
