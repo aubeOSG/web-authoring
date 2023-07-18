@@ -9,8 +9,7 @@ export const Tabs = ({
   pxScale,
   items,
   defaultActiveKey,
-  //@ts-ignore
-  setActiveTab,
+  handleSetActiveTab,
   ...props
 }: TabsDefaultProps) => {
   const themePrefixes: ThemePrefixesProps = {};
@@ -31,7 +30,7 @@ export const Tabs = ({
 
   const updateKey = (key) => {
     setActiveKey(key);
-    setActiveTab(key);
+    handleSetActiveTab(key);
   };
 
   themePrefixes[baseClass] = `owlui-${baseClass}`;

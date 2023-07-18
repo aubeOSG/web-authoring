@@ -46,7 +46,7 @@ export const PaneDetails = ({ activeTab }) => {
     },
   ];
 
-  const handleSetActiveTab = (key) => {
+  const handleSetActiveTab = (key: string) => {
     Workspaces.setData({ activeTab: key });
   };
 
@@ -54,7 +54,7 @@ export const PaneDetails = ({ activeTab }) => {
     <Pane initial={animationOpts.initial} animate={animationOpts.animate}>
       <ui.Tabs
         defaultActiveKey={activeTab}
-        setActiveTab={handleSetActiveTab}
+        handleSetActiveTab={handleSetActiveTab}
         items={tabs}
         pxScale="Sm"
         transition={false}
