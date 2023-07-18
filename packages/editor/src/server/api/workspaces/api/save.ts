@@ -55,7 +55,6 @@ export const save = {
   type: 'invoke',
   method: 'POST',
   fn: async (req, res) => {
-    console.log('req.body: ', req.body);
     const payload = req.body;
     const updateRes = await update(payload);
 
