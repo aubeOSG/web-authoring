@@ -3,7 +3,6 @@ import { AnimatePresence } from 'framer-motion';
 import './_overlay.scss';
 import { Backdrop, Drawer } from '../../../../components';
 import { Settings } from '../../../../models';
-import { menu } from '../../../../services';
 import { hasProp, Elem } from '@scrowl/utils';
 
 const GlossaryFormElement = (
@@ -205,10 +204,8 @@ const GlossaryFormElement = (
     };
 
     if (isOpen) {
-      menu.API.disableProjectActions();
       setFocusOnWord();
     } else {
-      menu.API.enableProjectActions();
       setFormErrors(initialErrorState);
     }
 

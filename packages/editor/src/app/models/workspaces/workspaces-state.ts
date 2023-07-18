@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
 import { updateObj } from '@scrowl/utils';
 
 export const initialState = {
@@ -13,7 +12,7 @@ export const initialState = {
   publishing: [],
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'projectWorkspaces',
   initialState,
   reducers: {
@@ -24,9 +23,7 @@ export const config: stateManager.StateConfig = {
       updateObj(state, initialState);
     },
   }
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   setData,
@@ -37,7 +34,7 @@ export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

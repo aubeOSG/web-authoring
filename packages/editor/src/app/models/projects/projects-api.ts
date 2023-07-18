@@ -87,6 +87,7 @@ export const sendUnsavedStatus = (payload: UnsavedReq) => {
 };
 
 export default {
+  get,
   create,
   upload,
   onUploadProgress,

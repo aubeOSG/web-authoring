@@ -85,16 +85,6 @@ export const Header = () => {
     (payload: Projects.ProjectsReqPreviewProject) => {
       Settings.setPreviewMode(payload.type);
 
-      // FIXME::electron-web-bug
-      menu.API.updatePreviewMenu(payload.type).then((res) => {
-        if (res.error) {
-          sys.messageDialog({
-            message: res.message,
-          });
-          return;
-        }
-      });
-
       Projects.preview(payload).then((res) => {
         if (res.error) {
           sys.messageDialog({
@@ -288,17 +278,6 @@ export const Header = () => {
       projectNameInputRef.current.style.width = `${newWidth}px`;
     }
   }, [projectNameRef.current, projectNameInputRef.current, projectMeta.name]);
-
-  useEffect(() => {
-    menu.API.onPublish(() => {
-      setIsOpenPublish(true);
-    });
-
-    return () => {
-      menu.API.offPublish();
-      menu.API.offPublishQuick();
-    };
-  }, [projectData]);
 
   useEffect(() => {
     if (!rollbackName || rollbackName === '') {

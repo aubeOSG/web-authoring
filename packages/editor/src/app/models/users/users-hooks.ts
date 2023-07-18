@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
-import { stateManager, rq } from '../../services';
+import type { ApiResult } from '../../services/requester';
+import type { StateProcessor, RootState } from '../../services/state';
 import { API, state } from './';
 
-const processor: stateManager.StateProcessor = {};
+const processor: StateProcessor = {};
 
 export const useProcessor = () => {
   const dispatch = useDispatch();
@@ -17,12 +17,11 @@ export const resetState = () => {
     return;
   }
 
-  const fn = state.resetState as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.resetState());
 };
 
 export const useData = ()  => {
-  return useSelector((data: stateManager.RootState) => data.users);
+  return useSelector((data: RootState) => data.users);
 };
 
 export const setData = (data) => {
@@ -34,7 +33,7 @@ export const setData = (data) => {
   processor.dispatch(state.setData(data));
 };
 
-export const create = (): Promise<rq.ApiResult> => {
+export const create = (): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.create().then((res) => {
       if (res.error) {
@@ -46,14 +45,13 @@ export const create = (): Promise<rq.ApiResult> => {
   });
 };
 
-export const save = (req): Promise<rq.ApiResult> => {
+export const save = (req): Promise<ApiResult> => {
   return new Promise((resolve) => {
     console.log('req: ', req);
     API.save(req).then((res) => {
       console.log('users hook save: ', res);
       if (processor.dispatch) {
-        const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
-        processor.dispatch(fn());
+        processor.dispatch(state.resetIsUncommitted());
       }
 
       if (res.error) {
@@ -67,7 +65,7 @@ export const save = (req): Promise<rq.ApiResult> => {
   });
 };
 
-export const get = (id: string): Promise<rq.ApiResult> => {
+export const get = (id: string): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.get(id).then((res) => {
 
@@ -89,4 +87,5 @@ export default {
   setData,
   create,
   get,
+  save,
 };

@@ -27,8 +27,6 @@ export type StoreConfig = {
   middleware?: ConfigureStoreOptions['middleware'];
 };
 
-export type RootState = StateValue;
-
 export type StateSelector = any | ReturnType<typeof useSelector>;
 
 export type Dispatch = any | ReturnType<typeof useDispatch>;

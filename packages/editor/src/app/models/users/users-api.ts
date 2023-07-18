@@ -17,3 +17,9 @@ export const save = (data?): Promise<rq.ApiResult> => {
 export const get = (id: string): Promise<rq.ApiResult> => {
   return rq.invoke(ENDPOINTS.get, { id });
 };
+
+export default {
+  create,
+  save,
+  get,
+};
