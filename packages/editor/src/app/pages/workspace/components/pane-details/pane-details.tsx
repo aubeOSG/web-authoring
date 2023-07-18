@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { Outline, Glossary, Resources } from './components';
 import { Pane } from '../../../../components';
-import { Settings } from '../../../../models';
+import { Settings, Workspaces } from '../../../../models';
 
-export const PaneDetails = () => {
+export const PaneDetails = ({ activeTab, setActiveTab }) => {
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
+  const workspaceData = Workspaces.useData();
   const animationOpts = {
     initial: !isAnimated
       ? {}
@@ -46,9 +47,24 @@ export const PaneDetails = () => {
     },
   ];
 
+  const handleSetActiveTab = (key) => {
+    setActiveTab(key);
+    Workspaces.setData({ activeTab: key });
+  };
+
+  useEffect(() => {
+    setActiveTab(workspaceData.activeTab);
+  }, [workspaceData]);
+
   return (
     <Pane initial={animationOpts.initial} animate={animationOpts.animate}>
-      <ui.Tabs items={tabs} pxScale="Sm" transition={false} />
+      <ui.Tabs
+        defaultActiveKey={activeTab}
+        setActiveTab={handleSetActiveTab}
+        items={tabs}
+        pxScale="Sm"
+        transition={false}
+      />
     </Pane>
   );
 };

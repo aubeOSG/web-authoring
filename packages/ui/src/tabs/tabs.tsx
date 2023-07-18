@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ThemeProvider, Tab as BsTab, Tabs as BsTabs } from 'react-bootstrap';
 import { TabsDefaultProps } from './tabs.types';
 import * as TabsCss from './_tabs.scss';
@@ -9,6 +9,8 @@ export const Tabs = ({
   pxScale,
   items,
   defaultActiveKey,
+  //@ts-ignore
+  setActiveTab,
   ...props
 }: TabsDefaultProps) => {
   const themePrefixes: ThemePrefixesProps = {};
@@ -27,6 +29,11 @@ export const Tabs = ({
     defaultActiveKey as string
   );
 
+  const updateKey = (key) => {
+    setActiveKey(key);
+    setActiveTab(key);
+  };
+
   themePrefixes[baseClass] = `owlui-${baseClass}`;
   themePrefixes['nav-tabs'] = `owlui-${baseClass}-tabs`;
   themePrefixes['nav-item'] = `owlui-${baseClass}-item`;
@@ -42,7 +49,7 @@ export const Tabs = ({
     <ThemeProvider prefixes={themePrefixes}>
       <BsTabs
         activeKey={activeKey}
-        onSelect={(key) => setActiveKey(key?.toString())}
+        onSelect={(key) => updateKey(key?.toString())}
         className={classes}
         {...props}
       >

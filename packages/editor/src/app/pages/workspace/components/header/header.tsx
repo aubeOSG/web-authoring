@@ -279,6 +279,7 @@ export const Header = () => {
       id: workspaceData.id,
       updatedAt: workspaceData.updatedAt,
       paneWidth: parseFloat(workspaceData.paneWidth),
+      activeTab: workspaceData.activeTab,
     }).then((res) => {
       console.log('space saveRes', res);
     });

@@ -12,9 +12,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   const grabNode = useRef<HTMLDivElement>(null);
   const side = props.side ? props.side : 'left';
   const workspaceData = Workspaces.useData();
-  const [paneWidth, setPaneWidth] = useState(
-    parseFloat(workspaceData.paneWidth)
-  );
+  const [paneWidth, setPaneWidth] = useState(workspaceData.paneWidth);
 
   useEffect(() => {
     const grabElem = grabNode.current;
@@ -32,7 +30,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
 
     const resizePane = (width: number) => {
       const minWidth = 200;
-      const maxWidth = window.innerWidth / 3;
+      const maxWidth = Math.round(window.innerWidth / 3);
       let newWidth = width;
 
       if (width > maxWidth) {
@@ -118,8 +116,8 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   }, [grabNode, paneWidth]);
 
   useEffect(() => {
-    if (paneWidth !== parseFloat(workspaceData.paneWidth)) {
-      setPaneWidth(parseFloat(workspaceData.paneWidth));
+    if (paneWidth !== workspaceData.paneWidth) {
+      setPaneWidth(workspaceData.paneWidth);
     }
   }, [workspaceData]);
 

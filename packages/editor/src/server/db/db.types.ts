@@ -5,6 +5,7 @@ export type Column = {
     | 'string'
     | 'integer'
     | 'decimal'
+    | 'double'
     | 'foreign'
     | 'datetime'
     | 'json'

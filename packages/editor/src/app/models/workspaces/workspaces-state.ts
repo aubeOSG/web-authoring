@@ -6,6 +6,7 @@ export const initialState = {
   id: '',
   userId: '',
   paneWidth: 320,
+  activeTab: 'tab-outline',
   createdAt: '',
   deletedAt: '',
   openedAt: '',

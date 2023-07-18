@@ -26,7 +26,13 @@ export const definition: Schema = [
   {
     column: {
       name: 'paneWidth',
-      type: 'decimal',
+      type: 'integer',
+    },
+  },
+  {
+    column: {
+      name: 'activeTab',
+      type: 'string',
     },
   },
   {

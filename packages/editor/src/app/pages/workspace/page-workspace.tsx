@@ -49,15 +49,18 @@ export const Page = () => {
   const workspaceData = Workspaces.useData();
   const assets = Projects.useAssets();
   const projectInteractions = Projects.useInteractions();
-  const [inProgress, setProgress] = useState(false);
+  const [inProgress, setProgress] = useState(true);
   const isListening = useRef(false);
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();
+  const [activeTab, setActiveTab] = useState(workspaceData.activeTab);
 
   if (projectData && projectData.workspaceId && workspaceData.id === '') {
+    console.log('helo');
     Workspaces.get(projectData.workspaceId).then((res) => {
       Workspaces.setData(res.data);
+      setProgress(false);
     });
   }
 
@@ -81,194 +84,6 @@ export const Page = () => {
       projectLoading.current = false;
     });
   }, [pageParams]);
-
-  useEffect(() => {
-    isListening.current = true;
-
-    const promptDiscardProject = (project) => {
-      sys
-        .messageDialog({
-          type: 'question',
-          title: 'Confirm',
-          message: 'Open Project Without Saving?',
-          detail: 'Your changes are not saved.',
-          buttons: ['Save and Close', 'Discard and Open', 'Cancel'],
-        })
-        .then((res) => {
-          if (res.error) {
-            console.error(res);
-            return;
-          }
-
-          switch (res.data.response) {
-            case 0:
-              Projects.save(projectData).then((saveRes) => {
-                if (saveRes.data && saveRes.data.action) {
-                  switch (saveRes.data.action) {
-                    case 'prompt-project-name':
-                      openPromptProjectName({
-                        action: events.project.EVENTS.open,
-                      });
-                      break;
-                  }
-                  return;
-                } else if (saveRes.error) {
-                  sys.messageDialog({
-                    message: res.message,
-                  });
-                  return;
-                }
-
-                openProject(project);
-              });
-              break;
-            case 1:
-              openProject(project);
-              break;
-          }
-        });
-    };
-
-    const saveListener = () => {
-      Projects.save(projectData).then((res) => {
-        if (!isListening.current) {
-          return;
-        }
-
-        if (res.data && res.data.action) {
-          switch (res.data.action) {
-            case 'prompt-project-name':
-              openPromptProjectName();
-              break;
-          }
-          return;
-        }
-
-        if (res.error) {
-          console.error(res);
-          return;
-        }
-      });
-    };
-
-    const openListener = (ev, project?: Projects.ProjectMeta) => {
-      if (project) {
-        // FIXME::electron-web-bug
-        // if (project.id === projectData.id) {
-        //   return;
-        // }
-        if (projectInteractions.isUncommitted) {
-          promptDiscardProject(project);
-          return;
-        } else {
-          openProject(project);
-        }
-        return;
-      }
-
-      Projects.openProjectBrowser();
-    };
-
-    const previewListener = (ev, type: menu.PreviewTypes) => {
-      const payload: Projects.ProjectsReqPreviewProject = {
-        type,
-        project: projectData,
-      };
-
-      // FIXME::slide-removal
-      // Settings.setPreviewMode(type);
-      // Projects.preview(payload).then((res) => {
-      //   if (res.error) {
-      //     sys.messageDialog({
-      //       message: res.message,
-      //     });
-      //     return;
-      //   }
-      // });
-    };
-
-    const createListener = () => {
-      if (inProgress) {
-        return;
-      }
-
-      const createNewProject = () => {
-        setProgress(true);
-        Projects.resetState();
-        resetWorkspace();
-        // FIXME::electron-web-bug
-        // Projects.create().then((result) => {
-        //   setProgress(false);
-        //   if (result.error) {
-        //     console.error(result);
-        //     return;
-        //   }
-        // });
-      };
-
-      const promptDiscardProject = () => {
-        sys
-          .messageDialog({
-            type: 'question',
-            title: 'Confirm',
-            message: 'Create new Project Without Saving?',
-            detail: 'Your changes are not saved.',
-            buttons: ['Save Project', 'Discard and Create New', 'Cancel'],
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
-
-            switch (res.data.response) {
-              case 0:
-                Projects.save(projectData).then((saveRes) => {
-                  if (saveRes.data && saveRes.data.action) {
-                    switch (saveRes.data.action) {
-                      case 'prompt-project-name':
-                        openPromptProjectName();
-                        break;
-                    }
-                    return;
-                  } else if (saveRes.error) {
-                    sys.messageDialog({
-                      message: res.message,
-                    });
-                    return;
-                  }
-
-                  createNewProject();
-                });
-                break;
-              case 1:
-                createNewProject();
-                break;
-            }
-          });
-      };
-
-      if (projectInteractions.isUncommitted) {
-        promptDiscardProject();
-        return;
-      }
-
-      createNewProject();
-    };
-
-    menu.API.onProjectCreate(createListener);
-    menu.API.onProjectSave(saveListener);
-    menu.API.onProjectOpen(openListener);
-    menu.API.onPreviewOpen(previewListener);
-
-    return () => {
-      isListening.current = false;
-      menu.API.offProjectCreate();
-      menu.API.offProjectSave();
-      menu.API.offProjectOpen();
-      menu.API.offPreviewOpen();
-    };
-  }, [projectData, assets, projectInteractions, inProgress]);
 
   useEffect(() => {
     if (activeLesson.id !== -1) {
@@ -297,18 +112,43 @@ export const Page = () => {
     resetNewContent();
   }, [newContent, projectData]);
 
-  return (
-    <>
-      <div className={css.workspace}>
-        <Header />
-        <PaneDetails />
-        <Canvas />
-      </div>
-      <ModuleEditor />
-      <PromptProjectName />
-      <PublishProgress />
-    </>
-  );
+  useEffect(() => {
+    setActiveTab(workspaceData.activeTab);
+  }, [workspaceData]);
+
+  console.log('in progress: ', inProgress);
+  // useEffect(() => {
+  //   if (projectData && projectData.workspaceId && workspaceData.id === '') {
+  //     console.log('helo');
+  //     Workspaces.get(projectData.workspaceId).then((res) => {
+  //       Workspaces.setData(res.data);
+  //       setProgress(false);
+  //     });
+  //   }
+  //   // else {
+  //   //   setProgress(false);
+  //   // }
+  //   return () => {
+  //     setProgress(true);
+  //   };
+  // }, []);
+
+  if (!inProgress) {
+    return (
+      <>
+        <div className={css.workspace}>
+          <Header />
+          <PaneDetails activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Canvas />
+        </div>
+        <ModuleEditor />
+        <PromptProjectName />
+        <PublishProgress />
+      </>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default {
