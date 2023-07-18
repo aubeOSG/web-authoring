@@ -277,6 +277,15 @@ export const Header = () => {
     });
   }, [projectData]);
 
+  const handleNameFocus = useCallback((e) => {
+    if (
+      e.target.value === 'Untitled Project' ||
+      projectMeta.name === 'Untitled Project'
+    ) {
+      e.target.select();
+    }
+  }, []);
+
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
       let newWidth = projectNameRef.current.offsetWidth + 6;
@@ -332,6 +341,7 @@ export const Header = () => {
                 onChange={handleUpdateProjectName}
                 onKeyDown={handleInputProjectName}
                 onBlur={handleUpdateForm}
+                onFocus={handleNameFocus}
                 placeholder="Untitled Project"
               />
             </motion.div>
