@@ -1,7 +1,7 @@
 /* eslint-disable import/named */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useDispatch, useSelector } from 'react-redux';
-import { PayloadAction, Reducer } from '@reduxjs/toolkit';
+import { PayloadAction, ConfigureStoreOptions } from '@reduxjs/toolkit';
 
 export type StateValueArray = Array<any | StateValueObject | StateValueArray>;
 
@@ -23,9 +23,8 @@ export type StateConfig = {
 };
 
 export type StoreConfig = {
-  reducer: {
-    [key: string]: Reducer;
-  };
+  reducer: ConfigureStoreOptions['reducer'];
+  middleware?: ConfigureStoreOptions['middleware'];
 };
 
 export type RootState = StateValue;

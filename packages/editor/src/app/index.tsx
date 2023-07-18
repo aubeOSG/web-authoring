@@ -7,7 +7,7 @@ import { stateManager } from './services';
 
 const container = document.getElementById('app') as HTMLElement;
 const root = createRoot(container);
-const store = stateManager.init();
+const store = stateManager.store;
 
 root.render(
   <Provider store={store}>
