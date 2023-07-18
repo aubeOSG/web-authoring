@@ -46,6 +46,27 @@ export const create = (userId: string): Promise<rq.ApiResult> => {
   });
 };
 
+export const save = (req): Promise<rq.ApiResult> => {
+  return new Promise((resolve) => {
+    console.log('req::: ', req);
+    API.save(req).then((res) => {
+      console.log('workspace hook save: ', res);
+      if (processor.dispatch) {
+        const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
+        processor.dispatch(fn());
+      }
+
+      if (res.error) {
+        console.error(res);
+      } else {
+        setData(res.data);
+      }
+
+      resolve(res);
+    });
+  });
+};
+
 export const get = (workspaceId: string): Promise<rq.ApiResult> => {
   return new Promise((resolve) => {
     API.get(workspaceId).then((res) => {
@@ -64,5 +85,6 @@ export default {
   useData,
   setData,
   create,
+  save,
   get,
 };
