@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
 import { List, updateObj } from '@scrowl/utils';
 import { nanoid } from 'nanoid';
+import { ProjectInitialState, ProjectLesson, ProjectModule } from './projects.types';
 
-export const initialState = {
+export const initialState: ProjectInitialState = {
   isDirty: false, // true if the user has made any change
   isUncommitted: false, // true if the user has any unsaved change
   isNew: true,
@@ -85,7 +85,7 @@ const copyListItems = (list, field, fromId, toId) => {
   });
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
@@ -323,13 +323,13 @@ export const config: stateManager.StateConfig = {
             'id',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectModule>;
           state.data.lessons = List.filterBy(
             state.data.lessons,
             'moduleId',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectLesson>;
           break;
         case 'lesson':
           state.data.lessons = List.filterBy(
@@ -337,7 +337,7 @@ export const config: stateManager.StateConfig = {
             'id',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectLesson>;
           break;
       }
 
@@ -470,9 +470,7 @@ export const config: stateManager.StateConfig = {
       state.isOpenProjectBrowser = false;
     },
   },
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   resetState,
@@ -503,7 +501,7 @@ export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

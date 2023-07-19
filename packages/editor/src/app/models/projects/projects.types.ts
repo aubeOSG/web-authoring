@@ -32,8 +32,8 @@ export type ProjectMeta = {
 
 export type ProjectScorm = {
   name: string;
-  outputFormat: '1.2' | '2004 3rd Edition' | '2004.4';
-  optimizeMedia: 'low' | 'recommended' | 'high' | 'original';
+  outputFormat: '1.2' | '2004 3rd Edition' | '2004.4' | 'SCORM 2004';
+  optimizeMedia: 'Low' | 'Recommended' | 'High' | 'Original';
   version?: string;
   description?: string;
   authors?: string;
@@ -117,4 +117,25 @@ export type ProjectFile = {
   assets: Array<ProjectAsset>;
   versions: Array<ProjectMeta>;
   lastPublishedFilename?: string;
+};
+
+export type ProjectInitialState = {
+  isDirty: boolean;
+  isUncommitted: boolean;
+  isNew: boolean;
+  isOpenProjectBrowser: boolean;
+  isLoaded: boolean;
+  assets: Array<ProjectAsset>,
+  data: {
+    id: string;
+    workspaceId: string;
+    createdAt: string;
+    deletedAt: string;
+    meta: Partial<ProjectMeta>;
+    scorm: Partial<ProjectScorm>;
+    modules: Array<ProjectModule>;
+    lessons: Array<ProjectLesson>;
+    glossary: Array<ProjectGlossaryItem>;
+    resources: Array<ProjectResource>;
+  },
 };

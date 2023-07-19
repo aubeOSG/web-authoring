@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Users, Settings, Workspaces } from '../../../../models';
+import { Projects, Users, Settings } from '../../../../models';
+import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
@@ -16,17 +17,13 @@ import {
 export const Header = () => {
   const projectData = Projects.useData();
   const userData = Users.useData();
-  const workspaceData = Workspaces.useData();
-  const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
-  const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  // const hasPublished = Settings.useHasPublished();
   const previewMode = Settings.usePreviewMode();
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
@@ -83,18 +80,8 @@ export const Header = () => {
   };
 
   const handleProjectPreview = useCallback(
-    (payload: Projects.ProjectsReqPreviewProject) => {
+    (payload: ProjectsReqPreviewProject) => {
       Settings.setPreviewMode(payload.type);
-
-      // FIXME::electron-web-bug
-      menu.API.updatePreviewMenu(payload.type).then((res) => {
-        if (res.error) {
-          sys.messageDialog({
-            message: res.message,
-          });
-          return;
-        }
-      });
 
       Projects.preview(payload).then((res) => {
         if (res.error) {
@@ -115,7 +102,7 @@ export const Header = () => {
   );
 
   const handlePreviewDefault = useCallback(() => {
-    const payload: Projects.ProjectsReqPreviewProject = {
+    const payload: ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
       entityId: activeLesson.id,
@@ -130,7 +117,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'lesson',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
           entityId: activeLesson.id,
@@ -144,7 +131,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'module',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
           entityId: activeLesson.moduleId,
@@ -158,7 +145,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'project',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
         };
@@ -220,50 +207,11 @@ export const Header = () => {
         link.click();
         link.parentNode?.removeChild(link);
 
-        const updatedUser = { ...userData, hasPublished: true };
-
-        Users.save(updatedUser).then((res) => {
-          if (!initialHasPublished) {
-            setIsOpenConfirmation(true);
-          }
-        });
+        if (!userData.hasPublished) {
+          setIsOpenConfirmation(true);
+          Users.update({ hasPublished: true });
+        }
       });
-
-      // Projects.save({ data: submittedData, assets }).then((saveRes) => {
-      //   if (saveRes.error) {
-      //     closePublishProgress();
-      //     sys.messageDialog({
-      //       message: saveRes.message,
-      //     });
-      //     return;
-      //   }
-
-      //   Projects.publish(saveRes.data.project).then((pubRes) => {
-      //     if (pubRes.error) {
-      //       closePublishProgress();
-      //       sys.messageDialog({
-      //         message: pubRes.message,
-      //       });
-      //       return;
-      //     }
-
-      //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-      //     setIsOpenPublish(false);
-      //     closePublishProgress();
-
-      //     if (pubRes.data.canceled) {
-      //       return;
-      //     }
-
-      //     if (hasPublished) {
-      //       return;
-      //     }
-
-      //     setTimeout(() => {
-      //       setIsOpenConfirmation(true);
-      //     }, 1);
-      //   });
-      // });
     },
     [projectData, userData]
   );
@@ -271,21 +219,6 @@ export const Header = () => {
   const handleCloseConfirmation = () => {
     setIsOpenConfirmation(false);
   };
-
-  const handleSave = useCallback(() => {
-    Projects.save(projectData).then((res) => {
-      // console.log('proj saveRes', res);
-    });
-    Workspaces.save({
-      id: workspaceData.id,
-      updatedAt: workspaceData.updatedAt,
-      paneWidth: workspaceData.paneWidth,
-      paneCollapsed: workspaceData.paneCollapsed,
-      activeTab: workspaceData.activeTab,
-    }).then((res) => {
-      console.log('space saveRes', res);
-    });
-  }, [projectData, workspaceData]);
 
   const handleNameFocus = useCallback((e) => {
     const defaultProjectName = 'untitled project';
@@ -309,17 +242,6 @@ export const Header = () => {
       projectNameInputRef.current.style.width = `${newWidth}px`;
     }
   }, [projectNameRef.current, projectNameInputRef.current, projectMeta.name]);
-
-  useEffect(() => {
-    menu.API.onPublish(() => {
-      setIsOpenPublish(true);
-    });
-
-    return () => {
-      menu.API.offPublish();
-      menu.API.offPublishQuick();
-    };
-  }, [projectData]);
 
   useEffect(() => {
     if (!rollbackName || rollbackName === '') {
@@ -401,17 +323,6 @@ export const Header = () => {
                   rocket_launch
                 </span>
                 Publish
-              </ui.Button>
-            </Nav.Item>
-            <Nav.Item>
-              <ui.Button
-                className={`ms-3 ${css.projectActionsBtn}`}
-                variant="primary"
-                size="sm"
-                onClick={handleSave}
-              >
-                <span className="material-symbols-sharp icon-save">save</span>
-                Save
               </ui.Button>
             </Nav.Item>
           </Nav>

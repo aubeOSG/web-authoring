@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../../services'
 import { updateObj } from '@scrowl/utils';
 import { Projects } from '../../../models';
 
@@ -37,7 +36,7 @@ const triggerNewContent = (state, action) => {
   }
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'workspace',
   initialState,
   reducers: {
@@ -87,17 +86,12 @@ export const config: stateManager.StateConfig = {
     setActiveLesson: (state, action) => {
       updateObj(state.activeLesson, action.payload);
     },
-    resetActiveLesson: (state, action) => {
-      state.activeLesson = {};
-    },
   },
   extraReducers: {
     [Projects.state.addOutlineItem.type]: triggerNewContent,
     [Projects.state.duplicateOutlineItem.type]: triggerNewContent,
   },
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   setData,
@@ -113,14 +107,13 @@ export const {
   openPublishProgress,
   closePublishProgress,
   setActiveLesson,
-  resetActiveLesson,
 } = slice.actions;
 
 export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

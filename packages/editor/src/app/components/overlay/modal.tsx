@@ -43,10 +43,8 @@ export const Modal = ({
 
     if (isOpen) {
       window.addEventListener('keydown', handleControls);
-      menu.API.disableProjectActions();
     } else {
       window.removeEventListener('keydown', handleControls);
-      menu.API.enableProjectActions();
     }
 
     return () => {

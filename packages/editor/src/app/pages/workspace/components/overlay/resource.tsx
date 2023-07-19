@@ -6,7 +6,6 @@ import { ResourceItem } from '../pane-details';
 import { AssetBrowser } from './asset-browser';
 import { Backdrop, Drawer } from '../../../../components';
 import { Settings } from '../../../../models';
-import { menu } from '../../../../services';
 import { hasProp, Elem } from '@scrowl/utils';
 
 export interface ResourceFormProps
@@ -257,10 +256,7 @@ const ResourceFormElement = (
     };
 
     if (isOpen) {
-      menu.API.disableProjectActions();
       setFocusOnTitle();
-    } else {
-      menu.API.enableProjectActions();
     }
 
     return () => {

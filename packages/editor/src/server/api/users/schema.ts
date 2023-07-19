@@ -37,6 +37,7 @@ export const definition: Schema = [
     column: {
       name: 'hasPublished',
       type: 'boolean',
+      defaultValue: false,
     },
   },
 ];

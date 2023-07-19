@@ -42,7 +42,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
       }
 
       rootElem.style.setProperty(`--pane-${side}-width`, newWidth + 'px');
-      Workspaces.setData({ paneWidth: newWidth });
+      Workspaces.update({ paneWidth: newWidth });
       return newWidth;
     };
 

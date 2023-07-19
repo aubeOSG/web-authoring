@@ -1,10 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
+import type { StateProcessor, RootState } from '../../services/state';
 import { hasProp } from '@scrowl/utils';
 import { state } from './';
 
-const processor: stateManager.StateProcessor = {};
+const processor: StateProcessor = {};
 
 export const useProcessor = () => {
   const dispatch = useDispatch();
@@ -13,7 +12,7 @@ export const useProcessor = () => {
 };
 
 export const useWorkspace = (prop?: string) => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     if (!prop) {
       return data.workspace;
     }
@@ -33,7 +32,7 @@ export const setWorkspace = (data) => {
     return;
   }
 
-  processor.dispatch(state.workspace.setData(data));
+  processor.dispatch(state.Workspace.setData(data));
 };
 
 export const resetWorkspace = () => {
@@ -42,12 +41,11 @@ export const resetWorkspace = () => {
     return;
   }
 
-  const fn = state.workspace.resetData as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.resetData());
 };
 
 export const useContentFocus = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.contentFocus;
   });
 };
@@ -58,7 +56,7 @@ export const setContentFocus = (data) => {
     return;
   }
 
-  processor.dispatch(state.workspace.setContentFocus(data));
+  processor.dispatch(state.Workspace.setContentFocus(data));
 };
 
 export const resetContentFocus = () => {
@@ -67,12 +65,11 @@ export const resetContentFocus = () => {
     return;
   }
 
-  const fn = state.workspace.resetContentFocus as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.resetContentFocus());
 };
 
 export const useModuleEditor = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.isOpenEditModule;
   });
 };
@@ -90,8 +87,7 @@ export const openModuleEditor = (module) => {
   });
   document.dispatchEvent(moduleEditorEvent);
 
-  const fn = state.workspace.openEditModule as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.openEditModule());
 };
 
 export const closeModuleEditor = () => {
@@ -100,12 +96,11 @@ export const closeModuleEditor = () => {
     return;
   }
 
-  const fn = state.workspace.closeEditModule as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.closeEditModule());
 };
 
 export const useNewContent = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return {
       newLesson: data.workspace.newLesson,
       newModule: data.workspace.newModule,
@@ -119,12 +114,11 @@ export const resetNewContent = () => {
     return;
   }
 
-  const fn = state.workspace.resetNewContent as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.resetNewContent());
 };
 
 export const usePromptProjectName = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.isOpenPromptProjectName;
   });
 };
@@ -135,7 +129,7 @@ export const openPromptProjectName = (postEvent?: unknown) => {
     return;
   }
 
-  processor.dispatch(state.workspace.openPromptProjectName({ postEvent }));
+  processor.dispatch(state.Workspace.openPromptProjectName({ postEvent }));
 };
 
 export const closePromptProjectName = () => {
@@ -144,13 +138,11 @@ export const closePromptProjectName = () => {
     return;
   }
 
-  const fn = state.workspace
-    .closePromptProjectName as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.closePromptProjectName());
 };
 
 export const usePromptProjectNamePostEvent = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.promptProjectNamePostEvent;
   });
 };
@@ -161,13 +153,11 @@ export const resetPromptProjectNamePostEvent = () => {
     return;
   }
 
-  const fn = state.workspace
-    .resetPromptProjectNamePostEvent as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.resetPromptProjectNamePostEvent());
 };
 
 export const usePublishProgress = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.isOpenPublishProgress;
   });
 };
@@ -178,8 +168,7 @@ export const openPublishProgress = () => {
     return;
   }
 
-  const fn = state.workspace.openPublishProgress as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.openPublishProgress());
 };
 
 export const closePublishProgress = () => {
@@ -188,13 +177,11 @@ export const closePublishProgress = () => {
     return;
   }
 
-  const fn = state.workspace
-    .closePublishProgress as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.closePublishProgress());
 };
 
 export const useActiveLesson = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.workspace.activeLesson;
   });
 };
@@ -205,18 +192,7 @@ export const setActiveLesson = (data) => {
     return;
   }
 
-  processor.dispatch(state.workspace.setActiveLesson(data));
-};
-
-export const resetActiveLesson = () => {
-  if (!processor.dispatch) {
-    console.warn('workspace processor not ready');
-    return;
-  }
-
-  const fn = state.workspace
-    .resetActiveLesson as ActionCreatorWithoutPayload
-  processor.dispatch(fn());
+  processor.dispatch(state.Workspace.setActiveLesson(data));
 };
 
 export default {
@@ -242,5 +218,4 @@ export default {
   closePublishProgress,
   useActiveLesson,
   setActiveLesson,
-  resetActiveLesson,
 };
