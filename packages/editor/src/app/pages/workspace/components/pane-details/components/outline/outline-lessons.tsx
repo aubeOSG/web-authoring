@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { Projects } from '../../../../../../models';
+import { Projects, Workspaces } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import {
@@ -22,6 +22,8 @@ export const OutlineLessonItem = ({
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
   const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
+  const workspaceData = Workspaces.useData();
+
   const inputContainerProps = {
     draggable: true,
     'data-outline-type': 'lesson',
@@ -91,7 +93,8 @@ export const OutlineLessonItem = ({
     setIsEdit(false);
   };
 
-  const handleLesonChange = useCallback(() => {
+  const handleLessonChange = useCallback(() => {
+    Workspaces.setData({ activeLesson: lesson });
     setActiveLesson(lesson);
   }, [lesson]);
 
@@ -107,7 +110,7 @@ export const OutlineLessonItem = ({
           aria-expanded={activeLesson ? lesson.id === activeLesson.id : false}
           aria-controls={menuId}
           className={css.outlineItem}
-          onClick={handleLesonChange}
+          onClick={handleLessonChange}
           onContextMenu={handleOpenLessonMenu}
           variant="link"
         >

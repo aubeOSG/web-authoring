@@ -13,6 +13,7 @@ export const initialState = {
   updatedAt: '',
   versions: [],
   publishing: [],
+  activeLesson: {},
 };
 
 export const config: stateManager.StateConfig = {

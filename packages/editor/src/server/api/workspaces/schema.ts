@@ -37,6 +37,12 @@ export const definition: Schema = [
   },
   {
     column: {
+      name: 'activeLesson',
+      type: 'json',
+    },
+  },
+  {
+    column: {
       name: 'deletedAt',
       type: 'datetime',
     },
