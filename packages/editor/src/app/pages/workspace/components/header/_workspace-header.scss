@@ -90,7 +90,7 @@
 }
 
 .project-actions {
-  flex-direction: row;
+  flex-direction: row !important;
 
   .owlui-btn-ghost {
     border-color: var(--owl-border-color);
