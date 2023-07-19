@@ -27,9 +27,11 @@ export const PaneDetails = ({ activeTab }) => {
           width: `${
             workspaceData.paneCollapsed ? '0' : workspaceData.paneWidth
           }px`,
+          opacity: workspaceData.paneCollapsed ? 0 : 1,
           marginBottom: '0px',
           transform: 'translate(0px,0px)',
           transition: {
+            opacity: { delay: animationDelay },
             marginBottom: { delay: animationDelay, duration: 0.4 },
             transform: { delay: animationDelay },
           },

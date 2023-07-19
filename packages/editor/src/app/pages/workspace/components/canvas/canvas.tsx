@@ -16,7 +16,13 @@ export const CollapsePaneButton = () => {
       variant="primary"
       onClick={handleClick}
     >
-      <span className="material-symbols-rounded">login</span>
+      <span
+        className={`material-symbols-rounded ${
+          workspaceData.paneCollapsed ? 'collapsed' : 'expanded'
+        }`}
+      >
+        login
+      </span>
     </ui.Button>
   );
 };

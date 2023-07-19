@@ -133,12 +133,12 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   }
 
   return (
-    <motion.aside className={`${classes}`} {...props}>
+    <motion.div className={`${classes}`} {...props}>
       {children}
       <div className={grabClasses} ref={grabNode}>
         <div></div>
       </div>
-    </motion.aside>
+    </motion.div>
   );
 };
 
