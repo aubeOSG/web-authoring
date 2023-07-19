@@ -228,9 +228,6 @@ export const Header = () => {
   };
 
   const handleSave = useCallback(() => {
-    Projects.save(projectData).then((res) => {
-      // console.log('proj saveRes', res);
-    });
     Workspaces.save({
       id: workspaceData.id,
       updatedAt: workspaceData.updatedAt,

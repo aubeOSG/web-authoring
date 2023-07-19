@@ -1,4 +1,4 @@
-import { createListenerMiddleware } from '@reduxjs/toolkit';
+import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import type { ListenerAPI } from '../../../services/state';
 import {
   setMeta,
@@ -14,6 +14,7 @@ import {
   setResourceItem,
   removeResourceItem,
 } from '../projects-state';
+import { save } from '../projects-api';
 
 const onChangeActions = [
   setMeta,
@@ -43,18 +44,21 @@ const onChangeEffect = (action, api: ListenerAPI) => {
   onChangeTimeout = setTimeout(() => {
     const projectData = api.getState().projects.data;
 
-    console.log('projectData', projectData);
+    save(projectData).then((res) => {
+      if (res.error) {
+        console.error(res);
+        return;
+      }
+
+      console.debug('listener::project-change - saved', res);
+    })
   }, 250);
 };
 
-const createListener = (action) => {
-  onChange.startListening({
-    actionCreator: action,
-    effect: onChangeEffect,
-  });
-};
-
-onChangeActions.forEach(createListener);
+onChange.startListening({
+  matcher: isAnyOf(...onChangeActions),
+  effect: onChangeEffect,
+});
 
 export const onChangeMiddleware = onChange.middleware;
 
