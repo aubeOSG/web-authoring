@@ -22,16 +22,11 @@ export const update = async (payload: User) => {
       },
     };
   }
-
-  const { ...userData } = payload;
-  const user = {
-    ...userData,
-  };
-
+  
   try {
     const [data] = await db(table)
-      .where('id', user.id)
-      .update(user, Object.keys(user));
+      .where('id', payload.id)
+      .update(payload, Object.keys(payload));
 
     return {
       error: false,

@@ -26,6 +26,10 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   }, [progress]);
 
   useEffect(() => {
+    if (oauth?.token && user.id) {
+      return;
+    }
+
     oauth?.get().then((res) => {
       if (res.error) {
         console.error(res);

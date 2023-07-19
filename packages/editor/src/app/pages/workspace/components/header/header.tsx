@@ -17,7 +17,6 @@ import {
 export const Header = () => {
   const projectData = Projects.useData();
   const userData = Users.useData();
-  const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
@@ -25,7 +24,6 @@ export const Header = () => {
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  // const hasPublished = Settings.useHasPublished();
   const previewMode = Settings.usePreviewMode();
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
@@ -209,13 +207,10 @@ export const Header = () => {
         link.click();
         link.parentNode?.removeChild(link);
 
-        const updatedUser = { ...userData, hasPublished: true };
-
-        Users.save(updatedUser).then((res) => {
-          if (!initialHasPublished) {
-            setIsOpenConfirmation(true);
-          }
-        });
+        if (!userData.hasPublished) {
+          setIsOpenConfirmation(true);
+          Users.update({ hasPublished: true });
+        }
       });
     },
     [projectData, userData]

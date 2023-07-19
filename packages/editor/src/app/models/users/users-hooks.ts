@@ -21,7 +21,7 @@ export const resetState = () => {
 };
 
 export const useData = ()  => {
-  return useSelector((data: RootState) => data.users);
+  return useSelector((data: RootState) => data.users.data);
 };
 
 export const setData = (data) => {
@@ -31,6 +31,15 @@ export const setData = (data) => {
   }
 
   processor.dispatch(state.setData(data));
+};
+
+export const update = (data) => {
+  if (!processor.dispatch) {
+    console.warn('projects processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.update(data));
 };
 
 export const create = (): Promise<ApiResult> => {
@@ -47,9 +56,7 @@ export const create = (): Promise<ApiResult> => {
 
 export const save = (req): Promise<ApiResult> => {
   return new Promise((resolve) => {
-    console.log('req: ', req);
     API.save(req).then((res) => {
-      console.log('users hook save: ', res);
       if (processor.dispatch) {
         processor.dispatch(state.resetIsUncommitted());
       }
@@ -85,6 +92,7 @@ export default {
   resetState,
   useData,
   setData,
+  update,
   create,
   get,
   save,
