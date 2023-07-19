@@ -1,13 +1,10 @@
-import start from './start';
-import welcome from './welcome';
+import bypass from './bypass';
 import workspace from './workspace';
 
-export const Start = start;
-export const Welcome = welcome;
+export const Bypass = bypass;
 export const Workspace = workspace;
 
 export default {
-  Start,
-  Welcome,
+  Bypass,
   Workspace,
 };
