@@ -2,10 +2,14 @@ import React from 'react';
 import * as css from './_canvas.scss';
 import { CanvasFrame, CanvasBreadcrumb } from './components';
 import { ui } from '@scrowl/ui';
+import { Workspaces } from '../../../../models';
 
 export const CollapsePaneButton = () => {
+  const workspaceData = Workspaces.useData();
+
   const handleClick = () => {
-    console.log('click');
+    Workspaces.setData({ paneCollapsed: !workspaceData.paneCollapsed });
+    console.log(workspaceData);
   };
   return (
     <ui.Button

@@ -65,6 +65,12 @@ export const definition: Schema = [
       type: 'json',
     },
   },
+  {
+    column: {
+      name: 'paneCollapsed',
+      type: 'boolean',
+    },
+  },
 ];
 
 export default {

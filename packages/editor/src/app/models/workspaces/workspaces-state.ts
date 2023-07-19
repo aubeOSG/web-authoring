@@ -13,6 +13,7 @@ export const initialState = {
   updatedAt: '',
   versions: [],
   publishing: [],
+  paneCollapsed: false,
 };
 
 export const config: stateManager.StateConfig = {
