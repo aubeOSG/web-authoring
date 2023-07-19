@@ -82,6 +82,14 @@
     }
   }
 
+  &__collapse-button {
+    position: absolute;
+
+    span {
+      transform: rotate(180deg);
+    }
+  }
+
   &__frame {
     display: flex;
     justify-content: center;
