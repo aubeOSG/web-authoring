@@ -21,7 +21,7 @@ export const resetState = () => {
 };
 
 export const useData = ()  => {
-  return useSelector((data: RootState) => data.users.data);
+  return useSelector((root: RootState) => root.users.data);
 };
 
 export const setData = (data) => {
@@ -88,11 +88,11 @@ export const get = (id: string): Promise<ApiResult> => {
 };
 
 export const useSettings = ()  => {
-  return useSelector((data: RootState) => data.users.settings);
+  return useSelector((root: RootState) => root.users.data.settings);
 };
 
 export const useHasPublished = ()  => {
-  return useSelector((data: RootState) => data.users.settings.hasPublished);
+  return useSelector((root: RootState) => root.users.data.settings.hasPublished);
 };
 
 export const setHasPublished = (hasPublished: boolean) => {
@@ -105,9 +105,9 @@ export const setHasPublished = (hasPublished: boolean) => {
 };
 
 export const useAnimations = ()  => {
-  return useSelector((data: RootState) => {
-    const reducedAnimations = data.users.settings.reducedAnimations;
-    const animationDelay = data.users.animationDelay;
+  return useSelector((root: RootState) => {
+    const reducedAnimations = root.users.data.settings.reducedAnimations;
+    const animationDelay = root.users.data.animationDelay;
 
     return {
       reducedAnimations,
