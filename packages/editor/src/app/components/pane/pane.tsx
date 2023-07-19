@@ -133,7 +133,12 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   }
 
   return (
-    <motion.div className={classes} {...props}>
+    <motion.div
+      className={`${classes} ${
+        workspaceData.paneCollapsed ? 'collapsed' : 'expanded'
+      }`}
+      {...props}
+    >
       {children}
       <div className={grabClasses} ref={grabNode}>
         <div></div>
