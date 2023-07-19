@@ -154,12 +154,11 @@ export const OutlineLessons = ({
   const lessons = Projects.useLessons(moduleId);
   let classes = `nav flex-column outline-list-lesson`;
   let addClasses = `${css.outlineAdd} outline-item__lesson .inline-input`;
-  const workspaceData = Workspaces.useData();
   const activeLesson = useActiveLesson();
 
   const scrollOnOpen = () => {
     const targetLessonEl = document?.querySelector(
-      `[data-lesson-id="${workspaceData.activeLesson.id}"]`
+      `[data-lesson-id="${activeLesson.id}"]`
     );
 
     targetLessonEl?.scrollIntoView({
@@ -180,11 +179,10 @@ export const OutlineLessons = ({
   }
 
   useEffect(() => {
-    Workspaces.update({ activeLesson: activeLesson });
-  }, [activeLesson]);
+    Workspaces.setSettings({ activeLessonId: activeLesson.id });
+  }, [activeLesson.id]);
 
   useEffect(() => {
-    setActiveLesson(workspaceData.activeLesson);
     scrollOnOpen();
   }, []);
 
