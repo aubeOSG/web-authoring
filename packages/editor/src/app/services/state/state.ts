@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
-import { configureStore, addListener, } from '@reduxjs/toolkit';
+import { configureStore, addListener, ListenerEffectAPI } from '@reduxjs/toolkit';
 import type { TypedStartListening, TypedAddListener } from '@reduxjs/toolkit';
 import { StoreConfig } from './state.types';
 import * as models from '../../models';
@@ -55,4 +55,5 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export type AppDispatch = typeof store.dispatch;
 export type AppStartListening = TypedStartListening<RootState, AppDispatch>;
 export const addAppListener = addListener as TypedAddListener<RootState, AppDispatch>;
+export type ListenerAPI = ListenerEffectAPI<RootState, AppDispatch>;
 export default store;

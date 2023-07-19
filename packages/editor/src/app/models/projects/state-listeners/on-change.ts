@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { ListenerAPI } from './state-listeners.types';
+import type { ListenerAPI } from '../../../services/state';
 import {
   setMeta,
   addOutlineItem,
