@@ -5,6 +5,7 @@ import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
 import { Projects, Users, Settings, Workspaces } from '../../../../models';
+import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
@@ -83,7 +84,7 @@ export const Header = () => {
   };
 
   const handleProjectPreview = useCallback(
-    (payload: Projects.ProjectsReqPreviewProject) => {
+    (payload: ProjectsReqPreviewProject) => {
       Settings.setPreviewMode(payload.type);
 
       Projects.preview(payload).then((res) => {
@@ -105,7 +106,7 @@ export const Header = () => {
   );
 
   const handlePreviewDefault = useCallback(() => {
-    const payload: Projects.ProjectsReqPreviewProject = {
+    const payload: ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
       entityId: activeLesson.id,
@@ -120,7 +121,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'lesson',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
           entityId: activeLesson.id,
@@ -134,7 +135,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'module',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
           entityId: activeLesson.moduleId,
@@ -148,7 +149,7 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'project',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
         };
@@ -218,42 +219,6 @@ export const Header = () => {
           }
         });
       });
-
-      // Projects.save({ data: submittedData, assets }).then((saveRes) => {
-      //   if (saveRes.error) {
-      //     closePublishProgress();
-      //     sys.messageDialog({
-      //       message: saveRes.message,
-      //     });
-      //     return;
-      //   }
-
-      //   Projects.publish(saveRes.data.project).then((pubRes) => {
-      //     if (pubRes.error) {
-      //       closePublishProgress();
-      //       sys.messageDialog({
-      //         message: pubRes.message,
-      //       });
-      //       return;
-      //     }
-
-      //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-      //     setIsOpenPublish(false);
-      //     closePublishProgress();
-
-      //     if (pubRes.data.canceled) {
-      //       return;
-      //     }
-
-      //     if (hasPublished) {
-      //       return;
-      //     }
-
-      //     setTimeout(() => {
-      //       setIsOpenConfirmation(true);
-      //     }, 1);
-      //   });
-      // });
     },
     [projectData, userData]
   );
