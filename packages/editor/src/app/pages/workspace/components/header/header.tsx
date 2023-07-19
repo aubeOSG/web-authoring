@@ -16,7 +16,7 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
-  const userData = Users.useData();
+  const hasPublished = Users.useHasPublished();
   const activeLesson = useActiveLesson();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
@@ -207,13 +207,13 @@ export const Header = () => {
         link.click();
         link.parentNode?.removeChild(link);
 
-        if (!userData.hasPublished) {
+        if (!hasPublished) {
           setIsOpenConfirmation(true);
-          Users.update({ hasPublished: true });
+          Users.setHasPublished(true);
         }
       });
     },
-    [projectData, userData]
+    [projectData, hasPublished]
   );
 
   const handleCloseConfirmation = () => {

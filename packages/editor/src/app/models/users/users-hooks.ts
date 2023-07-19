@@ -13,7 +13,7 @@ export const useProcessor = () => {
 
 export const resetState = () => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -26,7 +26,7 @@ export const useData = ()  => {
 
 export const setData = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -35,7 +35,7 @@ export const setData = (data) => {
 
 export const update = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -87,6 +87,44 @@ export const get = (id: string): Promise<ApiResult> => {
   });
 };
 
+export const useSettings = ()  => {
+  return useSelector((data: RootState) => data.users.settings);
+};
+
+export const useHasPublished = ()  => {
+  return useSelector((data: RootState) => data.users.settings.hasPublished);
+};
+
+export const setHasPublished = (hasPublished: boolean) => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setHasPublished(hasPublished));
+};
+
+export const useAnimations = ()  => {
+  return useSelector((data: RootState) => {
+    const reducedAnimations = data.users.settings.reducedAnimations;
+    const animationDelay = data.users.animationDelay;
+
+    return {
+      reducedAnimations,
+      animationDelay,
+    };
+  });
+};
+
+export const setAnimations = (data: { reducedAnimations?: boolean, animationDelay?: number })  => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setAnimation(data));
+};
+
 export default {
   useProcessor,
   resetState,
@@ -96,4 +134,9 @@ export default {
   create,
   get,
   save,
+  useSettings,
+  useHasPublished,
+  setHasPublished,
+  useAnimations,
+  setAnimations,
 };
