@@ -20,7 +20,12 @@ export const create: UsersApiCreate = {
   
 
     const user = {
-      name: 'test user'
+      name: 'test user',
+      settings: {
+        hasPublished: false,
+        reducedAnimations: true,
+        theme: 'light',
+      },
     };
 
     try {

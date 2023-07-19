@@ -9,7 +9,6 @@ import { OAuthProvider } from '../contexts/oauth';
 
 export const Root = () => {
   //TODO::convert to a common app dispatch with useContext / provider pattern
-  models.Settings.useProcessor();
   models.Projects.useProcessor();
   models.Users.useProcessor();
   models.Workspaces.useProcessor();

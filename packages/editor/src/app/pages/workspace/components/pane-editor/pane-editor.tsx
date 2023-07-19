@@ -1,11 +1,10 @@
 import React from 'react';
-import { ui } from '@scrowl/ui';
 import * as css from './_pane-editor.scss';
 import { Pane } from '../../../../components';
-import { Settings } from '../../../../models';
+import { Users } from '../../../../models';
 
 export const PaneEditor = () => {
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const animationOpts = {

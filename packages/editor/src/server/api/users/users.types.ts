@@ -18,5 +18,9 @@ export type User = {
   deletedAr: string;
   name: string;
   avatar: string;
-  hasPublished: boolean;
+  settings: {
+    hasPublished: boolean;
+    reducedAnimations: boolean;
+    theme: string;
+  };
 };

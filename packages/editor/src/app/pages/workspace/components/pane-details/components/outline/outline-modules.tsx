@@ -4,7 +4,7 @@ import { Collapse } from 'react-bootstrap';
 import { OutlineModulesProps, OutlineModuleItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { OutlineLessons } from './outline-lessons';
-import { openModuleEditor } from '../../../../';
+import { openModuleEditor } from '../../../../page-workspace-hooks';
 import { Projects } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
