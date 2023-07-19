@@ -155,7 +155,6 @@ export const OutlineLessons = ({
   let classes = `nav flex-column outline-list-lesson`;
   let addClasses = `${css.outlineAdd} outline-item__lesson .inline-input`;
   const workspaceData = Workspaces.useData();
-  setActiveLesson(workspaceData.activeLesson);
   const activeLesson = useActiveLesson();
 
   const scrollOnOpen = () => {
@@ -180,6 +179,11 @@ export const OutlineLessons = ({
   }
 
   useEffect(() => {
+    Workspaces.setData({ activeLesson: activeLesson });
+  }, [activeLesson]);
+
+  useEffect(() => {
+    setActiveLesson(workspaceData.activeLesson);
     scrollOnOpen();
   }, []);
 
