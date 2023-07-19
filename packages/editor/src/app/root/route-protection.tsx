@@ -4,7 +4,8 @@ import { useOAuth } from '../contexts/oauth';
 import { RouteProtectionProps } from './root.types';
 import { config as welcomeConfig } from '../pages/welcome';
 import { Users } from '../models';
-import { User } from '../../server/api/users';
+import type { User } from '../../server/api/users';
+import { Loader } from '../components/loader';
 
 export const RouteProtection = ({ children }: RouteProtectionProps) => {
   const defaultRoute = welcomeConfig.Path;
@@ -16,7 +17,7 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   const getContent = useCallback(() => {
     switch (progress) {
       case 0:
-        return <div>Loading...</div>;
+        return <Loader />;
       case 1:
         return (
           <Navigate to={defaultRoute} replace state={{ from: location }} />
@@ -28,6 +29,7 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
 
   useEffect(() => {
     if (oauth?.token && user.id) {
+      setProgress(2);
       return;
     }
 

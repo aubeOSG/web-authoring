@@ -16,6 +16,7 @@ import {
   PublishProgress,
   ModuleEditor,
 } from './components';
+import { Loader } from '../../components/loader';
 import { Projects, Workspaces } from '../../models';
 import type { ProjectMeta } from '../../models/projects';
 import { sys } from '../../services';
@@ -133,7 +134,7 @@ export const Page = () => {
       </>
     );
   } else {
-    return <>Loading...</>;
+    return <Loader />;
   }
 };
 
