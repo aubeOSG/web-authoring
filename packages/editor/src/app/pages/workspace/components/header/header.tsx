@@ -24,8 +24,8 @@ export const Header = () => {
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  const previewMode = Settings.usePreviewMode();
-  const animationSettings = Settings.useAnimation();
+  const previewMode = Users.usePreviewMode();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const motionOptsContainer = {
@@ -81,7 +81,7 @@ export const Header = () => {
 
   const handleProjectPreview = useCallback(
     (payload: ProjectsReqPreviewProject) => {
-      Settings.setPreviewMode(payload.type);
+      Users.setPreviewMode(payload.type);
 
       Projects.preview(payload).then((res) => {
         if (res.error) {

@@ -125,6 +125,19 @@ export const setAnimations = (data: { reducedAnimations?: boolean, animationDela
   processor.dispatch(state.setAnimation(data));
 };
 
+export const usePreviewMode = ()  => {
+  return useSelector((root: RootState) => root.users.previewMode);
+};
+
+export const setPreviewMode = (mode: 'lesson' | 'module' | 'project') => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setPreviewMode(mode));
+};
+
 export default {
   useProcessor,
   resetState,
@@ -139,4 +152,6 @@ export default {
   setHasPublished,
   useAnimations,
   setAnimations,
+  usePreviewMode,
+  setPreviewMode,
 };

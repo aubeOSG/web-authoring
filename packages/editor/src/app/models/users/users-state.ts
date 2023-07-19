@@ -16,6 +16,7 @@ export const initialState = {
   },
   isUncommitted: false,
   animationDelay: 0,
+  previewMode: 'lesson',
 };
 
 export const slice = createSlice({
@@ -49,6 +50,9 @@ export const slice = createSlice({
         state.animationDelay = action.payload.animationDelay;
       }
     },
+    setPreviewMode: (state, action) => {
+      state.previewMode = action.payload;
+    },
   },
 });
 
@@ -60,6 +64,7 @@ export const {
   setHasPublished,
   setTheme,
   setAnimation,
+  setPreviewMode,
 } = slice.actions;
 
 export const reducer = slice.reducer;

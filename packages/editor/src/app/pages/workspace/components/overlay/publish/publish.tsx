@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import '../_overlay.scss';
 import { Backdrop, Drawer } from '../../../../../components';
-import { Projects, Settings } from '../../../../../models';
+import { Projects } from '../../../../../models';
 import { Elem } from '@scrowl/utils';
 import { CourseSettings } from './course-settings';
 import { Reporting } from './reporting';
@@ -13,8 +13,7 @@ const PublishFormElement = (
   { className, isOpen, onClose, onSubmit, term, ...props },
   ref
 ) => {
-  const animationSettings = Settings.useAnimation();
-  const isAnimated = !animationSettings.reducedAnimations;
+  const isAnimated = true;
   const publishData = Projects.useScorm();
   const [formData, setFormData] = useState(publishData);
   const [rollbackData, setRollbackData] = useState(publishData);
