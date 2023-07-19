@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateObj } from '@scrowl/utils';
+import { updateObj, hasProp } from '@scrowl/utils';
 
 export const initialState = {
   data: {
@@ -8,9 +8,15 @@ export const initialState = {
     deletedAt: '',
     name: '',
     avatar: '',
-    hasPublished: false,
+    settings: {
+      hasPublished: false,
+      reducedAnimations: true,
+      theme: 'light',
+    },
   },
   isUncommitted: false,
+  animationDelay: 0,
+  previewMode: 'lesson',
 };
 
 export const slice = createSlice({
@@ -29,10 +35,37 @@ export const slice = createSlice({
     resetIsUncommitted: (state) => {
       state.isUncommitted = false;
     },
+    setHasPublished: (state, action) => {
+      state.data.settings.hasPublished = action.payload;
+    },
+    setTheme: (state, action) => {
+      state.data.settings.theme = action.payload;
+    },
+    setAnimation: (state, action) => {
+      if (hasProp(action.payload, 'reducedAnimations')) {
+        state.data.settings.reducedAnimations = action.payload.reducedAnimations;
+      }
+
+      if (hasProp(action.payload, 'animationDelay')) {
+        state.animationDelay = action.payload.animationDelay;
+      }
+    },
+    setPreviewMode: (state, action) => {
+      state.previewMode = action.payload;
+    },
   },
 });
 
-export const { setData, resetState, resetIsUncommitted, update, } = slice.actions;
+export const {
+  setData,
+  resetState,
+  resetIsUncommitted,
+  update,
+  setHasPublished,
+  setTheme,
+  setAnimation,
+  setPreviewMode,
+} = slice.actions;
 
 export const reducer = slice.reducer;
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Users, Settings } from '../../../../models';
+import { Projects, Users } from '../../../../models';
 import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
@@ -16,7 +16,7 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
-  const userData = Users.useData();
+  const hasPublished = Users.useHasPublished();
   const activeLesson = useActiveLesson();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
@@ -24,8 +24,8 @@ export const Header = () => {
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  const previewMode = Settings.usePreviewMode();
-  const animationSettings = Settings.useAnimation();
+  const previewMode = Users.usePreviewMode();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const motionOptsContainer = {
@@ -81,7 +81,7 @@ export const Header = () => {
 
   const handleProjectPreview = useCallback(
     (payload: ProjectsReqPreviewProject) => {
-      Settings.setPreviewMode(payload.type);
+      Users.setPreviewMode(payload.type);
 
       Projects.preview(payload).then((res) => {
         if (res.error) {
@@ -207,13 +207,13 @@ export const Header = () => {
         link.click();
         link.parentNode?.removeChild(link);
 
-        if (!userData.hasPublished) {
+        if (!hasPublished) {
           setIsOpenConfirmation(true);
-          Users.update({ hasPublished: true });
+          Users.setHasPublished(true);
         }
       });
     },
-    [projectData, userData]
+    [projectData, hasPublished]
   );
 
   const handleCloseConfirmation = () => {

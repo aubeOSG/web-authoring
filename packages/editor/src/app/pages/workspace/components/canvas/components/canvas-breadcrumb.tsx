@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import * as css from '../_canvas.scss';
-import { Settings, Projects } from '../../../../../models';
+import { Users, Projects } from '../../../../../models';
 import { useActiveLesson } from '../../../page-workspace-hooks';
 
 export const CanvasBreadcrumb = () => {
   const lesson = useActiveLesson();
   const module = Projects.useModules(lesson.moduleId);
   const hasLesson = lesson.id !== -1;
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const reducedAnimations = animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const project = Projects.useData();

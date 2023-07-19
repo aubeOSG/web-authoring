@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import * as css from '../_canvas.scss';
-import { Settings } from '../../../../../models';
+import { Users } from '../../../../../models';
 
 export const CanvasNotes = () => {
   const hasSlide = false;
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const reducedAnimations = animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const [isShow, setIsShow] = useState(false);

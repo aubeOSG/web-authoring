@@ -5,7 +5,7 @@ import './_overlay.scss';
 import { ResourceItem } from '../pane-details';
 import { AssetBrowser } from './asset-browser';
 import { Backdrop, Drawer } from '../../../../components';
-import { Settings } from '../../../../models';
+import { Users } from '../../../../models';
 import { hasProp, Elem } from '@scrowl/utils';
 
 export interface ResourceFormProps
@@ -31,7 +31,7 @@ const ResourceFormElement = (
   }: ResourceFormProps,
   ref
 ) => {
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const modalTitle = resourceItem.isNew ? 'Add New' : 'Edit';
   const inputRefTitle = useRef<HTMLInputElement>(null);
