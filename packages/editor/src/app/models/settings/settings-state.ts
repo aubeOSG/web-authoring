@@ -13,7 +13,7 @@ export const initialState = {
   lastPublishedAt: '',
   theme: 'light',
   aspect: ASPECT_RATIO.Fit,
-  reducedAnimations: false,
+  reducedAnimations: true,
   animationDelay: 0,
   previewMode: 'lesson',
 };
