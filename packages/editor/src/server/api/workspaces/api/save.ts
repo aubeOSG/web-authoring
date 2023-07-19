@@ -24,16 +24,13 @@ export const update = async (payload) => {
     };
   }
 
-  const { ...workspaceData } = payload;
-  const workspace = {
-    ...workspaceData,
-  };
+  const { ...workspaceData } = payload
 
   try {
     //@ts-ignore
     const [data] = await db(table)
-      .where('id', workspace.id)
-      .update(workspace, Object.keys(workspace));
+      .where('id', workspaceData.id)
+      .update(workspaceData, Object.keys(workspaceData));
 
     return {
       error: false,

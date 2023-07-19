@@ -17,3 +17,9 @@ export const get = (workspaceId: string): Promise<rq.ApiResult> => {
 export const save = (data?): Promise<rq.ApiResult> => {
   return rq.invoke(ENDPOINTS.save, data, 'POST');
 };
+
+export default {
+  create,
+  get,
+  save,
+};

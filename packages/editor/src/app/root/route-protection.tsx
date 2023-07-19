@@ -2,11 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useOAuth } from '../contexts/oauth';
 import { RouteProtectionProps } from './root.types';
-import { Path as defaultRoute } from '../pages/welcome';
+import { config as welcomeConfig } from '../pages/welcome';
 import { Users } from '../models';
 import { User } from '../../server/api/users';
 
 export const RouteProtection = ({ children }: RouteProtectionProps) => {
+  const defaultRoute = welcomeConfig.Path;
   const oauth = useOAuth();
   const location = useLocation();
   const user = Users.useData();
@@ -26,6 +27,10 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   }, [progress]);
 
   useEffect(() => {
+    if (oauth?.token && user.id) {
+      return;
+    }
+
     oauth?.get().then((res) => {
       if (res.error) {
         console.error(res);

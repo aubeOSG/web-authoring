@@ -1,7 +1,7 @@
 import React from 'react';
 import { rq } from '../services';
 
-export type PageModule = {
+export type PageConfig = {
   Path: string;
   Page: () => JSX.Element;
   useProcessor?: () => void;
@@ -9,7 +9,9 @@ export type PageModule = {
 };
 
 export type Pages = {
-  [key: string]: PageModule;
+  [key: string]: {
+    Config: PageConfig,
+  };
 };
 
 export type ModelModule = {

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
 import {
-  openPromptProjectName,
   resetWorkspace,
   setActiveLesson,
   useActiveLesson,
@@ -18,13 +17,14 @@ import {
   ModuleEditor,
 } from './components';
 import { Projects, Workspaces } from '../../models';
-import { menu, sys, events } from '../../services';
+import type { ProjectMeta } from '../../models/projects';
+import { sys } from '../../services';
 import { List } from '@scrowl/utils';
 
 export const Path = '/workspace/:id';
 export const isProtected = true;
 
-export const openProject = (project: Projects.ProjectMeta) => {
+export const openProject = (project: ProjectMeta) => {
   Projects.open(project).then((res) => {
     if (res.error) {
       sys.messageDialog({
@@ -47,10 +47,7 @@ export const Page = () => {
   const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
   const workspaceData = Workspaces.useData();
-  const assets = Projects.useAssets();
-  const projectInteractions = Projects.useInteractions();
   const [inProgress, setProgress] = useState(true);
-  const isListening = useRef(false);
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();

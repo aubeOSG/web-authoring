@@ -1,8 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { stateManager, menu } from '../../services';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../services/state';
+import type { StateProcessor, RootState } from '../../services/state';
+import type { PreviewTypes } from '../../services/menu';
 import { API, state } from './';
 
-const processor: stateManager.StateProcessor = {};
+const processor: StateProcessor = {};
 
 export const useProcessor = () => {
   const dispatch = useDispatch();
@@ -11,7 +13,7 @@ export const useProcessor = () => {
 };
 
 export const useState = () => {
-  return useSelector((data: stateManager.RootState) => data.settings);
+  return useAppSelector((data: RootState) => data.settings);
 };
 
 export const setState = (data) => {
@@ -24,7 +26,7 @@ export const setState = (data) => {
 };
 
 export const useTheme = () => {
-  return useSelector((data: stateManager.RootState) => data.settings.theme);
+  return useAppSelector((data: RootState) => data.settings.theme);
 };
 
 export const setTheme = (data) => {
@@ -37,7 +39,7 @@ export const setTheme = (data) => {
 };
 
 export const useAspect = () => {
-  return useSelector((data: stateManager.RootState) => data.settings.aspect);
+  return useAppSelector((data: RootState) => data.settings.aspect);
 };
 
 export const setAspect = (data) => {
@@ -50,7 +52,7 @@ export const setAspect = (data) => {
 };
 
 export const useAnimation = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useAppSelector((data: RootState) => {
     return {
       reducedAnimations: data.settings.reducedAnimations,
       animationDelay: data.settings.animationDelay,
@@ -68,12 +70,14 @@ export const setAnimation = (data) => {
 };
 
 export const useHasWelcomed = () => {
-  return useSelector((data: stateManager.RootState) => data.settings.hasWelcomed);
+  return useAppSelector((data: RootState) => {
+    return data.settings.hasWelcomed;
+  });
 };
 
 export const useHasPublished = () => {
-  return useSelector(
-    (data: stateManager.RootState) => data.settings.hasPublished
+  return useAppSelector(
+    (data: RootState) => data.settings.hasPublished
   );
 };
 
@@ -87,12 +91,12 @@ export const setLastPublishedAt = (data) => {
 };
 
 export const usePreviewMode = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useAppSelector((data: RootState) => {
     return data.settings.previewMode;
   });
 };
 
-export const setPreviewMode = (type: menu.PreviewTypes) => {
+export const setPreviewMode = (type: PreviewTypes) => {
   if (!processor.dispatch) {
     console.warn('settings processor not ready');
     return;
@@ -106,22 +110,8 @@ export const setPreviewMode = (type: menu.PreviewTypes) => {
   });
 };
 
-export const init = () => {
-  return new Promise((resolve) => {
-    API.get().then((result) => {
-      if (result.error) {
-        resolve(result);
-        return;
-      }
-
-      setState(result.data.settings);
-      resolve(result);
-    });
-  });
-};
-
 export const save = () => {
-  const data = useSelector((data: stateManager.RootState) => data.settings);
+  const data = useAppSelector((data: RootState) => data.settings);
 
   return new Promise((resolve) => {
     API.save(data).then(resolve);
@@ -143,6 +133,5 @@ export default {
   setLastPublishedAt,
   usePreviewMode,
   setPreviewMode,
-  init,
   save,
 };
