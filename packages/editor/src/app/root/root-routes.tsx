@@ -5,7 +5,7 @@ import RouteProtection from './route-protection';
 import { PageConfig } from './root.types';
 
 const RootRoutes = () => {
-  let defaultPath = pages.Welcome.config.Path;
+  let defaultPath = pages.Bypass.config.Path;
 
   const pageNames = Object.keys(pages);
   const pageModules = pageNames.map((name: string) => {
