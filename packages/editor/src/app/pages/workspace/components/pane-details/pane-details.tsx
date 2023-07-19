@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import { ui } from '@scrowl/ui';
 import { Outline, Glossary, Resources } from './components';
 import { Pane } from '../../../../components';
-import { Settings, Workspaces } from '../../../../models';
+import { Users, Workspaces } from '../../../../models';
 
 export const PaneDetails = ({ activeTab }) => {
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const animationOpts = {

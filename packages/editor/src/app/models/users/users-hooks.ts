@@ -13,7 +13,7 @@ export const useProcessor = () => {
 
 export const resetState = () => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -21,12 +21,12 @@ export const resetState = () => {
 };
 
 export const useData = ()  => {
-  return useSelector((data: RootState) => data.users.data);
+  return useSelector((root: RootState) => root.users.data);
 };
 
 export const setData = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -35,7 +35,7 @@ export const setData = (data) => {
 
 export const update = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('users processor not ready');
     return;
   }
 
@@ -87,6 +87,57 @@ export const get = (id: string): Promise<ApiResult> => {
   });
 };
 
+export const useSettings = ()  => {
+  return useSelector((root: RootState) => root.users.data.settings);
+};
+
+export const useHasPublished = ()  => {
+  return useSelector((root: RootState) => root.users.data.settings.hasPublished);
+};
+
+export const setHasPublished = (hasPublished: boolean) => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setHasPublished(hasPublished));
+};
+
+export const useAnimations = ()  => {
+  return useSelector((root: RootState) => {
+    const reducedAnimations = root.users.data.settings.reducedAnimations;
+    const animationDelay = root.users.data.animationDelay;
+
+    return {
+      reducedAnimations,
+      animationDelay,
+    };
+  });
+};
+
+export const setAnimations = (data: { reducedAnimations?: boolean, animationDelay?: number })  => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setAnimation(data));
+};
+
+export const usePreviewMode = ()  => {
+  return useSelector((root: RootState) => root.users.previewMode);
+};
+
+export const setPreviewMode = (mode: 'lesson' | 'module' | 'project') => {
+  if (!processor.dispatch) {
+    console.warn('users processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setPreviewMode(mode));
+};
+
 export default {
   useProcessor,
   resetState,
@@ -96,4 +147,11 @@ export default {
   create,
   get,
   save,
+  useSettings,
+  useHasPublished,
+  setHasPublished,
+  useAnimations,
+  setAnimations,
+  usePreviewMode,
+  setPreviewMode,
 };
