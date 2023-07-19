@@ -93,7 +93,7 @@ export const OutlineLessonItem = ({
   };
 
   const handleLessonChange = useCallback(() => {
-    Workspaces.setData({ activeLesson: lesson });
+    Workspaces.update({ activeLesson: lesson });
     setActiveLesson(lesson);
   }, [lesson]);
 
@@ -159,11 +159,12 @@ export const OutlineLessons = ({
 
   const scrollOnOpen = () => {
     const targetLessonEl = document?.querySelector(
-      `[data-lesson-id="${activeLesson.id}"]`
+      `[data-lesson-id="${workspaceData.activeLesson.id}"]`
     );
 
     targetLessonEl?.scrollIntoView({
-      behavior: 'auto',
+      behavior: 'instant',
+      block: 'end',
     });
   };
 
@@ -179,7 +180,7 @@ export const OutlineLessons = ({
   }
 
   useEffect(() => {
-    Workspaces.setData({ activeLesson: activeLesson });
+    Workspaces.update({ activeLesson: activeLesson });
   }, [activeLesson]);
 
   useEffect(() => {
