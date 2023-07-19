@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { updateObj, hasProp } from '@scrowl/utils';
-import { stateManager } from '../../services'
 
 export enum ASPECT_RATIO {
   Fit = "FIT",
@@ -19,7 +18,7 @@ export const initialState = {
   previewMode: 'lesson',
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
@@ -61,9 +60,7 @@ export const config: stateManager.StateConfig = {
       state.previewMode = action.payload;
     },
   },
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   setState,
@@ -79,7 +76,7 @@ export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import * as css from '../_canvas.scss';
 import { Settings, Projects } from '../../../../../models';
-import { events } from '../../../../../services';
 import { useActiveLesson } from '../../../page-workspace-hooks';
 
 export const CanvasBreadcrumb = () => {

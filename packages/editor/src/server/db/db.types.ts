@@ -11,6 +11,7 @@ export type Column = {
     | 'json'
     | 'boolean';
   table?: string;
+  defaultValue?: any;
 };
 
 export type Schema = Array<{

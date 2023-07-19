@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 import type { Schema, Config } from '../db.types';
-import { List } from '@scrowl/utils';
+import { List, hasProp } from '@scrowl/utils';
 
 export const drop = (
   db: Knex,
@@ -86,7 +86,11 @@ export const create = (
             data.json(col);
             break;
           case 'boolean':
-            data.boolean(col);
+            if (hasProp(schema[i].column, 'defaultValue')) {
+              data.boolean(col).notNullable().defaultTo(schema[i].column.defaultValue);
+            } else {
+              data.boolean(col).notNullable().defaultTo(false);
+            }
             break;
         }
 

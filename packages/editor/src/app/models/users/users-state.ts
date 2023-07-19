@@ -1,41 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
 import { updateObj } from '@scrowl/utils';
 
 export const initialState = {
-  id: '',
-  createdAt: '',
-  deletedAt: '',
-  name: '',
-  avatar: '',
-  hasPublished: false,
+  data: {
+    id: '',
+    createdAt: '',
+    deletedAt: '',
+    name: '',
+    avatar: '',
+    hasPublished: false,
+  },
+  isUncommitted: false,
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setData: (state, action) => {
-      updateObj(state, action.payload);
+      updateObj(state.data, action.payload);
     },
-    resetIsUncommitted: (state) => {
-      state.isUncommitted = false;
+    update: (state, action) => {
+      updateObj(state.data, action.payload);
     },
     resetState: (state) => {
       updateObj(state, initialState);
     },
+    resetIsUncommitted: (state) => {
+      state.isUncommitted = false;
+    },
   },
-};
+});
 
-export const slice = createSlice(config);
-
-export const { setData, resetState, resetIsUncommitted } = slice.actions;
+export const { setData, resetState, resetIsUncommitted, update, } = slice.actions;
 
 export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

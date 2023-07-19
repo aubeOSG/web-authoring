@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 import {
   AssetType,
   ProjectsReqUpload,
@@ -9,10 +8,11 @@ import {
   ProjectMeta,
   ProjectsReqPreviewProject
 } from './projects.types';
-import { stateManager, rq } from '../../services';
+import type { ApiResult } from '../../services/requester';
+import type { StateProcessor, RootState } from '../../services/state';
 import { API, state } from './';
 
-const processor: stateManager.StateProcessor = {};
+const processor: StateProcessor = {};
 
 export const useProcessor = () => {
   const dispatch = useDispatch();
@@ -26,12 +26,11 @@ export const resetState = () => {
     return;
   }
 
-  const fn = state.resetState as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.resetState());
 };
 
 export const useInteractions = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return {
       isDirty: data.projects.isDirty,
       isUncommitted: data.projects.isUncommitted,
@@ -42,7 +41,7 @@ export const useInteractions = () => {
 };
 
 export const useData = ():ProjectData  => {
-  return useSelector((data: stateManager.RootState) => data.projects.data);
+  return useSelector((data: RootState) => data.projects.data);
 };
 
 export const setData = (data) => {
@@ -55,7 +54,7 @@ export const setData = (data) => {
 };
 
 export const useMeta = () => {
-  return useSelector((data: stateManager.RootState) => data.projects.data.meta);
+  return useSelector((data: RootState) => data.projects.data.meta);
 };
 
 export const setMeta = (data) => {
@@ -68,7 +67,7 @@ export const setMeta = (data) => {
 };
 
 export const useScorm = () => {
-  return useSelector((data: stateManager.RootState) => data.projects.data.scorm);
+  return useSelector((data: RootState) => data.projects.data.scorm);
 };
 
 export const setScorm = (data) => {
@@ -81,7 +80,7 @@ export const setScorm = (data) => {
 };
 
 export const useModules = (moduleId?: number,) => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     const hasModuleId = moduleId !== undefined && moduleId !== null && moduleId !== -1;
 
     if (!hasModuleId) {
@@ -143,7 +142,7 @@ export const removeModule = (data) => {
 };
 
 export const useLessons = (moduleId?: number, lessonId?: number) => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     const hasModuleId = moduleId !== undefined && moduleId !== null && moduleId !== -1;
     const hasLessonId = lessonId !== undefined && lessonId !== null && lessonId !== -1;
 
@@ -221,7 +220,7 @@ export const moveOutlineItem = (data) => {
 };
 
 export const useGlossary = () => {
-  return useSelector((data: stateManager.RootState) => data.projects.data.glossary);
+  return useSelector((data: RootState) => data.projects.data.glossary);
 }
 
 export const addGlossaryItem = (data) => {
@@ -252,7 +251,7 @@ export const removeGlossaryItem = (data) => {
 };
 
 export const useResources = () => {
-  return useSelector((data: stateManager.RootState) => data.projects.data.resources);
+  return useSelector((data: RootState) => data.projects.data.resources);
 }
 
 export const addResourceItem = (data) => {
@@ -283,7 +282,7 @@ export const removeResourceItem = (data) => {
 };
 
 export const useAssets = (assetTypes?: Array<AssetType>): Array<ProjectAsset> => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     let list;
 
     if (!assetTypes) {
@@ -339,7 +338,7 @@ export const removeAsset = (data) => {
 export const create = (data: {
   workspaceId: string,
   blueprint?: string
-}): Promise<rq.ApiResult> => {
+}): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.create(data).then((res) => {
       if (res.error) {
@@ -358,7 +357,7 @@ export const create = (data: {
 export const get = (data: {
   projectId?: string;
   workspaceId?: string;
-}): Promise<rq.ApiResult> => {
+}): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.get(data).then((res) => {
       if (res.error) {
@@ -372,7 +371,7 @@ export const get = (data: {
   })
 };
 
-export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
+export const upload = (req: ProjectsReqUpload): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.upload(req).then((res) => {
       if (res.error) {
@@ -384,12 +383,11 @@ export const upload = (req: ProjectsReqUpload): Promise<rq.ApiResult> => {
   });
 };
 
-export const save = (req: ProjectData): Promise<rq.ApiResult> => {
+export const save = (req: ProjectData): Promise<ApiResult> => {
   return new Promise((resolve) => {
     API.save(req).then((res) => {
       if (processor.dispatch) {
-        const fn = state.resetIsUncommitted as ActionCreatorWithoutPayload;
-        processor.dispatch(fn());
+        processor.dispatch(state.resetIsUncommitted());
       }
 
       if (res.error) {
@@ -403,7 +401,7 @@ export const save = (req: ProjectData): Promise<rq.ApiResult> => {
   });
 };
 
-export const publish = (data): Promise<rq.ApiResult> => {
+export const publish = (data): Promise<ApiResult> => {
 
   return new Promise((resolve) => {
     API.publish(data).then((res) => {
@@ -416,7 +414,7 @@ export const publish = (data): Promise<rq.ApiResult> => {
   });
 };
 
-export const list = (limit?: number): Promise<rq.ApiResult> => {
+export const list = (limit?: number): Promise<ApiResult> => {
 
   return new Promise((resolve) => {
     API.list(limit).then((res) => {
@@ -429,7 +427,7 @@ export const list = (limit?: number): Promise<rq.ApiResult> => {
   });
 };
 
-export const open = (project: ProjectMeta): Promise<rq.ApiResult> => {
+export const open = (project: ProjectMeta): Promise<ApiResult> => {
 
   return new Promise((resolve) => {
     API.open(project).then((res) => {
@@ -451,7 +449,7 @@ export const preview = (payload: ProjectsReqPreviewProject) => {
 };
 
 export const useProjectBrowser = () => {
-  return useSelector((data: stateManager.RootState) => {
+  return useSelector((data: RootState) => {
     return data.projects.isOpenProjectBrowser;
   });
 };
@@ -462,8 +460,7 @@ export const openProjectBrowser = () => {
     return;
   }
 
-  const fn = state.openProjectBrowser as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.openProjectBrowser());
 };
 
 export const closeProjectBrowser = () => {
@@ -472,13 +469,13 @@ export const closeProjectBrowser = () => {
     return;
   }
 
-  const fn = state.closeProjectBrowser as ActionCreatorWithoutPayload;
-  processor.dispatch(fn());
+  processor.dispatch(state.closeProjectBrowser());
 };
 
 export default {
   useProcessor,
   resetState,
+  useInteractions,
   useData,
   setData,
   useMeta,
@@ -505,6 +502,7 @@ export default {
   setResourceItem,
   removeResourceItem,
   useAssets,
+  setAssets,
   addAsset,
   setAsset,
   removeAsset,
