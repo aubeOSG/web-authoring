@@ -2,11 +2,13 @@ import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import type { ListenerAPI } from '../../../services/state';
 import {
   update,
+  setSettings,
 } from '../workspaces-state';
 import { save } from '../workspaces-api';
 
 const onChangeActions = [
   update,
+  setSettings,
 ];
 
 const onChange = createListenerMiddleware();

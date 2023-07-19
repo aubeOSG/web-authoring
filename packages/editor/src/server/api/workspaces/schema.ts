@@ -25,18 +25,6 @@ export const definition: Schema = [
   },
   {
     column: {
-      name: 'paneWidth',
-      type: 'integer',
-    },
-  },
-  {
-    column: {
-      name: 'activeTab',
-      type: 'string',
-    },
-  },
-  {
-    column: {
       name: 'deletedAt',
       type: 'datetime',
     },
@@ -65,6 +53,12 @@ export const definition: Schema = [
       type: 'json',
     },
   },
+  {
+    column: {
+      name: 'settings',
+      type: 'json',
+    },
+  }
 ];
 
 export default {

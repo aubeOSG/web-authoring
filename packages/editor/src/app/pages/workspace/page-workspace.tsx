@@ -48,11 +48,12 @@ export const Page = () => {
   const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
   const workspaceData = Workspaces.useData();
+  const workspaceSettings = Workspaces.useSettings();
   const [inProgress, setProgress] = useState(true);
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();
-  const [activeTab, setActiveTab] = useState(workspaceData.activeTab);
+  const [activeTab, setActiveTab] = useState(workspaceSettings.activeTab);
 
   useEffect(() => {
     if (projectData.id) {
@@ -103,18 +104,38 @@ export const Page = () => {
   }, [newContent, projectData]);
 
   useEffect(() => {
-    setActiveTab(workspaceData.activeTab);
-  }, [workspaceData]);
+    setActiveTab(workspaceSettings.activeTab);
+  }, [workspaceSettings.activeTab]);
 
   useEffect(() => {
+    const updateActiveLesson = (data) => {
+      if (!projectData.lessons || data.settings.activeLessonId === -1) {
+        return;
+      }
+
+      const lessonIdx = List.indexBy(
+        projectData.lessons,
+        'id',
+        data.settings.activeLessonId
+      );
+
+      if (lessonIdx === -1) {
+        return;
+      }
+
+      setActiveLesson(projectData.lessons[lessonIdx]);
+    };
+
     if (projectData && projectData.workspaceId && workspaceData.id === '') {
       Workspaces.get(projectData.workspaceId).then((res) => {
         Workspaces.setData(res.data);
+        updateActiveLesson(res.data);
         setProgress(false);
       });
     } else {
       setProgress(false);
     }
+
     return () => {
       setProgress(true);
     };

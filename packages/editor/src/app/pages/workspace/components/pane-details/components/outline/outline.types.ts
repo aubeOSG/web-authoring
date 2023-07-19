@@ -22,6 +22,7 @@ export interface OutlineLessonItemCommons {
   lesson: Projects.ProjectLesson;
   moduleIdx: number;
   idx: number;
+  activeLesson: Projects.ProjectLesson;
 };
 
 export type OutlineLessonItemProps = OutlineLessonItemCommons & React.HTMLAttributes<HTMLDivElement>;

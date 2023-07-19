@@ -13,7 +13,7 @@ export const useProcessor = () => {
 
 export const resetState = () => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('workspaces processor not ready');
     return;
   }
 
@@ -21,12 +21,12 @@ export const resetState = () => {
 };
 
 export const useData = ()  => {
-  return useSelector((data: RootState) => data.projectWorkspaces.data);
+  return useSelector((root: RootState) => root.projectWorkspaces.data);
 };
 
 export const setData = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('workspaces processor not ready');
     return;
   }
 
@@ -35,7 +35,7 @@ export const setData = (data) => {
 
 export const update = (data) => {
   if (!processor.dispatch) {
-    console.warn('projects processor not ready');
+    console.warn('workspaces processor not ready');
     return;
   }
 
@@ -86,6 +86,19 @@ export const get = (workspaceId: string): Promise<ApiResult> => {
   });
 };
 
+export const useSettings = () => {
+  return useSelector((root: RootState) => root.projectWorkspaces.data.settings);
+};
+
+export const setSettings = (data) => {
+  if (!processor.dispatch) {
+    console.warn('workspaces processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.setSettings(data));
+};
+
 export default {
   useProcessor,
   resetState,
@@ -95,4 +108,6 @@ export default {
   create,
   save,
   get,
+  useSettings,
+  setSettings,
 };

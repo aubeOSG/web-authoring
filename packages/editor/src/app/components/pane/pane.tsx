@@ -11,8 +11,8 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   let grabClasses = `${css.grabHandle} `;
   const grabNode = useRef<HTMLDivElement>(null);
   const side = props.side ? props.side : 'left';
-  const workspaceData = Workspaces.useData();
-  const [paneWidth, setPaneWidth] = useState(workspaceData.paneWidth);
+  const workspaceSettings = Workspaces.useSettings();
+  const [paneWidth, setPaneWidth] = useState(workspaceSettings.paneWidth);
 
   useEffect(() => {
     const grabElem = grabNode.current;
@@ -42,7 +42,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
       }
 
       rootElem.style.setProperty(`--pane-${side}-width`, newWidth + 'px');
-      Workspaces.update({ paneWidth: newWidth });
+      Workspaces.setSettings({ paneWidth: newWidth });
       return newWidth;
     };
 
@@ -116,10 +116,10 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
   }, [grabNode, paneWidth]);
 
   useEffect(() => {
-    if (paneWidth !== workspaceData.paneWidth) {
-      setPaneWidth(workspaceData.paneWidth);
+    if (paneWidth !== workspaceSettings.paneWidth) {
+      setPaneWidth(workspaceSettings.paneWidth);
     }
-  }, [workspaceData]);
+  }, [workspaceSettings.paneWidth]);
 
   switch (side) {
     case 'right':

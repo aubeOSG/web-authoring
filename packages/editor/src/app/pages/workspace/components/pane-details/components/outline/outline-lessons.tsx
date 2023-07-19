@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { Projects } from '../../../../../../models';
+import { Projects, Workspaces } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import {
@@ -16,12 +16,13 @@ export const OutlineLessonItem = ({
   moduleIdx,
   idx,
   className,
+  activeLesson,
   ...props
 }: OutlineLessonItemProps) => {
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
-  const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
+
   const inputContainerProps = {
     draggable: true,
     'data-outline-type': 'lesson',
@@ -91,7 +92,8 @@ export const OutlineLessonItem = ({
     setIsEdit(false);
   };
 
-  const handleLesonChange = useCallback(() => {
+  const handleLessonChange = useCallback(() => {
+    Workspaces.update({ activeLesson: lesson });
     setActiveLesson(lesson);
   }, [lesson]);
 
@@ -107,7 +109,7 @@ export const OutlineLessonItem = ({
           aria-expanded={activeLesson ? lesson.id === activeLesson.id : false}
           aria-controls={menuId}
           className={css.outlineItem}
-          onClick={handleLesonChange}
+          onClick={handleLessonChange}
           onContextMenu={handleOpenLessonMenu}
           variant="link"
         >
@@ -152,6 +154,19 @@ export const OutlineLessons = ({
   const lessons = Projects.useLessons(moduleId);
   let classes = `nav flex-column outline-list-lesson`;
   let addClasses = `${css.outlineAdd} outline-item__lesson .inline-input`;
+  const activeLesson = useActiveLesson();
+
+  const scrollOnOpen = () => {
+    const targetLessonEl = document?.querySelector(
+      `[data-lesson-id="${activeLesson.id}"]`
+    );
+
+    targetLessonEl?.scrollIntoView({
+      behavior: 'instant',
+      block: 'end',
+    });
+  };
+
   const handleAddLesson = () => {
     Projects.addLesson({
       id: -1,
@@ -163,11 +178,20 @@ export const OutlineLessons = ({
     classes += `${className} `;
   }
 
+  useEffect(() => {
+    Workspaces.setSettings({ activeLessonId: activeLesson.id });
+  }, [activeLesson.id]);
+
+  useEffect(() => {
+    scrollOnOpen();
+  }, []);
+
   return (
     <div className={classes} {...props}>
       {lessons.map((lesson, idx) => {
         return (
           <OutlineLessonItem
+            activeLesson={activeLesson}
             key={idx}
             lesson={lesson}
             moduleIdx={moduleIdx}

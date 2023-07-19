@@ -6,13 +6,16 @@ export const initialState = {
     id: '',
     createdAt: '',
     userId: '',
-    paneWidth: 320,
-    activeTab: 'tab-outline',
     deletedAt: '',
     openedAt: '',
     updatedAt: '',
     versions: [],
     publishing: [],
+    settings: {
+      paneWidth: 300,
+      activeTab: 'tab-outline',
+      activeLessonId: -1,
+    },
   },
   isUncommitted: false,
 };
@@ -33,10 +36,19 @@ export const slice = createSlice({
     update: (state, action) => {
       updateObj(state.data, action.payload);
     },
+    setSettings: (state, action) => {
+      updateObj(state.data.settings, action.payload);
+    },
   }
 });
 
-export const { setData, resetState, resetIsUncommitted, update } = slice.actions;
+export const {
+  setData,
+  resetState, 
+  resetIsUncommitted,
+  update,
+  setSettings,
+} = slice.actions;
 
 export const reducer = slice.reducer;
 
