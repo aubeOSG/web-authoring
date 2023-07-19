@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
@@ -16,15 +16,12 @@ export const OutlineLessonItem = ({
   moduleIdx,
   idx,
   className,
+  activeLesson,
   ...props
 }: OutlineLessonItemProps) => {
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
   const [isEdit, setIsEdit] = useState(false);
-  const workspaceData = Workspaces.useData();
-  setActiveLesson(workspaceData.activeLesson);
-
-  const activeLesson = useActiveLesson();
 
   const inputContainerProps = {
     draggable: true,
@@ -157,6 +154,20 @@ export const OutlineLessons = ({
   const lessons = Projects.useLessons(moduleId);
   let classes = `nav flex-column outline-list-lesson`;
   let addClasses = `${css.outlineAdd} outline-item__lesson .inline-input`;
+  const workspaceData = Workspaces.useData();
+  setActiveLesson(workspaceData.activeLesson);
+  const activeLesson = useActiveLesson();
+
+  const scrollOnOpen = () => {
+    const targetLessonEl = document?.querySelector(
+      `[data-lesson-id="${activeLesson.id}"]`
+    );
+
+    targetLessonEl?.scrollIntoView({
+      behavior: 'auto',
+    });
+  };
+
   const handleAddLesson = () => {
     Projects.addLesson({
       id: -1,
@@ -168,11 +179,16 @@ export const OutlineLessons = ({
     classes += `${className} `;
   }
 
+  useEffect(() => {
+    scrollOnOpen();
+  }, []);
+
   return (
     <div className={classes} {...props}>
       {lessons.map((lesson, idx) => {
         return (
           <OutlineLessonItem
+            activeLesson={activeLesson}
             key={idx}
             lesson={lesson}
             moduleIdx={moduleIdx}
