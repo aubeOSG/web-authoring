@@ -8,10 +8,15 @@ export const PaneDetails = ({ activeTab }) => {
   const animationSettings = Settings.useAnimation();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
+  const workspaceData = Workspaces.useData();
+
   const animationOpts = {
     initial: !isAnimated
       ? {}
       : {
+          width: `${
+            workspaceData.paneCollapsed ? '0' : workspaceData.paneWidth
+          }px`,
           boxShadow: '-30px 0 0px 0 var(--owl-sidebar-bg)',
           marginBottom: '-32px',
           transform: 'translate( -350px ,0px)',
@@ -19,6 +24,9 @@ export const PaneDetails = ({ activeTab }) => {
     animate: !isAnimated
       ? {}
       : {
+          width: `${
+            workspaceData.paneCollapsed ? '0' : workspaceData.paneWidth
+          }px`,
           marginBottom: '0px',
           transform: 'translate(0px,0px)',
           transition: {
@@ -28,6 +36,7 @@ export const PaneDetails = ({ activeTab }) => {
           transitionEnd: { transform: '', marginBottom: '', boxShadow: '' },
         },
   };
+
   const tabs = [
     {
       id: 'tab-outline',

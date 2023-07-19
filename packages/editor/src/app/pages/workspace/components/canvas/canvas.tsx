@@ -8,8 +8,7 @@ export const CollapsePaneButton = () => {
   const workspaceData = Workspaces.useData();
 
   const handleClick = () => {
-    Workspaces.setData({ paneCollapsed: !workspaceData.paneCollapsed });
-    console.log(workspaceData);
+    Workspaces.update({ paneCollapsed: !workspaceData.paneCollapsed });
   };
   return (
     <ui.Button

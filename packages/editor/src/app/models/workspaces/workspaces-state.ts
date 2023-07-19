@@ -13,7 +13,7 @@ export const initialState = {
     updatedAt: '',
     versions: [],
     publishing: [],
-    paneCollapsed: false,
+    paneCollapsed: true,
   },
   isUncommitted: false,
 };
