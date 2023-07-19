@@ -2,16 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 import { updateObj } from '@scrowl/utils';
 
 export const initialState = {
-  id: '',
-  userId: '',
-  paneWidth: 320,
-  activeTab: 'tab-outline',
-  createdAt: '',
-  deletedAt: '',
-  openedAt: '',
-  updatedAt: '',
-  versions: [],
-  publishing: [],
+  data: {
+    id: '',
+    createdAt: '',
+    userId: '',
+    paneWidth: 320,
+    activeTab: 'tab-outline',
+    deletedAt: '',
+    openedAt: '',
+    updatedAt: '',
+    versions: [],
+    publishing: [],
+  },
   isUncommitted: false,
 };
 
@@ -20,7 +22,7 @@ export const slice = createSlice({
   initialState,
   reducers: {
     setData: (state, action) => {
-      updateObj(state, action.payload);
+      updateObj(state.data, action.payload);
     },
     resetIsUncommitted: (state) => {
       state.isUncommitted = false;
@@ -28,10 +30,13 @@ export const slice = createSlice({
     resetState: (state) => {
       updateObj(state, initialState);
     },
+    update: (state, action) => {
+      updateObj(state.data, action.payload);
+    },
   }
 });
 
-export const { setData, resetState, resetIsUncommitted } = slice.actions;
+export const { setData, resetState, resetIsUncommitted, update } = slice.actions;
 
 export const reducer = slice.reducer;
 

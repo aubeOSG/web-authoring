@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Users, Settings, Workspaces } from '../../../../models';
+import { Projects, Users, Settings } from '../../../../models';
 import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
@@ -17,10 +17,8 @@ import {
 export const Header = () => {
   const projectData = Projects.useData();
   const userData = Users.useData();
-  const workspaceData = Workspaces.useData();
   const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
-  const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
@@ -227,17 +225,6 @@ export const Header = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleSave = useCallback(() => {
-    Workspaces.save({
-      id: workspaceData.id,
-      updatedAt: workspaceData.updatedAt,
-      paneWidth: workspaceData.paneWidth,
-      activeTab: workspaceData.activeTab,
-    }).then((res) => {
-      console.log('space saveRes', res);
-    });
-  }, [projectData, workspaceData]);
-
   const handleNameFocus = useCallback((e) => {
     const defaultProjectName = 'untitled project';
 
@@ -341,17 +328,6 @@ export const Header = () => {
                   rocket_launch
                 </span>
                 Publish
-              </ui.Button>
-            </Nav.Item>
-            <Nav.Item>
-              <ui.Button
-                className={`ms-3 ${css.projectActionsBtn}`}
-                variant="primary"
-                size="sm"
-                onClick={handleSave}
-              >
-                <span className="material-symbols-sharp icon-save">save</span>
-                Save
               </ui.Button>
             </Nav.Item>
           </Nav>

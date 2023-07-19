@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import { ui } from '@scrowl/ui';
 import { Outline, Glossary, Resources } from './components';
 import { Pane } from '../../../../components';
@@ -46,9 +46,9 @@ export const PaneDetails = ({ activeTab }) => {
     },
   ];
 
-  const handleSetActiveTab = (key: string) => {
-    Workspaces.setData({ activeTab: key });
-  };
+  const handleSetActiveTab = useCallback((key: string) => {
+    Workspaces.update({ activeTab: key });
+  }, []);
 
   return (
     <Pane initial={animationOpts.initial} animate={animationOpts.animate}>

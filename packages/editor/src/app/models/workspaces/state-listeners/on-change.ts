@@ -1,34 +1,12 @@
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import type { ListenerAPI } from '../../../services/state';
 import {
-  setMeta,
-  addOutlineItem,
-  setOutlineItem,
-  moveOutlineItem,
-  duplicateOutlineItem,
-  removeOutlineItem,
-  addGlossaryItem,
-  setGlossaryItem,
-  removeGlossaryItem,
-  addResourceItem,
-  setResourceItem,
-  removeResourceItem,
-} from '../projects-state';
-import { save } from '../projects-api';
+  update,
+} from '../workspaces-state';
+import { save } from '../workspaces-api';
 
 const onChangeActions = [
-  setMeta,
-  addOutlineItem,
-  setOutlineItem,
-  moveOutlineItem,
-  duplicateOutlineItem,
-  removeOutlineItem,
-  addGlossaryItem,
-  setGlossaryItem,
-  removeGlossaryItem,
-  addResourceItem,
-  setResourceItem,
-  removeResourceItem,
+  update,
 ];
 
 const onChange = createListenerMiddleware();
@@ -42,15 +20,15 @@ const onChangeEffect = (action, api: ListenerAPI) => {
   }
 
   onChangeTimeout = setTimeout(() => {
-    const projectData = api.getState().projects.data;
+    const data = api.getState().projectWorkspaces.data;
 
-    save(projectData).then((res) => {
+    save(data).then((res) => {
       if (res.error) {
         console.error(res);
         return;
       }
 
-      console.debug('listener::project-change - saved', res);
+      console.debug('listener::workspace-change - saved', res);
     });
   }, 250);
 };

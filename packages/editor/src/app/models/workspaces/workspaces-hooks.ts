@@ -21,7 +21,7 @@ export const resetState = () => {
 };
 
 export const useData = ()  => {
-  return useSelector((data: RootState) => data.projectWorkspaces);
+  return useSelector((data: RootState) => data.projectWorkspaces.data);
 };
 
 export const setData = (data) => {
@@ -31,6 +31,15 @@ export const setData = (data) => {
   }
 
   processor.dispatch(state.setData(data));
+};
+
+export const update = (data) => {
+  if (!processor.dispatch) {
+    console.warn('projects processor not ready');
+    return;
+  }
+
+  processor.dispatch(state.update(data));
 };
 
 export const create = (userId: string): Promise<ApiResult> => {
@@ -82,6 +91,7 @@ export default {
   resetState,
   useData,
   setData,
+  update,
   create,
   save,
   get,
