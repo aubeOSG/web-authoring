@@ -20,9 +20,11 @@ export const OutlineLessonItem = ({
 }: OutlineLessonItemProps) => {
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
-  const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
   const workspaceData = Workspaces.useData();
+  setActiveLesson(workspaceData.activeLesson);
+
+  const activeLesson = useActiveLesson();
 
   const inputContainerProps = {
     draggable: true,
