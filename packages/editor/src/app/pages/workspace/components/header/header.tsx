@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Users, Settings } from '../../../../models';
+import { Projects, Users, Settings, Workspaces } from '../../../../models';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
@@ -16,6 +16,7 @@ import {
 export const Header = () => {
   const projectData = Projects.useData();
   const userData = Users.useData();
+  const workspaceData = Workspaces.useData();
   const initialHasPublished = userData.hasPublished;
   const activeLesson = useActiveLesson();
   const assets = Projects.useAssets();
@@ -263,9 +264,28 @@ export const Header = () => {
 
   const handleSave = useCallback(() => {
     Projects.save(projectData).then((res) => {
-      console.log('saveRes', res);
+      // console.log('proj saveRes', res);
     });
-  }, [projectData]);
+    Workspaces.save({
+      id: workspaceData.id,
+      updatedAt: workspaceData.updatedAt,
+      paneWidth: workspaceData.paneWidth,
+      activeTab: workspaceData.activeTab,
+    }).then((res) => {
+      console.log('space saveRes', res);
+    });
+  }, [projectData, workspaceData]);
+
+  const handleNameFocus = useCallback((e) => {
+    const defaultProjectName = 'untitled project';
+
+    if (
+      e.target.value.toLowerCase() === defaultProjectName ||
+      projectMeta.name?.toLowerCase() === defaultProjectName
+    ) {
+      e.target.select();
+    }
+  }, []);
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
@@ -311,6 +331,7 @@ export const Header = () => {
                 onChange={handleUpdateProjectName}
                 onKeyDown={handleInputProjectName}
                 onBlur={handleUpdateForm}
+                onFocus={handleNameFocus}
                 placeholder="Untitled Project"
               />
             </motion.div>

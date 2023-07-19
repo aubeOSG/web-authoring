@@ -12,6 +12,7 @@ export const CanvasBreadcrumb = () => {
   const animationSettings = Settings.useAnimation();
   const reducedAnimations = animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
+  const project = Projects.useData();
 
   const handleFocus = (ev: React.MouseEvent<HTMLButtonElement>) => {
     const targetModuleEl = document.querySelector(
@@ -58,7 +59,10 @@ export const CanvasBreadcrumb = () => {
                   folder
                 </span>
 
-                {module && module.name}
+                {module &&
+                  project &&
+                  project.modules &&
+                  project.modules[module.id].name}
               </button>
             </li>
             <li className="breadcrumb-item">
@@ -71,7 +75,10 @@ export const CanvasBreadcrumb = () => {
                   interests
                 </span>
 
-                {lesson && lesson.name}
+                {lesson &&
+                  project &&
+                  project.lessons &&
+                  project.lessons[lesson.id].name}
               </button>
             </li>
           </>

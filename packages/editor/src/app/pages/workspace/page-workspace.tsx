@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
 import {
@@ -16,7 +16,7 @@ import {
   PublishProgress,
   ModuleEditor,
 } from './components';
-import { Projects } from '../../models';
+import { Projects, Workspaces } from '../../models';
 import type { ProjectMeta } from '../../models/projects';
 import { sys } from '../../services';
 import { List } from '@scrowl/utils';
@@ -46,9 +46,12 @@ export const openProject = (project: ProjectMeta) => {
 export const Page = () => {
   const activeLesson = useActiveLesson();
   const projectData = Projects.useData();
+  const workspaceData = Workspaces.useData();
+  const [inProgress, setProgress] = useState(true);
   const pageParams = useParams();
   const projectLoading = useRef(false);
   const newContent = useNewContent();
+  const [activeTab, setActiveTab] = useState(workspaceData.activeTab);
 
   useEffect(() => {
     if (projectData.id) {
@@ -98,18 +101,40 @@ export const Page = () => {
     resetNewContent();
   }, [newContent, projectData]);
 
-  return (
-    <>
-      <div className={css.workspace}>
-        <Header />
-        <PaneDetails />
-        <Canvas />
-      </div>
-      <ModuleEditor />
-      <PromptProjectName />
-      <PublishProgress />
-    </>
-  );
+  useEffect(() => {
+    setActiveTab(workspaceData.activeTab);
+  }, [workspaceData]);
+
+  useEffect(() => {
+    if (projectData && projectData.workspaceId && workspaceData.id === '') {
+      Workspaces.get(projectData.workspaceId).then((res) => {
+        Workspaces.setData(res.data);
+        setProgress(false);
+      });
+    } else {
+      setProgress(false);
+    }
+    return () => {
+      setProgress(true);
+    };
+  }, [workspaceData, projectData]);
+
+  if (!inProgress) {
+    return (
+      <>
+        <div className={css.workspace}>
+          <Header />
+          <PaneDetails activeTab={activeTab} />
+          <Canvas />
+        </div>
+        <ModuleEditor />
+        <PromptProjectName />
+        <PublishProgress />
+      </>
+    );
+  } else {
+    return <>Loading...</>;
+  }
 };
 
 export default {

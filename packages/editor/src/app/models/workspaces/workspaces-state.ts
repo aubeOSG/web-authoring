@@ -4,12 +4,15 @@ import { updateObj } from '@scrowl/utils';
 export const initialState = {
   id: '',
   userId: '',
+  paneWidth: 320,
+  activeTab: 'tab-outline',
   createdAt: '',
   deletedAt: '',
   openedAt: '',
   updatedAt: '',
   versions: [],
   publishing: [],
+  isUncommitted: false,
 };
 
 export const slice = createSlice({
@@ -19,16 +22,16 @@ export const slice = createSlice({
     setData: (state, action) => {
       updateObj(state, action.payload);
     },
+    resetIsUncommitted: (state) => {
+      state.isUncommitted = false;
+    },
     resetState: (state) => {
       updateObj(state, initialState);
     },
   }
 });
 
-export const {
-  setData,
-  resetState,
-} = slice.actions;
+export const { setData, resetState, resetIsUncommitted } = slice.actions;
 
 export const reducer = slice.reducer;
 
