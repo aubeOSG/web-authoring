@@ -12,20 +12,18 @@ export const PaneDetails = ({ activeTab }) => {
 
   const paneAnimations = {
     initial: {
-      width: `${
-        workspaceSettings.paneCollapsed ? '0' : workspaceSettings.paneWidth
-      }px`,
+      marginRight: workspaceSettings.paneCollapsed
+        ? `-${workspaceSettings.paneWidth}px`
+        : '0',
     },
     animate: {
-      width: `${
-        workspaceSettings.paneCollapsed ? '0' : workspaceSettings.paneWidth
-      }px`,
+      marginRight: workspaceSettings.paneCollapsed
+        ? `-${workspaceSettings.paneWidth}px`
+        : '0',
       opacity: workspaceSettings.paneCollapsed ? 0 : 1,
       transition: {
-        opacity: { delay: 0 },
-        // transform: { delay: animationDelay },
+        opacity: { delay: animationDelay },
       },
-      // transitionEnd: { transform: '', marginBottom: '', boxShadow: '' },
     },
   };
 
