@@ -91,9 +91,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--owl-color-default);
 
-    .expanded {
-      transform: rotate(180deg);
+    .material-symbols-rounded {
+      will-change: transform;
+      transition: transform 450ms;
+      color: var(--owl-color-default);
+      transform: rotate(0deg);
+
+      &.expanded {
+        transform: rotate(180deg);
+      }
     }
   }
 
