@@ -15,6 +15,7 @@ export const initialState = {
       paneWidth: 300,
       activeTab: 'tab-outline',
       activeLessonId: -1,
+      paneCollapsed: true,
     },
   },
   isUncommitted: false,
