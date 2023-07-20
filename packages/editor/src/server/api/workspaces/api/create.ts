@@ -34,9 +34,12 @@ export const create: WorkspacesApiCreate = {
 
     const workspace = {
       userId: payload.userId,
-      paneWidth: 300.0,
-      activeTab: 'tab-outline',
-      paneCollapsed: false,
+      settings: {
+        paneWidth: 300,
+        activeTab: 'tab-outline',
+        activeLessonId: -1,
+        paneCollapsed: false,
+      },
     };
 
     try {

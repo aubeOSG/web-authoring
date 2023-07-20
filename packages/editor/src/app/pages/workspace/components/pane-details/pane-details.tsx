@@ -58,7 +58,7 @@ export const PaneDetails = ({ activeTab }) => {
   ];
 
   const handleSetActiveTab = useCallback((key: string) => {
-    Workspaces.update({ activeTab: key });
+    Workspaces.setSettings({ activeTab: key });
   }, []);
 
   return (
