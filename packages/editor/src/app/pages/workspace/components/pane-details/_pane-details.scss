@@ -241,6 +241,9 @@
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
   padding-bottom: 2rem;
 
+  .outline-list-module {
+    min-width: 200px;
+  }
   .outline-add-button {
     text-align: left;
     color: var(--bs-body-color);

@@ -29,7 +29,7 @@ export const Pane = ({ className, children, ...props }: PaneProps) => {
     }
 
     const resizePane = (width: number) => {
-      const minWidth = 200;
+      const minWidth = 220;
       const maxWidth = Math.round(window.innerWidth / 3);
       let newWidth = width;
 

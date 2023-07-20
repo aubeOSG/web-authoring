@@ -5,10 +5,12 @@ import { ui } from '@scrowl/ui';
 import { Workspaces } from '../../../../models';
 
 export const CollapsePaneButton = () => {
-  const workspaceData = Workspaces.useData();
+  const workspaceSettings = Workspaces.useSettings();
 
   const handleClick = () => {
-    Workspaces.update({ paneCollapsed: !workspaceData.paneCollapsed });
+    Workspaces.setSettings({
+      paneCollapsed: !workspaceSettings.paneCollapsed,
+    });
   };
   return (
     <ui.Button
@@ -18,7 +20,7 @@ export const CollapsePaneButton = () => {
     >
       <span
         className={`material-symbols-rounded ${
-          workspaceData.paneCollapsed ? 'collapsed' : 'expanded'
+          workspaceSettings.paneCollapsed ? 'collapsed' : 'expanded'
         }`}
       >
         login
