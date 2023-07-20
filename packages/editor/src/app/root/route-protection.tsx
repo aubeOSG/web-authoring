@@ -2,11 +2,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useOAuth } from '../contexts/oauth';
 import { RouteProtectionProps } from './root.types';
-import { Path as defaultRoute } from '../pages/welcome';
+import { config as welcomeConfig } from '../pages/welcome';
 import { Users } from '../models';
-import { User } from '../../server/api/users';
+import type { User } from '../../server/api/users';
+import { Loader } from '../components/loader';
 
 export const RouteProtection = ({ children }: RouteProtectionProps) => {
+  const defaultRoute = welcomeConfig.Path;
   const oauth = useOAuth();
   const location = useLocation();
   const user = Users.useData();
@@ -15,7 +17,7 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   const getContent = useCallback(() => {
     switch (progress) {
       case 0:
-        return <div>Loading...</div>;
+        return <Loader />;
       case 1:
         return (
           <Navigate to={defaultRoute} replace state={{ from: location }} />
@@ -26,6 +28,11 @@ export const RouteProtection = ({ children }: RouteProtectionProps) => {
   }, [progress]);
 
   useEffect(() => {
+    if (oauth?.token && user.id) {
+      setProgress(2);
+      return;
+    }
+
     oauth?.get().then((res) => {
       if (res.error) {
         console.error(res);

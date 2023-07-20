@@ -1,7 +1,7 @@
 import type { ProjectsApiCreate } from '../projects.types';
 import { blueprints } from '../../../../main/models/projects/blueprints';
 import { table } from '../schema';
-import { utils as dbUtils, connection } from '../../../db';
+import { utils as dbUtils } from '../../../db';
 
 export const create: ProjectsApiCreate = {
   name: '/projects/create',
@@ -9,6 +9,7 @@ export const create: ProjectsApiCreate = {
   method: 'POST',
   fn: async (req, res) => {
     const payload = req.body;
+    const db = req.db;
 
     if (!payload.workspaceId) {
       res.send({
@@ -18,8 +19,6 @@ export const create: ProjectsApiCreate = {
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({

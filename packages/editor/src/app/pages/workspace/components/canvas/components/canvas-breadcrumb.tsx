@@ -1,17 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import * as css from '../_canvas.scss';
-import { Settings, Projects } from '../../../../../models';
-import { events } from '../../../../../services';
+import { Users, Projects } from '../../../../../models';
 import { useActiveLesson } from '../../../page-workspace-hooks';
 
 export const CanvasBreadcrumb = () => {
   const lesson = useActiveLesson();
   const module = Projects.useModules(lesson.moduleId);
   const hasLesson = lesson.id !== -1;
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const reducedAnimations = animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
+  const project = Projects.useData();
 
   const handleFocus = (ev: React.MouseEvent<HTMLButtonElement>) => {
     const targetModuleEl = document.querySelector(
@@ -58,7 +58,10 @@ export const CanvasBreadcrumb = () => {
                   folder
                 </span>
 
-                {module && module.name}
+                {module &&
+                  project &&
+                  project.modules &&
+                  project.modules[module.id].name}
               </button>
             </li>
             <li className="breadcrumb-item">
@@ -71,7 +74,10 @@ export const CanvasBreadcrumb = () => {
                   interests
                 </span>
 
-                {lesson && lesson.name}
+                {lesson &&
+                  project &&
+                  project.lessons &&
+                  project.lessons[lesson.id].name}
               </button>
             </li>
           </>

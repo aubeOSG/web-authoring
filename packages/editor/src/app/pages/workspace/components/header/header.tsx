@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Users, Settings } from '../../../../models';
+import { Projects, Users } from '../../../../models';
+import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
@@ -15,19 +16,16 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
-  const userData = Users.useData();
-  const initialHasPublished = userData.hasPublished;
+  const hasPublished = Users.useHasPublished();
   const activeLesson = useActiveLesson();
-  const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  // const hasPublished = Settings.useHasPublished();
-  const previewMode = Settings.usePreviewMode();
-  const animationSettings = Settings.useAnimation();
+  const previewMode = Users.usePreviewMode();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const motionOptsContainer = {
@@ -82,18 +80,8 @@ export const Header = () => {
   };
 
   const handleProjectPreview = useCallback(
-    (payload: Projects.ProjectsReqPreviewProject) => {
-      Settings.setPreviewMode(payload.type);
-
-      // FIXME::electron-web-bug
-      menu.API.updatePreviewMenu(payload.type).then((res) => {
-        if (res.error) {
-          sys.messageDialog({
-            message: res.message,
-          });
-          return;
-        }
-      });
+    (payload: ProjectsReqPreviewProject) => {
+      Users.setPreviewMode(payload.type);
 
       Projects.preview(payload).then((res) => {
         if (res.error) {
@@ -103,7 +91,6 @@ export const Header = () => {
           return;
         }
 
-        console.log('preview result', res);
         const url = res.data.url;
 
         if (url) {
@@ -111,18 +98,18 @@ export const Header = () => {
         }
       });
     },
-    [projectData]
+    [projectData, previewMode]
   );
 
   const handlePreviewDefault = useCallback(() => {
-    const payload: Projects.ProjectsReqPreviewProject = {
+    const payload: ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
       entityId: activeLesson.id,
     };
-    console.log('preview default', payload);
+
     handleProjectPreview(payload);
-  }, [projectData, activeLesson]);
+  }, [projectData, activeLesson, previewMode]);
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
@@ -130,39 +117,41 @@ export const Header = () => {
       type: 'radio',
       checked: previewMode === 'lesson',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
           entityId: activeLesson.id,
         };
+
         handleProjectPreview(payload);
-      }, [projectData, activeLesson]),
+      }, [projectData, activeLesson, previewMode]),
     },
     {
       label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'module',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
           entityId: activeLesson.moduleId,
         };
+
         handleProjectPreview(payload);
-      }, [projectData, activeLesson]),
+      }, [projectData, activeLesson, previewMode]),
     },
     {
       label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'project',
       click: useCallback(() => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+        const payload: ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
         };
 
         handleProjectPreview(payload);
-      }, [projectData]),
+      }, [projectData, previewMode]),
     },
   ];
 
@@ -173,7 +162,7 @@ export const Header = () => {
         offset: [-100 + (offsetX ? offsetX : 0), 6],
       });
     },
-    []
+    [projectData, activeLesson, previewMode]
   );
 
   const handleOpenPublish = useCallback(() => {
@@ -218,64 +207,29 @@ export const Header = () => {
         link.click();
         link.parentNode?.removeChild(link);
 
-        const updatedUser = { ...userData, hasPublished: true };
-
-        Users.save(updatedUser).then((res) => {
-          if (!initialHasPublished) {
-            setIsOpenConfirmation(true);
-          }
-        });
+        if (!hasPublished) {
+          setIsOpenConfirmation(true);
+          Users.setHasPublished(true);
+        }
       });
-
-      // Projects.save({ data: submittedData, assets }).then((saveRes) => {
-      //   if (saveRes.error) {
-      //     closePublishProgress();
-      //     sys.messageDialog({
-      //       message: saveRes.message,
-      //     });
-      //     return;
-      //   }
-
-      //   Projects.publish(saveRes.data.project).then((pubRes) => {
-      //     if (pubRes.error) {
-      //       closePublishProgress();
-      //       sys.messageDialog({
-      //         message: pubRes.message,
-      //       });
-      //       return;
-      //     }
-
-      //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-      //     setIsOpenPublish(false);
-      //     closePublishProgress();
-
-      //     if (pubRes.data.canceled) {
-      //       return;
-      //     }
-
-      //     if (hasPublished) {
-      //       return;
-      //     }
-
-      //     setTimeout(() => {
-      //       setIsOpenConfirmation(true);
-      //     }, 1);
-      //   });
-      // });
     },
-    [projectData, userData]
+    [projectData, hasPublished]
   );
 
   const handleCloseConfirmation = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleSave = useCallback(() => {
-    console.log('saving', projectData);
-    Projects.save(projectData).then((res) => {
-      console.log('saveRes', res);
-    });
-  }, [projectData]);
+  const handleNameFocus = useCallback((e) => {
+    const defaultProjectName = 'untitled project';
+
+    if (
+      e.target.value.toLowerCase() === defaultProjectName ||
+      projectMeta.name?.toLowerCase() === defaultProjectName
+    ) {
+      e.target.select();
+    }
+  }, []);
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
@@ -288,17 +242,6 @@ export const Header = () => {
       projectNameInputRef.current.style.width = `${newWidth}px`;
     }
   }, [projectNameRef.current, projectNameInputRef.current, projectMeta.name]);
-
-  useEffect(() => {
-    menu.API.onPublish(() => {
-      setIsOpenPublish(true);
-    });
-
-    return () => {
-      menu.API.offPublish();
-      menu.API.offPublishQuick();
-    };
-  }, [projectData]);
 
   useEffect(() => {
     if (!rollbackName || rollbackName === '') {
@@ -332,6 +275,7 @@ export const Header = () => {
                 onChange={handleUpdateProjectName}
                 onKeyDown={handleInputProjectName}
                 onBlur={handleUpdateForm}
+                onFocus={handleNameFocus}
                 placeholder="Untitled Project"
               />
             </motion.div>
@@ -379,17 +323,6 @@ export const Header = () => {
                   rocket_launch
                 </span>
                 Publish
-              </ui.Button>
-            </Nav.Item>
-            <Nav.Item>
-              <ui.Button
-                className={`ms-3 ${css.projectActionsBtn}`}
-                variant="primary"
-                size="sm"
-                onClick={handleSave}
-              >
-                <span className="material-symbols-sharp icon-save">save</span>
-                Save
               </ui.Button>
             </Nav.Item>
           </Nav>

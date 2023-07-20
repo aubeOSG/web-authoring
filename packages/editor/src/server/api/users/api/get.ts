@@ -1,12 +1,12 @@
 import type { UsersApiGet, User } from '../users.types';
 import { table } from '../schema';
-import { connection } from '../../../db';
 
 export const get: UsersApiGet = {
   name: '/users',
   type: 'invoke',
   fn: async (req, res) => {
     const { id } = req.query;
+    const db = req.db;
 
     if (!id) {
       res.send({
@@ -15,8 +15,6 @@ export const get: UsersApiGet = {
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({

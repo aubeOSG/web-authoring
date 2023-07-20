@@ -2,15 +2,14 @@ import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import './_overlay.scss';
 import { Backdrop, Drawer } from '../../../../components';
-import { Settings } from '../../../../models';
-import { menu } from '../../../../services';
+import { Users } from '../../../../models';
 import { hasProp, Elem } from '@scrowl/utils';
 
 const GlossaryFormElement = (
   { className, isOpen, onClose, onSubmit, term, ...props },
   ref
 ) => {
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const isNewTerm = term === undefined || term.id === -1;
   const title = isNewTerm ? 'Add' : 'Edit';
@@ -205,10 +204,8 @@ const GlossaryFormElement = (
     };
 
     if (isOpen) {
-      menu.API.disableProjectActions();
       setFocusOnWord();
     } else {
-      menu.API.enableProjectActions();
       setFormErrors(initialErrorState);
     }
 

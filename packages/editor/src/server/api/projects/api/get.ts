@@ -1,6 +1,5 @@
 import type { ProjectsApiGet } from '../projects.types';
 import { table } from '../schema';
-import { connection } from '../../../db';
 import { ProjectData } from '../../../../app/models/projects';
 
 export const get: ProjectsApiGet = {
@@ -8,6 +7,7 @@ export const get: ProjectsApiGet = {
   type: 'invoke',
   fn: async (req, res) => {
     const { projectId, workspaceId } = req.query;
+    const db = req.db;
 
     if (!workspaceId && !projectId) {
       res.send({
@@ -16,8 +16,6 @@ export const get: ProjectsApiGet = {
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({

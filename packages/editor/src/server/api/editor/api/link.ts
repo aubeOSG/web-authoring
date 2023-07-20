@@ -10,8 +10,7 @@ export const previewLink: EditorApiPreviewLink = {
 
     axios.get(fetchURL).then((fetchRes) => {
       if (fetchRes.status !== 200) {
-        res.sendStatus(fetchRes.status);
-        res.send(fetchRes.data);
+        res.status(fetchRes.status).send(fetchRes.data);
         return;
       }
 
@@ -47,8 +46,11 @@ export const previewLink: EditorApiPreviewLink = {
         meta,
       });
     }).catch((e) => {
-      res.sendStatus(500);
-      res.send(e);
+      if (e.response && e.response.status) {
+        res.status(e.response.status).send(e);
+      } else {
+        res.status(500).send(e);
+      }
     });
   },
 };

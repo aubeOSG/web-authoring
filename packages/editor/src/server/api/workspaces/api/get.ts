@@ -1,12 +1,12 @@
 import type { WorkspacesApiGet } from '../workspace.types';
 import { table } from '../schema';
-import { connection } from '../../../db';
 
 export const get: WorkspacesApiGet = {
   name: '/workspaces',
   type: 'invoke',
   fn: async (req, res) => {
     const { workspaceId } = req.query;
+    const db = req.db;
 
     if (!workspaceId) {
       res.send({
@@ -15,8 +15,6 @@ export const get: WorkspacesApiGet = {
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({

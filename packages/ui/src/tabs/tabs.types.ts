@@ -12,6 +12,7 @@ export interface TabsDefaultCommons {
   pxScale?: 'Sm' | 'Md' | 'Lg';
   prefix?: string;
   items: TabsItem[];
+  handleSetActiveTab: (key: string) => void;
 }
 
 export type TabsDefaultProps = TabsDefaultCommons & bs.TabsProps;

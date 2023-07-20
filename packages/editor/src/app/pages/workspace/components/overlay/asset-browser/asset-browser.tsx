@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { IconType } from '@scrowl/ui';
 import { Backdrop, Drawer } from '../../../../../components';
-import { Projects, Settings } from '../../../../../models';
-import { menu, sys } from '../../../../../services';
+import { Projects, Users } from '../../../../../models';
+import { sys } from '../../../../../services';
 import { List, Elem } from '@scrowl/utils';
 import '../_overlay.scss';
 import {
@@ -25,7 +25,7 @@ export const AssetDrawerElement = (
   }: AssetBrowserProps,
   ref
 ) => {
-  const animationSettings = Settings.useAnimation();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const meta = Projects.useMeta();
   const assets = Projects.useAssets(assetTypes);
@@ -212,14 +212,6 @@ export const AssetDrawerElement = (
       prevAssets.current = assets;
     }
   }, [assets, prevAssets]);
-
-  useEffect(() => {
-    if (isOpen) {
-      menu.API.disableProjectActions();
-    } else {
-      menu.API.enableProjectActions();
-    }
-  }, [isOpen]);
 
   return (
     <div ref={ref}>
