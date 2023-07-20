@@ -1,9 +1,10 @@
-// import type { ProjectsApiSave } from '../projects.types';
-// import type { ProjectData } from '../../../../app/models/projects';
+import { WorkspacesApiSave } from '../workspace.types';
 import { table } from '../schema';
-import { connection } from '../../../db';
 
-export const update = async (payload) => {
+export const update = async (req) => {
+  const payload = req.body;
+  const db = req.db;
+
   if (!payload.id) {
     return {
       error: true,
@@ -11,8 +12,6 @@ export const update = async (payload) => {
       data: payload,
     };
   }
-
-  const db = connection.get();
 
   if (!db) {
     return {
@@ -47,13 +46,12 @@ export const update = async (payload) => {
   }
 };
 
-export const save = {
+export const save: WorkspacesApiSave = {
   name: '/workspaces/save',
   type: 'invoke',
   method: 'POST',
   fn: async (req, res) => {
-    const payload = req.body;
-    const updateRes = await update(payload);
+    const updateRes = await update(req);
 
     res.send(updateRes);
   },

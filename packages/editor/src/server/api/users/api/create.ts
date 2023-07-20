@@ -1,6 +1,6 @@
 import type { UsersApiCreate } from '../users.types';
 import { table } from '../schema';
-import { utils as dbUtils, connection } from '../../../db';
+import { utils as dbUtils } from '../../../db';
 
 export const create: UsersApiCreate = {
   name: '/users/create',
@@ -8,7 +8,7 @@ export const create: UsersApiCreate = {
   method: 'POST',
   fn: async (req, res) => {
     // const payload = req.body;
-    const db = connection.get();
+    const db = req.db;
 
     if (!db) {
       res.send({

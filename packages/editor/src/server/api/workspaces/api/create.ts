@@ -1,6 +1,6 @@
 import type { WorkspacesApiCreate } from '../workspace.types';
 import { table } from '../schema';
-import { utils as dbUtils, connection } from '../../../db';
+import { utils as dbUtils } from '../../../db';
 
 export const create: WorkspacesApiCreate = {
   name: '/workspaces/create',
@@ -8,6 +8,7 @@ export const create: WorkspacesApiCreate = {
   method: 'POST',
   fn: async (req, res) => {
     const payload = req.body;
+    const db = req.db;
 
     if (!payload.userId) {
       res.send({
@@ -17,8 +18,6 @@ export const create: WorkspacesApiCreate = {
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({

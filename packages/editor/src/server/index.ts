@@ -24,8 +24,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-
-api.init(app);
 routes.init(app);
 
 const serveApp = () => {
@@ -44,6 +42,7 @@ if (!db) {
   console.warn('Unable to connect to DB');
   serveApp();
 } else {
+  api.init(app, db);
   seed(db)
   .then(serveApp)
   .catch(catchSeedError);
