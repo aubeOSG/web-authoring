@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Knex } from 'knex';
-import { rq } from '../services';
+import { rq, aws } from '../services';
 import endpoints from './endpoints';
 import auth from './auth';
 import projects from './projects';
@@ -24,6 +24,7 @@ export const init = (app: express.Application, db: Knex) => {
 
   app.use(Route, (req, res, next) => {
     req.db = db;
+    req.bucket = new aws.Bucket();
     next();
   });
 

@@ -17,10 +17,9 @@ export const get: AssetsApiGet = {
       return;
     }
 
-    const bucket = new aws.Bucket();
     const Key = `${aws.Connection.config.bucketFolder}/${assetName}`;
 
-    bucket.get(Key).then((data) => {
+    req.bucket.get(Key).then((data) => {
       data.Body?.transformToString(encoding).then((assetData) => {
         const assetBuffer = Buffer.from(assetData, encoding);
 

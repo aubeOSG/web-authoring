@@ -73,8 +73,8 @@ export class BlockEditorAPI implements BlockEditorClass {
         class: Image,
         config: {
           endpoints: {
-            byFile: '/editor/image-upload',
-            byUrl: '/editor/image-fetch',
+            byFile: '/api/editor/image-upload',
+            byUrl: '/api/editor/image-fetch',
           },
         },
       },

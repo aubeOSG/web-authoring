@@ -3,3 +3,10 @@ export type AWSConfig = {
   bucket: string;
   bucketFolder: string;
 };
+
+export type PutOptions = {
+  name: string;
+  size: number;
+  type: string;
+  buffer: Buffer;
+};

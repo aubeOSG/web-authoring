@@ -3,6 +3,7 @@ import { useNavigate, generatePath } from 'react-router-dom';
 import { Projects, Users, Workspaces } from '../../models';
 import { config as workspaceConfig } from '../workspace';
 import { useOAuth } from '../../contexts/oauth';
+import { useCookies } from '../../contexts/cookies';
 import type { User } from '../../../server/api/users';
 import { Loader } from '../../components/loader';
 
@@ -11,6 +12,7 @@ export const Path = '/bypass';
 export const Page = () => {
   const navigator = useNavigate();
   const oauth = useOAuth();
+  const cookies = useCookies();
 
   useEffect(() => {
     Users.create().then((userRes) => {
@@ -27,6 +29,8 @@ export const Page = () => {
             return;
           }
 
+          console.log('image-update::bypass', workspaceRes.data.id);
+          cookies?.put('workspace', workspaceRes.data.id);
           Workspaces.setData(workspaceRes.data);
           Projects.create({
             workspaceId: workspaceRes.data.id,
