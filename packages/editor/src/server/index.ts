@@ -6,7 +6,7 @@ import session from 'express-session';
 import { nanoid } from 'nanoid';
 import api from './api';
 import routes from './routes';
-import { port } from './config';
+import { port, env } from './config';
 import { connection } from './db';
 import seed from './db/seed';
 
@@ -14,7 +14,11 @@ const app = express();
 const db = connection.get();
 
 app.set('json spaces', 2);
-app.use(cors({ credentials: true, origin: true }));
+app.use(cors({
+  credentials: true,
+  origin: true,
+  methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -23,6 +27,11 @@ app.use(session({
   secret: nanoid(),
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    httpOnly: false,
+    path: '/',
+    secure: env === 'production',
+  },
 }));
 routes.init(app);
 
