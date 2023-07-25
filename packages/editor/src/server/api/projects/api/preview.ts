@@ -6,7 +6,6 @@ import type { ProjectsApiPreview } from '../projects.types';
 import { fs } from '../../../services';
 import { generateProjectFiles } from './publish';
 import previewViewer from './preview-viewer';
-import { port } from '../../../config';
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -28,7 +27,7 @@ export const cleanupTempDir = (tmpDirId: string) => {
 
 export const createPreviewSource = (previewData: ProjectData) => {
   const generationRes = generateProjectFiles(previewData, { entrySrcHTML: 'preview.html.hbs' });
-  console.log('creating preview source', generationRes);
+  
   if (generationRes.error) {
     cleanupTempDir(generationRes.data.tmpDirId);
     return generationRes;
@@ -38,7 +37,7 @@ export const createPreviewSource = (previewData: ProjectData) => {
   return {
     error: false,
     data: {
-      url: `http://localhost:${port}/api${previewViewer.name.replace('*', '')}index.html?ver=${cacheBreaker}&source=${generationRes.data.tmpDirId}`,
+      url: `/api${previewViewer.name.replace('*', '')}index.html?ver=${cacheBreaker}&source=${generationRes.data.tmpDirId}`,
     }
   }
 };

@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
 import { List, updateObj } from '@scrowl/utils';
+import { nanoid } from 'nanoid';
+import { ProjectInitialState, ProjectLesson, ProjectModule } from './projects.types';
 
-export const initialState = {
+export const initialState: ProjectInitialState = {
   isDirty: false, // true if the user has made any change
   isUncommitted: false, // true if the user has any unsaved change
   isNew: true,
@@ -23,26 +24,27 @@ export const initialState = {
       blueprint: '',
     },
     scorm: {
-      name: "",
-      description: "",
-      authors: "",
-      organization: "",
-      reportStatus: "Passed/Incomplete",
-      lmsIdentifier: "",
-      outputFormat: "SCORM 2004",
-      optimizeMedia: "Recommended",
+      name: '',
+      description: '',
+      authors: '',
+      organization: '',
+      reportStatus: 'Passed/Incomplete',
+      identifier: '',
+      outputFormat: 'SCORM 2004',
+      optimizeMedia: 'Recommended',
     },
     modules: [],
     lessons: [],
     glossary: [],
-    resources: []
+    resources: [],
   },
 };
 
 const generateNewId = (list) => {
   const lastIdx = list.length - 1;
 
-  return list.slice().sort((a, b) => {
+  return (
+    list.slice().sort((a, b) => {
       const valA = a.id;
       const valB = b.id;
 
@@ -51,8 +53,9 @@ const generateNewId = (list) => {
       }
 
       return valA < valB ? -1 : 1;
-  })[lastIdx].id + 1;
-}
+    })[lastIdx].id + 1
+  );
+};
 
 const copyListItems = (list, field, fromId, toId) => {
   const copy: Array<{ [key: string]: any }> = List.filterBy(
@@ -82,7 +85,7 @@ const copyListItems = (list, field, fromId, toId) => {
   });
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
@@ -136,7 +139,22 @@ export const config: stateManager.StateConfig = {
             name = 'Untitled Lesson';
             outlineList = state.data.lessons;
             data.content = {
-              blocks: [],
+              blocks: [
+                {
+                  'id': nanoid(10),
+                  'type': 'header',
+                  'data': {
+                    'text': 'A new lesson',
+                  },
+                },
+                {
+                  'id': nanoid(10),
+                  'type': 'paragraph',
+                  'data': {
+                    'text': "Let's begin with a cold open.",
+                  },
+                },
+              ],
               time: new Date().valueOf(),
               version: '2.27.0',
             };
@@ -305,13 +323,13 @@ export const config: stateManager.StateConfig = {
             'id',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectModule>;
           state.data.lessons = List.filterBy(
             state.data.lessons,
             'moduleId',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectLesson>;
           break;
         case 'lesson':
           state.data.lessons = List.filterBy(
@@ -319,7 +337,7 @@ export const config: stateManager.StateConfig = {
             'id',
             data.id,
             'NE'
-          );
+          ) as Array<ProjectLesson>;
           break;
       }
 
@@ -452,9 +470,7 @@ export const config: stateManager.StateConfig = {
       state.isOpenProjectBrowser = false;
     },
   },
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   resetState,
@@ -485,7 +501,7 @@ export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

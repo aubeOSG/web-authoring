@@ -148,7 +148,10 @@
       }
     }
 
-    &--definition,
+    &--definition {
+      white-space: pre-line;
+    }
+
     &--description {
       display: block;
       margin-top: 0.25em;
@@ -238,6 +241,9 @@
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
   padding-bottom: 2rem;
 
+  .outline-list-module {
+    min-width: 200px;
+  }
   .outline-add-button {
     text-align: left;
     color: var(--bs-body-color);
@@ -328,6 +334,12 @@
     .lesson-icons {
       display: flex;
       width: 100%;
+
+      .icon-outline {
+        font-size: 1.2em !important;
+        margin-right: 0 !important;
+        line-height: 1 !important;
+      }
     }
 
     &:focus {
@@ -373,7 +385,6 @@
       &--detail {
         margin-top: 1px;
         margin-right: 0.5em;
-        align-self: flex-start;
 
         > span[class^='owlui-icons']:first-child {
           font-size: 1.2em;
@@ -425,6 +436,10 @@
     margin: 0;
     font-size: var(--bs-font-size-sm);
     font-weight: var(--bs-body-font-weight);
+
+    .icon-add {
+      margin-right: 0.625rem;
+    }
 
     span.owlui-icons-outlined {
       color: var(--owl-color-default);
@@ -486,6 +501,7 @@
   &:focus {
     span[class*='owlui-icons'] {
       background: var(--owl-transparent-hover-bg);
+      line-height: 1;
     }
   }
 

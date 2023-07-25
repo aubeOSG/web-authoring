@@ -4,7 +4,7 @@ import { Collapse } from 'react-bootstrap';
 import { OutlineModulesProps, OutlineModuleItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
 import { OutlineLessons } from './outline-lessons';
-import { openModuleEditor } from '../../../../';
+import { openModuleEditor } from '../../../../page-workspace-hooks';
 import { Projects } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
@@ -59,29 +59,15 @@ export const OutlineModuleItem = ({
     {
       label: 'Edit',
       click: () => {
-        openModuleEditor();
+        openModuleEditor(module);
       },
     },
     { type: 'separator' },
     {
       label: 'Delete Module',
       click: () => {
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Delete Module', 'Cancel'],
-            detail: module.name,
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
-
-            if (res.data.response === 0) {
-              Projects.removeModule(module);
-            }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeModule(module);
       },
     },
   ];
@@ -134,21 +120,17 @@ export const OutlineModuleItem = ({
         >
           <div className={css.moduleIcons}>
             <span className={css.outlineItemIconHandle}>
-              <ui.Icon
-                icon="arrow_drop_down"
-                display="outlined"
-                filled
+              <span
+                className="material-symbols-rounded owlui-icons"
                 style={{ fontSize: '1.375rem' }}
-              />
+              >
+                arrow_drop_down
+              </span>
             </span>
             <span className={css.outlineItemIconDetail}>
-              <ui.Icon
-                icon="folder"
-                display="sharp"
-                filled={!isOpen}
-                grad={200}
-                opsz={20}
-              />
+              <span className="material-symbols-outlined icon-outline">
+                folder
+              </span>
             </span>
             <InlineInput.Text
               isEdit={isEdit}
@@ -169,7 +151,9 @@ export const OutlineModuleItem = ({
             handleOpenModuleMenu(ev, 'left-bottom');
           }}
         >
-          <ui.Icon display="rounded" icon="more_vert" opsz={20} filled />
+          <span className="material-symbols-rounded owlui-icons">
+            more_vert
+          </span>
         </ui.Button>
       </div>
       <Collapse in={isOpen}>
@@ -211,7 +195,7 @@ export const OutlineModules = ({
         onClick={handleAddModule}
         data-module-id={-1}
       >
-        <ui.Icon icon="add" display="outlined" />
+        <span className="material-symbols-outlined owlui-icons">add</span>
         <span>Add New Module</span>
       </ui.Button>
     </div>

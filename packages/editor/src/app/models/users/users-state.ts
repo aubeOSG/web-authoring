@@ -1,40 +1,77 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../services';
-import { updateObj } from '@scrowl/utils';
+import { updateObj, hasProp } from '@scrowl/utils';
 
 export const initialState = {
-  id: '',
-  createdAt: '',
-  deletedAt: '',
-  name: '',
-  avatar: '',
+  data: {
+    id: '',
+    createdAt: '',
+    deletedAt: '',
+    name: '',
+    avatar: '',
+    settings: {
+      hasPublished: false,
+      reducedAnimations: true,
+      theme: 'light',
+    },
+  },
+  isUncommitted: false,
+  animationDelay: 0,
+  previewMode: 'lesson',
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'users',
   initialState,
   reducers: {
     setData: (state, action) => {
-      updateObj(state, action.payload);
+      updateObj(state.data, action.payload);
+    },
+    update: (state, action) => {
+      updateObj(state.data, action.payload);
     },
     resetState: (state) => {
       updateObj(state, initialState);
     },
-  }
-};
+    resetIsUncommitted: (state) => {
+      state.isUncommitted = false;
+    },
+    setHasPublished: (state, action) => {
+      state.data.settings.hasPublished = action.payload;
+    },
+    setTheme: (state, action) => {
+      state.data.settings.theme = action.payload;
+    },
+    setAnimation: (state, action) => {
+      if (hasProp(action.payload, 'reducedAnimations')) {
+        state.data.settings.reducedAnimations = action.payload.reducedAnimations;
+      }
 
-export const slice = createSlice(config);
+      if (hasProp(action.payload, 'animationDelay')) {
+        state.animationDelay = action.payload.animationDelay;
+      }
+    },
+    setPreviewMode: (state, action) => {
+      state.previewMode = action.payload;
+    },
+  },
+});
 
 export const {
   setData,
   resetState,
+  resetIsUncommitted,
+  update,
+  setHasPublished,
+  setTheme,
+  setAnimation,
+  setPreviewMode,
 } = slice.actions;
 
 export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

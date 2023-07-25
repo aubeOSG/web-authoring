@@ -7,6 +7,8 @@ import users from '../api/users';
 export const seed = (db: Knex) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log('');
+      console.log('');
       console.log('seeding DB');
       console.log('adding uuid support');
       await db.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
@@ -18,6 +20,8 @@ export const seed = (db: Knex) => {
       console.log('seeding assets');
       await assets.seed(db);
       console.log('finished');
+      console.log('');
+      console.log('');
       resolve({
         completed: true,
       });

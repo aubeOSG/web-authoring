@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
 import type { Schema, Config } from '../db.types';
-import { List } from '@scrowl/utils';
+import { List, hasProp } from '@scrowl/utils';
 
 export const drop = (
   db: Knex,
@@ -39,7 +39,6 @@ const foreignKey = (
     table: string,
   }
 ) => {
-  console.log(`creating foreign key ${opts.col} for ${opts.table}`);
   table.foreign(opts.col).references(`${opts.table}.id`);
 };
 
@@ -87,7 +86,11 @@ export const create = (
             data.json(col);
             break;
           case 'boolean':
-            data.boolean(col);
+            if (hasProp(schema[i].column, 'defaultValue')) {
+              data.boolean(col).notNullable().defaultTo(schema[i].column.defaultValue);
+            } else {
+              data.boolean(col).notNullable().defaultTo(false);
+            }
             break;
         }
 
@@ -102,7 +105,6 @@ export const insert = (
   data: Array<{}>
 ) => {
   const addEntry = (entry) => {
-    console.log(`inserting entry into ${table} \n`, JSON.stringify(entry, null, 2));
     return db(table).returning('id').insert(entry);
   };
 

@@ -7,19 +7,19 @@ export const definition: Schema = [
     column: {
       name: 'id',
       type: 'uuid',
-    }
+    },
   },
   {
     column: {
       name: 'createdAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
       name: 'deletedAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
@@ -31,6 +31,12 @@ export const definition: Schema = [
     column: {
       name: 'avatar',
       type: 'string',
+    },
+  },
+  {
+    column: {
+      name: 'settings',
+      type: 'json',
     },
   },
 ];

@@ -1,5 +1,5 @@
 import { default as React } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import TestComponent from './test-component';
 
 export default class ReactFactory {
@@ -34,6 +34,7 @@ export default class ReactFactory {
     const rootNode = document.createElement('div');
     rootNode.setAttribute('class', this.CSS.wrapper);
     this.nodes.holder = rootNode;
+    const root = createRoot(rootNode);
 
     const onDataChange = (newData) => {
       this.data = {
@@ -41,13 +42,12 @@ export default class ReactFactory {
       };
     };
 
-    ReactDOM.render(
+    root.render(
       <TestComponent
         onDataChange={onDataChange}
         readOnly={this.readOnly}
         data={this.data}
-      />,
-      rootNode
+      />
     );
 
     return this.nodes.holder;

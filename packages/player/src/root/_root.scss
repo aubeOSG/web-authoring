@@ -1,3 +1,10 @@
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --scrollType: smooth;
+    scroll-behavior: var(--scrollType);
+  }
+}
+
 html,
 body {
   margin: 0;
@@ -19,6 +26,12 @@ body {
     position: fixed;
     width: 100%;
     z-index: 10;
+    padding: 0.5em;
+    margin: 0;
+
+    .container-fluid {
+      padding: 0;
+    }
 
     &-light {
       background-color: var(--bs-gray-100);
@@ -27,7 +40,8 @@ body {
 }
 
 .navbar + .lesson {
-  padding-top: 56px;
+  padding-top: 5rem;
+  min-height: 100vh;
 }
 
 .lesson {
@@ -51,7 +65,8 @@ body {
 }
 
 .next-lesson-container {
-  bottom: 10px;
+  margin-top: 120px;
+  margin-bottom: 200px;
   display: flex;
   justify-content: center;
   text-align: center;

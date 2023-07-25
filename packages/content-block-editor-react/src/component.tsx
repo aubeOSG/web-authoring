@@ -1,65 +1,22 @@
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, forwardRef } from 'react';
 import {
-  BlockEditorConfig,
-  BlockEditorProps,
   BlockEditorClass,
   BlockEditorAPI,
   BlockEditorMutationEvent,
+  BlockEditorProps,
 } from './component.types';
-import BlockEditorFactory from './block-editor';
+import api from './api';
 
-const BlockEditor = ({
-  defaultValue,
-  value,
-  onInit,
-  onChange,
-  ...props
-}: BlockEditorProps) => {
-  const factory = useCallback((config: BlockEditorConfig) => {
-    return new BlockEditorFactory(config);
-  }, []);
-  const holderRef = useRef<HTMLDivElement>(null);
-  const editorJS = useRef<BlockEditorClass | null>(null);
-  const customEventMap = {
-    mutation: 'block-editor-mutation',
-    ready: 'block-editor-ready',
-  };
+export const editorEventMap = {
+  mutation: 'block-editor-mutation',
+  ready: 'block-editor-ready',
+};
 
-  useEffect(() => {
-    const handleMutation = (ev) => {
-      if (!onChange) {
-        return;
-      }
-
-      onChange(ev.detail.api, ev.detail.ev);
-    };
-
-    document.addEventListener(customEventMap.mutation, handleMutation);
-
-    return () => {
-      document.removeEventListener(customEventMap.mutation, handleMutation);
-    };
-  }, [onChange]);
-
-  useEffect(() => {
-    const handleReady = (ev) => {
-      if (!onInit) {
-        return;
-      }
-
-      if (!editorJS.current) {
-        return;
-      }
-
-      onInit(editorJS.current);
-    };
-
-    document.addEventListener(customEventMap.ready, handleReady);
-
-    return () => {
-      document.removeEventListener(customEventMap.ready, handleReady);
-    };
-  }, [onInit]);
+export const BlockEditorElement = (props: BlockEditorProps, elemRef) => {
+  const holderRef = useRef(
+    `editorjs-${new Date().valueOf().toString().slice(-8)}`
+  );
+  const editorRef = useRef<BlockEditorClass | null>(null);
 
   useEffect(() => {
     if (!holderRef.current) {
@@ -67,17 +24,13 @@ const BlockEditor = ({
       return;
     }
 
-    if (editorJS.current) {
-      return;
-    }
-
-    editorJS.current = factory({
+    editorRef.current = new api({
       holder: holderRef.current,
       onChange: (
         api: BlockEditorAPI,
         ev: BlockEditorMutationEvent | BlockEditorMutationEvent[]
       ) => {
-        const mutationEvent = new CustomEvent(customEventMap.mutation, {
+        const mutationEvent = new CustomEvent(editorEventMap.mutation, {
           detail: {
             api,
             ev,
@@ -87,37 +40,22 @@ const BlockEditor = ({
         document.dispatchEvent(mutationEvent);
       },
       onReady: () => {
-        const readyEvent = new CustomEvent(customEventMap.ready);
+        const readyEvent = new CustomEvent(editorEventMap.ready, {
+          detail: {
+            api: editorRef.current,
+          },
+        });
 
         document.dispatchEvent(readyEvent);
       },
-      ...(defaultValue && { data: defaultValue }),
-      ...props,
     });
 
-    // return () => {
-    //   if (editorJS.current) {
-    //     console.log('destroying editor');
-    //     editorJS.current.destroy();
-    //   }
-    // };
-  }, [holderRef.current]);
+    return () => {
+      editorRef.current?.destroy();
+    };
+  }, []);
 
-  useEffect(() => {
-    if (!value) {
-      return;
-    }
-
-    if (!editorJS.current) {
-      return;
-    }
-
-    editorJS.current.render(value);
-  }, [value]);
-
-  return <div ref={holderRef} />;
+  return <div className="owlui-editor" id={holderRef.current} ref={elemRef} />;
 };
 
-export { BlockEditor };
-
-export default BlockEditor;
+export default forwardRef(BlockEditorElement);

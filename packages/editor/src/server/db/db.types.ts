@@ -5,11 +5,13 @@ export type Column = {
     | 'string'
     | 'integer'
     | 'decimal'
+    | 'double'
     | 'foreign'
     | 'datetime'
     | 'json'
     | 'boolean';
   table?: string;
+  defaultValue?: any;
 };
 
 export type Schema = Array<{

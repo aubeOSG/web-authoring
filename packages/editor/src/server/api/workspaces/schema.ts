@@ -8,13 +8,13 @@ export const definition: Schema = [
     column: {
       name: 'id',
       type: 'uuid',
-    }
+    },
   },
   {
     column: {
       name: 'createdAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
@@ -27,32 +27,38 @@ export const definition: Schema = [
     column: {
       name: 'deletedAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
       name: 'openedAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
       name: 'updatedAt',
       type: 'datetime',
-    }
+    },
   },
   {
     column: {
       name: 'versions',
       type: 'json',
-    }
+    },
   },
   {
     column: {
       name: 'publishing',
       type: 'json',
-    }
+    },
   },
+  {
+    column: {
+      name: 'settings',
+      type: 'json',
+    },
+  }
 ];
 
 export default {

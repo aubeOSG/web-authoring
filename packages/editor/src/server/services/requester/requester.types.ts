@@ -1,4 +1,5 @@
 import type { Handler } from 'express';
+import type { OptionsUrlencoded } from 'body-parser';
 
 export type {
   JSON_DATA,
@@ -19,6 +20,7 @@ export interface RegisterEndpoint {
   type: RegisterEndpointType;
   method?: 'GET' | 'POST';
   fn?: Handler;
+  urlencoded?: OptionsUrlencoded;
 }
 
 export interface RegisterEndpoints {

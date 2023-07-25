@@ -1,13 +1,17 @@
+import React from 'react';
 import { rq } from '../services';
 
-export type PageModule = {
+export type PageConfig = {
   Path: string;
   Page: () => JSX.Element;
   useProcessor?: () => void;
+  isProtected?: boolean;
 };
 
 export type Pages = {
-  [key: string]: PageModule;
+  [key: string]: {
+    Config: PageConfig,
+  };
 };
 
 export type ModelModule = {
@@ -17,3 +21,5 @@ export type ModelModule = {
 export type Models = {
   [key: string]: ModelModule;
 };
+
+export type RouteProtectionProps = React.AllHTMLAttributes<HTMLDivElement>;

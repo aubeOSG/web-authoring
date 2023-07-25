@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ui } from '@scrowl/ui';
 import { OutlineLessonsProps, OutlineLessonItemProps } from './outline.types';
 import * as css from '../../_pane-details.scss';
-import { Projects } from '../../../../../../models';
+import { Projects, Workspaces } from '../../../../../../models';
 import { menu, sys } from '../../../../../../services';
 import { InlineInput } from '../../../../../../components';
 import {
@@ -16,12 +16,13 @@ export const OutlineLessonItem = ({
   moduleIdx,
   idx,
   className,
+  activeLesson,
   ...props
 }: OutlineLessonItemProps) => {
   let classes = `${css.outlineHeader} outline-item__lesson`;
   const menuId = `module-${lesson.moduleId}-lesson-menu-${lesson.id}`;
-  const activeLesson = useActiveLesson();
   const [isEdit, setIsEdit] = useState(false);
+
   const inputContainerProps = {
     draggable: true,
     'data-outline-type': 'lesson',
@@ -55,22 +56,8 @@ export const OutlineLessonItem = ({
     {
       label: 'Delete Lesson',
       click: () => {
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Delete Lesson', 'Cancel'],
-            detail: lesson.name,
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
-
-            if (res.data.response === 0) {
-              Projects.removeModule(lesson);
-            }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeLesson(lesson);
       },
     },
   ];
@@ -105,7 +92,8 @@ export const OutlineLessonItem = ({
     setIsEdit(false);
   };
 
-  const handleLesonChange = useCallback(() => {
+  const handleLessonChange = useCallback(() => {
+    Workspaces.update({ activeLesson: lesson });
     setActiveLesson(lesson);
   }, [lesson]);
 
@@ -121,19 +109,15 @@ export const OutlineLessonItem = ({
           aria-expanded={activeLesson ? lesson.id === activeLesson.id : false}
           aria-controls={menuId}
           className={css.outlineItem}
-          onClick={handleLesonChange}
+          onClick={handleLessonChange}
           onContextMenu={handleOpenLessonMenu}
           variant="link"
         >
           <div className={css.lessonIcons}>
             <span className={css.outlineItemIconDetail}>
-              <ui.Icon
-                icon="interests"
-                display="sharp"
-                filled={activeLesson ? lesson.id !== activeLesson.id : false}
-                grad={200}
-                opsz={20}
-              />
+              <span className="material-symbols-sharp icon-outline">
+                interests
+              </span>
             </span>
             <InlineInput.Text
               isEdit={isEdit}
@@ -154,7 +138,7 @@ export const OutlineLessonItem = ({
             handleOpenLessonMenu(ev, 'left-bottom');
           }}
         >
-          <ui.Icon display="rounded" icon="more_vert" opsz={20} filled />
+          <span className="material-symbols-sharp owlui-icons">more_vert</span>
         </ui.Button>
       </div>
     </div>
@@ -170,6 +154,19 @@ export const OutlineLessons = ({
   const lessons = Projects.useLessons(moduleId);
   let classes = `nav flex-column outline-list-lesson`;
   let addClasses = `${css.outlineAdd} outline-item__lesson .inline-input`;
+  const activeLesson = useActiveLesson();
+
+  const scrollOnOpen = () => {
+    const targetLessonEl = document?.querySelector(
+      `[data-lesson-id="${activeLesson.id}"]`
+    );
+
+    targetLessonEl?.scrollIntoView({
+      behavior: 'instant',
+      block: 'end',
+    });
+  };
+
   const handleAddLesson = () => {
     Projects.addLesson({
       id: -1,
@@ -181,11 +178,20 @@ export const OutlineLessons = ({
     classes += `${className} `;
   }
 
+  useEffect(() => {
+    Workspaces.setSettings({ activeLessonId: activeLesson.id });
+  }, [activeLesson.id]);
+
+  useEffect(() => {
+    scrollOnOpen();
+  }, []);
+
   return (
     <div className={classes} {...props}>
       {lessons.map((lesson, idx) => {
         return (
           <OutlineLessonItem
+            activeLesson={activeLesson}
             key={idx}
             lesson={lesson}
             moduleIdx={moduleIdx}
@@ -200,7 +206,9 @@ export const OutlineLessons = ({
         data-module-id={moduleId}
         data-lesson-id={-1}
       >
-        <ui.Icon icon="add" display="outlined" />
+        <span className="material-symbols-outlined owlui-icons icon-add">
+          add
+        </span>
         <span>Add New Lesson</span>
       </ui.Button>
     </div>

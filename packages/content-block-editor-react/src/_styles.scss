@@ -1,0 +1,13 @@
+.owlui-editor {
+  max-width: 1400px;
+  margin: 0 5rem;
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.owlui-editor .ce-block__content,
+.owlui-editor .ce-toolbar__content {
+  max-width: 1400px;
+}

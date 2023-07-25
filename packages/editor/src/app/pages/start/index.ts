@@ -1,2 +1,8 @@
+import Config from './page-start';
 export * from './page-start.types';
-export * from './page-start';
+
+export const config = Config;
+
+export default {
+  config,
+};

@@ -1,9 +1,11 @@
 import type { ProjectsApiSave } from '../projects.types';
 import type { ProjectData } from '../../../../app/models/projects';
 import { table } from '../schema';
-import { connection } from '../../../db';
 
-export const update = async (payload: ProjectData) => {
+export const update = async (req) => {
+  const payload = req.body as ProjectData;
+  const db = req.db;
+
   if (!payload.id) {
     return {
       error: true,
@@ -19,8 +21,6 @@ export const update = async (payload: ProjectData) => {
       data: payload,
     };
   }
-
-  const db = connection.get();
 
   if (!db) {
     return {
@@ -64,8 +64,7 @@ export const save: ProjectsApiSave = {
   type: 'invoke',
   method: 'POST',
   fn: async (req, res) => {
-    const payload = req.body as ProjectData;
-    const updateRes = await update(payload);
+    const updateRes = await update(req);
 
     res.send(updateRes);
   },

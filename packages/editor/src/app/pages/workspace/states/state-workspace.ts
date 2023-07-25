@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { stateManager } from '../../../services'
 import { updateObj } from '@scrowl/utils';
 import { Projects } from '../../../models';
 
@@ -13,7 +12,16 @@ export const initialState = {
   contentFocus: null,
   newLesson: false,
   newModule: false,
-  activeLesson: {},
+  activeLesson: {
+    moduleId: -1,
+    id: -1,
+    name: '',
+    content: {
+      blocks: [],
+      time: new Date().valueOf(),
+      version: '2.27.0',
+    },
+  },
 };
 
 const triggerNewContent = (state, action) => {
@@ -28,7 +36,7 @@ const triggerNewContent = (state, action) => {
   }
 };
 
-export const config: stateManager.StateConfig = {
+export const slice = createSlice({
   name: 'workspace',
   initialState,
   reducers: {
@@ -76,19 +84,14 @@ export const config: stateManager.StateConfig = {
       state.isOpenPublishProgress = false;
     },
     setActiveLesson: (state, action) => {
-      state.activeLesson = action.payload;
-    },
-    resetActiveLesson: (state, action) => {
-      state.activeLesson = {};
+      updateObj(state.activeLesson, action.payload);
     },
   },
   extraReducers: {
     [Projects.state.addOutlineItem.type]: triggerNewContent,
     [Projects.state.duplicateOutlineItem.type]: triggerNewContent,
   },
-};
-
-export const slice = createSlice(config);
+});
 
 export const {
   setData,
@@ -104,14 +107,13 @@ export const {
   openPublishProgress,
   closePublishProgress,
   setActiveLesson,
-  resetActiveLesson,
 } = slice.actions;
 
 export const reducer = slice.reducer;
 
 export default {
   initialState,
-  config,
   slice,
   reducer,
+  ...slice.actions,
 };

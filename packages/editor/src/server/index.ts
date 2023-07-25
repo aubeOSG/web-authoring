@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import { nanoid } from 'nanoid';
 import api from './api';
 import routes from './routes';
 import { port } from './config';
@@ -14,8 +17,13 @@ app.set('json spaces', 2);
 app.use(cors({ credentials: true, origin: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-api.init(app);
+app.use(cookieParser());
+app.use(session({
+  name: 'session',
+  secret: nanoid(),
+  resave: false,
+  saveUninitialized: true,
+}));
 routes.init(app);
 
 const serveApp = () => {
@@ -34,6 +42,7 @@ if (!db) {
   console.warn('Unable to connect to DB');
   serveApp();
 } else {
+  api.init(app, db);
   seed(db)
   .then(serveApp)
   .catch(catchSeedError);

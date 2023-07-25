@@ -9,6 +9,12 @@
     "start": "docker-compose --file containers/development.docker-compose.yml --env-file ./development.env up --build -V && docker-compose logs -f -t server",
     "start:update": "yarn run update && yarn run start",
     "serve": "yarn workspace @scrowl/editor run serve",
+    "watch": "concurrently \"yarn watch:block-editor-react\" \"yarn watch:content-block-columns\" \"yarn watch:content-block-introduction\" \"yarn watch:content-block-multiple-choice\" \"yarn watch:content-block-timeline\"",
+    "watch:block-editor-react": "yarn workspace @scrowl/content-block-editor-react run watch",
+    "watch:content-block-columns": "yarn workspace @scrowl/content-block-columns run watch",
+    "watch:content-block-introduction": "yarn workspace @scrowl/content-block-introduction run watch",
+    "watch:content-block-multiple-choice": "yarn workspace @scrowl/content-block-multiple-choice run watch",
+    "watch:content-block-timeline": "yarn workspace @scrowl/content-block-timeline run watch",
     "stop": "docker-compose --file containers/development.docker-compose.yml --env-file ./development.env down && docker-compose --file containers/development.docker-compose.yml --env-file ./development.env rm",
     "version": "lerna version --conventional-commits --no-git-tag-version",
     "prod:test": "docker-compose --file containers/production.docker-compose.yml --env-file ./production.test.env up --build -V && docker-compose logs -f -t server",
@@ -22,6 +28,7 @@
     "plugins/*"
   ],
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "lerna": "^5.5.4"
   }
 }

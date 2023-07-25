@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, generatePath } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import * as css from './page-welcome.scss';
 import { animations } from '../../components';
 import { Projects, Users, Workspaces } from '../../models';
-import { menu } from '../../services';
+import { config as workspaceConfig } from '../../pages/workspace';
+import { useOAuth } from '../../contexts/oauth';
+import { User } from '../../../server/api/users';
 
 export const Path = '/welcome';
 
 export const Page = () => {
-  const [inProgress, setProgress] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const isReady = useRef(false);
   const navigator = useNavigate();
+  const oauth = useOAuth();
+  const [inProgress, setProgress] = useState(false);
 
   const handleCreateCourse = () => {
     if (inProgress) {
@@ -21,50 +22,38 @@ export const Page = () => {
 
     setProgress(true);
     Users.create().then((userRes) => {
-      console.log('userRes', userRes);
       if (userRes.error) {
         return;
       }
 
-      Users.setData(userRes.data);
-      Workspaces.create(userRes.data.id).then((workspaceRes) => {
-        if (workspaceRes.error) {
-          return;
-        }
+      const user = userRes.data as User;
 
-        Workspaces.setData(workspaceRes.data);
-        console.log('workspaceRes', workspaceRes.data.id);
-        Projects.create({
-          workspaceId: workspaceRes.data.id,
-        }).then((projectRes) => {
-          if (projectRes.error) {
-            console.error(projectRes);
+      oauth?.login(user).then((authRes) => {
+        Users.setData(userRes.data);
+        Workspaces.create(userRes.data.id).then((workspaceRes) => {
+          if (workspaceRes.error) {
             return;
           }
 
-          menu.API.enableProjectActions().then(() => {
-            setProgress(false);
-            navigator(`/workspace/${workspaceRes.data.id}`);
+          Workspaces.setData(workspaceRes.data);
+          Projects.create({
+            workspaceId: workspaceRes.data.id,
+          }).then((projectRes) => {
+            if (projectRes.error) {
+              console.error(projectRes);
+              return;
+            }
+
+            const navTo = generatePath(workspaceConfig.Path, {
+              id: workspaceRes.data.id,
+            });
+
+            navigator(navTo);
           });
         });
       });
     });
   };
-
-  useEffect(() => {
-    if (isReady.current) {
-      return;
-    }
-
-    menu.API.disableProjectActions().then(() => {
-      isReady.current = false;
-      setIsLoading(false);
-    });
-
-    return () => {
-      isReady.current = true;
-    };
-  }, [isLoading, isReady]);
 
   return (
     <motion.div

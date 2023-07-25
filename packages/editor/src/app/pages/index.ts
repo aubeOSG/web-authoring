@@ -1,3 +1,10 @@
-export * as Welcome from './welcome';
-export * as Start from './start';
-export * as Workspace from './workspace';
+import bypass from './bypass';
+import workspace from './workspace';
+
+export const Bypass = bypass;
+export const Workspace = workspace;
+
+export default {
+  Bypass,
+  Workspace,
+};

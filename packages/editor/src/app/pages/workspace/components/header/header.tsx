@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import { ui } from '@scrowl/ui';
 import * as css from './_workspace-header.scss';
 import { Elem, Str } from '@scrowl/utils';
-import { Projects, Settings } from '../../../../models';
+import { Projects, Users } from '../../../../models';
+import type { ProjectsReqPreviewProject } from '../../../../models/projects';
 import { menu, sys } from '../../../../services';
-import { Logo } from '../../../../components';
 import { PublishOverlay, Confirmation } from '../overlay';
 import {
   openPublishProgress,
@@ -16,17 +16,16 @@ import {
 
 export const Header = () => {
   const projectData = Projects.useData();
+  const hasPublished = Users.useHasPublished();
   const activeLesson = useActiveLesson();
-  const assets = Projects.useAssets();
   const projectMeta = projectData.meta;
   const projectNameRef = useRef<HTMLSpanElement>(null);
   const projectNameInputRef = useRef<HTMLInputElement>(null);
   const [rollbackName, setRollbackName] = useState(projectMeta.name || '');
   const [isOpenPublish, setIsOpenPublish] = useState(false);
   const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
-  const hasPublished = Settings.useHasPublished();
-  const previewMode = Settings.usePreviewMode();
-  const animationSettings = Settings.useAnimation();
+  const previewMode = Users.usePreviewMode();
+  const animationSettings = Users.useAnimations();
   const isAnimated = !animationSettings.reducedAnimations;
   const animationDelay = animationSettings.animationDelay;
   const motionOptsContainer = {
@@ -80,186 +79,157 @@ export const Header = () => {
     }
   };
 
-  const handleProjectPreview = (
-    payload: Projects.ProjectsReqPreviewProject
-  ) => {
-    Settings.setPreviewMode(payload.type);
+  const handleProjectPreview = useCallback(
+    (payload: ProjectsReqPreviewProject) => {
+      Users.setPreviewMode(payload.type);
 
-    // FIXME::electron-web-bug
-    // menu.API.updatePreviewMenu(payload.type).then((res) => {
-    //   if (res.error) {
-    //     sys.messageDialog({
-    //       message: res.message,
-    //     });
-    //     return;
-    //   }
-    // });
+      Projects.preview(payload).then((res) => {
+        if (res.error) {
+          sys.messageDialog({
+            message: res.message,
+          });
+          return;
+        }
 
-    Projects.preview(payload).then((res) => {
-      if (res.error) {
-        sys.messageDialog({
-          message: res.message,
-        });
-        return;
-      }
+        const url = res.data.url;
 
-      console.log('preview result', res);
-      const url = res.data.url;
+        if (url) {
+          window.open(url, '_blank')?.focus();
+        }
+      });
+    },
+    [projectData, previewMode]
+  );
 
-      if (url) {
-        window.open(url, '_blank')?.focus();
-      }
-    });
-  };
-
-  const handlePreviewDefault = () => {
-    const payload: Projects.ProjectsReqPreviewProject = {
+  const handlePreviewDefault = useCallback(() => {
+    const payload: ProjectsReqPreviewProject = {
       type: previewMode,
       project: projectData,
       entityId: activeLesson.id,
     };
+
     handleProjectPreview(payload);
-  };
+  }, [projectData, activeLesson, previewMode]);
 
   const previewMenuItems: Array<menu.ContextMenuItem> = [
     {
-      label: 'Current Lesson',
+      label: `Current Lesson ${previewMode === 'lesson' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'lesson',
-      click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+      click: useCallback(() => {
+        const payload: ProjectsReqPreviewProject = {
           type: 'lesson',
           project: projectData,
           entityId: activeLesson.id,
         };
+
         handleProjectPreview(payload);
-      },
+      }, [projectData, activeLesson, previewMode]),
     },
     {
-      label: 'Current Module',
+      label: `Current Module ${previewMode === 'module' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'module',
-      click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+      click: useCallback(() => {
+        const payload: ProjectsReqPreviewProject = {
           type: 'module',
           project: projectData,
           entityId: activeLesson.moduleId,
         };
+
         handleProjectPreview(payload);
-      },
+      }, [projectData, activeLesson, previewMode]),
     },
     {
-      label: 'Entire Project',
+      label: `Entire Project ${previewMode === 'project' ? '\u2713' : ''}`,
       type: 'radio',
       checked: previewMode === 'project',
-      click: () => {
-        const payload: Projects.ProjectsReqPreviewProject = {
+      click: useCallback(() => {
+        const payload: ProjectsReqPreviewProject = {
           type: 'project',
           project: projectData,
         };
 
         handleProjectPreview(payload);
-      },
+      }, [projectData, previewMode]),
     },
   ];
 
-  const handleOpenPreviewMenu = (ev: React.MouseEvent, offsetX?: number) => {
-    menu.API.contextMenu(ev, previewMenuItems, undefined, {
-      alignment: 'left-bottom',
-      offset: [-100 + (offsetX ? offsetX : 0), 6],
-    });
-  };
+  const handleOpenPreviewMenu = useCallback(
+    (ev: React.MouseEvent, offsetX?: number) => {
+      menu.API.contextMenu(ev, previewMenuItems, undefined, {
+        alignment: 'left-bottom',
+        offset: [-100 + (offsetX ? offsetX : 0), 6],
+      });
+    },
+    [projectData, activeLesson, previewMode]
+  );
 
-  const handleOpenPublish = () => {
+  const handleOpenPublish = useCallback(() => {
     setIsOpenPublish(true);
-  };
+  }, [isOpenPublish]);
 
-  const handleCLosePublish = () => {
+  const handleCLosePublish = useCallback(() => {
     setIsOpenPublish(false);
-  };
+  }, [isOpenPublish]);
 
-  const handelSubmitPublish = (formData) => {
-    openPublishProgress();
+  const handelSubmitPublish = useCallback(
+    (formData) => {
+      openPublishProgress();
 
-    const submittedData = {
-      ...projectData,
-      scorm: formData,
-    };
+      const submittedData = {
+        ...projectData,
+        scorm: formData,
+      };
 
-    Projects.publish(submittedData).then((pubRes) => {
-      closePublishProgress();
+      Projects.publish(submittedData).then((pubRes) => {
+        closePublishProgress();
 
-      if (pubRes.error) {
-        sys.messageDialog({
-          message: pubRes.message,
-        });
-        return;
-      }
+        if (pubRes.error) {
+          sys.messageDialog({
+            message: pubRes.message,
+          });
+          return;
+        }
 
-      setIsOpenPublish(false);
-      const data = pubRes as unknown as ArrayBuffer;
-      const url = window.URL.createObjectURL(
-        new Blob([data], { type: 'application/zip' })
-      );
-      const link = document.createElement('a');
+        setIsOpenPublish(false);
+        const data = pubRes as unknown as Blob;
+        const url = window.URL.createObjectURL(data);
+        const link = document.createElement('a');
+        const courseName =
+          submittedData.scorm.name && submittedData.scorm.name.length
+            ? submittedData.scorm.name
+            : submittedData.meta.name;
 
-      link.href = url;
-      link.setAttribute(
-        'download',
-        `${Str.toKebabCase(submittedData.scorm.name)}.zip`
-      );
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode?.removeChild(link);
-    });
+        link.href = url;
+        link.setAttribute('download', `${Str.toKebabCase(courseName)}.zip`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode?.removeChild(link);
 
-    // Projects.save({ data: submittedData, assets }).then((saveRes) => {
-    //   if (saveRes.error) {
-    //     closePublishProgress();
-    //     sys.messageDialog({
-    //       message: saveRes.message,
-    //     });
-    //     return;
-    //   }
-
-    //   Projects.publish(saveRes.data.project).then((pubRes) => {
-    //     if (pubRes.error) {
-    //       closePublishProgress();
-    //       sys.messageDialog({
-    //         message: pubRes.message,
-    //       });
-    //       return;
-    //     }
-
-    //     Settings.setLastPublishedAt(pubRes.data.lastPublishedAt);
-    //     setIsOpenPublish(false);
-    //     closePublishProgress();
-
-    //     if (pubRes.data.canceled) {
-    //       return;
-    //     }
-
-    //     if (hasPublished) {
-    //       return;
-    //     }
-
-    //     setTimeout(() => {
-    //       setIsOpenConfirmation(true);
-    //     }, 1);
-    //   });
-    // });
-  };
+        if (!hasPublished) {
+          setIsOpenConfirmation(true);
+          Users.setHasPublished(true);
+        }
+      });
+    },
+    [projectData, hasPublished]
+  );
 
   const handleCloseConfirmation = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleSave = useCallback(() => {
-    console.log('saving', projectData);
-    Projects.save(projectData).then((res) => {
-      console.log('saveRes', res);
-    });
-  }, [projectData]);
+  const handleNameFocus = useCallback((e) => {
+    const defaultProjectName = 'untitled project';
+
+    if (
+      e.target.value.toLowerCase() === defaultProjectName ||
+      projectMeta.name?.toLowerCase() === defaultProjectName
+    ) {
+      e.target.select();
+    }
+  }, []);
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
@@ -272,17 +242,6 @@ export const Header = () => {
       projectNameInputRef.current.style.width = `${newWidth}px`;
     }
   }, [projectNameRef.current, projectNameInputRef.current, projectMeta.name]);
-
-  useEffect(() => {
-    menu.API.onPublish(() => {
-      setIsOpenPublish(true);
-    });
-
-    return () => {
-      menu.API.offPublish();
-      menu.API.offPublishQuick();
-    };
-  }, [projectData]);
 
   useEffect(() => {
     if (!rollbackName || rollbackName === '') {
@@ -300,13 +259,6 @@ export const Header = () => {
       >
         <Navbar fixed="top" expand="xs" className={css.workspaceHeader}>
           <div className={css.projectMeta}>
-            <Logo
-              asLink={true}
-              sizing="sm"
-              isAnimated={isAnimated}
-              animationDelay={animationDelay}
-            />
-
             <motion.div
               className={css.projectName}
               initial={motionOptsProjectName.initial}
@@ -323,6 +275,7 @@ export const Header = () => {
                 onChange={handleUpdateProjectName}
                 onKeyDown={handleInputProjectName}
                 onBlur={handleUpdateForm}
+                onFocus={handleNameFocus}
                 placeholder="Untitled Project"
               />
             </motion.div>
@@ -340,7 +293,9 @@ export const Header = () => {
                     handleOpenPreviewMenu(ev, 102);
                   }}
                 >
-                  <ui.Icon icon="interests" filled display="sharp" opsz={20} />
+                  <span className="material-symbols-sharp icon-lesson">
+                    interests
+                  </span>
                   Preview
                 </ui.Button>
 
@@ -351,12 +306,9 @@ export const Header = () => {
                   onClick={handleOpenPreviewMenu}
                   onContextMenu={handleOpenPreviewMenu}
                 >
-                  <ui.Icon
-                    icon="arrow_drop_down"
-                    filled
-                    display="sharp"
-                    opsz={20}
-                  />
+                  <span className="material-symbols-sharp owlui-icons">
+                    arrow_drop_down
+                  </span>
                 </ui.Button>
               </Dropdown>
             </Nav.Item>
@@ -367,24 +319,10 @@ export const Header = () => {
                 size="sm"
                 onClick={handleOpenPublish}
               >
-                <ui.Icon
-                  icon="rocket_launch"
-                  filled
-                  display="sharp"
-                  opsz={20}
-                />
+                <span className="material-symbols-sharp icon-rocket">
+                  rocket_launch
+                </span>
                 Publish
-              </ui.Button>
-            </Nav.Item>
-            <Nav.Item>
-              <ui.Button
-                className={`ms-3 ${css.projectActionsBtn}`}
-                variant="primary"
-                size="sm"
-                onClick={handleSave}
-              >
-                <ui.Icon icon="save" filled display="sharp" opsz={20} />
-                Save
               </ui.Button>
             </Nav.Item>
           </Nav>

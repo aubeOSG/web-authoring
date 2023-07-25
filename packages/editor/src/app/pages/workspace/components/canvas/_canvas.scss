@@ -2,11 +2,6 @@
 @use '@scrowl/ui/src/theme/global/_bootstrap.scss' as *;
 
 .canvas {
-  --workspace-canvas-height: calc(
-    100vh - 224px - var(--workspace-notes-height, 0px)
-  );
-  --workspace-canvas-width: calc(100% - 3rem);
-  --workspace-slide-height: calc(var(--workspace-canvas-height) - 2px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,6 +10,7 @@
   background: var(--owl-workspace-bg);
   overflow: hidden;
   z-index: 20;
+  height: calc(100% - 5rem);
 
   &__header {
     @extend .h3;
@@ -86,11 +82,34 @@
     }
   }
 
+  &__collapse-button {
+    top: 0.5rem;
+    left: 0.5rem;
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--owl-color-default);
+
+    .material-symbols-rounded {
+      will-change: transform;
+      transition: transform 450ms;
+      color: var(--owl-color-default);
+      transform: rotate(0deg);
+
+      &.expanded {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
   &__frame {
-    max-height: calc(100% - 142px);
-    height: calc(100% - 142px);
-    width: 820px;
-    margin: 60px auto 0px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     padding: 20px 0 0;
     overflow: auto;
     background-color: var(--bs-white);
@@ -169,6 +188,23 @@
     color: var(--owl-footer-color);
     background: var(--owl-footer-bg);
 
+    .icon {
+      font-size: 1.2em;
+      margin-right: 0.5em;
+
+      &-module {
+        color: var(--owl-color-module);
+        font-size: 1.2em;
+        margin-right: 0.5em;
+      }
+
+      &-lesson {
+        color: var(--owl-color-lesson);
+        font-size: 1.2em;
+        margin-right: 0.5em;
+      }
+    }
+
     &__list {
       --bs-breadcrumb-margin-bottom: 0.25em;
       --bs-breadcrumb-divider-color: var(--owl-footer-label-color);
@@ -177,9 +213,12 @@
       flex-wrap: nowrap;
       flex-grow: 1;
       color: var(--owl-footer-label-color);
+      align-items: center;
 
       .breadcrumb-item {
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
 
         &__content {
           overflow: hidden;
@@ -194,6 +233,8 @@
           border: 0;
           background: transparent;
           box-shadow: none;
+          display: flex;
+          align-items: center;
         }
 
         .dropdown-toggle {

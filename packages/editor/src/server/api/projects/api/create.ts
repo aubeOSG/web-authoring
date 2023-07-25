@@ -1,7 +1,7 @@
 import type { ProjectsApiCreate } from '../projects.types';
 import { blueprints } from '../../../../main/models/projects/blueprints';
 import { table } from '../schema';
-import { utils as dbUtils, connection } from '../../../db';
+import { utils as dbUtils } from '../../../db';
 
 export const create: ProjectsApiCreate = {
   name: '/projects/create',
@@ -9,17 +9,16 @@ export const create: ProjectsApiCreate = {
   method: 'POST',
   fn: async (req, res) => {
     const payload = req.body;
+    const db = req.db;
 
     if (!payload.workspaceId) {
       res.send({
         error: true,
-        message: 'unable to create project: workspace id required',
+        message: 'unable to create project: workspace id required ',
         data: payload,
       });
       return;
     }
-
-    const db = connection.get();
 
     if (!db) {
       res.send({
@@ -33,7 +32,7 @@ export const create: ProjectsApiCreate = {
     };
 
     const project = blueprints.get('default');
-
+    
     project.workspaceId = payload.workspaceId;
     //@ts-ignore
     project.modules = JSON.stringify(project.modules);
@@ -43,7 +42,7 @@ export const create: ProjectsApiCreate = {
     project.glossary = JSON.stringify(project.glossary);
     //@ts-ignore
     project.resources = JSON.stringify(project.resources);
-
+    
     try {
       const insertRes = await dbUtils.table.insert(db, table, [project]);
       const projectId = insertRes[0][0].id;

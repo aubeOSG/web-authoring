@@ -33,24 +33,13 @@ export const Glossary = () => {
       label: 'Remove Term',
       click: (menuItem) => {
         const res = menuItem as unknown as ContextMenuResult;
-        const editTerm = res.data.item as GlossaryItem;
 
-        sys
-          .messageDialog({
-            message: 'Are you sure?',
-            buttons: ['Remove Term', 'Cancel'],
-            detail: editTerm.word,
-          })
-          .then((res) => {
-            if (res.error) {
-              console.error(res);
-              return;
-            }
+        const targetTerm = glossaryTerms.find((term) => {
+          return term.id === selectedTerm.current.id;
+        });
 
-            if (res.data.response === 0) {
-              Projects.removeGlossaryItem(editTerm);
-            }
-          });
+        // TODO: reimplement error handling and verifying whether user is sure they want to delete
+        Projects.removeGlossaryItem(targetTerm);
       },
     },
   ];
@@ -162,12 +151,9 @@ export const Glossary = () => {
                             handleGlossaryMenu(ev, item);
                           }}
                         >
-                          <ui.Icon
-                            display="rounded"
-                            icon="more_vert"
-                            opsz={20}
-                            filled
-                          />
+                          <span className="material-symbols-rounded owlui-icons">
+                            more_vert
+                          </span>
                         </ui.Button>
                       </div>
                       <dd className={css.tabGlossaryTermDefinition}>
@@ -191,13 +177,9 @@ export const Glossary = () => {
             }}
           >
             <span className="txt-placeholder">Add a new glossary term...</span>
-            <ui.Icon
-              display="rounded"
-              icon="add_circle"
-              opsz={20}
-              filled
-              pxScale="Lg"
-            />
+            <span className="material-symbols-rounded owlui-icons">
+              add_circle
+            </span>
           </ui.Button>
         </div>
       </div>

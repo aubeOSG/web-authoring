@@ -1,10 +1,9 @@
-import React, { useCallback, useRef, useEffect, useState } from 'react';
-import { BlockEditor } from '@scrowl/content-block-editor-react';
-import type {
-  BlockEditorAPI,
-  BlockEditorMutationEvent,
-  BlockEditorClass,
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  BlockEditor,
+  editorEventMap,
 } from '@scrowl/content-block-editor-react';
+import type { BlockEditorClass } from '@scrowl/content-block-editor-react';
 import * as css from '../_canvas.scss';
 import { Error } from '../../../../../components';
 import {
@@ -14,81 +13,118 @@ import {
 import { Projects } from '../../../../../models';
 
 export const CanvasFrame = () => {
+  const frameRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const apiRef = useRef<BlockEditorClass>();
+  const [isApiReady, setIsApiReady] = useState(false);
   const activeLesson = useActiveLesson();
-  const lessonId = useRef(activeLesson.id);
-  const content = useRef(activeLesson.content);
-  const isLoading = useRef(true);
-  const editorInstance = useRef<BlockEditorClass | null>(null);
-  const onInit = useCallback(
-    (api) => {
-      editorInstance.current = api;
-      lessonId.current = activeLesson.id;
+  const idRef = useRef(activeLesson.id);
 
-      if (activeLesson.content) {
-        if (!content.current && editorInstance.current) {
-          editorInstance.current.render(activeLesson.content);
-        }
+  useEffect(() => {
+    if (activeLesson.id === -1) {
+      return;
+    }
 
-        content.current = activeLesson.content;
+    if (!apiRef.current) {
+      return;
+    }
+
+    if (idRef.current === activeLesson.id) {
+      return;
+    }
+
+    if (activeLesson.content.blocks.length) {
+      apiRef.current.render(activeLesson.content);
+    } else {
+      apiRef.current.clear();
+    }
+
+    idRef.current = activeLesson.id;
+  }, [activeLesson, apiRef]);
+
+  useEffect(() => {
+    const handleReady = (ev) => {
+      apiRef.current = ev.detail.api;
+      idRef.current = activeLesson.id;
+      setIsApiReady(true);
+
+      if (activeLesson.content.blocks.length) {
+        apiRef.current?.render(activeLesson.content);
       }
-    },
-    [activeLesson]
-  );
-  const onChange = useCallback(
-    (
-      api: BlockEditorAPI,
-      ev: BlockEditorMutationEvent | BlockEditorMutationEvent[]
-    ) => {
-      if (!activeLesson) {
-        return;
-      }
+    };
 
-      api.saver.save().then((data) => {
+    const handleMutation = (ev) => {
+      ev.detail.api.saver.save().then((data) => {
         const { content, ...lesson } = activeLesson;
         const lessonUpdate = {
           content: data,
           ...lesson,
         };
+
         setActiveLesson(lessonUpdate);
         Projects.setLesson(lessonUpdate);
       });
-    },
-    [activeLesson]
-  );
+    };
+
+    document.addEventListener(editorEventMap.ready, handleReady);
+    document.addEventListener(editorEventMap.mutation, handleMutation);
+
+    return () => {
+      document.removeEventListener(editorEventMap.ready, handleReady);
+      document.removeEventListener(editorEventMap.mutation, handleMutation);
+    };
+  }, [activeLesson, isApiReady]);
 
   useEffect(() => {
-    if (!activeLesson) {
+    const frameElem = frameRef.current;
+    const editorElem = editorRef.current;
+    const api = apiRef.current;
+
+    if (!frameElem || !editorElem || !api) {
       return;
     }
 
-    isLoading.current = false;
+    const handleEditorAutoFocus = (ev: MouseEvent) => {
+      const focusedElem = ev.target as HTMLElement;
+      const editableZone = editorElem.querySelector(
+        '.codex-editor__redactor'
+      ) as HTMLDivElement;
+      const toolbar = editorElem.querySelector('.ce-toolbar') as HTMLDivElement;
+      const inlineTools = editorElem.querySelector(
+        '.ce-inline-toolbar'
+      ) as HTMLDivElement;
 
-    const updateEditor = () => {
-      if (editorInstance.current) {
-        editorInstance.current.render(activeLesson.content);
+      try {
+        if (
+          editableZone.contains(focusedElem) ||
+          toolbar.contains(focusedElem) ||
+          inlineTools.contains(focusedElem) ||
+          focusedElem.classList.toString().includes('ce-popover-item')
+        ) {
+          return;
+        }
+
+        api.focus();
+      } catch (e) {
+        console.error(e);
       }
     };
 
-    if (activeLesson.content) {
-      if (
-        lessonId.current === undefined ||
-        lessonId.current !== activeLesson.id
-      ) {
-        updateEditor();
-      }
+    frameElem.addEventListener('click', handleEditorAutoFocus);
 
-      lessonId.current = activeLesson.id;
-    }
-  }, [activeLesson]);
-
-  if (isLoading.current) {
-    return <div>...Loading</div>;
-  }
+    return () => {
+      frameElem.removeEventListener('click', handleEditorAutoFocus);
+    };
+  }, [isApiReady]);
 
   return (
-    <div className={css.canvasFrame}>
+    <div className={css.canvasFrame} ref={frameRef}>
       <Error>
-        <BlockEditor onChange={onChange} onInit={onInit} />
+        {activeLesson && activeLesson.id !== -1 ? (
+          <BlockEditor ref={editorRef} />
+        ) : (
+          <></>
+        )}
       </Error>
     </div>
   );

@@ -1,4 +1,3 @@
-import ADM from 'adm-zip';
 import { v4 as uuid } from 'uuid';
 import packager from 'simple-scorm-packager';
 import { Datetime, Str } from '@scrowl/utils';
@@ -6,19 +5,6 @@ import type { ProjectData, ProjectFile } from '../../../../app/models/projects';
 import type { ProjectsApiPublish } from '../projects.types';
 import type { ApiResult } from '../../../services/requester';
 import { fs, tmpr } from '../../../services';
-
-//FIXME::slide-removal
-// export const getProjectTemplates = (project: ProjectData): [false | Set<string>, TemplateList] => {
-//   const templates = new Set<string>();
-//   const templateList: TemplateList = [];
-//   const templateMap: TemplateMap = {};
-
-//   for (const [key, template] of Object.entries(templateMap)) {
-//     templateList.push(template);
-//   }
-
-//   return [templates, templateList];
-// };
 
 const getPathRootOS = (): string => {
   const osRootSteps = process.cwd().split('/').length;
@@ -118,7 +104,7 @@ export const generateProjectFiles = (projectData: ProjectData, renderParams?: {
   fs.copySync(fs.projectPath, tempContent, {
     overwrite: false,
     filter: (src: string) => {
-      return src.indexOf('.hbs') === -1;
+      return src.indexOf('.hbs') === -1 && src.indexOf('.map') === -1;
     },
   });
 
@@ -150,6 +136,7 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
     const tempSource = fs.utils.join(osRootPath, fs.utils.tempPath, tmpDirId);
     const scormSource = fs.utils.join(tempSource, 'package');
     const scormContent = fs.utils.join(scormSource, 'content');
+    const courseName = Str.toScormCase(config.name && config.name.length > 0 ? config.name : project.meta.name || '');
     const packagerOpts = {
       source: scormSource,
       title: project.meta.name,
@@ -163,27 +150,20 @@ export const createScormPackage = (tmpDirId: string, project: ProjectData, meta?
         zip: true,
         date: today,
         version: projectVersion,
-        name: config.name,
+        name: courseName,
         description: config.description,
         author: config.authors,
         rights: '©Copyright ' + new Date().getFullYear(),
       },
     };
-    const packageFilename = packagerOpts.package.name
-        ? fs.utils.join(
-            packagerOpts.package.outputFolder,
-            `${Str.toScormCase(packagerOpts.package.name)}_v${
-              packagerOpts.package.version
-            }_${today}.zip`
-          )
-        : fs.utils.join(
-          packagerOpts.package.outputFolder,
-            `${Str.toScormCase(packagerOpts.title || '')}_v${
-              packagerOpts.package.version
-            }_${today}.zip`
-          );
-    const projectFilename = fs.utils.join(packagerOpts.package.outputFolder, `${Str.toKebabCase(config.name || '')}-${projectVersion}.zip`);
-
+    const packageFilename = fs.utils.join(
+      packagerOpts.package.outputFolder,
+      `${Str.toScormCase(courseName)}_v${
+        packagerOpts.package.version
+      }_${today}.zip`
+    );
+    const projectFilename = fs.utils.join(packagerOpts.package.outputFolder, `${Str.toKebabCase(courseName || '')}-${projectVersion}.zip`);
+    
     packager(packagerOpts, (message: string) => {
       resolve(fs.renameSync(packageFilename, projectFilename));
     });
@@ -199,7 +179,7 @@ export const publish: ProjectsApiPublish = {
     const generationRes = generateProjectFiles(projectData);
 
     if (generationRes.error) {
-      res.send(generationRes);
+      res.status(500).send(generationRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
@@ -207,32 +187,30 @@ export const publish: ProjectsApiPublish = {
     const packageRes = await createScormPackage(generationRes.data.tmpDirId, projectData);
 
     if (packageRes.error) {
-      res.send(packageRes);
+      res.status(500).send(packageRes);
       cleanupTempDir(generationRes.data.tmpDirId);
       return;
     }
 
-    try {
-      const zip = new ADM(packageRes.data.filename);
-      const fileData = zip.toBuffer();
-      const fileName = fs.utils.getFilename(packageRes.data.filename);
-      const fileType = 'application/zip';
+    res.setHeader('content-type', 'application/zip');
+    
+    const stream = fs.createReadStream(packageRes.data.filename);
 
-      res.set('Content-Type', fileType);
-      res.set('Content-Disposition', `attachment; filename=${fileName}`);
-      res.set('Content-Length', `${fileData.length}`);
-      res.send(fileData);
-    } catch (err) {
-      res.send({
+    stream.on('error', (err) => {
+      res.status(500).send({
         error: true,
         message: 'unable to publish: unexpected error',
         data: {
           trace: err,
         },
       });
-    }
+    });
 
-    cleanupTempDir(generationRes.data.tmpDirId);
+    stream.on('close', () => {
+      cleanupTempDir(generationRes.data.tmpDirId);
+    });
+
+    stream.pipe(res);
   },
 };
 
