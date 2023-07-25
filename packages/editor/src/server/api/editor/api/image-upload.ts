@@ -70,6 +70,7 @@ export const imageUpload: EditorApiImageUpload = {
         success: 1,
         file: {
           url: `/api/assets/${name}`,
+          publicUrl: upload.Location,
         },
       });
     } catch (e) {
