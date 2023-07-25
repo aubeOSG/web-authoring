@@ -17,6 +17,7 @@ import {
   MarkInlineTool,
 } from '@scrowl/custom-inline-tools';
 
+import Image from "@editorjs/image";
 import { IntroductionFactory } from '@scrowl/content-block-introduction';
 import { ColumnFactory } from '@scrowl/content-block-columns';
 import { MultipleChoiceFactory } from '@scrowl/content-block-multiple-choice';
@@ -95,6 +96,15 @@ export class BlockEditorAPI implements BlockEditorClass {
       //   },
       // },
       embed: Embed,
+      image: {
+        class: Image,
+        config: {
+          endpoints: {
+            byFile: '/api/editor/image-upload',
+            byUrl: '/api/editor/image-fetch',
+          },
+        },
+      },
       ...tools,
     };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as css from './_page-workspace.scss';
 import {
@@ -51,7 +51,7 @@ export const Page = () => {
   const workspaceSettings = Workspaces.useSettings();
   const [inProgress, setProgress] = useState(true);
   const pageParams = useParams();
-  const projectLoading = useRef(false);
+  const [projectLoading, setProjectLoading] = useState(false);
   const newContent = useNewContent();
   const [activeTab, setActiveTab] = useState(workspaceSettings.activeTab);
 
@@ -64,15 +64,15 @@ export const Page = () => {
       return;
     }
 
-    if (projectLoading.current) {
+    if (projectLoading) {
       return;
     }
 
-    projectLoading.current = true;
+    setProjectLoading(true);
     Projects.get({
       workspaceId: pageParams.id,
     }).then((res) => {
-      projectLoading.current = false;
+      setProjectLoading(false);
     });
   }, [pageParams]);
 

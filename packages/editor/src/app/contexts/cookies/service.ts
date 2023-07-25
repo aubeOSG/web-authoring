@@ -2,7 +2,7 @@ import { CookiesServiceClass } from "./cookies.types";
 
 export default class CookieService implements CookiesServiceClass {
   private _path = '/';
-  private _domain;
+  private _domain = location.hostname;
 
   constructor() {}
 
@@ -105,8 +105,8 @@ export default class CookieService implements CookiesServiceClass {
 
     const formatValue = (key: string, idx: number) => {
       try {
-        if (key === 'domain') {
-          result += `${key}=${idx!==lastIndex ? ';' : ''}`;
+        if (key === 'Domain' || key === 'Path' || key === 'Expiries') {
+          result += `${key}=${cookie[key]}${idx!==lastIndex ? ';' : ''}`;
         } else {
           result += `${key}=${encodeURIComponent(JSON.stringify(cookie[key]))}${idx!==lastIndex ? ';' : ''}`;
         }
