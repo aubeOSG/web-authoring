@@ -1,7 +1,7 @@
 import type { RegisterEndpoint } from '../../services/requester/requester.types';
 
 export interface AssetsApiGet extends RegisterEndpoint {
-  name: '/assets/:assetName';
+  name: '/assets/:workspace/:asset';
 };
 
 export interface AssetsApiPut extends RegisterEndpoint {

@@ -4,12 +4,12 @@ import { aws, rq } from '../../../services';
 const encoding = 'base64';
 
 export const get: AssetsApiGet = {
-  name: '/assets/:assetName',
+  name: '/assets/:workspace/:asset',
   type: 'invoke',
   fn: (req, res) => {
-    const { assetName } = req.params;
+    const { workspace, asset } = req.params;
 
-    if (!assetName) {
+    if (!workspace || !asset) {
       res.status(rq.status.codes.bad).send({
         error: true,
         message: 'unable to get assets: id required',
@@ -17,9 +17,10 @@ export const get: AssetsApiGet = {
       return;
     }
 
-    const Key = `${aws.Connection.config.bucketFolder}/${assetName}`;
+    const Key = `${aws.Connection.config.bucketFolder}/${workspace}/${asset}`;
 
     req.bucket.get(Key).then((data) => {
+      //TODO::download-upgrade | convert to handle return data as writable stream
       data.Body?.transformToString(encoding).then((assetData) => {
         const assetBuffer = Buffer.from(assetData, encoding);
 
@@ -28,6 +29,14 @@ export const get: AssetsApiGet = {
           'Content-Length': assetBuffer.length,
         });
         res.end(assetBuffer);
+      }).catch((e) => {
+        res.status(rq.status.codes.internal).send({
+          error: true,
+          message: 'failed to get asset: unexpected error',
+          data: {
+            trace: e,
+          }
+        });
       });
     }).catch((e) => {
       res.status(rq.status.codes.internal).send({

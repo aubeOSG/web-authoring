@@ -8,12 +8,11 @@ import {
   UploadPartCommand,
   CreateMultipartUploadCommand,
   CompleteMultipartUploadCommand,
+  CompleteMultipartUploadCommandOutput,
   AbortMultipartUploadCommand,
 } from '@aws-sdk/client-s3';
 import { config } from './connection';
 import { PutOptions } from './types';
-import { Writable } from 'node:stream';
-import { Buffer } from 'node:buffer';
 
 export default class BucketFactory {
   private _client: S3Client;
@@ -43,91 +42,97 @@ export default class BucketFactory {
   }
 
   public get(filename: string): Promise<GetObjectCommandOutput> {
+    //TODO::download-upgrade | convert to download files in chunks
+    //https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_Scenario_UsingLargeFiles_section.html
     return new Promise((resolve, reject) => {
         const command = new GetObjectCommand({
           Key: filename,
           ...this._command,
         });
-
+        
         this._client.send(command).then((result) => {
           resolve(result);
         }).catch(reject);
     });
   }
 
-  public put(data: PutOptions): Promise<any> {
+  public put(data: PutOptions): Promise<CompleteMultipartUploadCommandOutput> {
     return new Promise(async (resolve, reject) => {
-      console.log('bucket::put-start', data);
-      
-      let uploadId;
+      let UploadId;
+      const Key = `${this._command.Prefix}${data.name}`;
+      const Bucket = this._command.Bucket;
+      const FiveMB = 5 * 1024 * 1024;
+      const bufferSize = data.buffer.length;
 
       try {
         const streamUpload = await this._client.send(
           new CreateMultipartUploadCommand({
-            Key: data.name,
-            ...this._command,
+            Bucket,
+            Key,
+            ContentType: data.type,
           })
         );
-        console.log('bucket::put-stream');
-        uploadId = streamUpload.UploadId;
+
+        UploadId = streamUpload.UploadId;
 
         const uploadPromises: Array<any> = [];
-        const partSize = Math.ceil(data.buffer.length / 5);
+        const parts = Math.floor(bufferSize / FiveMB) + 1;
+        const partsEnd = parts - 1;
+        const partSize = parts === 1 ? bufferSize : FiveMB;
 
-        for (let i = 0; i < 5; i++) {
-          console.log('bucket::put-parting');
+        for (let i = 0; i < parts; i++) {
           const start = i * partSize;
-          const end = start + partSize;
+          const end = i === partsEnd ? bufferSize : start + partSize;
 
           uploadPromises.push(this._client
               .send(
                 new UploadPartCommand({
-                  Key: data.name,
-                  UploadId: uploadId,
+                  Bucket,
+                  Key,
+                  UploadId,
                   Body: data.buffer.subarray(start, end),
                   PartNumber: i + 1,
-                  ...this._command,
                 })
               )
               .then((d) => {
-                console.log(`Part: ${i + 1} uploaded`);
                 return d;
               })
             );
         }
 
         const uploadResults = await Promise.all(uploadPromises);
-        console.log('bucket::put-upload');
         const streamResult = await this._client.send(
           new CompleteMultipartUploadCommand({
-            Key: data.name,
-            UploadId: uploadId,
+            Bucket,
+            Key,
+            UploadId,
             MultipartUpload: {
               Parts: uploadResults.map(({ ETag }, i) => ({
                 ETag,
                 PartNumber: i + 1,
               })),
             },
-            ...this._command,
           })
         );
-        console.log('bucket::put-resolve');
+
         resolve(streamResult);
       } catch (e) {
-        console.log('bucket::put-error', e);
 
-        if (uploadId) {
-          console.log('bucket::put-abort');
-          const abortCmd = new AbortMultipartUploadCommand({
-            Key: data.name,
-            UploadId: uploadId,
-            ...this._command,
-          });
-          
-          await this._client.send(abortCmd);
+        if (UploadId) {
+          try {
+            const abortCmd = new AbortMultipartUploadCommand({
+              Bucket,
+              Key: data.name,
+              UploadId,
+            });
+            
+            await this._client.send(abortCmd);
+          } catch (e) {
+            reject(e);
+            return;    
+          }
         }
 
-        console.log('bucket::put-rejected');
         reject(e);
       }
     });

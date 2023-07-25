@@ -14,14 +14,14 @@ RETURN OBJET
 */
 import { EditorApiImageUpload } from '../editor.types';
 import { status, form } from '../../../services/requester';
-import { Duplex } from 'stream';
+import { utils } from '../../../services/file-system';
 
 export const imageUpload: EditorApiImageUpload = {
   name: '/editor/image-upload',
   type: 'invoke',
   method: 'POST',
   fn: async (req, res) => {
-    const workspaceId = req.cookies.workspace;
+    const workspaceId = JSON.parse(req.cookies.workspace);
 
     if (!workspaceId) {
       res.status(status.codes.bad).send({
@@ -43,18 +43,35 @@ export const imageUpload: EditorApiImageUpload = {
       }
 
       const data = payload.files.image[0];
-      const name = `${workspaceId}/${data.originalFilename}`;
+      const ext = utils.getExt(data.originalFilename);
+      const name = `${workspaceId}/${data.newFilename}${ext}`;
       const buffer = payload.buffers[data.newFilename];
       const size = data.size;
-      const type = data.mineType;
+      const type = data.mimetype;
       const upload = await req.bucket.put({
         name,
         size,
         type,
         buffer,
       });
-      console.log('image-upload::payload', upload);
-      res.sendStatus(status.codes.notFound);
+      
+      if (upload.$metadata.httpStatusCode !== status.codes.ok) {
+        res.status(upload.$metadata.httpStatusCode as number).send({
+          error: true,
+          message: `failed to upload image: ${upload['Code']}`,
+          data: {
+            trace: upload,
+          }
+        });
+        return;
+      }
+
+      res.send({
+        success: 1,
+        file: {
+          url: `/api/assets/${name}`,
+        },
+      });
     } catch (e) {
       res.status(500).send({
         error: true,
