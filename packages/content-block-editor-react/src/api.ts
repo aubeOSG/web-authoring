@@ -6,6 +6,7 @@ import NestedList from "@editorjs/nested-list";
 import Paragraph from "@editorjs/paragraph";
 import Quote from "@editorjs/quote";
 import Table from "@editorjs/table";
+import Image from "@editorjs/image";
 import { IntroductionFactory } from '@scrowl/content-block-introduction';
 import { ColumnFactory } from '@scrowl/content-block-columns';
 import { MultipleChoiceFactory } from '@scrowl/content-block-multiple-choice';
@@ -67,6 +68,15 @@ export class BlockEditorAPI implements BlockEditorClass {
       table: {
         class: Table,
         inlineToolbar: false,
+      },
+      image: {
+        class: Image,
+        config: {
+          endpoints: {
+            byFile: '/api/editor/image-upload',
+            byUrl: '/api/editor/image-fetch',
+          },
+        },
       },
       ...tools,
     };

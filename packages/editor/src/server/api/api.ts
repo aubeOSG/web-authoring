@@ -1,12 +1,13 @@
 import express from 'express';
 import type { Knex } from 'knex';
-import { rq } from '../services';
+import { rq, aws } from '../services';
 import endpoints from './endpoints';
 import auth from './auth';
 import projects from './projects';
 import users from './users';
 import workspaces from './workspaces';
 import editor from './editor';
+import assets from './assets';
 
 export const Route = '/api';
 
@@ -19,9 +20,11 @@ export const init = (app: express.Application, db: Knex) => {
   rq.register.addAll(router, users.api);
   rq.register.addAll(router, workspaces.api);
   rq.register.addAll(router, editor.api);
+  rq.register.addAll(router, assets.api);
 
   app.use(Route, (req, res, next) => {
     req.db = db;
+    req.bucket = new aws.Bucket();
     next();
   });
 

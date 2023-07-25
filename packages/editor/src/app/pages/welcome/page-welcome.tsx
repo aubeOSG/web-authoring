@@ -6,6 +6,7 @@ import { animations } from '../../components';
 import { Projects, Users, Workspaces } from '../../models';
 import { config as workspaceConfig } from '../../pages/workspace';
 import { useOAuth } from '../../contexts/oauth';
+import { useCookies } from '../../contexts/cookies';
 import { User } from '../../../server/api/users';
 
 export const Path = '/welcome';
@@ -13,6 +14,7 @@ export const Path = '/welcome';
 export const Page = () => {
   const navigator = useNavigate();
   const oauth = useOAuth();
+  const cookies = useCookies();
   const [inProgress, setProgress] = useState(false);
 
   const handleCreateCourse = () => {
@@ -35,6 +37,7 @@ export const Page = () => {
             return;
           }
 
+          cookies?.put('workspace', workspaceRes.data.id);
           Workspaces.setData(workspaceRes.data);
           Projects.create({
             workspaceId: workspaceRes.data.id,
@@ -64,6 +67,10 @@ export const Page = () => {
       exit={{ opacity: 0, transition: { delay: 0.2 } }}
       style={inProgress ? { pointerEvents: 'none' } : {}}
     >
+      <img
+        src="/api/assets/7de1f01e8d427210ff38bac8647efbb3.jpg"
+        className="test-asset"
+      />
       <div className="body">
         <motion.h1
           initial={{ transform: 'translate(0,-80px)' }}

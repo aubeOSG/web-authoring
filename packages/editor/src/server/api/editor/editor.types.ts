@@ -4,6 +4,12 @@ export interface EditorApiPreviewLink extends RegisterEndpoint {
   name: '/editor/preview-link';
 };
 
-export type EditorApi = {
-  previewLink: EditorApiPreviewLink;
+export interface EditorApiImageUpload extends RegisterEndpoint {
+  name: '/editor/image-upload';
+  method: 'POST';
+};
+
+export interface EditorApiImageFetch extends RegisterEndpoint {
+  name: '/editor/image-fetch';
+  method: 'POST';
 };
