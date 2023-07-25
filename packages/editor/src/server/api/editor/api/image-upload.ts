@@ -69,8 +69,8 @@ export const imageUpload: EditorApiImageUpload = {
       res.send({
         success: 1,
         file: {
-          url: `/api/assets/${name}`,
-          publicUrl: upload.Location,
+          urlAPI: `/api/assets/${name}`,
+          url: upload.Location,
         },
       });
     } catch (e) {
