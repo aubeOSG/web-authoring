@@ -220,16 +220,19 @@ export const Header = () => {
     setIsOpenConfirmation(false);
   };
 
-  const handleNameFocus = useCallback((e) => {
-    const defaultProjectName = 'untitled project';
+  const handleNameFocus = useCallback(
+    (e) => {
+      const defaultProjectName = 'untitled project';
 
-    if (
-      e.target.value.toLowerCase() === defaultProjectName ||
-      projectMeta.name?.toLowerCase() === defaultProjectName
-    ) {
-      e.target.select();
-    }
-  }, []);
+      if (
+        e.target.value.toLowerCase() === defaultProjectName ||
+        projectMeta.name?.toLowerCase() === defaultProjectName
+      ) {
+        e.target.select();
+      }
+    },
+    [projectMeta]
+  );
 
   useEffect(() => {
     if (projectNameRef.current && projectNameInputRef.current) {
