@@ -46,11 +46,9 @@ export const imageUpload: EditorApiImageUpload = {
       const ext = utils.getExt(data.originalFilename);
       const name = `${workspaceId}/${data.newFilename}${ext}`;
       const buffer = payload.buffers[data.newFilename];
-      const size = data.size;
       const type = data.mimetype;
       const upload = await req.bucket.put({
         name,
-        size,
         type,
         buffer,
       });

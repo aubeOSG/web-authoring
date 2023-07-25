@@ -6,7 +6,6 @@ export type AWSConfig = {
 
 export type PutOptions = {
   name: string;
-  size: number;
   type: string;
   buffer: Buffer;
 };
