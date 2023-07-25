@@ -29,7 +29,6 @@ export const Page = () => {
             return;
           }
 
-          console.log('image-update::bypass', workspaceRes.data.id);
           cookies?.put('workspace', workspaceRes.data.id);
           Workspaces.setData(workspaceRes.data);
           Projects.create({

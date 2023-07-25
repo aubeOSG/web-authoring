@@ -116,7 +116,6 @@ export default class CookieService implements CookiesServiceClass {
     };
 
     cookieKeys.forEach(formatValue);
-    console.log('image-upload::cookie', result);
     document.cookie = result;
   }
 
