@@ -37,7 +37,12 @@ jobs:
           envkey_DBNAME: ${{ secrets.AWS_DB_NAME }}
           envkey_DBPORT: ${{ secrets.AWS_DB_PORT }}
           envkey_DBHOST: ${{ secrets.AWS_DB_HOST }}
-          envkey_DBSCHEMA: public
+          envkey_DBSCHEMA: ${{ secrets.AWS_DB_SCHEMA }}
+          envkey_AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          envkey_AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          envkey_AWS_REGION_NAME: ${{ secrets.AWS_REGION_NAME }}
+          envkey_AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          envkey_AWS_BUCKET_FOLDER: ${{ secrets.AWS_BUCKET_FOLDER }}
 
       - name: Build and publish image
         id: build-image
