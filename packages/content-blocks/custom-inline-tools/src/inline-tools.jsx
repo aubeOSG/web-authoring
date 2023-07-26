@@ -24,7 +24,7 @@ export const SmallInlineTool = createGenericInlineTool({
 
 export const LargeInlineTool = createGenericInlineTool({
   sanitize: {
-    small: {},
+    big: {},
   },
   shortcut: 'CMD+O',
   tagName: 'BIG',
