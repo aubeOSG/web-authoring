@@ -1,7 +1,10 @@
 import { SmallInlineTool, LargeInlineTool } from './inline-tools';
-import { MarkerTool } from './marker-tool';
+import { MarkerTool } from './marker-tool/marker-tool';
+import { LinkTool } from './hyperlink-tool/link-tool';
+
 import { UnderlineInlineTool } from 'editorjs-inline-tool';
 import Strikethrough from 'editorjs-strikethrough';
+import Hyperlink from 'editorjs-hyperlink';
 
 export {
   SmallInlineTool,
@@ -9,4 +12,6 @@ export {
   MarkerTool,
   UnderlineInlineTool,
   Strikethrough,
+  LinkTool,
+  Hyperlink,
 };

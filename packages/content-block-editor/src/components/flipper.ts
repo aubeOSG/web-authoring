@@ -94,6 +94,7 @@ export default class Flipper {
   public static get usedKeys(): number[] {
     return [
       _.keyCodes.TAB,
+      _.keyCodes.FORWARDSLASH,
       _.keyCodes.LEFT,
       _.keyCodes.RIGHT,
       _.keyCodes.ENTER,
@@ -221,6 +222,9 @@ export default class Flipper {
 
     switch (event.keyCode) {
       case _.keyCodes.TAB:
+        this.handleTabPress(event);
+        break;
+      case _.keyCodes.FORWARDSLASH:
         this.handleTabPress(event);
         break;
       case _.keyCodes.LEFT:

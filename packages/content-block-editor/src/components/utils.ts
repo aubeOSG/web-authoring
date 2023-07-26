@@ -44,6 +44,7 @@ export interface ChainData {
 export const keyCodes = {
   BACKSPACE: 8,
   TAB: 9,
+  FORWARDSLASH: 191,
   ENTER: 13,
   SHIFT: 16,
   CTRL: 17,

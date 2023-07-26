@@ -17,6 +17,7 @@ import {
   MarkerTool,
   UnderlineInlineTool,
   Strikethrough,
+  LinkTool,
 } from './inline-tools';
 
 import {
@@ -99,6 +100,9 @@ export class BlockEditorAPI implements BlockEditorClass {
       strikethrough: {
         class: Strikethrough,
         shortcut: 'CMD+SHIFT+X',
+      },
+      linkTool: {
+        class: LinkTool,
       },
       ...tools,
     };

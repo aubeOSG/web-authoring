@@ -72,6 +72,7 @@
     "@scrowl/content-block-introduction": "^0.0.1",
     "@scrowl/content-block-multiple-choice": "^0.0.1",
     "@scrowl/content-block-timeline": "^0.0.1",
+    "editorjs-hyperlink": "^1.0.6",
     "editorjs-inline-tool": "^0.4.0",
     "editorjs-strikethrough": "^1.0.0"
   }
