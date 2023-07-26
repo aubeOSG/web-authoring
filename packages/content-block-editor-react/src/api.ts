@@ -11,11 +11,7 @@ import { IntroductionFactory } from '@scrowl/content-block-introduction';
 import { ColumnFactory } from '@scrowl/content-block-columns';
 import { MultipleChoiceFactory } from '@scrowl/content-block-multiple-choice';
 import { TimelineFactory } from '@scrowl/content-block-timeline';
-import {
-  SmallInlineTool,
-  LargeInlineTool,
-  MarkInlineTool,
-} from './inline-tools';
+import { SmallInlineTool, LargeInlineTool, MarkerTool } from './inline-tools';
 import { UnderlineInlineTool } from 'editorjs-inline-tool';
 import {
   BlockEditorClass,
@@ -87,8 +83,7 @@ export class BlockEditorAPI implements BlockEditorClass {
       underline: UnderlineInlineTool,
       small: SmallInlineTool,
       large: LargeInlineTool,
-      mark: MarkInlineTool,
-
+      marker: MarkerTool,
       ...tools,
     };
 

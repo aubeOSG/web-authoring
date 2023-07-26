@@ -7,6 +7,15 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.cdx-marker {
+  background: rgba(245,235,111,0.29);
+  padding: 3px 0;
+}
+
+[data-tool="marker"] {
+  fill: white;
+}
+
 .owlui-editor .ce-block__content,
 .owlui-editor .ce-toolbar__content {
   max-width: 1400px;
