@@ -12,6 +12,12 @@ import { ColumnFactory } from '@scrowl/content-block-columns';
 import { MultipleChoiceFactory } from '@scrowl/content-block-multiple-choice';
 import { TimelineFactory } from '@scrowl/content-block-timeline';
 import {
+  SmallInlineTool,
+  LargeInlineTool,
+  MarkInlineTool,
+} from './inline-tools';
+import { UnderlineInlineTool } from 'editorjs-inline-tool';
+import {
   BlockEditorClass,
   BlockEditorOutputData,
   BlockEditorConfig,
@@ -50,7 +56,7 @@ export class BlockEditorAPI implements BlockEditorClass {
         class: Link,
         inlineToolbar: true,
         config: {
-          endpoint: '/api/editor/preview-link'
+          endpoint: '/api/editor/preview-link',
         },
       },
       nestedList: {
@@ -78,6 +84,11 @@ export class BlockEditorAPI implements BlockEditorClass {
           },
         },
       },
+      underline: UnderlineInlineTool,
+      small: SmallInlineTool,
+      large: LargeInlineTool,
+      mark: MarkInlineTool,
+
       ...tools,
     };
 
@@ -108,12 +119,18 @@ export class BlockEditorAPI implements BlockEditorClass {
     await this._editor.destroy();
   }
 
-  public focus () {
+  public focus() {
     const blockCount = this._editor.blocks.getBlocksCount();
     const lastBlock = this._editor.blocks.getBlockByIndex(blockCount - 1);
 
     if (!lastBlock?.isEmpty) {
-      this._editor.blocks.insert('paragraph', undefined, undefined, blockCount, true);
+      this._editor.blocks.insert(
+        'paragraph',
+        undefined,
+        undefined,
+        blockCount,
+        true
+      );
     }
 
     this._editor.caret.setToLastBlock('end');
