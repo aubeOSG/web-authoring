@@ -3,6 +3,14 @@ export class MarkerTool {
     return true;
   }
 
+  static get sanitize() {
+    return {
+      mark: {
+        class: 'cdx-marker',
+      },
+    };
+  }
+
   get state() {
     return this._state;
   }
@@ -61,9 +69,56 @@ export class MarkerTool {
     range.insertNode(text);
   }
 
+  renderActions() {
+    this.colorPicker = document.createElement('input');
+    this.colorPicker.type = 'color';
+    this.colorPicker.value = '#f5f1cc';
+    this.colorPicker.hidden = true;
+
+    return this.colorPicker;
+  }
+
+  convertToHex(color) {
+    const rgb = color.match(/(\d+)/g);
+
+    let hexr = parseInt(rgb[0]).toString(16);
+    let hexg = parseInt(rgb[1]).toString(16);
+    let hexb = parseInt(rgb[2]).toString(16);
+
+    hexr = hexr.length === 1 ? '0' + hexr : hexr;
+    hexg = hexg.length === 1 ? '0' + hexg : hexg;
+    hexb = hexb.length === 1 ? '0' + hexb : hexb;
+
+    return '#' + hexr + hexg + hexb;
+  }
+
+  showActions(mark) {
+    const { backgroundColor } = mark.style;
+
+    this.colorPicker.value = backgroundColor
+      ? this.convertToHex(backgroundColor)
+      : '#f5f1cc';
+
+    this.colorPicker.onchange = () => {
+      mark.style.backgroundColor = this.colorPicker.value;
+    };
+    this.colorPicker.hidden = false;
+  }
+
+  hideActions() {
+    this.colorPicker.onchange = null;
+    this.colorPicker.hidden = true;
+  }
+
   checkState() {
     const mark = this.api.selection.findParentTag(this.tag);
 
     this.state = !!mark;
+
+    if (this.state) {
+      this.showActions(mark);
+    } else {
+    this.hideActions();
+    }
   }
 }

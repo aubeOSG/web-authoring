@@ -6862,6 +6862,16 @@ editorjs-html@^3.4.2:
   resolved "https://registry.yarnpkg.com/editorjs-html/-/editorjs-html-3.4.2.tgz#1ebe6b6631e3011ef974bb52727f645464c84428"
   integrity sha512-Gy8FV4oHMvnPDXLsdpZYW0Dgjaagff9bPd28/WW9aFdy87FvktJxQz8H+NKpxiGcGoNY27MmjFffurK2yhXjEg==
 
+editorjs-inline-tool@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/editorjs-inline-tool/-/editorjs-inline-tool-0.4.0.tgz#a674d419bf6562c86cb74c7ffcefcfb3007db1a8"
+  integrity sha512-Ppb4e8IFPjWuNcoNM4tg9bDSo7FgMYAlqP4UhuV5W2JoJBubV5pUcpLrFrSyGTt1HJVEpbrib134zf4wxO+7VA==
+
+editorjs-strikethrough@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/editorjs-strikethrough/-/editorjs-strikethrough-1.0.0.tgz#3687e8fb61d09ef87e76dc9f1f360b6f3db9ec4e"
+  integrity sha512-jesqbAg/nehdhU2LWSH4nxzy276Zvym9T8RjPLpeCEqpJJDzrlmU4CAEGgQUQlbJlNuEtp+w8yloAOwaA5QoYg==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"

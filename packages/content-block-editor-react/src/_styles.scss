@@ -12,6 +12,10 @@
   padding: 3px 0;
 }
 
+.ce-inline-tool--active {
+  fill: currentColor;
+}
+
 [data-tool="marker"] {
   fill: white;
 }
