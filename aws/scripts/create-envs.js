@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'fs-extra';
 import path from 'path';
 import {
   SecretsManagerClient,
@@ -26,6 +26,7 @@ try {
 try {
   const secret = JSON.parse(response.SecretString);
   let envDevFile = '';
+  const localstackInitFilename = 'aws/dev/init-aws.sh';
   const envDevFilename = 'development.env';
   const envDevData = {
     SRPORT: "8000",
@@ -58,8 +59,13 @@ try {
     envProdTestFile += `${key}=${value}\n`;
   }
 
-  fs.writeFileSync(path.join('./', envDevFilename), envDevFile);
-  fs.writeFileSync(path.join('./', envProdTestFilename), envProdTestFile);
+  let localstackFile = `awslocal s3 mb s3://${envDevData.AWS_BUCKET_NAME}`;
+
+  localstackFile += `\nawslocal s3api put-bucket-acl --bucket ${envDevData.AWS_BUCKET_NAME} --acl public-read`;
+
+  fs.outputFileSync(path.join('./', envDevFilename), envDevFile);
+  fs.outputFileSync(path.join('./', envProdTestFilename), envProdTestFile);
+  fs.outputFileSync(path.join('./', localstackInitFilename), localstackFile);
 } catch (e) {
   throw e;
 }

@@ -1,4 +1,6 @@
-FROM node:16.15.1-slim as base
+FROM nikolaik/python-nodejs:python3.11-nodejs18 as base
+
+RUN pip install awscli-local
 
 WORKDIR /usr/authoring
 

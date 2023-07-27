@@ -1,4 +1,4 @@
-FROM node:16.15.1-slim as base
+FROM node:18.17-slim as base
 
 WORKDIR /usr/authoring
 

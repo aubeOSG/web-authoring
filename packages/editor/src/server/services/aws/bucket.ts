@@ -10,7 +10,9 @@ import {
   CompleteMultipartUploadCommand,
   CompleteMultipartUploadCommandOutput,
   AbortMultipartUploadCommand,
+  S3ClientConfig,
 } from '@aws-sdk/client-s3';
+import { env } from '../../config';
 import { config } from './connection';
 import { PutOptions } from './types';
 
@@ -19,9 +21,18 @@ export default class BucketFactory {
   private _command: { Bucket: string, Prefix: string; };
 
   constructor () {
-    this._client = new S3Client({
-      region: config.region,
-    });
+    const bucketConfig: S3ClientConfig = {};
+
+    bucketConfig.region = config.region;
+
+    if (env === 'development' && config.endpoint) {
+      bucketConfig.endpoint = config.endpoint;
+      bucketConfig.forcePathStyle = true;
+    }
+
+    console.debug('bucket-service::config', bucketConfig);
+
+    this._client = new S3Client(bucketConfig);
     this._command = {
       Bucket: config.bucket,
       Prefix: `${config.bucketFolder}/`,
